@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="javax.mail">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Libs/javax.mail.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="https://javaee.github.io/javamail/docs/api/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
