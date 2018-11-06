@@ -1,18 +1,18 @@
 package window.parsedMsgWindow;
 
-import file.Parser;
+import file.MailMsgParser;
 import window.controls.ButtonControls;
 import window.inputFields.Inputs;
 
 public class MsgWindowUpdater {
 
-    private Parser parser;
+    private MailMsgParser mailMsgParser;
     private MessageWindow messageWindow;
     private final Inputs inputs;
     private final ButtonControls buttonControls;
 
-    public MsgWindowUpdater(Parser parser, MessageWindow messageWindow , Inputs inputs, ButtonControls buttonControls){
-        this.parser = parser;
+    public MsgWindowUpdater(MailMsgParser mailMsgParser, MessageWindow messageWindow , Inputs inputs, ButtonControls buttonControls){
+        this.mailMsgParser = mailMsgParser;
         this.messageWindow = messageWindow;
         this.inputs = inputs;
         this.buttonControls = buttonControls;
@@ -20,10 +20,10 @@ public class MsgWindowUpdater {
     }
 
     public void update(){
-        parser.setFlaggedLogin(inputs.getLoginField().getText());
-        parser.setFlaggedPassword(inputs.getPassField().getText());
-        parser.reparse();
-        messageWindow.updateWindowContent(parser.getOutputString());
+        mailMsgParser.setFlaggedLogin(inputs.getLoginField().getText());
+        mailMsgParser.setFlaggedPassword(inputs.getPassField().getText());
+        mailMsgParser.reparse();
+        messageWindow.updateWindowContent(mailMsgParser.getOutputString());
     }
 
     public void bindHandlers(){

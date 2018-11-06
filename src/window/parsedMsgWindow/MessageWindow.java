@@ -4,9 +4,7 @@ package window.parsedMsgWindow;
 import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
-import file.Parser;
 
-import java.io.File;
 import java.io.IOException;
 
 public class MessageWindow extends VBox {

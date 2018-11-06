@@ -7,7 +7,7 @@ import java.util.Scanner;
  * Parses given HTML file and detects flagged lines. Current flags are: <!L></!L> - for Login and <!P></!P> for Password
  * Both can be changed.
  */
-public class Parser {
+public class MailMsgParser {
 
     private BufferedReader bufferedReader;
     private String flagLoginRegex;
@@ -18,6 +18,9 @@ public class Parser {
     private String flagPasswordEnd;
     private String flaggedLogin;
     private String flaggedPassword;
+    private String flagTopicStart;
+    private String flagTopicEnd;
+    private String flaggedTopic;
     private StringBuilder stringBuilder;
     private int flagLoginStartOffset;
     private int flagLoginEndOffset;
@@ -29,42 +32,48 @@ public class Parser {
      * @param stringBuilder content receiver from Loader
      * @throws IOException
      */
-    public Parser (StringBuilder stringBuilder) throws IOException {
+    public MailMsgParser(StringBuilder stringBuilder) throws IOException {
         this.stringBuilder = stringBuilder;
 
         flagLoginStart = "<!L>";
         flagLoginEnd = "</!L>";
+
         flagPasswordStart = "<!P>";
         flagPasswordEnd = "</!P>";
+
+        flagTopicStart = "<!T>";
+        flagTopicEnd = "</!T>";
+
         String htmlEndline = "<br>";
         flagLoginRegex = "(<!L>.*)(.*</!L>.*)";
         flagPasswordRegex = "(<!P>.*)(.*</!P>.*)";
+
 
     }
 
 
     public static void main(String[] args) throws Exception {
         Loader loader = new Loader("powitanie.html");
-        Parser parser = new Parser(loader.readContent());
-        parser.reparse();
+        MailMsgParser mailMsgParser = new MailMsgParser(loader.readContent());
+        mailMsgParser.reparse();
 
-        System.out.println(parser.getOutputString());
-        System.out.println("login: " + parser.getFlaggedLogin());
-        System.out.println("pass: " + parser.getFlaggedPassword());
+        System.out.println(mailMsgParser.getOutputString());
+        System.out.println("login: " + mailMsgParser.getFlaggedLogin());
+        System.out.println("pass: " + mailMsgParser.getFlaggedPassword());
         Scanner reader = new Scanner(System.in);
 
         System.out.println("new Login: ");
-        parser.setFlaggedLogin(reader.nextLine());
+        mailMsgParser.setFlaggedLogin(reader.nextLine());
         System.out.println("new pass: ");
-        parser.setFlaggedPassword(reader.nextLine());
+        mailMsgParser.setFlaggedPassword(reader.nextLine());
 
-        System.out.println("login: " + parser.getFlaggedLogin());
-        System.out.println("pass: " + parser.getFlaggedPassword());
+        System.out.println("login: " + mailMsgParser.getFlaggedLogin());
+        System.out.println("pass: " + mailMsgParser.getFlaggedPassword());
 
-        parser.reparse();
+        mailMsgParser.reparse();
 
         System.out.println("reparsed:");
-        System.out.println(parser.getOutputString());
+        System.out.println(mailMsgParser.getOutputString());
 
     }
 
@@ -89,6 +98,24 @@ public class Parser {
     }
 
     /**
+     * Read topic from html message and delete it
+     * @return
+     */
+    public String getFlaggedTopic(){
+        int flagTopicStartOffset, flagTopicEndOffset;
+        flagTopicStartOffset = stringBuilder.lastIndexOf(flagTopicStart) + flagTopicEnd.length();
+        flagTopicEndOffset = stringBuilder.lastIndexOf(flagTopicEnd);
+
+        System.out.println(flagTopicStartOffset + " | " + flagTopicEndOffset);
+
+        flaggedTopic = stringBuilder.substring(flagTopicStartOffset, flagTopicEndOffset);
+        stringBuilder.replace(flagTopicStartOffset - flagTopicStart.length(), flagTopicEndOffset + flagTopicEnd.length(), "");
+
+        return flaggedTopic;
+
+    }
+
+    /**
      * Allows to reparse text with modified flagged values, usually best to use after modifying flaggedLogin or flaggedPassword
      */
     public void reparse(){
@@ -105,5 +132,9 @@ public class Parser {
 
         this.stringBuilder.replace(flagPassStartOffset, flagPassEndOffset, "");
         this.stringBuilder.insert(flagPassStartOffset, flaggedPassword);
+
+        System.out.println(getFlaggedTopic());
+
+
     }
 }
