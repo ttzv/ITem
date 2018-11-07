@@ -6,21 +6,25 @@ public class Loader {
 
     private BufferedReader bufferedReader;
 
-    public Loader(String path) throws IOException {
+    public Loader(File file){
         try {
-            bufferedReader = new BufferedReader(new FileReader(path));
+            bufferedReader = new BufferedReader(new FileReader(file.getPath()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
-    public StringBuilder readContent() throws IOException {
+    public StringBuilder readContent() {
         StringBuilder stringBuilder = new StringBuilder();
         String stringLine;
-        while ((stringLine = bufferedReader.readLine()) != null) {
-            stringBuilder.append(stringLine);
+        try {
+            while ((stringLine = bufferedReader.readLine()) != null) {
+                stringBuilder.append(stringLine);
+            }
+            return stringBuilder;
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
-        return stringBuilder;
+        return null;
     }
 }

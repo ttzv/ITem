@@ -1,4 +1,4 @@
-package window.controls;
+package window.controls.buttonControls;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;

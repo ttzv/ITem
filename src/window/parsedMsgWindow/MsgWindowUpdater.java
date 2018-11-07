@@ -1,7 +1,7 @@
 package window.parsedMsgWindow;
 
 import file.MailMsgParser;
-import window.controls.ButtonControls;
+import window.controls.buttonControls.ButtonControls;
 import window.inputFields.Inputs;
 
 public class MsgWindowUpdater {
@@ -11,8 +11,7 @@ public class MsgWindowUpdater {
     private final Inputs inputs;
     private final ButtonControls buttonControls;
 
-    public MsgWindowUpdater(MailMsgParser mailMsgParser, MessageWindow messageWindow , Inputs inputs, ButtonControls buttonControls){
-        this.mailMsgParser = mailMsgParser;
+    public MsgWindowUpdater(MessageWindow messageWindow , Inputs inputs, ButtonControls buttonControls){
         this.messageWindow = messageWindow;
         this.inputs = inputs;
         this.buttonControls = buttonControls;
@@ -37,4 +36,9 @@ public class MsgWindowUpdater {
             update();
         });
     }
+
+    public void changeSelectedParser(MailMsgParser mailMsgParser){
+        this.mailMsgParser = mailMsgParser;
+    }
+
 }

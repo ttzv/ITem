@@ -6,7 +6,7 @@ import javafx.scene.control.MenuItem;
 
 import java.util.HashMap;
 
-public class MenuBarControl {
+public abstract class MenuBarControl {
 
     private final MenuBar menuBar;
     private HashMap<String, Menu> menusMap;
@@ -27,7 +27,7 @@ public class MenuBarControl {
         return menuBar;
     }
 
-    private void createMenu(String name){
+    public void createMenu(String name){
         Menu menu = new Menu(name);
         menusMap.put(name, menu);
     }
@@ -41,25 +41,24 @@ public class MenuBarControl {
         return new MenuItem(nameItem);
     }
 
-    private void buildMenuBar(){
+    public void buildMenuBar(){
         buildMenu();
         this.menuBar.getMenus().addAll(menusMap.values());
     }
 
     /**
-     * Main method for building menuBar, creation of components happens here
+     * Main method for building menuBar, creation of components happens here. Override this method to build your menuBar
      */
-    private void buildMenu(){
-        createMenu("Options");
-        addItemToMenu("Options","Settings");
-    }
+    public abstract void buildMenu();
+
+
 
     /**
      * Add new item to existing menu
-     * @param menu
-     * @param item
+     * @param menu name (id) of menu - this menu must be created first! use createMenu() method for this (preferably in buildMenu() method
+     * @param item name (id) of item - creates new MenuItem object using createMenuItem() method
      */
-    private void addItemToMenu(String menu, String item){
+    public void addItemToMenu(String menu, String item){
         if(menusMap.keySet().contains(menu)){
             if(menuItemsMap.keySet().contains(menu)) {
                 menuItemsMap.get(menu).put(item, createMenuItem(item));
@@ -78,15 +77,16 @@ public class MenuBarControl {
      * Method used for getting specific MenuItem, used mainly for adding handlers.
      * @param item name of item
      * @param menu name of menu
-     * @return MenuItem form specific menu
+     * @return MenuItem from specific menu or null if MenuItem was not found
      */
     public MenuItem getItemFromMenu(String item, String menu){
         if(menuItemsMap.containsKey(menu)){
             if(menuItemsMap.get(menu).containsKey(item)){
                 return menuItemsMap.get(menu).get(item);
-            }else
+            }else {
                 System.out.println("no such item exists");
-            return null;
+                return null;
+            }
         }else{
             System.out.println("no such menu exists");
             return null;

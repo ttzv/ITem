@@ -29,10 +29,9 @@ public class MailMsgParser {
 
     /**
      *
-     * @param stringBuilder content receiver from Loader
-     * @throws IOException
+     * @param stringBuilder content received from Loader
      */
-    public MailMsgParser(StringBuilder stringBuilder) throws IOException {
+    public MailMsgParser(StringBuilder stringBuilder) {
         this.stringBuilder = stringBuilder;
 
         flagLoginStart = "<!L>";
@@ -44,15 +43,13 @@ public class MailMsgParser {
         flagTopicStart = "<!T>";
         flagTopicEnd = "</!T>";
 
-        String htmlEndline = "<br>";
         flagLoginRegex = "(<!L>.*)(.*</!L>.*)";
         flagPasswordRegex = "(<!P>.*)(.*</!P>.*)";
-
 
     }
 
 
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         Loader loader = new Loader("powitanie.html");
         MailMsgParser mailMsgParser = new MailMsgParser(loader.readContent());
         mailMsgParser.reparse();
@@ -75,7 +72,7 @@ public class MailMsgParser {
         System.out.println("reparsed:");
         System.out.println(mailMsgParser.getOutputString());
 
-    }
+    }*/
 
     public String getOutputString(){
         return this.stringBuilder.toString();
@@ -98,42 +95,45 @@ public class MailMsgParser {
     }
 
     /**
-     * Read topic from html message and delete it
-     * @return
+     * Read topic from html message and delete it from final content
      */
-    public String getFlaggedTopic(){
+    public void parseTitle(){
         int flagTopicStartOffset, flagTopicEndOffset;
-        flagTopicStartOffset = stringBuilder.lastIndexOf(flagTopicStart) + flagTopicEnd.length();
+        flagTopicStartOffset = stringBuilder.lastIndexOf(flagTopicStart) + flagTopicStart.length();
         flagTopicEndOffset = stringBuilder.lastIndexOf(flagTopicEnd);
 
         System.out.println(flagTopicStartOffset + " | " + flagTopicEndOffset);
 
-        flaggedTopic = stringBuilder.substring(flagTopicStartOffset, flagTopicEndOffset);
+        String flaggedTopic = stringBuilder.substring(flagTopicStartOffset, flagTopicEndOffset);
         stringBuilder.replace(flagTopicStartOffset - flagTopicStart.length(), flagTopicEndOffset + flagTopicEnd.length(), "");
 
-        return flaggedTopic;
+        this.flaggedTopic = flaggedTopic;
 
+    }
+
+    public String getFlaggedTopic(){
+        return this.flaggedTopic;
     }
 
     /**
      * Allows to reparse text with modified flagged values, usually best to use after modifying flaggedLogin or flaggedPassword
      */
     public void reparse(){
-        flagLoginStartOffset = ( stringBuilder.lastIndexOf(flagLoginStart) ) + flagLoginStart.length();
-        flagLoginEndOffset = ( stringBuilder.lastIndexOf(flagLoginEnd) );
+        flagLoginStartOffset = stringBuilder.lastIndexOf(flagLoginStart) + flagLoginStart.length();
+        flagLoginEndOffset = stringBuilder.lastIndexOf(flagLoginEnd);
         System.out.println(flagLoginStartOffset + " | " + flagLoginEndOffset);
 
         this.stringBuilder.replace(flagLoginStartOffset, flagLoginEndOffset, "");
         this.stringBuilder.insert(flagLoginStartOffset, flaggedLogin);
 
-        flagPassStartOffset = ( stringBuilder.lastIndexOf(flagPasswordStart) ) + flagPasswordStart.length();
-        flagPassEndOffset = ( stringBuilder.lastIndexOf(flagPasswordEnd) );
+        flagPassStartOffset = stringBuilder.lastIndexOf(flagPasswordStart) + flagPasswordStart.length();
+        flagPassEndOffset = stringBuilder.lastIndexOf(flagPasswordEnd);
         System.out.println(flagPassStartOffset + " | " + flagPassEndOffset);
 
         this.stringBuilder.replace(flagPassStartOffset, flagPassEndOffset, "");
         this.stringBuilder.insert(flagPassStartOffset, flaggedPassword);
 
-        System.out.println(getFlaggedTopic());
+        //System.out.println(getFlaggedTopic());
 
 
     }
