@@ -26,7 +26,7 @@ public class MsgTabPane {
     private HashMap<String, MailMsgParser> idToParserMap;
     private MsgWindowUpdater msgWindowUpdater;
 
-    public MsgTabPane(MsgWindowUpdater msgWindowUpdater){
+    public MsgTabPane(){
         this.tabPane = new TabPane();
         this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         this.fileHashMap = new HashMap<>();
@@ -41,9 +41,10 @@ public class MsgTabPane {
         tab.setId(name);
         tab.setOnSelectionChanged(event -> {
             String id = getSelectedTabID();
-            if(!id.isEmpty()){
+            System.out.println(id);
+           /* if(!id.isEmpty()){
                 msgWindowUpdater.changeSelectedParser(idToParserMap.get(id));
-            }
+            }*/
 
         });
         tabHashMap.put(name, tab);
@@ -95,6 +96,7 @@ public class MsgTabPane {
             addContentToTab(k, webView);
             System.out.println(k + " added content to tab");
         }
+        System.out.println(idToParserMap);
     }
 
     public List<File> getFileArrayList() {

@@ -43,7 +43,7 @@ public class MainWindow extends Application {
             settingsWindow.getStage().show();
         });
 
-        MsgTabPane msgTabPane = new MsgTabPane(); //todo: add parser here
+        MsgTabPane msgTabPane = new MsgTabPane();
         Inputs inputs = new Inputs();
         MessageWindow msgWindow = new MessageWindow();
 
@@ -61,14 +61,15 @@ public class MainWindow extends Application {
         msgWindow.addTabPane(msgTabPane.getTabPane());
         ButtonControls buttonControls = new ButtonControls();
 
-        MsgWindowUpdater windowUpdater = new MsgWindowUpdater(msgWindow, inputs, buttonControls);//todo: deleto from here
+        MsgWindowUpdater windowUpdater = new MsgWindowUpdater(msgWindow, inputs, buttonControls);
         windowUpdater.bindHandlers();
         BorderedTitledPane msgWindowContainer = new BorderedTitledPane("Wiadomość", msgWindow);
         borderPane.setCenter(msgWindowContainer);
 
         VBox rightPaneVBox = new VBox();
         rightPaneVBox.getChildren().addAll(inputs, buttonControls);
-        borderPane.setRight(rightPaneVBox);
+        BorderedTitledPane inputsPaneContainer = new BorderedTitledPane("Dane", rightPaneVBox);
+        borderPane.setRight(inputsPaneContainer);
 
         primaryStage.show();
     }
