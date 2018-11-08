@@ -31,10 +31,6 @@ public class MessageWindow extends VBox {
 
     }
 
-    public void updateWindowContent(String content){
-        webView.getEngine().loadContent(content);
-    }
-
     public Label getParsedTitle() {
         return parsedTitle;
     }

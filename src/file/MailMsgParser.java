@@ -97,7 +97,7 @@ public class MailMsgParser {
     /**
      * Read topic from html message and delete it from final content
      */
-    public void parseTitle(){
+    public void parseFlaggedTopic(){
         int flagTopicStartOffset, flagTopicEndOffset;
         flagTopicStartOffset = stringBuilder.lastIndexOf(flagTopicStart) + flagTopicStart.length();
         flagTopicEndOffset = stringBuilder.lastIndexOf(flagTopicEnd);

@@ -10,5 +10,7 @@ public class MsgMenuBar extends MenuBarControl {
         createMenu("Opcje");
         addItemToMenu("Opcje", "Dodaj");
         addItemToMenu("Opcje", "Ustawienia");
+        createMenu("Inne");
+        addItemToMenu("Inne", "Informacje");
     }
 }

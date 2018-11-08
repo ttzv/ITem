@@ -24,7 +24,7 @@ public class MsgTabPane {
     private HashMap<String, File> fileHashMap;
     private HashMap<String, Tab> tabHashMap;
     private HashMap<String, MailMsgParser> idToParserMap;
-    private MsgWindowUpdater msgWindowUpdater;
+    private HashMap<String, WebView> idToWebViewMap;
 
     public MsgTabPane(){
         this.tabPane = new TabPane();
@@ -32,23 +32,16 @@ public class MsgTabPane {
         this.fileHashMap = new HashMap<>();
         this.tabHashMap = new HashMap<>();
         this.idToParserMap = new HashMap<>();
+        this.idToWebViewMap = new HashMap<>();
+
         this.fileArrayList = new ArrayList<>();
-        this.msgWindowUpdater = msgWindowUpdater;
     }
 
     public void addTab(String name){
         Tab tab = new Tab(name);
         tab.setId(name);
-        tab.setOnSelectionChanged(event -> {
-            String id = getSelectedTabID();
-            System.out.println(id);
-           /* if(!id.isEmpty()){
-                msgWindowUpdater.changeSelectedParser(idToParserMap.get(id));
-            }*/
-
-        });
-        tabHashMap.put(name, tab);
         this.tabPane.getTabs().add(tab);
+        tabHashMap.put(name, tab);
         System.out.println("added tab: " + name);
     }
 
@@ -90,11 +83,16 @@ public class MsgTabPane {
         for (String k : tabHashMap.keySet()){
             Loader loader = new Loader(fileHashMap.get(k));
             MailMsgParser mailMsgParser = new MailMsgParser(loader.readContent());
-            idToParserMap.put(k, mailMsgParser);
+            mailMsgParser.parseFlaggedTopic();
             WebView webView = new WebView();
             webView.getEngine().loadContent(mailMsgParser.getOutputString());
             addContentToTab(k, webView);
             System.out.println(k + " added content to tab");
+
+            String cId = tabHashMap.get(k).getId();
+            idToParserMap.put(cId, mailMsgParser);
+            idToWebViewMap.put(cId, webView);
+
         }
         System.out.println(idToParserMap);
     }
@@ -112,6 +110,23 @@ public class MsgTabPane {
         }
         return ID;
     }
+
+    public void updateSelectedTabContext(){
+        getWebViewOfSelectedTab().getEngine().loadContent(getMsgParserOfSelectedTab().getOutputString());
+    }
+
+    public WebView  getWebViewOfSelectedTab(){
+        return idToWebViewMap.get(getSelectedTabID());
+    }
+
+    public MailMsgParser getMsgParserOfSelectedTab(){
+        return idToParserMap.get(getSelectedTabID());
+    }
+
+    public HashMap<String, Tab> getTabHashMap() {
+        return tabHashMap;
+    }
+
 
 
 }

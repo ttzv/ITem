@@ -2,6 +2,7 @@ package window;
 import file.Loader;
 import file.MailMsgParser;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -30,10 +31,8 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
         primaryStage.setScene(new Scene(borderPane, 800, 600));
-        Sender sender = new Sender();
         primaryStage.setTitle("Mailer");
-
-
+        Sender sender = new Sender();
 
         MsgMenuBar msgMenuBar = new MsgMenuBar();
         borderPane.setTop(msgMenuBar.getMenuBar());
@@ -42,27 +41,36 @@ public class MainWindow extends Application {
             SettingsWindow settingsWindow = new SettingsWindow(sender);
             settingsWindow.getStage().show();
         });
+        msgMenuBar.getItemFromMenu("Informacje", "Inne").setOnAction(event -> {
+            
+        });
 
         MsgTabPane msgTabPane = new MsgTabPane();
-        Inputs inputs = new Inputs();
         MessageWindow msgWindow = new MessageWindow();
+        msgWindow.addTabPane(msgTabPane.getTabPane());
+
+        Inputs inputs = new Inputs();
+        ButtonControls buttonControls = new ButtonControls(msgTabPane, sender, inputs);
+        MsgWindowUpdater windowUpdater = new MsgWindowUpdater(msgTabPane, inputs, buttonControls, msgWindow);
+        windowUpdater.bindInputsHandlers();
 
         //msgWindow.setParsedTitle(mailMsgParser.getFlaggedTopic());
-
         msgMenuBar.getItemFromMenu("Dodaj", "Opcje").setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             msgList = fileChooser.showOpenMultipleDialog(primaryStage);
+            /*for (File f : msgList){
+                if(!msgList.contains(f)){
+                    msgTabPane.loadFileList(msgList);
+                }
+            }*/
             msgTabPane.loadFileList(msgList);
             System.out.println("Loaded files" + msgTabPane.getFileArrayList());
             msgTabPane.buildTabPane();
+            windowUpdater.bindTabHandlers();
+            windowUpdater.update();
         });
 
 
-        msgWindow.addTabPane(msgTabPane.getTabPane());
-        ButtonControls buttonControls = new ButtonControls();
-
-        MsgWindowUpdater windowUpdater = new MsgWindowUpdater(msgWindow, inputs, buttonControls);
-        windowUpdater.bindHandlers();
         BorderedTitledPane msgWindowContainer = new BorderedTitledPane("Wiadomość", msgWindow);
         borderPane.setCenter(msgWindowContainer);
 

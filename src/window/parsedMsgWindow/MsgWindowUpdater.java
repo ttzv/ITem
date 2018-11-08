@@ -1,44 +1,52 @@
 package window.parsedMsgWindow;
 
 import file.MailMsgParser;
+import javafx.scene.control.Tab;
 import window.controls.buttonControls.ButtonControls;
 import window.inputFields.Inputs;
+import window.msgTabPane.MsgTabPane;
 
 public class MsgWindowUpdater {
 
-    private MailMsgParser mailMsgParser;
-    private MessageWindow messageWindow;
     private final Inputs inputs;
     private final ButtonControls buttonControls;
+    private MsgTabPane msgTabPane;
+    private MessageWindow messageWindow;
 
-    public MsgWindowUpdater(MessageWindow messageWindow , Inputs inputs, ButtonControls buttonControls){
-        this.messageWindow = messageWindow;
+    public MsgWindowUpdater(MsgTabPane msgTabPane, Inputs inputs, ButtonControls buttonControls, MessageWindow messageWindow){
         this.inputs = inputs;
         this.buttonControls = buttonControls;
-
+        this.msgTabPane = msgTabPane;
+        this.messageWindow = messageWindow;
     }
 
     public void update(){
+        MailMsgParser mailMsgParser = msgTabPane.getMsgParserOfSelectedTab();
         mailMsgParser.setFlaggedLogin(inputs.getLoginField().getText());
+        System.out.println("loaded");
         mailMsgParser.setFlaggedPassword(inputs.getPassField().getText());
         mailMsgParser.reparse();
-        messageWindow.updateWindowContent(mailMsgParser.getOutputString());
+        msgTabPane.updateSelectedTabContext();
+        messageWindow.setParsedTitle(mailMsgParser.getFlaggedTopic());
     }
 
-    public void bindHandlers(){
+    public void bindInputsHandlers(){
         this.inputs.getLoginField().textProperty().addListener((observable, oldValue, newValue) -> {
             update();
         });
         this.inputs.getPassField().textProperty().addListener((observable, oldValue, newValue) -> {
             update();
         });
-        this.buttonControls.getButton().setOnAction(event -> {
-            update();
-        });
     }
 
-    public void changeSelectedParser(MailMsgParser mailMsgParser){
-        this.mailMsgParser = mailMsgParser;
+    public void bindTabHandlers(){
+        for(Tab t : msgTabPane.getTabHashMap().values()){
+            t.setOnSelectionChanged(event -> {
+                if(t.isSelected()) {
+                    System.out.println("selected " + t.getId());
+                    update();
+                }
+            });
+        }
     }
-
 }
