@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/window/infoWindow/InfoWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Mailer/file/Loader.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Mailer/file/Loader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Mailer/file/MailMsgParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Mailer/file/MailMsgParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Mailer/window/MainWindow.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Mailer/window/controls/ButtonControls.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Mailer/window/controls/menuBar/MenuBarControl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Mailer/window/controls/menuBar/MenuBarControl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Mailer/window/parsedMsgWindow/MessageWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Mailer/window/parsedMsgWindow/MessageWindow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Mailer/window/parsedMsgWindow/MsgWindowUpdater.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Mailer/window/parsedMsgWindow/MsgWindowUpdater.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/powitanie.html" beforeDir="false" afterPath="$PROJECT_DIR$/powitanie.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/file/MailMsgParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/MailMsgParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sender/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sender/Sender.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/window/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/window/MainWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/window/controls/buttonControls/ButtonControls.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/window/controls/buttonControls/ButtonControls.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/window/menuBar/MsgMenuBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/window/menuBar/MsgMenuBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/window/msgTabPane/MsgTabPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/window/msgTabPane/MsgTabPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/window/parsedMsgWindow/MessageWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/window/parsedMsgWindow/MessageWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/window/parsedMsgWindow/MsgWindowUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/window/parsedMsgWindow/MsgWindowUpdater.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -74,7 +58,7 @@
     <session id="-503836392">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.23" value="1" />
@@ -87,13 +71,13 @@
         <counts>
           <entry key="css" value="83" />
           <entry key="dummy" value="20" />
-          <entry key="java" value="20838" />
+          <entry key="java" value="20904" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="83" />
-          <entry key="JAVA" value="20837" />
+          <entry key="JAVA" value="20903" />
           <entry key="PLAIN_TEXT" value="20" />
           <entry key="RegExp" value="1" />
         </counts>
@@ -151,11 +135,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/window/MainWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="34" selection-start-line="34" selection-end-line="34" />
+            <state relative-caret-position="309">
+              <caret line="45" column="53" lean-forward="true" selection-start-line="45" selection-start-column="53" selection-end-line="45" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3022#3023#0" expanded="true" />
@@ -262,11 +246,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/window/menuBar/MsgMenuBar.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
-              <caret line="13" column="42" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
+              <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -348,11 +332,11 @@
         <option value="$PROJECT_DIR$/src/file/MailMsgParser.java" />
         <option value="$PROJECT_DIR$/src/window/msgTabPane/MsgTabPane.java" />
         <option value="$PROJECT_DIR$/src/window/parsedMsgWindow/MsgWindowUpdater.java" />
-        <option value="$PROJECT_DIR$/src/window/MainWindow.java" />
         <option value="$PROJECT_DIR$/src/window/controls/buttonControls/ButtonControls.java" />
         <option value="$PROJECT_DIR$/src/sender/Sender.java" />
         <option value="$PROJECT_DIR$/src/window/infoWindow/InfoWindow.java" />
         <option value="$PROJECT_DIR$/src/window/menuBar/MsgMenuBar.java" />
+        <option value="$PROJECT_DIR$/src/window/MainWindow.java" />
       </list>
     </option>
   </component>
@@ -493,7 +477,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541687812625" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541689160431" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/javax.mail.jar!/" />
     <property name="project.structure.last.edited" value="SDKs" />
@@ -706,9 +690,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="6" width="1936" height="1056" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.14498934" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.14498934" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -717,7 +700,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3286334" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3286334" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39804772" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -972,22 +955,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/window/menuBar/MsgMenuBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/window/MainWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        <state relative-caret-position="309">
+          <caret line="45" column="53" lean-forward="true" selection-start-line="45" selection-start-column="53" selection-end-line="45" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3022#3023#0" expanded="true" />
             <element signature="e#3050#3051#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/window/menuBar/MsgMenuBar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="42" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
         </state>
       </provider>
     </entry>

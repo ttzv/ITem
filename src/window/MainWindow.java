@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sender.Sender;
 import window.controls.buttonControls.ButtonControls;
+import window.infoWindow.InfoWindow;
 import window.inputFields.Inputs;
 import window.menuBar.MsgMenuBar;
 import window.msgTabPane.MsgTabPane;
@@ -42,7 +43,8 @@ public class MainWindow extends Application {
             settingsWindow.getStage().show();
         });
         msgMenuBar.getItemFromMenu("Informacje", "Inne").setOnAction(event -> {
-            
+            InfoWindow infoWindow = new InfoWindow();
+            infoWindow.getStage().show();
         });
 
         MsgTabPane msgTabPane = new MsgTabPane();
