@@ -1,5 +1,6 @@
 package window.infoWindow;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -14,8 +15,10 @@ public class InfoWindow {
         this.stage = new Stage();
         this.stage.setTitle("Informacje");
         gridPane = new GridPane();
-        gridPane.setHgap(20);
+        gridPane.setHgap(10);
         gridPane.setVgap(1);
+        //gridPane.setGridLinesVisible(true);
+        gridPane.setPadding(new Insets(20, 20, 20, 20));
         stage.setScene(new Scene(gridPane));
     }
 
@@ -30,9 +33,9 @@ public class InfoWindow {
         Label loginLabelContent = new Label("<!L></!L>");
         Label passLabel = new Label("Hasło");
         Label passLabelContent = new Label("<!P></!P>");
-        Label topicLabel = new Label("");
+        Label topicLabel = new Label("Temat");
         Label topicLabelContent = new Label("<!T></!T>");
-        gridPane.add(info, 0, 0, 1, 2);
+        gridPane.add(info, 0, 0, 2, 1);
         gridPane.add(loginLabel, 0, 1);
         gridPane.add(loginLabelContent, 1, 1);
         gridPane.add(passLabel, 0, 2);

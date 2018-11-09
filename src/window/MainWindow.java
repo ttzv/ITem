@@ -65,11 +65,13 @@ public class MainWindow extends Application {
                     msgTabPane.loadFileList(msgList);
                 }
             }*/
-            msgTabPane.loadFileList(msgList);
-            System.out.println("Loaded files" + msgTabPane.getFileArrayList());
-            msgTabPane.buildTabPane();
-            windowUpdater.bindTabHandlers();
-            windowUpdater.update();
+            if( !msgList.isEmpty() ) {
+                msgTabPane.loadFileList(msgList);
+                System.out.println("Loaded files" + msgTabPane.getFileArrayList());
+                msgTabPane.buildTabPane();
+                windowUpdater.bindTabHandlers();
+                windowUpdater.update();
+            }
         });
 
 
