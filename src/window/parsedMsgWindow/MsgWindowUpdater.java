@@ -5,6 +5,7 @@ import javafx.scene.control.Tab;
 import window.controls.buttonControls.ButtonControls;
 import window.inputFields.Inputs;
 import window.msgTabPane.MsgTabPane;
+import window.utility.BorderedTitledPane.Utility;
 
 public class MsgWindowUpdater {
 
@@ -28,6 +29,8 @@ public class MsgWindowUpdater {
         mailMsgParser.reparse();
         msgTabPane.updateSelectedTabContext();
         messageWindow.setParsedTitle(mailMsgParser.getFlaggedTopic());
+        messageWindow.setInputDomain(inputs.getUserDomaincBox().getSelectionModel().getSelectedItem());
+        messageWindow.refreshReceiverAddress();
     }
 
     public void bindInputsHandlers(){
@@ -36,6 +39,26 @@ public class MsgWindowUpdater {
         });
         this.inputs.getPassField().textProperty().addListener((observable, oldValue, newValue) -> {
             update();
+        });
+        this.inputs.getUserField().textProperty().addListener((observable, oldValue, newValue) -> {
+
+        });
+        this.inputs.getUserDomaincBox().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            messageWindow.setInputDomain(inputs.getUserDomaincBox().getSelectionModel().getSelectedItem());
+            messageWindow.refreshReceiverAddress();
+        });
+
+        this.inputs.getUserField().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!inputs.getUserField().isFocused()){
+                String input = Utility.reformatString(inputs.getUserField().getText());
+                messageWindow.setInputAddress(input);
+                messageWindow.refreshReceiverAddress();
+                inputs.setFinalRecAddress(messageWindow.getInputtedReceiverAddress().getText());
+            }
+        });
+
+        this.inputs.getUserField().textProperty().addListener((observable, oldValue, newValue) -> {
+            inputs.setLoginField(Utility.reformatString(newValue));
         });
     }
 

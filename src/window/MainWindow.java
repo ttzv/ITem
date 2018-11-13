@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
@@ -33,6 +34,8 @@ public class MainWindow extends Application {
         BorderPane borderPane = new BorderPane();
         primaryStage.setScene(new Scene(borderPane, 800, 600));
         primaryStage.setTitle("Mailer");
+        Image scnIco = new Image("file:atl.png");
+        primaryStage.getIcons().add(scnIco);
         Sender sender = new Sender();
 
         MsgMenuBar msgMenuBar = new MsgMenuBar();

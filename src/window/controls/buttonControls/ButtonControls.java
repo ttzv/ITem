@@ -29,14 +29,11 @@ public class ButtonControls extends VBox {
 
 
     public void setButtonActions(){
-        this.button.setOnMouseClicked(event -> {
-            button.setDisable(true);
-            inputs.setDisable(true);
-        });
+
         this.button.setOnAction(event -> {
 
             sender.setMsgSubject(msgTabPane.getMsgParserOfSelectedTab().getFlaggedTopic());
-            String address = inputs.getLoginField().getText();
+            String address = inputs.getFinalRecAddress();
             sender.setReceiverAddress(address);
             System.out.println("msg will be sent to " + address);
             System.out.println("Topic loaded...");
@@ -54,8 +51,6 @@ public class ButtonControls extends VBox {
                 sender.sendMail();
                 System.out.println("message sent");
             }
-            button.setDisable(false);
-            inputs.setDisable(false);
         });
     }
 }

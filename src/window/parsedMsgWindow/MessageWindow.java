@@ -15,19 +15,32 @@ import window.utility.BorderedTitledPane.BorderedTitledPane;
 import java.io.IOException;
 
 public class MessageWindow extends VBox {
-
-    private WebView webView;
-    private String content;
+    
     private Label parsedTitle;
+    private Label inputtedReceiverAddress;
+    private String inputDomain;
+    private String inputAddress;
 
     public MessageWindow() {
 
+        this.setPadding(new Insets(15, 15, 15, 15));
+
+        inputDomain = "";
+        inputAddress = "";
+
+        HBox hBoxHeadInfo = new HBox();
         parsedTitle = new Label();
         BorderedTitledPane topicBorderedLabel = new BorderedTitledPane("Temat", parsedTitle);
-        this.setPadding(new Insets(15, 15, 15, 15));
-        setManaged(true);
+        topicBorderedLabel.setPadding(new Insets(0, 10, 0, 10));
 
-        this.getChildren().add(topicBorderedLabel);
+
+        inputtedReceiverAddress = new Label();
+        BorderedTitledPane addressBorderedLabel = new BorderedTitledPane("Odbiorca", inputtedReceiverAddress);
+        addressBorderedLabel.setPadding(new Insets(0, 10, 0, 10));
+        
+        hBoxHeadInfo.getChildren().addAll(topicBorderedLabel, addressBorderedLabel);
+
+        this.getChildren().add(hBoxHeadInfo);
 
     }
 
@@ -37,6 +50,22 @@ public class MessageWindow extends VBox {
 
     public void setParsedTitle(String title) {
         this.parsedTitle.setText(title);
+    }
+
+    public void setInputAddress(String inputAddress) {
+        this.inputAddress = inputAddress;
+    }
+
+    public void setInputDomain(String inputDomain) {
+        this.inputDomain = inputDomain;
+    }
+    
+    public void refreshReceiverAddress(){
+        this.inputtedReceiverAddress.setText(this.inputAddress + this.inputDomain);
+    }
+
+    public Label getInputtedReceiverAddress() {
+        return inputtedReceiverAddress;
     }
 
     public void addTabPane (TabPane tabPane){
