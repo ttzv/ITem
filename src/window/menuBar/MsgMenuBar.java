@@ -12,5 +12,6 @@ public class MsgMenuBar extends MenuBarControl {
         addItemToMenu("Opcje", "Ustawienia");
         createMenu("Inne");
         addItemToMenu("Inne", "Informacje");
+        addItemToMenu("Inne", "saveCfg");
     }
 }

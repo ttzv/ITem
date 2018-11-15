@@ -5,7 +5,7 @@ import javafx.scene.control.Tab;
 import window.controls.buttonControls.ButtonControls;
 import window.inputFields.Inputs;
 import window.msgTabPane.MsgTabPane;
-import window.utility.BorderedTitledPane.Utility;
+import window.utility.Utility;
 
 public class MsgWindowUpdater {
 
@@ -40,9 +40,7 @@ public class MsgWindowUpdater {
         this.inputs.getPassField().textProperty().addListener((observable, oldValue, newValue) -> {
             update();
         });
-        this.inputs.getUserField().textProperty().addListener((observable, oldValue, newValue) -> {
 
-        });
         this.inputs.getUserDomaincBox().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             messageWindow.setInputDomain(inputs.getUserDomaincBox().getSelectionModel().getSelectedItem());
             messageWindow.refreshReceiverAddress();

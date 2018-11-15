@@ -1,5 +1,7 @@
 package window.settingsWindow;
 
+import file.ConfigHandler;
+import file.Vals;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -26,8 +28,10 @@ public class SettingsWindow {
 
     private ArrayList<Node> labelsList;
     private ArrayList<Node> inputsList;
+    private ConfigHandler cfgh;
 
-    public SettingsWindow(Sender sender){
+    public SettingsWindow(Sender sender, ConfigHandler cfgh){
+        this.cfgh = cfgh;
         this.stage = new Stage();
         this.stage.setTitle("Settings");
         sceneGrid = new GridPane();
@@ -110,5 +114,11 @@ public class SettingsWindow {
         sender.setSmtpPort(this.smtpPort.getText());
         sender.setSenderAddress(this.senderLogin.getText());
         sender.setSenderPassword(this.senderPass.getText());
+
+        cfgh.getProperties().put(Vals.SMTP_HOST.toString(), sender.getSmtpHost());
+        cfgh.getProperties().put(Vals.SMTP_TLS.toString(), sender.getSmtpStartTLS());
+        cfgh.getProperties().put(Vals.SMTP_PORT.toString(), sender.getSmtpPort());
+        cfgh.getProperties().put(Vals.SMTP_LOGIN.toString(), sender.getSenderAddress());
+        cfgh.getProperties().put(Vals.SMTP_PASS.toString(), sender.getSenderPassword());
     }
 }

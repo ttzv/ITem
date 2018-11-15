@@ -24,6 +24,7 @@ public class ButtonControls extends VBox {
         // button.setPrefSize(50, 50);
         this.getChildren().add(button);
 
+
         setButtonActions();
     }
 
@@ -52,6 +53,8 @@ public class ButtonControls extends VBox {
                 System.out.println("message sent");
             }
         });
+
+
     }
 }
 

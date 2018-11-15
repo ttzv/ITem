@@ -1,4 +1,5 @@
 package window;
+import file.ConfigHandler;
 import file.Loader;
 import file.MailMsgParser;
 import javafx.application.Application;
@@ -23,6 +24,7 @@ import window.settingsWindow.SettingsWindow;
 import window.utility.BorderedTitledPane.BorderedTitledPane;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class MainWindow extends Application {
@@ -31,24 +33,38 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         BorderPane borderPane = new BorderPane();
         primaryStage.setScene(new Scene(borderPane, 800, 600));
         primaryStage.setTitle("Mailer");
+
         Image scnIco = new Image("file:atl.png");
         primaryStage.getIcons().add(scnIco);
         Sender sender = new Sender();
+
+        ConfigHandler configHandler = new ConfigHandler(sender);
+        configHandler.firstRun();
+
+        primaryStage.setOnCloseRequest(event -> {
+            try {
+                configHandler.saveCustomProperties();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         MsgMenuBar msgMenuBar = new MsgMenuBar();
         borderPane.setTop(msgMenuBar.getMenuBar());
 
         msgMenuBar.getItemFromMenu("Ustawienia", "Opcje").setOnAction(event -> {
-            SettingsWindow settingsWindow = new SettingsWindow(sender);
+            SettingsWindow settingsWindow = new SettingsWindow(sender, configHandler);
             settingsWindow.getStage().show();
         });
         msgMenuBar.getItemFromMenu("Informacje", "Inne").setOnAction(event -> {
             InfoWindow infoWindow = new InfoWindow();
             infoWindow.getStage().show();
         });
+
 
         MsgTabPane msgTabPane = new MsgTabPane();
         MessageWindow msgWindow = new MessageWindow();
@@ -59,7 +75,9 @@ public class MainWindow extends Application {
         MsgWindowUpdater windowUpdater = new MsgWindowUpdater(msgTabPane, inputs, buttonControls, msgWindow);
         windowUpdater.bindInputsHandlers();
 
-        //msgWindow.setParsedTitle(mailMsgParser.getFlaggedTopic());
+
+
+        //if()
         msgMenuBar.getItemFromMenu("Dodaj", "Opcje").setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             msgList = fileChooser.showOpenMultipleDialog(primaryStage);
@@ -68,6 +86,7 @@ public class MainWindow extends Application {
                     msgTabPane.loadFileList(msgList);
                 }
             }*/
+            System.out.println(msgList);
             if( !msgList.isEmpty() ) {
                 msgTabPane.loadFileList(msgList);
                 System.out.println("Loaded files" + msgTabPane.getFileArrayList());

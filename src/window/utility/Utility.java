@@ -1,4 +1,4 @@
-package window.utility.BorderedTitledPane;
+package window.utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
