@@ -36,7 +36,7 @@ public class ButtonControls extends VBox {
     public void setButtonActions(){
 
         this.button.setOnAction(event -> {
-
+            sender.initSession();
             sender.setMsgSubject(msgTabPane.getMsgParserOfSelectedTab().getFlaggedTopic());
             String address = inputs.getFinalRecAddress();
             sender.setReceiverAddress(address);

@@ -24,7 +24,7 @@ public class MsgWindowUpdater {
     public void update(){
         MailMsgParser mailMsgParser = msgTabPane.getMsgParserOfSelectedTab();
         mailMsgParser.setFlaggedLogin(inputs.getLoginField().getText());
-        System.out.println("loaded");
+        //System.out.println("loaded");
         mailMsgParser.setFlaggedPassword(inputs.getPassField().getText());
         mailMsgParser.reparse();
         msgTabPane.updateSelectedTabContext();

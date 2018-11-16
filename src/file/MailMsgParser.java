@@ -102,7 +102,7 @@ public class MailMsgParser {
         flagTopicStartOffset = stringBuilder.lastIndexOf(flagTopicStart) + flagTopicStart.length();
         flagTopicEndOffset = stringBuilder.lastIndexOf(flagTopicEnd);
 
-        System.out.println(flagTopicStartOffset + " | " + flagTopicEndOffset);
+       // System.out.println(flagTopicStartOffset + " | " + flagTopicEndOffset);
 
         String flaggedTopic = stringBuilder.substring(flagTopicStartOffset, flagTopicEndOffset);
         stringBuilder.replace(flagTopicStartOffset - flagTopicStart.length(), flagTopicEndOffset + flagTopicEnd.length(), "");
@@ -121,14 +121,14 @@ public class MailMsgParser {
     public void reparse(){
         flagLoginStartOffset = stringBuilder.lastIndexOf(flagLoginStart) + flagLoginStart.length();
         flagLoginEndOffset = stringBuilder.lastIndexOf(flagLoginEnd);
-        System.out.println(flagLoginStartOffset + " | " + flagLoginEndOffset);
+        //System.out.println(flagLoginStartOffset + " | " + flagLoginEndOffset);
 
         this.stringBuilder.replace(flagLoginStartOffset, flagLoginEndOffset, "");
         this.stringBuilder.insert(flagLoginStartOffset, flaggedLogin);
 
         flagPassStartOffset = stringBuilder.lastIndexOf(flagPasswordStart) + flagPasswordStart.length();
         flagPassEndOffset = stringBuilder.lastIndexOf(flagPasswordEnd);
-        System.out.println(flagPassStartOffset + " | " + flagPassEndOffset);
+        //System.out.println(flagPassStartOffset + " | " + flagPassEndOffset);
 
         this.stringBuilder.replace(flagPassStartOffset, flagPassEndOffset, "");
         this.stringBuilder.insert(flagPassStartOffset, flaggedPassword);
