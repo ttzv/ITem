@@ -28,6 +28,7 @@ public class MsgTabPane {
 
     public MsgTabPane(){
         this.tabPane = new TabPane();
+        tabPane.setTabDragPolicy(TabPane.TabDragPolicy.REORDER);
         this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         this.fileHashMap = new HashMap<>();
         this.tabHashMap = new HashMap<>();

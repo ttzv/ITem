@@ -6,11 +6,10 @@ import java.util.Collections;
 
 public class Utility {
 
-    private static String[] polArrFind = {"ą", "ć", "ę", "ż", "ń", "ó", "ł", "ź", "ś"};//, "Ą", "Ę", "Ć", "Ż", "Ł", "Ś", "Ź"};
-    private static String[] replArr = {"a", "c", "e", "z", "n", "o", "l", "z", "s"};//, "A", "E", "C", "Z", "L", "S", "Z"};
-
-
     public static String reformatString(String input){
+        String[] polArrFind = {"ą", "ć", "ę", "ż", "ń", "ó", "ł", "ź", "ś"};//, "Ą", "Ę", "Ć", "Ż", "Ł", "Ś", "Ź"};
+        String[] replArr = {"a", "c", "e", "z", "n", "o", "l", "z", "s"};//, "A", "E", "C", "Z", "L", "S", "Z"};
+
         ArrayList<String> polList = new ArrayList<>(Arrays.asList(polArrFind));
         ArrayList<String> npolList = new ArrayList<>(Arrays.asList(replArr));
 
@@ -24,5 +23,9 @@ public class Utility {
             }
         }
         return reformatted;
+    }
+
+    public static ArrayList<String> stringToArray(String string){
+        return new ArrayList<>(Arrays.asList(string.substring(1, string.length() - 1).replaceAll("\\s", "").split(",")));
     }
 }

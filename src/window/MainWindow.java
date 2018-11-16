@@ -2,6 +2,7 @@ package window;
 import file.ConfigHandler;
 import file.Loader;
 import file.MailMsgParser;
+import file.Vals;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,9 +23,11 @@ import window.parsedMsgWindow.MessageWindow;
 import window.parsedMsgWindow.MsgWindowUpdater;
 import window.settingsWindow.SettingsWindow;
 import window.utility.BorderedTitledPane.BorderedTitledPane;
+import window.utility.Utility;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainWindow extends Application {
@@ -77,15 +80,44 @@ public class MainWindow extends Application {
 
 
 
-        //if()
+        if(configHandler.getProperties().containsKey(Vals.LIST_MSG.toString()) && configHandler.getProperties().containsKey(Vals.LOCATION_MSG.toString())){
+           msgList = new ArrayList<>();
+           ArrayList<String> fileNamesList = Utility.stringToArray(configHandler.getProperties().getProperty(Vals.LIST_MSG.toString()));
+           String parentDirPath = configHandler.getProperties().getProperty(Vals.LOCATION_MSG.toString());
+           File parentDir = new File(parentDirPath);
+           String fileSeparator = System.getProperty("file.separator");
+
+           if(parentDir.exists()) {
+               for (String s : fileNamesList) {
+                   File msg = new File (parentDirPath + fileSeparator + s);
+                   if(msg.exists()) {
+                       msgList.add(msg);
+                   } else {
+                       System.out.println(s + " does not exist ");
+                   }
+               }
+               msgTabPane.loadFileList(msgList);
+               System.out.println("Loaded files" + msgTabPane.getFileArrayList());
+               msgTabPane.buildTabPane();
+               windowUpdater.bindTabHandlers();
+               windowUpdater.update();
+           }
+        }
+
+
         msgMenuBar.getItemFromMenu("Dodaj", "Opcje").setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
-            msgList = fileChooser.showOpenMultipleDialog(primaryStage);
-            /*for (File f : msgList){
-                if(!msgList.contains(f)){
-                    msgTabPane.loadFileList(msgList);
+            if(configHandler.getProperties().containsKey(Vals.LOCATION_MSG.toString())) {
+                if (!configHandler.getProperties().getProperty(Vals.LOCATION_MSG.toString()).isEmpty()) {
+                    String parentDirPath = configHandler.getProperties().getProperty(Vals.LOCATION_MSG.toString());
+                    File parentDir = new File(parentDirPath);
+                    if(parentDir.exists()) {
+                        fileChooser.setInitialDirectory(new File(configHandler.getProperties().getProperty(Vals.LOCATION_MSG.toString())));
+                    }
                 }
-            }*/
+            }
+            msgList = fileChooser.showOpenMultipleDialog(primaryStage);
+
             System.out.println(msgList);
             if( !msgList.isEmpty() ) {
                 msgTabPane.loadFileList(msgList);
@@ -94,6 +126,12 @@ public class MainWindow extends Application {
                 windowUpdater.bindTabHandlers();
                 windowUpdater.update();
             }
+            configHandler.getProperties().put(Vals.LOCATION_MSG.toString(), msgList.get(msgList.size()-1).getParent());
+            ArrayList<String> fileMsgList = new ArrayList<>();
+            for (File f : msgList){
+                fileMsgList.add(f.getName());
+            }
+            configHandler.getProperties().put(Vals.LIST_MSG.toString(), fileMsgList.toString());
         });
 
 
@@ -107,6 +145,7 @@ public class MainWindow extends Application {
 
         primaryStage.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);

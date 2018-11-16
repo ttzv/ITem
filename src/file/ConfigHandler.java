@@ -14,17 +14,13 @@ public class ConfigHandler {
     private Properties defProps;
     private Sender sender;
 
-    private String fileSeparator;
-    private String cfgFilePath;
-    private String defCfgFilePath;
-
 
     public ConfigHandler(Sender sender){
         this.sender = sender;
 
-        this.fileSeparator = System.getProperty("file.separator");
-        cfgFilePath = "cfg" + fileSeparator + "config.properties";
-        defCfgFilePath = "cfg" + fileSeparator + "default.properties";
+        String fileSeparator = System.getProperty("file.separator");
+        String cfgFilePath = "cfg" + fileSeparator + "config.properties";
+        String defCfgFilePath = "cfg" + fileSeparator + "default.properties";
 
         cfgFile = new File(cfgFilePath);
         defCfgFile = new File(defCfgFilePath);
