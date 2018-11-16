@@ -1,6 +1,7 @@
 package file;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class Loader {
 
@@ -8,7 +9,8 @@ public class Loader {
 
     public Loader(File file){
         try {
-            bufferedReader = new BufferedReader(new FileReader(file.getPath()));
+            bufferedReader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(file.getPath()), StandardCharsets.UTF_8));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -11,10 +11,8 @@
       <entry name="!?*.kt" />
       <entry name="!?*.clj" />
     </wildcardResourcePatterns>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Mailer" options="--add-modules=java.activation,javafx.graphics,javafx.web,javafx.controls,javafx.base" />
-    </option>
+    <bytecodeTargetLevel target="8">
+      <module name="Mailer" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

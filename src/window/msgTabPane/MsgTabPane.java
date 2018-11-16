@@ -28,7 +28,6 @@ public class MsgTabPane {
 
     public MsgTabPane(){
         this.tabPane = new TabPane();
-        tabPane.setTabDragPolicy(TabPane.TabDragPolicy.REORDER);
         this.tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         this.fileHashMap = new HashMap<>();
         this.tabHashMap = new HashMap<>();
@@ -52,8 +51,21 @@ public class MsgTabPane {
         }
     }
 
+    /**
+     * Loads given List of files. Prevents loading duplicates. Duplicates determined by name, so if you have two files with same name but different content it won't load until you change its names
+     * @param fileList list of files to load
+     */
     public void loadFileList(List<File> fileList){
-        fileArrayList = fileList;
+
+        fileArrayList.clear();
+        for (File f : fileList){
+            if(!fileHashMap.containsKey(f.getName())){
+                fileArrayList.add(f);
+            } else {
+                System.out.println("Duplicate load " + f.getName() + " was ignored, if you definitely need to load this file change its name");
+            }
+        }
+
     }
 
     public ArrayList<String> getFileNames(){

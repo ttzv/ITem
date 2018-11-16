@@ -44,6 +44,7 @@ public class MsgWindowUpdater {
         this.inputs.getUserDomaincBox().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             messageWindow.setInputDomain(inputs.getUserDomaincBox().getSelectionModel().getSelectedItem());
             messageWindow.refreshReceiverAddress();
+            inputs.setFinalRecAddress(messageWindow.getInputtedReceiverAddress().getText());
         });
 
         this.inputs.getUserField().focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -58,6 +59,11 @@ public class MsgWindowUpdater {
         this.inputs.getUserField().textProperty().addListener((observable, oldValue, newValue) -> {
             inputs.setLoginField(Utility.reformatString(newValue));
         });
+
+        this.inputs.getUserDomaincBox().setOnMouseClicked(event -> {
+            inputs.setFinalRecAddress(messageWindow.getInputtedReceiverAddress().getText());
+        });
+
     }
 
     public void bindTabHandlers(){

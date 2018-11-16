@@ -7,8 +7,10 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -22,6 +24,7 @@ import window.msgTabPane.MsgTabPane;
 import window.parsedMsgWindow.MessageWindow;
 import window.parsedMsgWindow.MsgWindowUpdater;
 import window.settingsWindow.SettingsWindow;
+import window.statusBar.StatusBar;
 import window.utility.BorderedTitledPane.BorderedTitledPane;
 import window.utility.Utility;
 
@@ -40,6 +43,10 @@ public class MainWindow extends Application {
         BorderPane borderPane = new BorderPane();
         primaryStage.setScene(new Scene(borderPane, 800, 600));
         primaryStage.setTitle("Mailer");
+
+        StatusBar statusBar = new StatusBar();
+
+        borderPane.setBottom(statusBar.getStatusBar());
 
         Image scnIco = new Image("file:atl.png");
         primaryStage.getIcons().add(scnIco);
@@ -74,7 +81,7 @@ public class MainWindow extends Application {
         msgWindow.addTabPane(msgTabPane.getTabPane());
 
         Inputs inputs = new Inputs();
-        ButtonControls buttonControls = new ButtonControls(msgTabPane, sender, inputs);
+        ButtonControls buttonControls = new ButtonControls(msgTabPane, sender, inputs, statusBar);
         MsgWindowUpdater windowUpdater = new MsgWindowUpdater(msgTabPane, inputs, buttonControls, msgWindow);
         windowUpdater.bindInputsHandlers();
 

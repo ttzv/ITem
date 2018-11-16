@@ -50,6 +50,10 @@ public class SettingsWindow {
 
         this.inputsList = new ArrayList<>();
         this.labelsList = new ArrayList<>();
+
+        this.stage.setOnCloseRequest(event -> {
+            updateSettings();
+        });
     }
 
     public Stage getStage(){
