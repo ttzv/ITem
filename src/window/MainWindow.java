@@ -48,7 +48,9 @@ public class MainWindow extends Application {
 
         borderPane.setBottom(statusBar.getStatusBar());
 
-        Image scnIco = new Image("file:atl.png");
+        //File icoFile = new File( "img" + Utility.fileSeparator + "atl.png");
+
+        Image scnIco = new Image("atl.png");
         primaryStage.getIcons().add(scnIco);
         Sender sender = new Sender();
 

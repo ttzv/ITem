@@ -10,6 +10,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import window.utility.Utility;
 
 import java.io.File;
 
@@ -42,7 +43,7 @@ public class InfoWindow {
         Label passLabelContent = new Label("<!P></!P>");
         Label topicLabel = new Label("Temat");
         Label topicLabelContent = new Label("<!T></!T>");
-        Image imgCopy = new Image("file:cp.png", 15, 15, true, true);
+        Image imgCopy = new Image("cp.png", 15, 15, true, true);
         Button b1 = new Button();
         b1.setGraphic(new ImageView(imgCopy));
         Button b2 = new Button();
