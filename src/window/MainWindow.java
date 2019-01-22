@@ -1,4 +1,5 @@
 package window;
+
 import file.ConfigHandler;
 import file.Loader;
 import file.MailMsgParser;
@@ -50,7 +51,7 @@ public class MainWindow extends Application {
 
         //File icoFile = new File( "img" + Utility.fileSeparator + "atl.png");
 
-        Image scnIco = new Image("atl.png");
+        Image scnIco = new Image("img/atl.png");
         primaryStage.getIcons().add(scnIco);
         Sender sender = new Sender();
 
