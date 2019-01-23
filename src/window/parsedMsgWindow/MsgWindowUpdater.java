@@ -5,7 +5,7 @@ import javafx.scene.control.Tab;
 import window.controls.buttonControls.ButtonControls;
 import window.inputFields.Inputs;
 import window.msgTabPane.MsgTabPane;
-import window.utility.Utility;
+import utility.Utility;
 
 public class MsgWindowUpdater {
 

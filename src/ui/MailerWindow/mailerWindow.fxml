@@ -1,35 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<fx:root prefHeight="563.0" prefWidth="780.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane hgap="10.0" layoutX="304.0" layoutY="147.0" prefHeight="168.0" prefWidth="224.0" vgap="10.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints maxHeight="81.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="106.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="221.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <TextField fx:id="txt1" GridPane.rowIndex="1" />
-            <TextField fx:id="txt2" GridPane.rowIndex="3" />
-            <Label fx:id="lab1" text="Label" />
-            <Label text="Label" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" text="Wyślij" GridPane.rowIndex="4" />
-            <Button mnemonicParsing="false" text="Generuj" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-         </children>
-      </GridPane>
+      <BorderPane layoutY="1.0" prefHeight="605.0" prefWidth="780.0">
+         <right>
+            <VBox prefHeight="605.0" prefWidth="210.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane hgap="10.0" prefHeight="205.0" prefWidth="303.0" vgap="10.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="81.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="81.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="106.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="221.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="221.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <TextField fx:id="txtUser" GridPane.columnIndex="1" />
+                        <TextField fx:id="txtLog" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lab1" text="User" />
+                        <Label text="Login" GridPane.rowIndex="2" />
+                        <Button fx:id="btnSend" mnemonicParsing="false" onAction="#btnSendAction" text="Wyślij" GridPane.rowIndex="6" />
+                        <Button mnemonicParsing="false" text="Generuj" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Separator prefHeight="2.0" prefWidth="147.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                        <Label text="Pass" GridPane.rowIndex="3" />
+                        <TextField fx:id="txtPass" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Domena" GridPane.rowIndex="5" />
+                        <ComboBox fx:id="cbxDomain" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+         </right>
+         <center>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label text="Label" />
+                        <Label text="Label" />
+                     </children>
+                  </HBox>
+                  <StackPane>
+                     <children>
+                        <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="507.0" prefWidth="570.0" tabClosingPolicy="UNAVAILABLE" />
+                        <Label fx:id="labTabLoad" onMouseClicked="#labTabLoadEvent" prefHeight="148.0" prefWidth="225.0" style="-fx-border-color: silver; -fx-border-width: 1;" text="Kliknij by załadować wiadomości" textAlignment="CENTER" underline="true" wrapText="true" StackPane.alignment="CENTER">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <padding>
+                              <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
    </children>
 </fx:root>

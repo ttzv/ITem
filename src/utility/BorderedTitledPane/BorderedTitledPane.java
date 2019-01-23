@@ -1,6 +1,5 @@
-package window.utility.BorderedTitledPane;
+package utility.BorderedTitledPane;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

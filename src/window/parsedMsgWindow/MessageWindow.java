@@ -3,16 +3,10 @@ package window.parsedMsgWindow;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.web.WebView;
-import window.utility.BorderedTitledPane.BorderedTitledPane;
-
-import java.io.IOException;
+import utility.BorderedTitledPane.BorderedTitledPane;
 
 public class MessageWindow extends VBox {
     

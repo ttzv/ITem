@@ -1,8 +1,9 @@
 package ui.sceneControl;
 
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import properties.Cfg;
 
+import java.io.IOException;
 import java.util.*;
 
 public class ScenePicker {
@@ -10,9 +11,12 @@ public class ScenePicker {
     private List<Pane> scenes;
     private Integer activeScene;
 
-    public ScenePicker(){
+
+    public ScenePicker() {
+
+        activeScene = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.ActiveWindow));
+
         this.scenes = new ArrayList<>();
-        activeScene = -1;
     }
 
     public void addAll (Pane... panes){
@@ -30,6 +34,20 @@ public class ScenePicker {
     public Pane getPane(int index){
         this.activeScene = index;
         return this.scenes.get(index);
+    }
+
+    public int getActiveScene(){
+        return activeScene;
+    }
+
+    public void setActiveScene(int as){
+        this.activeScene = as;
+            Cfg.getInstance().setProperty(Cfg.ActiveWindow, String.valueOf(activeScene));
+        try {
+            Cfg.getInstance().saveFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1,26 +1,70 @@
 package ui.MailerWindow;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MailerWindow extends AnchorPane {
 
-    @FXML
+    private TabBuilder tabBuilder;
 
+    @FXML
     public Label lab1;
 
     @FXML
-    private TextField txt1;
+    public Label labTabLoad;
 
     @FXML
-    private TextField txt2;
+    private TextField txtUser;
 
+    @FXML
+    private TextField txtLog;
+
+    @FXML
+    private TextField txtPass;
+
+    @FXML
+    private Button btnTestAdd;
+
+    @FXML
+    private TabPane tabPane;
+
+
+    @FXML
+    void btnSendAction(ActionEvent event) {
+
+    }
+
+
+    @FXML
+    public void labTabLoadEvent(){
+        tabBuilder.promptForChooser();
+        tabBuilder.build();
+        this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
+
+        promptLabelEnabler();
+    }
+
+    public void initialize(){
+        this.tabBuilder = new TabBuilder();
+        if(tabBuilder.isReady()){
+            System.out.println(tabBuilder.isReady());
+            this.tabBuilder.preload();
+            this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
+        }
+        promptLabelEnabler();
+        addPassFieldHandler();
+    }
 
     public MailerWindow() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mailerWindow.fxml"));
@@ -31,16 +75,25 @@ public class MailerWindow extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        txt1.textProperty().bindBidirectional(txt2.textProperty());
     }
 
-    public Label getLab1() {
-        return lab1;
+    public void promptLabelEnabler(){
+        if(this.tabPane.getTabs().size() > 0){
+            this.labTabLoad.setVisible(false);
+        }
+        else{
+            this.labTabLoad.setVisible(true);
+        }
     }
 
-    public void setLab1(Label lab1) {
-        this.lab1.setText("abc");
+    public void addPassFieldHandler(){
+        this.txtPass.textProperty().addListener((observable, oldValue, newValue) -> {
+            tabBuilder.getSelectedTab().getParser().setFlaggedPassword(newValue);
+            tabBuilder.getSelectedTab().getParser().reparse();
+            tabBuilder.getSelectedTab().reload();
+        });
     }
+
 
 
 }

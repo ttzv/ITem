@@ -1,19 +1,12 @@
 package window;
 
 import file.ConfigHandler;
-import file.Loader;
-import file.MailMsgParser;
 import file.Vals;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sender.Sender;
@@ -26,8 +19,8 @@ import window.parsedMsgWindow.MessageWindow;
 import window.parsedMsgWindow.MsgWindowUpdater;
 import window.settingsWindow.SettingsWindow;
 import window.statusBar.StatusBar;
-import window.utility.BorderedTitledPane.BorderedTitledPane;
-import window.utility.Utility;
+import utility.BorderedTitledPane.BorderedTitledPane;
+import utility.Utility;
 
 import java.io.File;
 import java.io.IOException;

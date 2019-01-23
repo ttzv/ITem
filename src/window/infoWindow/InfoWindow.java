@@ -10,9 +10,6 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import window.utility.Utility;
-
-import java.io.File;
 
 public class InfoWindow {
 

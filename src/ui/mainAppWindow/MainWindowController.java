@@ -16,11 +16,6 @@ public class MainWindowController {
 
     private ScenePicker scenePicker;
 
-    public MainWindowController(){
-        scenePicker = new ScenePicker();
-        scenePicker.addAll(new MailerWindow(), new ADWindow(), new CrmWindow(), new GSuiteWindow());
-    }
-
     @FXML
     public Label statusBar;
     @FXML
@@ -40,6 +35,18 @@ public class MainWindowController {
     @FXML
     public Pane contentPane;
 
+    public MainWindowController(){
+        scenePicker = new ScenePicker();
+        scenePicker.addAll(new MailerWindow(), new ADWindow(), new CrmWindow(), new GSuiteWindow());
+
+    }
+
+    public void initialize(){
+        loadOnStart();
+    }
+
+
+
     public void goScn1(ActionEvent actionEvent) {
         selectScene(0);
     }
@@ -52,12 +59,19 @@ public class MainWindowController {
         selectScene(2);
     }
 
-    public void goScn4(ActionEvent actionEvent) {
-        selectScene(3);
-    }
+    public void goScn4(ActionEvent actionEvent) { selectScene(3); }
 
     private void selectScene(int index){
         this.contentPane.getChildren().clear();
         this.contentPane.getChildren().add(scenePicker.getPane(index));
+
+        this.scenePicker.setActiveScene(index);
+    }
+
+    private void loadOnStart(){
+        int active = scenePicker.getActiveScene();
+        if(active >= 0) {
+            selectScene(active);
+        }
     }
 }

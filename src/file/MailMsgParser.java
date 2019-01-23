@@ -75,6 +75,7 @@ public class MailMsgParser {
     }*/
 
     public String getOutputString(){
+        parseFlaggedTopic();
         return this.stringBuilder.toString();
     }
 
