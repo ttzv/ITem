@@ -39,7 +39,7 @@
             </Pane>
             <HBox prefHeight="560.0" prefWidth="973.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox maxWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: silver;" HBox.hgrow="ALWAYS">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: silver;" HBox.hgrow="ALWAYS">
                      <children>
                         <Button fx:id="scene1" mnemonicParsing="false" onAction="#goScn1" prefHeight="52.0" prefWidth="110.0" text="Scene1">
                            <effect>
@@ -69,7 +69,7 @@
                         <Blend />
                      </effect>
                   </VBox>
-                  <Pane fx:id="contentPane" prefHeight="605.0" prefWidth="780.0" />
+                  <AnchorPane fx:id="contentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="780.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <Label fx:id="statusBar" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="20.0" prefWidth="900.0" style="-fx-background-color: lightgray; -fx-border-color: white;" text="StatusBar" VBox.vgrow="NEVER">

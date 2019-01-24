@@ -49,7 +49,7 @@ public class MsgWindowUpdater {
 
         this.inputs.getUserField().focusedProperty().addListener((observable, oldValue, newValue) -> {
             if(!inputs.getUserField().isFocused()){
-                String input = Utility.reformatString(inputs.getUserField().getText());
+                String input = Utility.reformatUserInput(inputs.getUserField().getText());
                 messageWindow.setInputAddress(input);
                 messageWindow.refreshReceiverAddress();
                 inputs.setFinalRecAddress(messageWindow.getInputtedReceiverAddress().getText());
@@ -57,7 +57,7 @@ public class MsgWindowUpdater {
         });
 
         this.inputs.getUserField().textProperty().addListener((observable, oldValue, newValue) -> {
-            inputs.setLoginField(Utility.reformatString(newValue));
+            inputs.setLoginField(Utility.reformatUserInput(newValue));
         });
 
         this.inputs.getUserDomaincBox().setOnMouseClicked(event -> {

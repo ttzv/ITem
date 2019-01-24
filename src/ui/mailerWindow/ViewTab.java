@@ -1,4 +1,4 @@
-package ui.MailerWindow;
+package ui.mailerWindow;
 
 import file.MailMsgParser;
 import javafx.scene.control.Tab;
@@ -20,11 +20,16 @@ public class ViewTab extends Tab {
 
         this.setText(name);
         this.setContent(webView);
+        parser.parseFlaggedTopic();
         webView.getEngine().loadContent(String.valueOf(parser.getOutputString()));
+
+        this.setOnSelectionChanged(event -> {
+            System.out.println("changed");
+        });
     }
 
     public void reload(){
-        webView.getEngine().reload();
+        webView.getEngine().loadContent(String.valueOf(parser.getOutputString()));
     }
 
     @Override

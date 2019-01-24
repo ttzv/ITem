@@ -1,4 +1,4 @@
-package ui.MailerWindow;
+package ui.mailerWindow;
 
 import javafx.stage.FileChooser;
 import properties.Cfg;
@@ -25,7 +25,9 @@ public class MsgFileChooser {
         String initProp = Cfg.getInstance().retrieveProp(Cfg.MsgParentPath);
         if(!initProp.isEmpty()) {
             File initDir = new File(initProp);
-            this.fileChooser.setInitialDirectory(initDir);
+            if (initDir.exists()) {
+                this.fileChooser.setInitialDirectory(initDir);
+            }
         }
     }
 
@@ -68,7 +70,8 @@ public class MsgFileChooser {
      */
     public void saveMsgList() {
         List<String> fileNames;
-        if (Cfg.getInstance().retrieveProp(Cfg.MsgParentPath).equals(msgs.get(0).getParent()))
+        //if msglist property doesnt exist or is empty and parentPath from properties is the same as parentpath of loaded file
+        if ((Cfg.getInstance().retrieveProp(Cfg.MsgList) != null && !Cfg.getInstance().retrieveProp(Cfg.MsgList).isEmpty()) && Cfg.getInstance().retrieveProp(Cfg.MsgParentPath).equals(msgs.get(0).getParent()))
         {
             fileNames = Utility.stringToArray(Cfg.getInstance().retrieveProp(Cfg.MsgList));
             for (String fn : getFileNames()){

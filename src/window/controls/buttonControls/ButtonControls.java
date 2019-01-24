@@ -39,7 +39,7 @@ public class ButtonControls extends VBox {
             sender.initSession();
             sender.setMsgSubject(msgTabPane.getMsgParserOfSelectedTab().getFlaggedTopic());
             String address = inputs.getFinalRecAddress();
-            sender.setReceiverAddress(address);
+            //sender.setReceiverAddress(address);
             System.out.println("msg will be sent to " + address);
             System.out.println("Topic loaded...");
             //System.out.println(msgTabPane.getMsgParserOfSelectedTab().getOutputString());

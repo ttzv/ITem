@@ -46,6 +46,8 @@ public class MailMsgParser {
         flagLoginRegex = "(<!L>.*)(.*</!L>.*)";
         flagPasswordRegex = "(<!P>.*)(.*</!P>.*)";
 
+        flaggedLogin = "";
+        flaggedPassword = "";
     }
 
 
@@ -75,7 +77,6 @@ public class MailMsgParser {
     }*/
 
     public String getOutputString(){
-        parseFlaggedTopic();
         return this.stringBuilder.toString();
     }
 

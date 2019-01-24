@@ -5,9 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import ui.ADWindow.ADWindow;
-import ui.MailerWindow.MailerWindow;
+import ui.adWindow.ADWindow;
+import ui.mailerWindow.MailerWindow;
 import ui.crmWindow.CrmWindow;
 import ui.gSuiteWindow.GSuiteWindow;
 import ui.sceneControl.ScenePicker;
@@ -33,7 +34,7 @@ public class MainWindowController {
     @FXML
     public Button scene4;
     @FXML
-    public Pane contentPane;
+    public AnchorPane contentPane;
 
     public MainWindowController(){
         scenePicker = new ScenePicker();
@@ -62,8 +63,15 @@ public class MainWindowController {
     public void goScn4(ActionEvent actionEvent) { selectScene(3); }
 
     private void selectScene(int index){
-        this.contentPane.getChildren().clear();
-        this.contentPane.getChildren().add(scenePicker.getPane(index));
+        //this.contentPane = scenePicker.getPane(index);
+
+        //this.contentPane.getChildren().clear();
+        Pane paneToSet = scenePicker.getPane(index);
+        this.contentPane.getChildren().setAll(paneToSet);
+        AnchorPane.setRightAnchor(paneToSet,0.);
+        AnchorPane.setLeftAnchor(paneToSet, 0.);
+        AnchorPane.setTopAnchor(paneToSet, 0.);
+        AnchorPane.setBottomAnchor(paneToSet, 0.);
 
         this.scenePicker.setActiveScene(index);
     }

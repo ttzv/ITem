@@ -1,4 +1,4 @@
-package ui.MailerWindow;
+package ui.mailerWindow;
 
 import file.Loader;
 import file.MailMsgParser;

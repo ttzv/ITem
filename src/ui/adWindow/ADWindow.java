@@ -1,8 +1,7 @@
-package ui.ADWindow;
+package ui.adWindow;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
