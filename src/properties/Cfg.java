@@ -7,11 +7,20 @@ package properties;
      public static String ActiveWindow = "ActiveWindow";
      public static String MsgParentPath = "MsgParentPath";
      public static String MsgList = "MsgList";
+     public static String SMTP_HOST = "smtpHost";
+     public static String SMTP_PORT = "smtpStartTLS";
+     public static String SMTP_TLS = "smtpPort";
+     public static String SMTP_LOGIN = "smtpLogin";
+     public static String SMTP_PASS = "smtpPass";
+
 
 
      @Override
      public void defaultPropsVals() {
          defPropSet(ActiveWindow, String.valueOf(0));
+         defPropSet(SMTP_HOST, "smtp.gmail.com");
+         defPropSet(SMTP_PORT,"587");
+         defPropSet(SMTP_TLS, "true");
      }
 
      static public Cfg getInstance(){

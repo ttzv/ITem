@@ -8,10 +8,12 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import ui.adWindow.ADWindow;
+import ui.mailerWindow.InfoWindow;
 import ui.mailerWindow.MailerWindow;
 import ui.crmWindow.CrmWindow;
 import ui.gSuiteWindow.GSuiteWindow;
 import ui.sceneControl.ScenePicker;
+import ui.settingsWindow.SettingsWindow;
 
 public class MainWindowController {
 
@@ -38,7 +40,7 @@ public class MainWindowController {
 
     public MainWindowController(){
         scenePicker = new ScenePicker();
-        scenePicker.addAll(new MailerWindow(), new ADWindow(), new CrmWindow(), new GSuiteWindow());
+        scenePicker.addAll(new MailerWindow(), new ADWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
 
     }
 
@@ -62,6 +64,8 @@ public class MainWindowController {
 
     public void goScn4(ActionEvent actionEvent) { selectScene(3); }
 
+    public void goScn5(ActionEvent actionEvent) { selectScene(4); }
+
     private void selectScene(int index){
         //this.contentPane = scenePicker.getPane(index);
 
@@ -82,4 +86,11 @@ public class MainWindowController {
             selectScene(active);
         }
     }
+
+    public void showMailSett(ActionEvent actionEvent) {
+        InfoWindow infoWindow = new InfoWindow();
+        infoWindow.getStage().show();
+        }
+
+
 }

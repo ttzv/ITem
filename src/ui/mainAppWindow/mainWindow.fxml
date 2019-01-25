@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -22,12 +23,13 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Plik">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Dodaj" />
+                    <MenuItem mnemonicParsing="false" text="Wyjdź" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Opcje">
+                <Menu mnemonicParsing="false" text="Pomoc">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="E-Mail" />
+                    <MenuItem mnemonicParsing="false" onAction="#showMailSett" text="E-Mail" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                   </items>
                 </Menu>
               </menus>
@@ -57,6 +59,11 @@
                            </effect>
                         </Button>
                         <Button fx:id="scene4" mnemonicParsing="false" onAction="#goScn4" prefHeight="52.0" prefWidth="110.0" text="Scene4">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Button>
+                        <Button fx:id="scene5" mnemonicParsing="false" onAction="#goScn5" prefHeight="52.0" prefWidth="110.0" text="Scene5">
                            <effect>
                               <DropShadow />
                            </effect>

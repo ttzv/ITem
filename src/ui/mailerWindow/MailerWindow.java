@@ -7,10 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import pass.PasswordGenerator;
+import properties.Cfg;
 import sender.Sender;
 import sun.security.util.Password;
 import utility.Utility;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -23,7 +25,7 @@ public class MailerWindow extends AnchorPane {
     public Label lab1;
 
     @FXML
-    public Label labTabLoad;
+    private Label labTabLoad;
 
     @FXML
     private TextField txtUser;
@@ -43,6 +45,13 @@ public class MailerWindow extends AnchorPane {
     @FXML
     private ComboBox<String> cbxDomain;
 
+    @FXML
+    private Label labTopic;
+
+    @FXML
+    private Label labAddress;
+
+
 
     @FXML
     void btnPassGenerate(ActionEvent event) {
@@ -57,7 +66,25 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     void btnSendAction(ActionEvent event) {
+        sender.setSmtpHost(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
+        sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
+        sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
 
+        sender.setSenderPassword(Cfg.getInstance().retrieveProp(Cfg.SMTP_PASS));
+        sender.setSenderAddress(Cfg.getInstance().retrieveProp(Cfg.SMTP_LOGIN));
+
+        sender.validate();
+        sender.initSession();
+
+        sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
+        try {
+            System.out.println(tabBuilder.getSelectedTab().getParser().getOutputString());
+            sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        
+        sender.sendMail();
     }
 
 
@@ -74,9 +101,9 @@ public class MailerWindow extends AnchorPane {
                
         this.tabBuilder = new TabBuilder();
         if(tabBuilder.isReady()){
-            System.out.println(tabBuilder.isReady());
             this.tabBuilder.preload();
             this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
+            this.labTopic.setText(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
         }
 
         promptLabelEnabler();
@@ -84,11 +111,16 @@ public class MailerWindow extends AnchorPane {
         loginFieldEvent();
         tabChangedEvent();
         userFieldEvent();
+        cbxDomainEvent();
 
         this.sender = new Sender();
 
         this.cbxDomain.getItems().addAll(Arrays.asList(sender.getDomainSuffix()));
         this.cbxDomain.getSelectionModel().selectFirst();
+
+        sender.setAddressSuffix(this.cbxDomain.getSelectionModel().getSelectedItem());
+        System.out.println(this.cbxDomain.getSelectionModel().getSelectedItem());
+
     }
 
 
@@ -140,6 +172,7 @@ public class MailerWindow extends AnchorPane {
                     tempParserHolder.setFlaggedPassword(this.txtPass.getText());
                     tempParserHolder.reparse();
                     tabBuilder.getSelectedTab().reload();
+                    this.labTopic.setText(tempParserHolder.getFlaggedTopic());
                 }
             });
         }
@@ -148,8 +181,27 @@ public class MailerWindow extends AnchorPane {
 
     public void userFieldEvent(){
         this.txtUser.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.txtLog.setText(Utility.reformatUserInput(newValue));
+            String fInput = Utility.reformatUserInput(newValue);
+            this.txtLog.setText(fInput);
+            this.sender.setAddressPrefix(fInput);
+            updateAddressLabelText();
         });
     }
+
+    public void updateAddressLabelText(){
+        this.labAddress.setText(this.sender.getReceiverAddress());
+    }
+
+    public void cbxDomainEvent(){
+        this.cbxDomain.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.sender.setAddressSuffix(newValue);
+            updateAddressLabelText();
+        });
+    }
+
+
+
+
+
 
 }
