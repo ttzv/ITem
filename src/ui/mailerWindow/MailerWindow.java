@@ -78,12 +78,11 @@ public class MailerWindow extends AnchorPane {
 
         sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
         try {
-            System.out.println(tabBuilder.getSelectedTab().getParser().getOutputString());
             sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        
+
         sender.sendMail();
     }
 
@@ -95,6 +94,9 @@ public class MailerWindow extends AnchorPane {
         this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
 
         promptLabelEnabler();
+        tabChangedEvent();
+        //Improve topic loading line below is not cool
+        this.labTopic.setText(this.tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
     }
 
     public void initialize(){
@@ -119,7 +121,6 @@ public class MailerWindow extends AnchorPane {
         this.cbxDomain.getSelectionModel().selectFirst();
 
         sender.setAddressSuffix(this.cbxDomain.getSelectionModel().getSelectedItem());
-        System.out.println(this.cbxDomain.getSelectionModel().getSelectedItem());
 
     }
 
