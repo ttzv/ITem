@@ -23,7 +23,7 @@ public class TabBuilder {
 
         this.msgFileChooser = new MsgFileChooser();
 
-        if(msgFileChooser.getInitialFileList() != null){
+        if(!msgFileChooser.getInitialFileList().isEmpty()){
             this.preload = true;
         }
         viewTabList = new ArrayList<>();

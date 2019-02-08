@@ -9,3 +9,4 @@ templates/
 .eclipse/
 .project
 .classpath
+deprecated
