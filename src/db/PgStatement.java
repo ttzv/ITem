@@ -6,7 +6,7 @@ public class PgStatement {
 
 
     /**
-     * Conveniense method used for building PostgreSQL INSERT statement
+     * Convenience method used for building PostgreSQL INSERT statement
      * @param table - name of table where data will be inserted
      * @param columns - list of column names where data will be inserted
      * @param values - list of values for insertion, must be on order with columns
@@ -57,5 +57,9 @@ public class PgStatement {
         }
         String[] temp;
         return wrapped.toArray(new String[0]);
+    }
+
+    public static String select(String table, String content){
+        return "SELECT " + content + " FROM " + table + " ";
     }
 }

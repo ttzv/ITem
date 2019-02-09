@@ -10,6 +10,7 @@ import pass.PasswordGenerator;
 import properties.Cfg;
 import sender.Sender;
 import sun.security.util.Password;
+import ui.settingsWindow.PHolder;
 import utility.Utility;
 
 import javax.mail.MessagingException;
@@ -70,7 +71,8 @@ public class MailerWindow extends AnchorPane {
         sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
         sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
 
-        sender.setSenderPassword(Cfg.getInstance().retrieveProp(Cfg.SMTP_PASS));
+        sender.setSenderPassword(PHolder.mail);
+
         sender.setSenderAddress(Cfg.getInstance().retrieveProp(Cfg.SMTP_LOGIN));
 
         sender.validate();

@@ -4,14 +4,23 @@ package properties;
  public class Cfg extends Propsicl {
 
      //Property keys below
+     //window
      public static String ActiveWindow = "ActiveWindow";
      public static String MsgParentPath = "MsgParentPath";
      public static String MsgList = "MsgList";
+     //mail
      public static String SMTP_HOST = "smtpHost";
      public static String SMTP_PORT = "smtpStartTLS";
      public static String SMTP_TLS = "smtpPort";
      public static String SMTP_LOGIN = "smtpLogin";
-     public static String SMTP_PASS = "smtpPass";
+     //ldap
+     public static String LDAP_URL = "ldapUrl";
+     public static String LDAP_PORT = "ldapPort";
+     public static String LDAP_ACC = "ldapAcc";
+     //db
+     public static String DB_URL = "dbUrl";
+     public static String DB_LOGIN = "dbLogin";
+
 
 
 
@@ -23,12 +32,12 @@ package properties;
          defPropSet(SMTP_TLS, "true");
      }
 
-     static public Cfg getInstance(){
+     public static Cfg getInstance(){
          return CfgHolder.INSTANCE;
      }
 
-     static private class CfgHolder{
-         static private final Cfg INSTANCE = new Cfg();
+     private static class CfgHolder{
+         private static final Cfg INSTANCE = new Cfg();
      }
 
 }
