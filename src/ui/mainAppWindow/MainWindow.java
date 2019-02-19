@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -19,7 +18,7 @@ import uiUtils.StatusBar;
 
 import java.io.IOException;
 
-public class MainWindow {
+public class MainWindow extends AnchorPane {
 
     private ScenePicker scenePicker;
 
@@ -45,16 +44,15 @@ public class MainWindow {
     public StatusBar statusBar;
 
     public MainWindow(){
-       /* fxmlLoader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        scenePicker = new ScenePicker();
-        scenePicker.addAll(new MailerWindow(), new ADWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
+        }
+
     }
 
     public FXMLLoader getFxmlLoader() {
@@ -62,6 +60,8 @@ public class MainWindow {
     }
 
     public void initialize(){
+        scenePicker = new ScenePicker();
+        scenePicker.addAll(new MailerWindow(this), new ADWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
 
         loadOnStart();
     }
@@ -115,6 +115,10 @@ public class MainWindow {
     public void showMailSett(ActionEvent actionEvent) {
         InfoWindow infoWindow = new InfoWindow();
         infoWindow.getStage().show();
-        }
+    }
+
+    public void setStatusBarText(String text){
+        this.statusBar.setVanishingText(text);
+    }
 
 }

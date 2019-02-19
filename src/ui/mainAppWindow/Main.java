@@ -12,8 +12,8 @@ import java.io.IOException;
 public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
-
-        Parent root = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
+        MainWindow mw = new MainWindow();
+        Parent root = mw.getFxmlLoader().getRoot();
         primaryStage.setTitle("Mailer");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

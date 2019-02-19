@@ -18,10 +18,11 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class MailerWindow extends AnchorPane {
+public class MailerWindow extends AnchorPane{
 
     private TabBuilder tabBuilder;
     private Sender sender;
+    private final MainWindow mainWindow;
 
     @FXML
     public Label lab1;
@@ -70,7 +71,7 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     void btnSendAction(ActionEvent event) {
-       // statusBar.setVanishingText("Wysłano do");
+        mainWindow.setStatusBarText("Wysłano do");
         sender.setSmtpHost(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
         sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
         sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
@@ -103,7 +104,7 @@ public class MailerWindow extends AnchorPane {
 
         promptLabelEnabler();
         tabChangedEvent();
-        //Improve topic loading line below is not cool
+        //Improve topic loading, line below is not cool
         this.labTopic.setText(this.tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
     }
 
@@ -133,7 +134,9 @@ public class MailerWindow extends AnchorPane {
     }
 
 
-    public MailerWindow() {
+    public MailerWindow(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mailerWindow.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -142,8 +145,6 @@ public class MailerWindow extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //MainWindow mwc = (MainWindow) fxmlLoader.getController();
-       // mwc.statusBar = statusBar;
     }
 
     public void promptLabelEnabler(){

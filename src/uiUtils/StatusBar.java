@@ -55,10 +55,17 @@ public class StatusBar extends Label {
                         this.cancel();
                     }
                     Thread.sleep(500);
+                    Platform.runLater(() -> appendText(". "));
                 }
             }
         };
         new Thread(task).start();
+    }
+
+    public void appendText(String text){
+        String ctext = this.getText();
+        ctext += text;
+        this.setText(ctext);
     }
 
 }
