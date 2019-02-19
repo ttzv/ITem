@@ -9,8 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import pass.PasswordGenerator;
 import properties.Cfg;
 import sender.Sender;
-import sun.security.util.Password;
-import ui.mainAppWindow.MainWindowController;
+import ui.mainAppWindow.MainWindow;
 import ui.settingsWindow.PHolder;
 import uiUtils.StatusBar;
 import utility.Utility;
@@ -53,6 +52,8 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     private Label labAddress;
+
+    public StatusBar statusBar;
 
 
 
@@ -141,6 +142,8 @@ public class MailerWindow extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //MainWindow mwc = (MainWindow) fxmlLoader.getController();
+       // mwc.statusBar = statusBar;
     }
 
     public void promptLabelEnabler(){

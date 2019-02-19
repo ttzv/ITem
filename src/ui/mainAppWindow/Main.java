@@ -1,7 +1,6 @@
 package ui.mainAppWindow;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +12,7 @@ import java.io.IOException;
 public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
+
         Parent root = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
         primaryStage.setTitle("Mailer");
         primaryStage.setScene(new Scene(root));
