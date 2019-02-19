@@ -1,6 +1,5 @@
 package tests;
 
-import file.Vals;
 
 import java.util.Random;
 

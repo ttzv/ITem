@@ -42,7 +42,7 @@ public class DbCon {
         String[] columns = {"samaccountname", "givenname", "sn", "displayname", "useraccountcontrol"};
         for(User u : ldapusers){
             //String qpart ="(" +"'"+u.getSamAccountName()+"'" +","+ "'"+u.getGivenName()+"'" +","+ "'"+u.getSn()+"'" +","+ "'"+u.getDisplayName()+"'" +","+ "'"+u.getUserAccountControl()+"'"+")";
-            String query = PgStatement.insert("users", columns, PgStatement.apostrophied( (Object[]) u.getRow())); //hopefully this works in the same way
+            String query = PgStatement.insert("users", columns, PgStatement.apostrophied(u.getRow())); //hopefully this works in the same way
             st.executeUpdate(query);
 
         }

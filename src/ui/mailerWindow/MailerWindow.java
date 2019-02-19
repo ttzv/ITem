@@ -10,7 +10,9 @@ import pass.PasswordGenerator;
 import properties.Cfg;
 import sender.Sender;
 import sun.security.util.Password;
+import ui.mainAppWindow.MainWindowController;
 import ui.settingsWindow.PHolder;
+import uiUtils.StatusBar;
 import utility.Utility;
 
 import javax.mail.MessagingException;
@@ -67,6 +69,7 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     void btnSendAction(ActionEvent event) {
+       // statusBar.setVanishingText("Wysłano do");
         sender.setSmtpHost(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
         sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
         sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
@@ -86,6 +89,8 @@ public class MailerWindow extends AnchorPane {
         }
 
         sender.sendMail();
+
+
     }
 
 

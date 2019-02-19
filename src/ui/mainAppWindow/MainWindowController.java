@@ -14,13 +14,12 @@ import ui.crmWindow.CrmWindow;
 import ui.gSuiteWindow.GSuiteWindow;
 import ui.sceneControl.ScenePicker;
 import ui.settingsWindow.SettingsWindow;
+import uiUtils.StatusBar;
 
 public class MainWindowController {
 
     private ScenePicker scenePicker;
 
-    @FXML
-    public Label statusBar;
     @FXML
     public Button tabTest;
     @FXML
@@ -37,6 +36,8 @@ public class MainWindowController {
     public Button scene4;
     @FXML
     public AnchorPane contentPane;
+    @FXML
+    public StatusBar statusBar;
 
     public MainWindowController(){
         scenePicker = new ScenePicker();
@@ -45,6 +46,7 @@ public class MainWindowController {
     }
 
     public void initialize(){
+
         loadOnStart();
     }
 
@@ -52,19 +54,28 @@ public class MainWindowController {
 
     public void goScn1(ActionEvent actionEvent) {
         selectScene(0);
+        statusBar.setVanishingText("Selected Scene 1");
     }
 
     public void goScn2(ActionEvent actionEvent) {
         selectScene(1);
+        statusBar.setVanishingText("Selected Scene 2");
     }
 
     public void goScn3(ActionEvent actionEvent) {
         selectScene(2);
+        statusBar.setVanishingText("Selected Scene 3");
     }
 
-    public void goScn4(ActionEvent actionEvent) { selectScene(3); }
+    public void goScn4(ActionEvent actionEvent) {
+        selectScene(3);
+        statusBar.setVanishingText("Selected Scene 4");
+    }
 
-    public void goScn5(ActionEvent actionEvent) { selectScene(4); }
+    public void goScn5(ActionEvent actionEvent) {
+        selectScene(4);
+        statusBar.setVanishingText("Selected Scene 5");
+    }
 
     private void selectScene(int index){
         //this.contentPane = scenePicker.getPane(index);
@@ -91,6 +102,5 @@ public class MainWindowController {
         InfoWindow infoWindow = new InfoWindow();
         infoWindow.getStage().show();
         }
-
 
 }
