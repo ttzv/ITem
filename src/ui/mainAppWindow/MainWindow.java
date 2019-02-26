@@ -67,27 +67,27 @@ public class MainWindow extends AnchorPane {
     }
 
 
-
+    @FXML
     public void goScn1(ActionEvent actionEvent) {
         selectScene(0);
         statusBar.setVanishingText("Selected Scene 1");
     }
-
+    @FXML
     public void goScn2(ActionEvent actionEvent) {
         selectScene(1);
         statusBar.setVanishingText("Selected Scene 2");
     }
-
+    @FXML
     public void goScn3(ActionEvent actionEvent) {
         selectScene(2);
         statusBar.setVanishingText("Selected Scene 3");
     }
-
+    @FXML
     public void goScn4(ActionEvent actionEvent) {
         selectScene(3);
         statusBar.setVanishingText("Selected Scene 4");
     }
-
+    @FXML
     public void goScn5(ActionEvent actionEvent) {
         selectScene(4);
         statusBar.setVanishingText("Selected Scene 5");
@@ -111,10 +111,15 @@ public class MainWindow extends AnchorPane {
             selectScene(active);
         }
     }
-
+    @FXML
     public void showMailSett(ActionEvent actionEvent) {
         InfoWindow infoWindow = new InfoWindow();
         infoWindow.getStage().show();
+    }
+
+    @FXML
+    void showDbToolsWindow(ActionEvent event) {
+
     }
 
     public void setStatusBarText(String text){

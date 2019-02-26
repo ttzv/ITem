@@ -32,6 +32,11 @@
                         <SeparatorMenuItem mnemonicParsing="false" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Narzędzia">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#showDbToolsWindow" text="DB..." />
+                    </items>
+                  </Menu>
               </menus>
             </MenuBar>
             <Pane fx:id="infoPane" maxHeight="-Infinity" prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES">
@@ -43,7 +48,7 @@
                <children>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: silver;" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="scene1" mnemonicParsing="false" onAction="#goScn1" prefHeight="52.0" prefWidth="110.0" text="Scene1">
+                        <Button fx:id="scene1" mnemonicParsing="false" onAction="#goScn1" prefHeight="52.0" prefWidth="110.0" text="Mailing">
                            <effect>
                               <DropShadow />
                            </effect>
@@ -63,7 +68,7 @@
                               <DropShadow />
                            </effect>
                         </Button>
-                        <Button fx:id="scene5" mnemonicParsing="false" onAction="#goScn5" prefHeight="52.0" prefWidth="110.0" text="Scene5">
+                        <Button fx:id="scene5" mnemonicParsing="false" onAction="#goScn5" prefHeight="52.0" prefWidth="110.0" text="Ustawienia">
                            <effect>
                               <DropShadow />
                            </effect>

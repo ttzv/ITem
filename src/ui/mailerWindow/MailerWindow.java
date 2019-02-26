@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import pass.PasswordGenerator;
 import properties.Cfg;
@@ -28,7 +30,7 @@ public class MailerWindow extends AnchorPane{
     public Label lab1;
 
     @FXML
-    private Label labTabLoad;
+    private Label labTabLoadLabel;
 
     @FXML
     private TextField txtUser;
@@ -91,8 +93,21 @@ public class MailerWindow extends AnchorPane{
         }
 
         sender.sendMail();
+    }
 
+    @FXML
+    void btnClearAction(ActionEvent event) {
+        this.txtUser.clear();
+        this.txtLog.clear();
+        this.txtPass.clear();
+    }
 
+    @FXML
+    void btnCopyAction(ActionEvent event) {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(this.txtPass.getText());
+        clipboard.setContent(content);
     }
 
 
@@ -149,10 +164,10 @@ public class MailerWindow extends AnchorPane{
 
     public void promptLabelEnabler(){
         if(this.tabPane.getTabs().size() > 0){
-            this.labTabLoad.setVisible(false);
+            this.labTabLoadLabel.setVisible(false);
         }
         else{
-            this.labTabLoad.setVisible(true);
+            this.labTabLoadLabel.setVisible(true);
         }
     }
 

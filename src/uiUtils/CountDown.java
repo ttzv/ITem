@@ -66,7 +66,4 @@ public class CountDown implements Runnable{
         }
     }
 
-    public void finished(){
-
-    }
 }

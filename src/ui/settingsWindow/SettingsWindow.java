@@ -1,19 +1,24 @@
 package ui.settingsWindow;
 
+import ad.LDAPParser;
+import db.DbCon;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import properties.Cfg;
 import pwSafe.Crypt;
+import sender.Sender;
+import uiUtils.TitledBorder;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
-import java.util.Date;
 
 public class SettingsWindow extends AnchorPane {
 
@@ -21,6 +26,9 @@ public class SettingsWindow extends AnchorPane {
     private Crypt cLdap;
     private Crypt cDb;
 
+
+    @FXML
+    private TitledBorder containerMailSett;
 
     @FXML
     private TextField fieldHost;
@@ -44,6 +52,12 @@ public class SettingsWindow extends AnchorPane {
     private ProgressIndicator prgMail;
 
     @FXML
+    private ImageView okImgMail;
+
+    @FXML
+    private TitledBorder containerLdapSett;
+
+    @FXML
     private TextField fieldLdapAcc;
 
     @FXML
@@ -59,7 +73,13 @@ public class SettingsWindow extends AnchorPane {
     private ProgressIndicator prgLdap;
 
     @FXML
+    private ImageView okImgLdap;
+
+    @FXML
     private CheckBox cbxRememberLdap;
+
+    @FXML
+    private TitledBorder containerDbSett;
 
     @FXML
     private TextField fieldDbLogin;
@@ -69,6 +89,9 @@ public class SettingsWindow extends AnchorPane {
 
     @FXML
     private PasswordField fieldDbPass;
+
+    @FXML
+    private ImageView okImgDb;
 
     @FXML
     private ProgressIndicator prgDb;
@@ -162,6 +185,33 @@ public class SettingsWindow extends AnchorPane {
             this.cbxRememberDb.setSelected(false);
         }
 
+        this.okImgDb.setVisible(false);
+        this.okImgLdap.setVisible(false);
+        this.okImgMail.setVisible(false);
+
+        this.containerMailSett.focusedProperty().addListener(observable -> {
+            resetMailIndicators();
+        });
+        this.containerLdapSett.focusedProperty().addListener(observable -> {
+            resetLdapIndicators();
+        });
+        this.containerDbSett.focusedProperty().addListener(observable -> {
+            resetDbIndicators();
+        });
+
+        //TODO: make ui for DB and LDAP connection, part below is temporary solution, no ui for this yet
+        /*DbCon dbCon = null;
+        try {
+            dbCon = new DbCon();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            dbCon.ldapToDb();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
+
     }
 
     @FXML
@@ -219,11 +269,14 @@ public class SettingsWindow extends AnchorPane {
         } else {
             cfg.setProperty(Cfg.SMTP_TLS, "false");
         }
-        System.out.println("mail: " + fieldPass.getText());
 
         if(!noStore) {
             cfg.saveFile();
         }
+
+        testMailCredentials();
+
+
     }
 
     private void btnLdapPerformAction(boolean noStore) throws IOException{
@@ -243,13 +296,16 @@ public class SettingsWindow extends AnchorPane {
             cfg.setProperty("SettSaveLdapCbx", "false");
             cLdap.erase();
         }
-        System.out.println("ldap: " + fieldLdapPass.getText());
 
         PHolder.ldap = this.fieldLdapPass.getText().toCharArray();
 
         if(!noStore) {
             cfg.saveFile();
         }
+
+        testLDAPCredentials();
+
+
     }
 
     private void btnDbPerformAction(boolean noStore) throws IOException {
@@ -268,13 +324,148 @@ public class SettingsWindow extends AnchorPane {
             cfg.setProperty("SettSaveDbCbx", "false");
             cDb.erase();
         }
-        System.out.println("db: " + fieldDbPass.getText());
 
         PHolder.db = this.fieldDbPass.getText().toCharArray();
 
         if(!noStore) {
             cfg.saveFile();
         }
+
+        testDBCredentials();
+
+    }
+
+    private void testMailCredentials(){
+
+    Task isValid = new Task<Boolean>(){
+        @Override
+        protected Boolean call() throws Exception {
+            Sender sender = new Sender();
+            sender.setSenderAddress(fieldLogin.getText());
+            sender.setSenderPassword(PHolder.mail);
+            sender.setSmtpHost(fieldHost.getText());
+            sender.setSmtpPort(fieldPort.getText());
+            sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
+            sender.initSession();
+            sender.initConnection();
+            return Boolean.TRUE;
+        }
+    };
+
+        isValid.setOnRunning(event -> {
+            this.prgMail.setVisible(true);
+            this.prgMail.setProgress(-1);
+        });
+        isValid.setOnSucceeded(event -> {
+            this.prgMail.setVisible(false);
+            showTemporaryImg(this.okImgMail);
+        });
+        isValid.setOnFailed(event -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(isValid.getException().toString());
+            alert.showAndWait();
+            resetMailIndicators();
+        });
+
+        new Thread(isValid).start();
+
+
+    }
+
+    private void testLDAPCredentials(){
+        Task isValid = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                LDAPParser ldapParser = new LDAPParser();
+                ldapParser.setLdap_URL(fieldLdapUrl.getText());
+                ldapParser.setLdap_port(fieldLdapPort.getText());
+                ldapParser.setAd_adminUser(fieldLdapAcc.getText());
+                ldapParser.setAd_adminPass(PHolder.ldap);
+                ldapParser.initializeLdapContext();
+                return null;
+            }
+        };
+
+        isValid.setOnRunning(event -> {
+            this.prgLdap.setVisible(true);
+            this.prgLdap.setProgress(-1);
+        });
+        isValid.setOnSucceeded(event -> {
+            this.prgLdap.setVisible(false);
+            showTemporaryImg(this.okImgLdap);
+        });
+        isValid.setOnFailed(event -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(isValid.getException().toString());
+            alert.showAndWait();
+            resetLdapIndicators();
+        });
+
+        new Thread(isValid).start();
+
+    }
+
+    private void testDBCredentials(){
+        Task isValid = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                DbCon dbCon = new DbCon();
+                dbCon.setDbUrl(fieldDbUrl.getText());
+                dbCon.setDbUser(fieldDbLogin.getText());
+                dbCon.setDbPass(PHolder.db);
+                dbCon.initConnection();
+                return null;
+            }
+        };
+
+        isValid.setOnRunning(event -> {
+            this.prgDb.setVisible(true);
+            this.prgDb.setProgress(-1);
+        });
+        isValid.setOnSucceeded(event -> {
+            this.prgDb.setVisible(false);
+            showTemporaryImg(this.okImgDb);
+        });
+        isValid.setOnFailed(event -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(isValid.getException().toString());
+            alert.showAndWait();
+            resetDbIndicators();
+        });
+
+        new Thread(isValid).start();
+    }
+
+    private void resetMailIndicators(){
+        this.prgMail.setVisible(false);
+        this.okImgMail.setVisible(false);
+    }
+
+    private void resetLdapIndicators(){
+        this.prgLdap.setVisible(false);
+        this.okImgLdap.setVisible(false);
+            }
+
+    private void resetDbIndicators(){
+        this.prgDb.setVisible(false);
+        this.okImgDb.setVisible(false);
+    }
+
+    private void showTemporaryImg(Node node){
+        Task task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                System.out.println("visible");
+                Platform.runLater(() -> node.setVisible(true));
+                Thread.sleep(1750);
+                Platform.runLater(() -> node.setVisible(false));
+                System.out.println("reset");
+                return null;
+            }
+        };
+
+        new Thread(task).start();
+
     }
 
 

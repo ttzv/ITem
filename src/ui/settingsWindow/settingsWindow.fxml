@@ -8,17 +8,20 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import uiUtils.TitledBorder?>
 
 <fx:root prefHeight="605.0" prefWidth="780.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledBorder stylesheets="@../utils/style.css" title="E-mail">
+      <TitledBorder fx:id="containerMailSett" stylesheets="@../utils/style.css" title="E-mail">
          <children>
             <AnchorPane>
                <children>
@@ -82,7 +85,16 @@
                            </VBox.margin>
                            <children>
                               <Button alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptSettingsEvent" prefHeight="25.0" prefWidth="51.0" text="Zapisz" />
-                              <ProgressIndicator fx:id="prgMail" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER" />
+                              <StackPane prefHeight="25.0" prefWidth="30.0">
+                                 <children>
+                                    <ProgressIndicator fx:id="prgMail" prefHeight="25.0" prefWidth="30.0" visible="false" />
+                                    <ImageView fx:id="okImgMail" fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/done.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
                            </children>
                         </HBox>
                      </children>
@@ -94,7 +106,7 @@
             </AnchorPane>
          </children>
       </TitledBorder>
-      <TitledBorder layoutX="294.0" prefHeight="178.0" prefWidth="485.0" stylesheets="@../utils/style.css" title="AD/LDAP">
+      <TitledBorder fx:id="containerLdapSett" layoutX="294.0" prefHeight="178.0" prefWidth="485.0" stylesheets="@../utils/style.css" title="AD/LDAP">
          <children>
             <GridPane prefHeight="201.0" prefWidth="429.0">
                <columnConstraints>
@@ -118,10 +130,19 @@
                   <Label alignment="CENTER_RIGHT" text="  :" GridPane.columnIndex="2" />
                   <TextField fx:id="fieldLdapPort" prefHeight="25.0" prefWidth="20.0" GridPane.columnIndex="3" />
                   <PasswordField fx:id="fieldLdapPass" prefHeight="25.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <HBox spacing="30.0" GridPane.rowIndex="3">
+                  <HBox spacing="20.0" GridPane.rowIndex="3">
                      <children>
                         <Button alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptLdapSettingsEvent" prefHeight="25.0" prefWidth="51.0" text="Zapisz" />
-                        <ProgressIndicator fx:id="prgLdap" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="30.0" />
+                        <StackPane prefHeight="25.0" prefWidth="30.0">
+                           <children>
+                              <ProgressIndicator fx:id="prgLdap" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="30.0" visible="false" />
+                              <ImageView fx:id="okImgLdap" fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/done.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
                      </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -140,7 +161,7 @@
             </GridPane>
          </children>
       </TitledBorder>
-      <TitledBorder layoutX="294.0" layoutY="178.0" prefHeight="199.0" prefWidth="485.0" stylesheets="@../utils/style.css" title="Database">
+      <TitledBorder fx:id="containerDbSett" layoutX="294.0" layoutY="178.0" prefHeight="199.0" prefWidth="485.0" stylesheets="@../utils/style.css" title="Database">
          <children>
             <GridPane prefHeight="201.0" prefWidth="453.0">
                <columnConstraints>
@@ -161,10 +182,19 @@
                   <Label text="URL" />
                   <TextField fx:id="fieldDbUrl" GridPane.columnIndex="1" />
                   <PasswordField fx:id="fieldDbPass" prefHeight="25.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <HBox spacing="30.0" GridPane.rowIndex="4">
+                  <HBox spacing="20.0" GridPane.rowIndex="4">
                      <children>
                         <Button alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptDbSettingsEvent" prefHeight="25.0" prefWidth="51.0" text="Zapisz" />
-                        <ProgressIndicator fx:id="prgDb" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="30.0" />
+                        <StackPane prefHeight="25.0" prefWidth="30.0">
+                           <children>
+                              <ImageView fx:id="okImgDb" fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/done.png" />
+                                 </image>
+                              </ImageView>
+                              <ProgressIndicator fx:id="prgDb" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="30.0" visible="false" />
+                           </children>
+                        </StackPane>
                      </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
