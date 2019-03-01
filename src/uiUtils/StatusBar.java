@@ -49,13 +49,13 @@ public class StatusBar extends Label {
             @Override
             protected Void call() throws Exception {
                 while(true){
-                    System.out.println(countDown.getCurrentCount());
+                    //System.out.println(countDown.getCurrentCount());
                     if(countDown.getCurrentCount() >= upperLimit){
                         Platform.runLater(() -> clear());
                         this.cancel();
                     }
                     Thread.sleep(500);
-                    Platform.runLater(() -> appendText(". "));
+//                    Platform.runLater(() -> appendText(". "));
                 }
             }
         };

@@ -46,7 +46,6 @@ public class DbCon {
             //String qpart ="(" +"'"+u.getSamAccountName()+"'" +","+ "'"+u.getGivenName()+"'" +","+ "'"+u.getSn()+"'" +","+ "'"+u.getDisplayName()+"'" +","+ "'"+u.getUserAccountControl()+"'"+")";
             String query = PgStatement.insert("users", columns, PgStatement.apostrophied(u.getRow())); //hopefully this works in the same way
             st.executeUpdate(query);
-
         }
 
         st.close();

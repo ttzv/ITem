@@ -70,7 +70,7 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void goScn1(ActionEvent actionEvent) {
         selectScene(0);
-        statusBar.setVanishingText("Selected Scene 1");
+        statusBar.setVanishingText("Mailing - wysyłanie szablonów wiadomości z danymi dostępowymi");
     }
     @FXML
     public void goScn2(ActionEvent actionEvent) {
@@ -90,7 +90,7 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void goScn5(ActionEvent actionEvent) {
         selectScene(4);
-        statusBar.setVanishingText("Selected Scene 5");
+        statusBar.setVanishingText("Ustawienia połączeń z serwerem poczty, katalogiem LDAP, bazą danych itp.");
     }
 
     private void selectScene(int index){

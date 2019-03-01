@@ -57,13 +57,4 @@ public class CountDown implements Runnable{
         threadCounter.start();
     }
 
-    public static void main(String[] args) {
-        CountDown countDown = new CountDown(5);
-        countDown.begin();
-        Scanner reader = new Scanner(System.in);
-        while(!reader.nextLine().isEmpty()){
-            countDown.restart();
-        }
-    }
-
 }

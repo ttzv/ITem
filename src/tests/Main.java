@@ -7,11 +7,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String password = new Random().ints(8, 64, 122).collect(StringBuilder::new,
-                StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-
-        System.out.println(password);
+      String testTxt = "abc a";
+      if(testTxt.matches("[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*|\\s|[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+\\s\\w+")){
+          System.out.println("true");
+      } else {
+          System.out.println("false");
+      }
 
     }
 }

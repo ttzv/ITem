@@ -13,6 +13,7 @@ import properties.Cfg;
 import sender.Sender;
 import ui.mainAppWindow.MainWindow;
 import ui.settingsWindow.PHolder;
+import uiUtils.LimitableTextField;
 import uiUtils.StatusBar;
 import utility.Utility;
 
@@ -33,10 +34,10 @@ public class MailerWindow extends AnchorPane{
     private Label labTabLoadLabel;
 
     @FXML
-    private TextField txtUser;
+    private LimitableTextField txtUser;
 
     @FXML
-    private TextField txtLog;
+    private LimitableTextField txtLog;
 
     @FXML
     private TextField txtPass;
@@ -131,6 +132,9 @@ public class MailerWindow extends AnchorPane{
             this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
             this.labTopic.setText(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
         }
+
+        this.txtUser.setRegexFilter(LimitableTextField.NAME_ONLY);
+        this.txtLog.setRegexFilter(LimitableTextField.RESTRICT_SYMBOLS);
 
         promptLabelEnabler();
         passFieldEvent();
