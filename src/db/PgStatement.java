@@ -56,7 +56,6 @@ public class PgStatement {
         for (Object d : data){
             wrapped.add("'" + d.toString() + "'");
         }
-        String[] temp;
         return wrapped.toArray(new String[0]);
     }
 
@@ -65,4 +64,15 @@ public class PgStatement {
     }
 
     public static String update(String tableToUpdate, String columnToSet, String value, String criterium){ return "UPDATE " + tableToUpdate + " SET " + columnToSet + " = " + value + " WHERE " + criterium + ";"; }
+
+    /**
+     * PostgreSQL statement that checks if given value exists in column
+     * @param table - table to look into
+     * @param column - column where to search
+     * @param value - searched value
+     * @return complete Statement
+     */
+    public static String exists(String table, String column, String value){
+        return "select exists(select 1 from " + table + " where " + column + "='" + value +"')";
+    }
 }

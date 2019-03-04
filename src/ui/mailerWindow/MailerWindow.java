@@ -4,6 +4,7 @@ import file.MailMsgParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -19,9 +20,11 @@ import utility.Utility;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
-public class MailerWindow extends AnchorPane{
+public class MailerWindow extends AnchorPane {
 
     private TabBuilder tabBuilder;
     private Sender sender;
@@ -124,7 +127,9 @@ public class MailerWindow extends AnchorPane{
         this.labTopic.setText(this.tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
     }
 
+    @FXML
     public void initialize(){
+        System.out.println("INITIALIZED MAILERWINDOW");
                
         this.tabBuilder = new TabBuilder();
         if(tabBuilder.isReady()){
@@ -229,10 +234,5 @@ public class MailerWindow extends AnchorPane{
             updateAddressLabelText();
         });
     }
-
-
-
-
-
 
 }

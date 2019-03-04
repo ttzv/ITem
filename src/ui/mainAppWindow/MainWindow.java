@@ -59,15 +59,18 @@ public class MainWindow extends AnchorPane {
         return fxmlLoader;
     }
 
+    @FXML
     public void initialize(){
+        System.out.println("INITIALIZED MAIN");
         scenePicker = new ScenePicker();
         scenePicker.addAll(new MailerWindow(this), new ADWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
+
 
         loadOnStart();
     }
 
 
-    @FXML
+
     public void goScn1(ActionEvent actionEvent) {
         selectScene(0);
         statusBar.setVanishingText("Mailing - wysyłanie szablonów wiadomości z danymi dostępowymi");

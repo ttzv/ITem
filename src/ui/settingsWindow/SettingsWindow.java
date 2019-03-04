@@ -113,6 +113,7 @@ public class SettingsWindow extends AnchorPane {
 
     }
 
+    @FXML
     public void initialize(){
 
         //mail

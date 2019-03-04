@@ -114,7 +114,7 @@ public class MsgFileChooser {
             }
             return msgFiles;
         }
-        return null;
+        return msgFiles;
     }
 
 
