@@ -61,7 +61,6 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void initialize(){
-        System.out.println("INITIALIZED MAIN");
         scenePicker = new ScenePicker();
         scenePicker.addAll(new MailerWindow(this), new ADWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
 

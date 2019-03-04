@@ -129,7 +129,6 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     public void initialize(){
-        System.out.println("INITIALIZED MAILERWINDOW");
                
         this.tabBuilder = new TabBuilder();
         if(tabBuilder.isReady()){

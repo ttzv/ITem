@@ -1,9 +1,13 @@
 package uiUtils;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.UnaryOperator;
 
 public class LimitableTextField extends TextField {
@@ -11,11 +15,18 @@ public class LimitableTextField extends TextField {
     public static String NAME_ONLY = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*|\\s|[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+\\s\\w+";
     public static String RESTRICT_SYMBOLS = "[A-Za-z]*|\\.|\\d|[A-Za-z]+\\.\\w+|[-]";
 
+    private final int MAX_THREADS = 4;
+    private ThreadPoolExecutor exec;
 
     private String originalStyle;
     private String regexFilter;
 
     public LimitableTextField() {
+        exec = (ThreadPoolExecutor) Executors.newFixedThreadPool(MAX_THREADS, runnable ->{
+            Thread thread = new Thread(runnable);
+            thread.setDaemon(true);
+            return thread;
+        });
         this.originalStyle = this.getStyle();
         this.setTextFormatter(selectTextFormatter());
         this.regexFilter = "";
@@ -26,12 +37,20 @@ public class LimitableTextField extends TextField {
     }
 
     private void setRejectBorderStyle(){
-        this.setStyle("-fx-focus-color: red;\n" +
-                "    -fx-faint-focus-color: #ff000022;");
+        Platform.runLater(() -> {
+            this.setStyle("-fx-focus-color: red;\n" +
+                    "    -fx-faint-focus-color: #ff000022;");
+            if(!this.isFocused()) {
+                this.setStyle("-fx-border-color: red;" +
+                        "-fx-faint-focus-color: #ff000022;");
+            }
+        });
     }
 
     private void restoreOriginalBorderStyle(){
-        this.setStyle(originalStyle);
+        Platform.runLater(() -> {
+            this.setStyle(originalStyle);
+        });
     }
 
 
@@ -45,19 +64,20 @@ public class LimitableTextField extends TextField {
     private UnaryOperator<TextFormatter.Change> getFilter(){
         return change -> {
             String text = change.getText();
-            System.out.println("text from change: " + text);
+            //System.out.println("text from change: " + text);
 
             if(text.matches(regexFilter)){
                 return change;
             } else if(change.isContentChange()){
                 blinkError(3);
-                System.out.println("rejected " + change);
+                //System.out.println("rejected " + change);
             }
             return null;
         };
     }
 
     private void blinkError(int repeats){
+        System.out.println( exec.getActiveCount());
         int delay = 100;
         Task task = new Task() {
             @Override
@@ -71,6 +91,9 @@ public class LimitableTextField extends TextField {
                 return null;
             }
         };
-        new Thread(task).start();
+        if(exec.getActiveCount() < MAX_THREADS) {
+            exec.execute(new Thread(task));
+        }
+
     }
 }
