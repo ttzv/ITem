@@ -11,7 +11,7 @@ import java.util.List;
 public class DbMain {
 
     public static void main(String[] args) throws SQLException, NamingException {
-
+/*
         char[] ldapPass = {'K','i','a','n','o','@','1','2'};
         LDAPParser ldapParser = new LDAPParser();
         ldapParser.setLdap_URL("ataladc1.atal.local");
@@ -34,6 +34,9 @@ public class DbMain {
         System.out.println("Added: " + newusers.size() + " new users:\n " + newusers);
 
         System.out.println(dbCon.getNewestUser());
+
+        dbCon.updateUsersInfo();
+*/
 
         //System.out.println( Utility.extractCityFromDn("CN=Magdalena Kwiatkowska,OU=Gdansk,OU=Pracownicy,DC=atal,DC=local") );
 

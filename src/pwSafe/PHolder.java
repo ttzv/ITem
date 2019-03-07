@@ -1,4 +1,4 @@
-package ui.settingsWindow;
+package pwSafe;
 
 public class PHolder {
 

@@ -1,5 +1,8 @@
 package ui.mainAppWindow;
 
+import ad.LDAPParser;
+import ad.UserHolder;
+import db.DbCon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import properties.Cfg;
+import pwSafe.PHolder;
 import ui.adWindow.ADWindow;
 import ui.mailerWindow.InfoWindow;
 import ui.mailerWindow.MailerWindow;
@@ -17,7 +22,9 @@ import ui.sceneControl.ScenePicker;
 import ui.settingsWindow.SettingsWindow;
 import uiUtils.StatusBar;
 
+import javax.naming.NamingException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainWindow extends AnchorPane {
 
@@ -105,7 +112,7 @@ public class MainWindow extends AnchorPane {
 
     private void selectScene(int index){
 
-        Pane paneToSet = scenePicker.getPane(index);
+        Pane paneToSet = scenePicker.getScene(index);
         this.contentPane.getChildren().setAll(paneToSet);
         AnchorPane.setRightAnchor(paneToSet,0.);
         AnchorPane.setLeftAnchor(paneToSet, 0.);
@@ -133,8 +140,30 @@ public class MainWindow extends AnchorPane {
     }
 
     @FXML
-    void loadNewestUser(ActionEvent event){
+    void loadNewestUser(ActionEvent event) throws NamingException, SQLException {
+        LDAPParser ldapParser = new LDAPParser();
+        ldapParser.setLdap_URL(Cfg.getInstance().retrieveProp(Cfg.LDAP_URL));
+        ldapParser.setLdap_port(Cfg.getInstance().retrieveProp(Cfg.LDAP_PORT));
+        ldapParser.setAd_adminUser(Cfg.getInstance().retrieveProp(Cfg.LDAP_ACC));
+        ldapParser.setAd_adminPass(PHolder.ldap);
+        ldapParser.initializeLdapContext();
+        ldapParser.queryLdap();
 
+        DbCon dbCon = new DbCon(ldapParser);
+        dbCon.setDbUrl(Cfg.getInstance().retrieveProp(Cfg.DB_URL));
+        dbCon.setDbUser(Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN));
+        dbCon.setDbPass(PHolder.db);
+        dbCon.initConnection();
+
+        dbCon.getNewUsers();
+
+        UserHolder.setCurrentUser(dbCon.getNewestUser());
+
+        this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
+        this.labelCity.setText(UserHolder.getCurrentUser().getCity());
+
+        MailerWindow w = (MailerWindow) scenePicker.getScene(0);
+        w.setUserName(UserHolder.getCurrentUser().getDisplayName());
     }
 
     public void setStatusBarText(String text){

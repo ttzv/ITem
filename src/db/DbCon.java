@@ -19,6 +19,7 @@ public class DbCon {
 
     public DbCon(LDAPParser ldapParser) {
         this.ldapParser = ldapParser;
+        this.ldapParser.queryLdap();
     }
 
     public DbCon(){}
@@ -99,10 +100,8 @@ public class DbCon {
 
     /**
      * Updates records in database with information parsed from LDAP
-     * @param table
-     * @param column
-     */
-    public void updateUsersInfo(String table, String column) throws SQLException {
+     **/
+    public void updateUsersInfo() throws SQLException {
         String tabletest = "users";
         String columntest = "city";
 
@@ -113,7 +112,7 @@ public class DbCon {
 
         for (User u : users) {
             criterium = "samaccountname='"+u.getSamAccountName()+"'";
-            updateQuery = PgStatement.update(tabletest, columntest, u.getCity(), criterium);
+            updateQuery = PgStatement.update(tabletest, columntest, PgStatement.apostrophied(u.getCity()), criterium);
             st.executeUpdate(updateQuery);
         }
 
@@ -127,7 +126,7 @@ public class DbCon {
         Statement st = conn.createStatement();
         ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users", "*", "whencreated", false));
         resultSet.next();
-        User user = new User(Integer.toString(resultSet.getInt(1)), resultSet.getString(2), resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(6));
+        User user = new User(resultSet.getString(User.columns[0]), resultSet.getString(User.columns[1]), resultSet.getString(User.columns[2]), resultSet.getString(User.columns[3]), resultSet.getString(User.columns[4]), resultSet.getString(User.columns[5]), resultSet.getString(User.columns[6]), resultSet.getString(User.columns[7]));
         resultSet.close();
         return user;
     }

@@ -31,7 +31,7 @@ public class ScenePicker {
         this.scenes.add(pane);
     }
 
-    public Pane getPane(int index){
+    public Pane getScene(int index){
         this.activeScene = index;
         return this.scenes.get(index);
     }

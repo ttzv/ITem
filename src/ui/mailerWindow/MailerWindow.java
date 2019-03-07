@@ -4,7 +4,6 @@ import file.MailMsgParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -13,16 +12,14 @@ import pass.PasswordGenerator;
 import properties.Cfg;
 import sender.Sender;
 import ui.mainAppWindow.MainWindow;
-import ui.settingsWindow.PHolder;
+import pwSafe.PHolder;
 import uiUtils.LimitableTextField;
 import uiUtils.StatusBar;
 import utility.Utility;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.ResourceBundle;
 
 public class MailerWindow extends AnchorPane {
 
@@ -232,6 +229,10 @@ public class MailerWindow extends AnchorPane {
             this.sender.setAddressSuffix(newValue);
             updateAddressLabelText();
         });
+    }
+
+    public void setUserName(String userName){
+        this.txtUser.setText(userName);
     }
 
 }

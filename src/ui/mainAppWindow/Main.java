@@ -1,17 +1,12 @@
 package ui.mainAppWindow;
 
-import db.DbCon;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import properties.Cfg;
-import pwSafe.Crypt;
-import ui.settingsWindow.PHolder;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 
 public class Main extends Application {

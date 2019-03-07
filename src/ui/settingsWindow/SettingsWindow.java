@@ -4,7 +4,6 @@ import ad.LDAPParser;
 import db.DbCon;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,10 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import properties.Cfg;
 import pwSafe.Crypt;
+import pwSafe.PHolder;
 import sender.Sender;
 import uiUtils.TitledBorder;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 

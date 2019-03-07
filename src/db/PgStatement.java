@@ -59,6 +59,15 @@ public class PgStatement {
         return wrapped.toArray(new String[0]);
     }
 
+    /**
+     * Convenience method used for wrapping values between apostrophes
+     * @param data data to put inbetween apostrophes
+     * @return data wrapped in apostrophes
+     */
+    public static String apostrophied(String data){
+        return "'" + data + "'";
+    }
+
     public static String select(String table, String content){
         return "SELECT " + content + " FROM " + table + " ";
     }

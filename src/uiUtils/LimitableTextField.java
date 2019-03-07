@@ -12,7 +12,7 @@ import java.util.function.UnaryOperator;
 
 public class LimitableTextField extends TextField {
 
-    public static String NAME_ONLY = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*|\\s|[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+\\s\\w+";
+    public static String NAME_ONLY = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*|\\s|[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*\\s+[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*";
     public static String RESTRICT_SYMBOLS = "[A-Za-z]*|\\.|\\d|[A-Za-z]+\\.\\w+|[-]";
 
     private final int MAX_THREADS = 4;
@@ -70,7 +70,7 @@ public class LimitableTextField extends TextField {
                 return change;
             } else if(change.isContentChange()){
                 blinkError(3);
-                //System.out.println("rejected " + change);
+                System.out.println("rejected " + change);
             }
             return null;
         };
