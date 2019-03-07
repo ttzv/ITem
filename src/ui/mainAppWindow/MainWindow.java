@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -24,6 +25,11 @@ public class MainWindow extends AnchorPane {
 
     private FXMLLoader fxmlLoader;
 
+
+    @FXML
+    private Label labelUsername;
+    @FXML
+    private Label labelCity;
     @FXML
     public Button tabTest;
     @FXML
@@ -63,6 +69,8 @@ public class MainWindow extends AnchorPane {
     public void initialize(){
         scenePicker = new ScenePicker();
         scenePicker.addAll(new MailerWindow(this), new ADWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
+        labelCity.setText("");
+        labelUsername.setText("");
 
 
         loadOnStart();
@@ -121,6 +129,11 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     void showDbToolsWindow(ActionEvent event) {
+
+    }
+
+    @FXML
+    void loadNewestUser(ActionEvent event){
 
     }
 

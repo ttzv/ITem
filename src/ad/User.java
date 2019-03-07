@@ -14,6 +14,15 @@ import java.util.LinkedList;
  */
 public class User extends LinkedList<String> {
 
+    public static final String[] columns = {"samaccountname",
+                                            "givenname",
+                                            "sn",
+                                            "displayname",
+                                            "useraccountcontrol",
+                                            "mail",
+                                            "whenCreated",
+                                            "city"};
+
     public User(String... data) {
         for (String d : data){
             this.add(d);
@@ -40,7 +49,17 @@ public class User extends LinkedList<String> {
         return this.get(4);
     }
 
-    public String[] getRow(){
+    public String getMail(){return this.get(5);}
+
+    public String getWhenCreated(){return this.get(6);}
+
+    public String getCity(){return this.get(7);}
+
+    public String[] getComplete(){
         return this.toArray(new String [0]);
     }
+
+
+
+
 }

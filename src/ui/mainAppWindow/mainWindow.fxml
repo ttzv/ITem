@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import uiUtils.StatusBar?>
 
@@ -39,11 +39,34 @@
                   </Menu>
               </menus>
             </MenuBar>
-            <Pane fx:id="infoPane" maxHeight="-Infinity" prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES">
+            <AnchorPane style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" layoutY="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="900.0" spacing="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <Label fx:id="labelUsername" alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 25; -fx-font-style: italic; -fx-font-weight: bold;" text="USERNAME" />
+                        <Label fx:id="labelCity" style="-fx-text-fill: #e8e9ea; -fx-font-size: 18; -fx-font-weight: bolder;" text="CITY" />
+                     </children>
+                     <padding>
+                        <Insets right="50.0" />
+                     </padding>
+                  </HBox>
+                  <HBox AnchorPane.leftAnchor="0.0">
+                     <children>
+                        <Button maxWidth="67.0" mnemonicParsing="false" onAction="#loadNewestUser" prefHeight="52.0" prefWidth="67.0" style="-fx-background-radius: 5em; -fx-max-width: 45; -fx-max-height: 45; -fx-background-image: url(&quot;img/Add.png&quot;); -fx-background-position: center; -fx-background-size: 35 35; -fx-background-repeat: no-repeat;">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets left="35.0" top="8.0" />
+                     </padding>
+                  </HBox>
+               </children>
                <effect>
-                  <InnerShadow blurType="ONE_PASS_BOX" />
+                  <InnerShadow />
                </effect>
-            </Pane>
+            </AnchorPane>
             <HBox prefHeight="560.0" prefWidth="973.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: silver;" HBox.hgrow="ALWAYS">

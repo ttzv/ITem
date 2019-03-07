@@ -66,7 +66,7 @@ public class PgStatement {
     public static String update(String tableToUpdate, String columnToSet, String value, String criterium){ return "UPDATE " + tableToUpdate + " SET " + columnToSet + " = " + value + " WHERE " + criterium + ";"; }
 
     /**
-     * PostgreSQL statement that checks if given value exists in column
+     * Builds a PostgreSQL statement that checks if given value exists in column
      * @param table - table to look into
      * @param column - column where to search
      * @param value - searched value
@@ -74,5 +74,21 @@ public class PgStatement {
      */
     public static String exists(String table, String column, String value){
         return "select exists(select 1 from " + table + " where " + column + "='" + value +"')";
+    }
+
+    /**
+     * Builds a PostgreSQL statement that performs SELECT with ascending or descending sorting based on chosen column
+     * @param table table to select from
+     * @param content list of columns to show
+     * @param column column to sort by
+     * @param ascending true for ascending sorting, false for descending sorting
+     * @return Complete statement
+     */
+    public static String selectAscending(String table, String content, String column, boolean ascending){
+        if(ascending) {
+            return select(table, content) + "order by " + column + " asc ";
+        } else {
+            return select(table, content) + "order by " + column + " desc ";
+        }
     }
 }

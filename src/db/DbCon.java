@@ -2,12 +2,9 @@ package db;
 
 import ad.LDAPParser;
 import ad.User;
-import properties.Cfg;
-import ui.settingsWindow.PHolder;
 
-import javax.naming.NamingException;
 import java.sql.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -17,6 +14,14 @@ public class DbCon {
     private String dbUrl;
     private String dbUser;
     private char[] dbPass;
+
+    private LDAPParser ldapParser;
+
+    public DbCon(LDAPParser ldapParser) {
+        this.ldapParser = ldapParser;
+    }
+
+    public DbCon(){}
 
     public boolean initConnection() throws SQLException{
         String dbUrl = "jdbc:postgresql://" + this.dbUrl;
@@ -33,27 +38,98 @@ public class DbCon {
     public void ldapToDb() throws SQLException {
         Statement st = conn.createStatement();
 
-        LDAPParser ldapParser = new LDAPParser();
-        try {
-            ldapParser.initializeLdapContext();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-        ldapParser.queryLdap();
         List<User> ldapusers = ldapParser.getUsersDataList();
-        String[] columns = {"samaccountname", "givenname", "sn", "displayname", "useraccountcontrol", "mail", "whenCreated"};
+        String[] columns = User.columns;
         for (User u : ldapusers) {
             //String qpart ="(" +"'"+u.getSamAccountName()+"'" +","+ "'"+u.getGivenName()+"'" +","+ "'"+u.getSn()+"'" +","+ "'"+u.getDisplayName()+"'" +","+ "'"+u.getUserAccountControl()+"'"+")";
-            String query = PgStatement.insert("users", columns, PgStatement.apostrophied(u.getRow())); //hopefully this works in the same way
+            String query = PgStatement.insert("users", columns, PgStatement.apostrophied(u.getComplete())); //hopefully this works in the same way
             st.executeUpdate(query);
         }
 
         st.close();
     }
 
-    public void updateDbValues(String column) throws SQLException {
+    /**
+     * Checks if given value exists in table
+     * @param table table where search will be performed
+     * @param column column to search into
+     * @param value value to search for
+     * @return true if value exists, otherwise false
+     * @throws SQLException when connection with database could not be estabilished or query was invalid
+     */
+    public boolean existsInDB(String table, String column, String value) throws SQLException {
         Statement st = conn.createStatement();
 
+        String exists = PgStatement.exists(table,column,value);
+
+        ResultSet resultSet = st.executeQuery(exists);
+        resultSet.next();
+
+        boolean result = resultSet.getBoolean(1);
+        resultSet.close();
+        return result;
+    }
+
+    /**
+     * Updates table USERS with new values from LDAP
+     * @return List of users that were added to a database during update execution
+     */
+    //todo: test this
+    public List<User> getNewUsers() throws SQLException {
+        String table = "users";
+        String column = "samaccountname";
+        Statement st = conn.createStatement();
+
+        List<User> ldapusers = ldapParser.getUsersDataList();
+        List<User> newUsers = new ArrayList<>();
+
+        for(User user : ldapusers){
+            boolean exists = existsInDB(table, column, user.getSamAccountName());
+            if(!exists) {
+
+                String query = PgStatement.insert(table, User.columns, PgStatement.apostrophied(user.getComplete()));
+                System.out.println(query);
+                st.executeUpdate(query);
+                newUsers.add(user);
+            }
+        }
+        st.close();
+        return newUsers;
+    }
+
+    /**
+     * Updates records in database with information parsed from LDAP
+     * @param table
+     * @param column
+     */
+    public void updateUsersInfo(String table, String column) throws SQLException {
+        String tabletest = "users";
+        String columntest = "city";
+
+        Statement st = conn.createStatement();
+        String updateQuery;
+        String criterium;
+        List<User> users = ldapParser.getUsersDataList();
+
+        for (User u : users) {
+            criterium = "samaccountname='"+u.getSamAccountName()+"'";
+            updateQuery = PgStatement.update(tabletest, columntest, u.getCity(), criterium);
+            st.executeUpdate(updateQuery);
+        }
+
+        st.close();
+
+    }
+
+
+    //todo: test this
+    public User getNewestUser() throws SQLException {
+        Statement st = conn.createStatement();
+        ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users", "*", "whencreated", false));
+        resultSet.next();
+        User user = new User(Integer.toString(resultSet.getInt(1)), resultSet.getString(2), resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(6));
+        resultSet.close();
+        return user;
     }
 
     public String getDbUrl() {

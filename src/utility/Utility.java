@@ -2,6 +2,8 @@ package utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utility {
 
@@ -28,5 +30,14 @@ public class Utility {
 
     public static ArrayList<String> stringToArray(String string){
         return new ArrayList<>(Arrays.asList(string.substring(1, string.length() - 1).replaceAll("\\s", "").split(",")));
+    }
+
+    public static String extractCityFromDn(String dn){
+        Pattern pattern = Pattern.compile(",OU=(.*?),");
+        Matcher matcher = pattern.matcher(dn);
+        if(matcher.find()){
+            return matcher.group(1);
+        }
+        return "";
     }
 }
