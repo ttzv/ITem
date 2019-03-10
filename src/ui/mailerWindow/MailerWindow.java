@@ -57,7 +57,6 @@ public class MailerWindow extends AnchorPane {
     @FXML
     private Label labAddress;
 
-    public StatusBar statusBar;
 
 
 
@@ -74,7 +73,7 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     void btnSendAction(ActionEvent event) {
-        mainWindow.setStatusBarText("Wysłano do");
+        mainWindow.setStatusBarText("Wysłano do " + this.sender.getReceiverAddress());
         sender.setSmtpHost(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
         sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
         sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
@@ -122,6 +121,19 @@ public class MailerWindow extends AnchorPane {
         tabChangedEvent();
         //Improve topic loading, line below is not cool
         this.labTopic.setText(this.tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
+    }
+
+    @FXML
+    void btnAddTabs(ActionEvent event) {
+        tabBuilder.promptForChooser();
+        tabBuilder.build();
+        this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
+    }
+
+
+    @FXML
+    void btnDelTab(ActionEvent event) {
+        this.tabPane.getTabs().remove(this.tabBuilder.getSelectedTab());
     }
 
     @FXML

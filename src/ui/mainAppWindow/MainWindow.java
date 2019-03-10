@@ -142,16 +142,11 @@ public class MainWindow extends AnchorPane {
     @FXML
     void loadNewestUser(ActionEvent event) throws NamingException, SQLException {
         LDAPParser ldapParser = new LDAPParser();
-        ldapParser.setLdap_URL(Cfg.getInstance().retrieveProp(Cfg.LDAP_URL));
-        ldapParser.setLdap_port(Cfg.getInstance().retrieveProp(Cfg.LDAP_PORT));
-        ldapParser.setAd_adminUser(Cfg.getInstance().retrieveProp(Cfg.LDAP_ACC));
-        ldapParser.setAd_adminPass(PHolder.ldap);
+        ldapParser.loadCfgCredentials();
         ldapParser.initializeLdapContext();
-        ldapParser.queryLdap();
 
         DbCon dbCon = new DbCon(ldapParser);
-        dbCon.setDbUrl(Cfg.getInstance().retrieveProp(Cfg.DB_URL));
-        dbCon.setDbUser(Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN));
+        dbCon.loadCfgCredentials();
         dbCon.setDbPass(PHolder.db);
         dbCon.initConnection();
 

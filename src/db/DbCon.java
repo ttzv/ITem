@@ -2,6 +2,8 @@ package db;
 
 import ad.LDAPParser;
 import ad.User;
+import properties.Cfg;
+import pwSafe.PHolder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,6 +25,12 @@ public class DbCon {
     }
 
     public DbCon(){}
+
+    public void loadCfgCredentials(){
+        this.setDbUrl(Cfg.getInstance().retrieveProp(Cfg.DB_URL));
+        this.setDbUser(Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN));
+        this.setDbPass(PHolder.db);
+    }
 
     public boolean initConnection() throws SQLException{
         String dbUrl = "jdbc:postgresql://" + this.dbUrl;
@@ -126,7 +134,11 @@ public class DbCon {
         Statement st = conn.createStatement();
         ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users", "*", "whencreated", false));
         resultSet.next();
-        User user = new User(resultSet.getString(User.columns[0]), resultSet.getString(User.columns[1]), resultSet.getString(User.columns[2]), resultSet.getString(User.columns[3]), resultSet.getString(User.columns[4]), resultSet.getString(User.columns[5]), resultSet.getString(User.columns[6]), resultSet.getString(User.columns[7]));
+        String[] resultUserData = new String[User.columns.length];
+        for (int i = 0; i <= User.columns.length - 1 ; i++) {
+            resultUserData[i] = resultSet.getString(User.columns[i]);
+        }
+        User user = new User(resultUserData);
         resultSet.close();
         return user;
     }

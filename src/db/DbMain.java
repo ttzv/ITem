@@ -19,9 +19,9 @@ public class DbMain {
         ldapParser.setAd_adminUser("CN=Serwis,CN=Users,DC=atal,DC=local");
         ldapParser.setAd_adminPass(ldapPass);
         ldapParser.initializeLdapContext();
-
+*/
         char[] dbPass = {'a','d','m','i','n'};
-        DbCon dbCon = new DbCon(ldapParser);
+        DbCon dbCon = new DbCon();
         dbCon.setDbUrl("localhost/jitmg");
         dbCon.setDbUser("postgres");
         dbCon.setDbPass(dbPass);
@@ -36,7 +36,7 @@ public class DbMain {
         System.out.println(dbCon.getNewestUser());
 
         dbCon.updateUsersInfo();
-*/
+
 
         //System.out.println( Utility.extractCityFromDn("CN=Magdalena Kwiatkowska,OU=Gdansk,OU=Pracownicy,DC=atal,DC=local") );
 

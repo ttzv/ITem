@@ -94,7 +94,7 @@ public class MsgFileChooser {
 
     /**
      * If properties related to messages are present use this method to get List of files, only files that exists are placed in the list
-     * @return List of files or null if properties were not present
+     * @return List of files or empty list if properties were not present
      */
         public List<File> getInitialFileList(){
             //this works assuming all files are in the same directory, multiple diferent directories are not supported atm

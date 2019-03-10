@@ -81,7 +81,7 @@
                <children>
                   <VBox prefHeight="605.0">
                      <children>
-                        <HBox>
+                        <HBox prefHeight="50.0" prefWidth="529.0">
                            <children>
                               <TitledBorder stylesheets="@../utils/style.css" title="Temat">
                                  <children>
@@ -101,6 +101,16 @@
                                     </Label>
                                  </children>
                               </TitledBorder>
+                              <HBox alignment="BOTTOM_RIGHT" prefHeight="44.0" prefWidth="377.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="   " />
+                                    <Button mnemonicParsing="false" onAction="#btnDelTab" prefHeight="25.0" prefWidth="25.0" text="-" />
+                                    <Button mnemonicParsing="false" onAction="#btnAddTabs" prefHeight="25.0" prefWidth="25.0" text="+" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" right="5.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                            <padding>
                               <Insets top="5.0" />

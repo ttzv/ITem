@@ -215,6 +215,6 @@
             </GridPane>
          </children>
       </TitledBorder>
-      <Button layoutX="666.0" layoutY="566.0" mnemonicParsing="false" onAction="#btnSaveAllSettingsEvent" text="Zapisz wszystko" />
+      <Button layoutX="20.0" layoutY="377.0" mnemonicParsing="false" onAction="#btnSaveAllSettingsEvent" text="Zapisz wszystko" />
    </children>
 </fx:root>

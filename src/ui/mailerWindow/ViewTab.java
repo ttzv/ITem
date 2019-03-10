@@ -13,7 +13,6 @@ public class ViewTab extends Tab {
     private String name;
 
     public ViewTab(String tabName, MailMsgParser parser){
-
         webView = new WebView();
         this.name = tabName;
         this.parser = parser;
@@ -39,6 +38,7 @@ public class ViewTab extends Tab {
         ViewTab viewTab = (ViewTab) o;
         return Objects.equals(name, viewTab.name);
     }
+
 
     @Override
     public int hashCode() {
