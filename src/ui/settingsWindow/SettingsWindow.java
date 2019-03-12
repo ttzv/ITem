@@ -4,6 +4,7 @@ import ad.LDAPParser;
 import db.DbCon;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -97,6 +98,9 @@ public class SettingsWindow extends AnchorPane {
 
     @FXML
     private CheckBox cbxRememberDb;
+
+    @FXML
+    private ComboBox<Integer> cBoxUserQty;
 
 
 
@@ -199,6 +203,16 @@ public class SettingsWindow extends AnchorPane {
             resetDbIndicators();
         });
 
+        this.cBoxUserQty.getItems().clear();
+        this.cBoxUserQty.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        String initProp = Cfg.getInstance().retrieveProp(Cfg.DB_USER_QTY);
+        int initIndex = 0;
+        if (!initProp.isEmpty()) {
+            initIndex = Integer.parseInt(initProp) - 1 ;
+        }
+        System.out.println(initIndex);
+        this.cBoxUserQty.getSelectionModel().select(initIndex);
+
         //TODO: make ui for DB and LDAP connection, part below is temporary solution, no ui for this yet
         /*DbCon dbCon = null;
         try {
@@ -235,6 +249,11 @@ public class SettingsWindow extends AnchorPane {
         btnLdapPerformAction(true);
         btnMailPerformAction(true);
         Cfg.getInstance().saveFile();
+    }
+
+    @FXML
+    void userQtySelection(ActionEvent event) {
+        Cfg.getInstance().setProperty(Cfg.DB_USER_QTY,Integer.toString(cBoxUserQty.getSelectionModel().getSelectedItem()));
     }
 
     private void btnMailPerformAction(boolean noStore) throws IOException {

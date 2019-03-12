@@ -120,12 +120,12 @@
                               <DropShadow />
                            </effect>
                         </Button>
-                        <Button fx:id="scene2" mnemonicParsing="false" onAction="#goScn2" prefHeight="52.0" prefWidth="110.0" text="Scene2">
+                        <Button fx:id="scene2" mnemonicParsing="false" onAction="#goScn2" prefHeight="52.0" prefWidth="110.0" text="Stopki">
                            <effect>
                               <DropShadow />
                            </effect>
                         </Button>
-                        <Button fx:id="scene3" mnemonicParsing="false" onAction="#goScn3" prefHeight="52.0" prefWidth="110.0" text="Scene3">
+                        <Button fx:id="scene3" mnemonicParsing="false" onAction="#goScn3" prefHeight="52.0" prefWidth="110.0" text="Telefony">
                            <effect>
                               <DropShadow />
                            </effect>

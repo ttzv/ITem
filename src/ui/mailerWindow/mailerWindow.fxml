@@ -20,14 +20,14 @@
 
 <fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="780.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="TOP_RIGHT" layoutX="580.0" prefHeight="605.0" prefWidth="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_RIGHT" layoutX="580.0" prefHeight="605.0" prefWidth="260.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <TitledBorder prefHeight="322.0" prefWidth="200.0" stylesheets="@../utils/style.css" title="Dane">
                <children>
-                  <GridPane hgap="10.0" prefHeight="283.0" prefWidth="174.0">
+                  <GridPane hgap="10.0" prefHeight="283.0" prefWidth="200.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="64.0" minWidth="10.0" prefWidth="43.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="10.0" prefWidth="105.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="66.0" minWidth="10.0" prefWidth="55.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="175.0" minWidth="74.0" prefWidth="148.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="81.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -75,7 +75,7 @@
             </TitledBorder>
          </children>
       </VBox>
-      <VBox layoutX="7.0" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="561.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="212.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="7.0" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="561.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="0.0">
          <children>
             <TitledBorder maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="580.0" stylesheets="@../utils/style.css" title="Wiadomość" VBox.vgrow="ALWAYS">
                <children>
@@ -101,7 +101,7 @@
                                     </Label>
                                  </children>
                               </TitledBorder>
-                              <HBox alignment="BOTTOM_RIGHT" prefHeight="44.0" prefWidth="377.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                              <HBox alignment="BOTTOM_RIGHT" spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="   " />
                                     <Button mnemonicParsing="false" onAction="#btnDelTab" prefHeight="25.0" prefWidth="25.0" text="-" />

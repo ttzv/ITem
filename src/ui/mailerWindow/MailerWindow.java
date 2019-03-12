@@ -1,6 +1,8 @@
 package ui.mailerWindow;
 
+import ad.UserHolder;
 import db.DbCon;
+import db.PgStatement;
 import file.MailMsgParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -96,14 +98,18 @@ public class MailerWindow extends AnchorPane {
 
         sender.sendMail();
 
-        savePass();
+        try {
+            savePass();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void savePass() throws SQLException {
         DbCon dbCon = new DbCon();
         dbCon.loadCfgCredentials();
         dbCon.initConnection();
-        dbcon
+        dbCon.customQuery(PgStatement.update("'users'", "'initmailpass'", PgStatement.apostrophied(this.txtPass.getText()), "WHERE samaccountname='" + PgStatement.apostrophied(UserHolder.getCurrentUser().getSamAccountName())) );
     }
 
     @FXML

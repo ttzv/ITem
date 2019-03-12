@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import properties.Cfg;
 import pwSafe.PHolder;
 import ui.adWindow.ADWindow;
 import ui.mailerWindow.InfoWindow;
@@ -89,7 +90,7 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize(){
         scenePicker = new ScenePicker();
-        scenePicker.addAll(new MailerWindow(this), new ADWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
+        scenePicker.addAll(new MailerWindow(this), new SignWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
         labelCity.setText("");
         labelUsername.setText("");
         infoBarAssetsVisible(false);
@@ -176,7 +177,7 @@ public class MainWindow extends AnchorPane {
     void loadNewUsers() throws NamingException, SQLException {
         infoBarAssetsVisible(true);
 
-        int temporaryUserCountVariable = 5;
+        int userQtyToLoad = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.DB_USER_QTY));
         LDAPParser ldapParser = new LDAPParser();
         ldapParser.loadCfgCredentials();
         ldapParser.initializeLdapContext();
@@ -188,7 +189,7 @@ public class MainWindow extends AnchorPane {
 
         dbCon.updateUsersTable();
 
-        dbCon.getNewUsers(temporaryUserCountVariable);
+        dbCon.getNewUsers(userQtyToLoad);
 
         changeUser();
 

@@ -45,6 +45,12 @@ public class DbCon {
         return true;
     }
 
+    public void customQuery(String query) throws SQLException {
+        Statement st = conn.createStatement();
+        st.executeUpdate(query);
+        st.close();
+    }
+
     public void ldapToDb() throws SQLException {
         Statement st = conn.createStatement();
 

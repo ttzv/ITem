@@ -20,6 +20,7 @@ package properties;
      //db
      public static String DB_URL = "dbUrl";
      public static String DB_LOGIN = "dbLogin";
+     public static String DB_USER_QTY = "dbLoadedUserQuantity";
 
 
 
