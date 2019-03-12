@@ -31,6 +31,7 @@ public class TabBuilder {
 
     public void promptForChooser(){
         this.msgFileChooser.show();
+        builderLoop(msgFileChooser.getMsgs());
     }
 
     public void build() {

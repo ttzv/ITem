@@ -33,8 +33,11 @@ public class MsgFileChooser {
 
     public void show(){
         msgs = fileChooser.showOpenMultipleDialog(null);
-        saveParentPath();
-        saveMsgList();
+        if(msgs != null) {
+            saveParentPath();
+            saveMsgList();
+        } else
+            msgs = new ArrayList<>(0);
     }
 
     public List<File> getMsgs() {
