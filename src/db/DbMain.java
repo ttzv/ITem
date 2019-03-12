@@ -1,8 +1,6 @@
 package db;
 
-import ad.LDAPParser;
 import ad.User;
-import utility.Utility;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
@@ -27,15 +25,16 @@ public class DbMain {
         dbCon.setDbPass(dbPass);
         dbCon.initConnection();
 
-        System.out.println(dbCon.getNewestUser());
+        //System.out.println(dbCon.getNewestUser());
 
-        List<User> newusers = dbCon.getNewUsers();
+        //List<User> newusers = dbCon.updateUsersTable();
 
-        System.out.println("Added: " + newusers.size() + " new users:\n " + newusers);
+        //System.out.println("Added: " + newusers.size() + " new users:\n " + newusers);
 
-        System.out.println(dbCon.getNewestUser());
+        //System.out.println(dbCon.getNewestUser());
 
-        dbCon.updateUsersInfo();
+        //dbCon.updateUsersInfo();
+        dbCon.getNewUsers(10);
 
 
         //System.out.println( Utility.extractCityFromDn("CN=Magdalena Kwiatkowska,OU=Gdansk,OU=Pracownicy,DC=atal,DC=local") );

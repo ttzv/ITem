@@ -1,5 +1,6 @@
 package ui.mailerWindow;
 
+import db.DbCon;
 import file.MailMsgParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import utility.Utility;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 public class MailerWindow extends AnchorPane {
@@ -93,6 +95,15 @@ public class MailerWindow extends AnchorPane {
         }
 
         sender.sendMail();
+
+        savePass();
+    }
+
+    private void savePass() throws SQLException {
+        DbCon dbCon = new DbCon();
+        dbCon.loadCfgCredentials();
+        dbCon.initConnection();
+        dbcon
     }
 
     @FXML
@@ -126,7 +137,7 @@ public class MailerWindow extends AnchorPane {
     @FXML
     void btnAddTabs(ActionEvent event) {
         tabBuilder.promptForChooser();
-        tabBuilder.build();
+        //tabBuilder.build();
         this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
     }
 

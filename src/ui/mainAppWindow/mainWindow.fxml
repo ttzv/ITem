@@ -44,7 +44,7 @@
             </MenuBar>
             <AnchorPane style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES">
                <children>
-                  <HBox alignment="CENTER_RIGHT" layoutY="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="900.0" spacing="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <HBox fx:id="hBoxUserInfo" alignment="CENTER_RIGHT" layoutY="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="900.0" spacing="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <Label fx:id="labelUsername" alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 25; -fx-font-style: italic; -fx-font-weight: bold;" text="USERNAME" />
                         <Label fx:id="labelCity" style="-fx-text-fill: #e8e9ea; -fx-font-size: 18; -fx-font-weight: bolder;" text="CITY" />
@@ -55,7 +55,7 @@
                   </HBox>
                   <HBox spacing="15.0" AnchorPane.leftAnchor="0.0">
                      <children>
-                        <ImageView fitHeight="36.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgPrev" fitHeight="36.0" fitWidth="29.0" onMouseClicked="#imgBtnPrevUser" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../img/prev.png" />
                            </image>
@@ -66,12 +66,12 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Button maxWidth="67.0" mnemonicParsing="false" onAction="#loadNewestUser" prefHeight="52.0" prefWidth="67.0" style="-fx-background-radius: 5em; -fx-max-width: 45; -fx-max-height: 45; -fx-background-image: url(&quot;img/Add.png&quot;); -fx-background-position: center; -fx-background-size: 35 35; -fx-background-repeat: no-repeat;">
+                        <Button maxWidth="67.0" mnemonicParsing="false" onAction="#loadNewUsers" prefHeight="52.0" prefWidth="67.0" style="-fx-background-radius: 5em; -fx-max-width: 45; -fx-max-height: 45; -fx-background-image: url(&quot;img/Add.png&quot;); -fx-background-position: center; -fx-background-size: 35 35; -fx-background-repeat: no-repeat;">
                            <effect>
                               <DropShadow />
                            </effect>
                         </Button>
-                        <ImageView fitHeight="30.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgNext" fitHeight="30.0" fitWidth="29.0" onMouseClicked="#imgBtnNextUser" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../img/next.png" />
                            </image>
@@ -82,7 +82,25 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Label prefHeight="41.0" prefWidth="45.0" style="-fx-text-fill: white; -fx-font-size: 15; -fx-font-style: italic; -fx-font-weight: bold;" text="Label" />
+                        <HBox fx:id="hBoxQty">
+                           <children>
+                              <Label fx:id="labelCurrentCnt" style="-fx-text-fill: white; -fx-font-size: 15; -fx-font-style: italic; -fx-font-weight: bold;" text="0">
+                                 <padding>
+                                    <Insets top="26.0" />
+                                 </padding>
+                              </Label>
+                              <Label style="-fx-text-fill: white; -fx-font-size: 15; -fx-font-style: italic; -fx-font-weight: bold;" text="/">
+                                 <padding>
+                                    <Insets top="26.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="labelMaxCnt" style="-fx-text-fill: white; -fx-font-size: 15; -fx-font-style: italic; -fx-font-weight: bold;" text="0">
+                                 <padding>
+                                    <Insets top="26.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
                      </children>
                      <padding>
                         <Insets left="35.0" top="8.0" />

@@ -2,6 +2,7 @@ package db;
 
 import ad.LDAPParser;
 import ad.User;
+import ad.UserHolder;
 import properties.Cfg;
 import pwSafe.PHolder;
 
@@ -84,7 +85,7 @@ public class DbCon {
      * @return List of users that were added to a database during update execution
      */
     //todo: test this
-    public List<User> getNewUsers() throws SQLException {
+    public List<User> updateUsersTable() throws SQLException {
         String table = "users";
         String column = "samaccountname";
         Statement st = conn.createStatement();
@@ -128,6 +129,23 @@ public class DbCon {
 
     }
 
+    public boolean getNewUsers(int count) throws SQLException {
+        UserHolder.clear();
+        Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users", "*", "whencreated", false) + "limit " + count);
+        while(resultSet.next()){
+            String[] resultUserData = new String[User.columns.length];
+            for (int i = 0; i <= User.columns.length - 1 ; i++) {
+                resultUserData[i] = resultSet.getString(User.columns[i]);
+            }
+            User user = new User(resultUserData);
+            UserHolder.addUser(user);
+        }
+        System.out.println(resultSet.getRow());
+        resultSet.close();
+        return true;
+    }
+
 
     //todo: test this
     public User getNewestUser() throws SQLException {
@@ -142,6 +160,8 @@ public class DbCon {
         resultSet.close();
         return user;
     }
+
+
 
     public String getDbUrl() {
         return dbUrl;

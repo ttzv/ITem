@@ -9,9 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import properties.Cfg;
 import pwSafe.PHolder;
 import ui.adWindow.ADWindow;
 import ui.mailerWindow.InfoWindow;
@@ -34,9 +36,21 @@ public class MainWindow extends AnchorPane {
 
 
     @FXML
+    private HBox hBoxUserInfo;
+    @FXML
     private Label labelUsername;
     @FXML
     private Label labelCity;
+    @FXML
+    private ImageView imgPrev;
+    @FXML
+    private ImageView imgNext;
+    @FXML
+    private HBox hBoxQty;
+    @FXML
+    private Label labelCurrentCnt;
+    @FXML
+    private Label labelMaxCnt;
     @FXML
     public Button tabTest;
     @FXML
@@ -78,6 +92,7 @@ public class MainWindow extends AnchorPane {
         scenePicker.addAll(new MailerWindow(this), new ADWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
         labelCity.setText("");
         labelUsername.setText("");
+        infoBarAssetsVisible(false);
 
 
         loadOnStart();
@@ -139,7 +154,7 @@ public class MainWindow extends AnchorPane {
 
     }
 
-    @FXML
+    @FXML //not used currently
     void loadNewestUser(ActionEvent event) throws NamingException, SQLException {
         LDAPParser ldapParser = new LDAPParser();
         ldapParser.loadCfgCredentials();
@@ -150,16 +165,66 @@ public class MainWindow extends AnchorPane {
         dbCon.setDbPass(PHolder.db);
         dbCon.initConnection();
 
-        dbCon.getNewUsers();
+        dbCon.updateUsersTable();
 
         UserHolder.setCurrentUser(dbCon.getNewestUser());
 
+        changeUser();
+    }
+
+    @FXML
+    void loadNewUsers() throws NamingException, SQLException {
+        infoBarAssetsVisible(true);
+
+        int temporaryUserCountVariable = 5;
+        LDAPParser ldapParser = new LDAPParser();
+        ldapParser.loadCfgCredentials();
+        ldapParser.initializeLdapContext();
+
+        DbCon dbCon = new DbCon(ldapParser);
+        dbCon.loadCfgCredentials();
+        dbCon.setDbPass(PHolder.db);
+        dbCon.initConnection();
+
+        dbCon.updateUsersTable();
+
+        dbCon.getNewUsers(temporaryUserCountVariable);
+
+        changeUser();
+
+        this.labelMaxCnt.setText(Integer.toString(UserHolder.getMaxCount()));
+    }
+
+    @FXML
+    void imgBtnNextUser(MouseEvent event) {
+        UserHolder.next();
+        changeUser();
+    }
+
+    @FXML
+    void imgBtnPrevUser(MouseEvent event) {
+        UserHolder.previous();
+        changeUser();
+    }
+
+
+
+    private void infoBarAssetsVisible(boolean b){
+        this.hBoxQty.setVisible(b);
+        this.hBoxUserInfo.setVisible(b);
+        this.imgNext.setVisible(b);
+        this.imgPrev.setVisible(b);
+    }
+
+    private void changeUser(){
         this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
         this.labelCity.setText(UserHolder.getCurrentUser().getCity());
-
         MailerWindow w = (MailerWindow) scenePicker.getScene(0);
         w.setUserName(UserHolder.getCurrentUser().getDisplayName());
+        this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
     }
+
+
 
     public void setStatusBarText(String text){
         this.statusBar.setVanishingText(text);
