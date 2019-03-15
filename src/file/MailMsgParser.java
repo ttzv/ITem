@@ -7,7 +7,7 @@ import java.util.Scanner;
  * Parses given HTML file and detects flagged lines. Current flags are: <!L></!L> - for Login and <!P></!P> for Password
  * Both can be changed.
  */
-public class MailMsgParser {
+public class MailMsgParser implements FileParser{
 
     private BufferedReader bufferedReader;
     private String flagLoginRegex;
@@ -76,6 +76,7 @@ public class MailMsgParser {
 
     }*/
 
+    @Override
     public String getOutputString(){
         return this.stringBuilder.toString();
     }

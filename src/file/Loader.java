@@ -29,7 +29,7 @@ public class Loader {
         String stringLine;
         try {
             while ((stringLine = bufferedReader.readLine()) != null) {
-                stringBuilder.append(stringLine);
+                stringBuilder.append(stringLine + "\n");
             }
             return stringBuilder;
         } catch (IOException ioe) {
