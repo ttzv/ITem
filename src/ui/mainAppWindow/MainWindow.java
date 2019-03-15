@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import properties.Cfg;
 import pwSafe.PHolder;
-import ui.adWindow.ADWindow;
+import ui.signWindow.SignWindow;
 import ui.mailerWindow.InfoWindow;
 import ui.mailerWindow.MailerWindow;
 import ui.crmWindow.CrmWindow;

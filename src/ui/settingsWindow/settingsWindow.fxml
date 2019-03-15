@@ -19,20 +19,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import uiUtils.TitledBorder?>
 
-<fx:root prefHeight="605.0" prefWidth="780.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="660.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledBorder fx:id="containerMailSett" stylesheets="@../utils/style.css" title="E-mail">
+      <TitledBorder fx:id="containerMailSett" prefHeight="378.0" prefWidth="430.0" stylesheets="@../utils/style.css" title="E-mail">
          <children>
             <AnchorPane>
                <children>
-                  <VBox>
+                  <VBox prefHeight="341.0" prefWidth="398.0">
                      <children>
                         <TitledBorder stylesheets="@../utils/style.css" title="Poczta">
                            <children>
                               <GridPane>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="98.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.0" minWidth="10.0" prefWidth="204.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="0.0" prefWidth="0.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -58,7 +59,8 @@
                               <GridPane>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="98.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.0" minWidth="10.0" prefWidth="204.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="0.0" prefWidth="0.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -106,7 +108,7 @@
             </AnchorPane>
          </children>
       </TitledBorder>
-      <TitledBorder fx:id="containerLdapSett" layoutX="294.0" prefHeight="178.0" prefWidth="485.0" stylesheets="@../utils/style.css" title="AD/LDAP">
+      <TitledBorder fx:id="containerLdapSett" layoutX="415.0" prefHeight="178.0" prefWidth="485.0" stylesheets="@../utils/style.css" title="AD/LDAP">
          <children>
             <GridPane prefHeight="201.0" prefWidth="429.0">
                <columnConstraints>
@@ -161,7 +163,7 @@
             </GridPane>
          </children>
       </TitledBorder>
-      <TitledBorder fx:id="containerDbSett" layoutX="294.0" layoutY="178.0" prefHeight="199.0" prefWidth="485.0" stylesheets="@../utils/style.css" title="Baza Danych">
+      <TitledBorder fx:id="containerDbSett" layoutX="415.0" layoutY="178.0" prefHeight="199.0" prefWidth="485.0" stylesheets="@../utils/style.css" title="Baza Danych">
          <children>
             <GridPane prefHeight="201.0" prefWidth="453.0">
                <columnConstraints>
@@ -216,7 +218,7 @@
          </children>
       </TitledBorder>
       <Button layoutX="14.0" layoutY="566.0" mnemonicParsing="false" onAction="#btnSaveAllSettingsEvent" text="Zapisz wszystko" />
-      <TitledBorder fx:id="containerDbSett1" layoutY="367.0" prefHeight="199.0" prefWidth="780.0" stylesheets="@../utils/style.css" title="Pozostałe">
+      <TitledBorder fx:id="containerDbSett1" layoutY="367.0" maxWidth="1.7976931348623157E308" prefHeight="199.0" prefWidth="900.0" stylesheets="@../utils/style.css" title="Pozostałe">
          <children>
             <GridPane>
               <columnConstraints>

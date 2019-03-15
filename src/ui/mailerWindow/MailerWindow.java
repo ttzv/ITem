@@ -109,7 +109,7 @@ public class MailerWindow extends AnchorPane {
         DbCon dbCon = new DbCon();
         dbCon.loadCfgCredentials();
         dbCon.initConnection();
-        dbCon.customQuery(PgStatement.update("'users'", "'initmailpass'", PgStatement.apostrophied(this.txtPass.getText()), "WHERE samaccountname='" + PgStatement.apostrophied(UserHolder.getCurrentUser().getSamAccountName())) );
+        dbCon.customQuery(PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "samaccountname=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getSamAccountName())) );
     }
 
     @FXML

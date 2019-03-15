@@ -148,7 +148,7 @@
                         <Blend />
                      </effect>
                   </VBox>
-                  <AnchorPane fx:id="contentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="780.0" HBox.hgrow="ALWAYS" />
+                  <AnchorPane fx:id="contentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <StatusBar fx:id="statusBar" maxWidth="1.7976931348623157E308" minHeight="20.0" prefHeight="20.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" VBox.vgrow="NEVER" />
