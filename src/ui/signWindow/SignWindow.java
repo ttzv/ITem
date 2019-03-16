@@ -8,12 +8,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
+import properties.Cfg;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
 public class SignWindow extends AnchorPane {
 
@@ -43,6 +49,14 @@ public class SignWindow extends AnchorPane {
         textFieldEventBind(this.txtfCityFax, SignatureParser.CITYFAX);
         txtfCityEvent();
         comBoxCityTypeAction();
+
+        String signFilePath = Cfg.getInstance().retrieveProp(Cfg.SIGN_LOC);
+        if(!signFilePath.isEmpty()){
+            Loader loader = new Loader();
+            loader.load(new File(signFilePath));
+            signatureParser = new SignatureParser(loader.readContent());
+            reload();
+        }
 
     }
 
@@ -86,26 +100,35 @@ public class SignWindow extends AnchorPane {
     private ToggleButton btnDeleteFax;
 
     @FXML
-    private void load(){
+    private void load() throws IOException {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-        this.webViewSignature.getEngine().load(file.toURI().toString());
         Loader loader = new Loader();
         loader.load(file);
         signatureParser = new SignatureParser(loader.readContent());
-        System.out.println( signatureParser.getOutputString() );
+        reload();
+
+        Cfg.getInstance().setProperty(Cfg.SIGN_LOC, file.getPath());
+        Cfg.getInstance().saveFile();
+    }
+
+    @FXML
+    private void btnCopyContentAction() {
+
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.put(DataFormat.RTF, webViewSignature.getEngine().executeScript("document.selection.createrange()"));
+        clipboard.setContent(content);
+
 
     }
 
     @FXML
-    private void gethtml() {
-        String html = (String) webViewSignature.getEngine().executeScript("document.documentElement.outerHTML");
-        System.out.println("html:" + html);
-    }
-
-    @FXML
-    private void loadLine() {
-        this.webViewSignature.getEngine().loadContent(this.htmlLine.getText());
+    private void btnCopyHTMLAction() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent clipboardContent = new ClipboardContent();
+        clipboardContent.putString(signatureParser.getOutputString());
+        clipboard.setContent(clipboardContent);
     }
 
     @FXML

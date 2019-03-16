@@ -94,10 +94,8 @@
                               <Insets right="10.0" />
                            </padding>
                         </GridPane>
-                        <Button mnemonicParsing="false" onAction="#load" text="LOAD" />
-                        <Button mnemonicParsing="false" onAction="#gethtml" text="gethtml" />
-                        <Button mnemonicParsing="false" onAction="#loadLine" text="loadline" />
-                        <TextField fx:id="htmlLine" prefHeight="211.0" prefWidth="274.0" />
+                        <Button mnemonicParsing="false" onAction="#load" text="Dodaj/Zmień" />
+                        <Button mnemonicParsing="false" onAction="#btnCopyHTMLAction" text="Kopiuj HTML" />
                      </children>
                   </VBox>
                </children>

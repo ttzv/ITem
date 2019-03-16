@@ -36,7 +36,6 @@ public class SignatureParser implements FileParser {
     public SignatureParser (StringBuilder stringBuilder){
         splitSign = new ArrayList<String>(Arrays.asList(stringBuilder.toString().split("\\r?\\n")));
         defaults = new ArrayList<>(splitSign);
-        System.out.println(splitSign);
         this.name = splitSign.get(NAME);
         this.position = splitSign.get(POSITION);
         this.phone = splitSign.get(PHONE);
