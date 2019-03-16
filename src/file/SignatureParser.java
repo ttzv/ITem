@@ -16,13 +16,13 @@ public class SignatureParser implements FileParser {
     private String cityPhone;
     private String cityFax;
 
-    public final int NAME = 1;
-    public final int POSITION = 3;
-    public final int PHONE = 5;
-    public final int MPHONE = 7;
-    public final int CITY = 11;
-    public final int CITYPHONE = 13;
-    public final int CITYFAX = 15;
+    public static final int NAME = 1;
+    public static final int POSITION = 4;
+    public static final int PHONE = 7;
+    public static final int MPHONE = 10;
+    public static final int CITY = 15;
+    public static final int CITYPHONE = 17;
+    public static final int CITYFAX = 19;
 
     private String phoneConstantValue = "tel. (+48) ";
     private String mphoneConstantValue = "kom. (+48) ";
@@ -30,8 +30,8 @@ public class SignatureParser implements FileParser {
     private String cityFaxConstantValue = "Fax. ";
     private ArrayList<Integer> availableLines;
 
-    private int removed;
-    private int lastIndexModified;
+    private ArrayList<Integer> hiddenRows;
+
 
     public SignatureParser (StringBuilder stringBuilder){
         splitSign = new ArrayList<String>(Arrays.asList(stringBuilder.toString().split("\\r?\\n")));
@@ -46,8 +46,7 @@ public class SignatureParser implements FileParser {
         Integer[] avail = {NAME, POSITION, PHONE, MPHONE, CITY, CITYPHONE, CITYFAX};
         availableLines = new ArrayList<Integer>(Arrays.asList(avail));
 
-        removed = 0;
-        lastIndexModified = -1;
+        hiddenRows = new ArrayList<>();
     }
 
     /**
@@ -75,13 +74,19 @@ public class SignatureParser implements FileParser {
     }
 
     /**
-     * Use this method to delete unneeded information from signature.
-     * @param row - row to delete from signature
+     * Use this method to hide unneeded information from signature.
+     * @param rows - rows to delete hide in signature
      */
-    public void deleteRow(int row){
-        lastIndexModified = row;
-        removed++;
-        this.splitSign.remove(row);
+    public void hideRows(int... rows){
+        for (int r : rows){
+            hiddenRows.add(r);
+        }
+    }
+
+    public void showRows(Integer... rows){
+        for (Integer r : rows) {
+            hiddenRows.remove(r);
+        }
     }
 
     public void setName(String name){
@@ -124,8 +129,10 @@ public class SignatureParser implements FileParser {
     @Override
     public String getOutputString() {
         String result = "";
-        for (String s : splitSign) {
-            result = result.concat(s + "\n");
+        for (int i = 0; i < splitSign.size(); i++) {
+            if(!hiddenRows.contains(i)){
+                result = result.concat(splitSign.get(i) + "\n");
+            }
         }
         return result;
     }

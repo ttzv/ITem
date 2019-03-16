@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -34,12 +35,12 @@ public class SignWindow extends AnchorPane {
         this.comBoxCityType.getItems().addAll("Centrala","Filia");
         this.comBoxCityType.getSelectionModel().select(1);
 
-        textFieldEventBind(this.txtfName, 1);
-        textFieldEventBind(this.txtfPos, 3);
-        textFieldEventBind(this.txtfPhone, 5);
-        textFieldEventBind(this.txtfMPhone, 7);
-        textFieldEventBind(this.txtfCityPhone, 13);
-        textFieldEventBind(this.txtfCityFax, 15);
+        textFieldEventBind(this.txtfName, SignatureParser.NAME);
+        textFieldEventBind(this.txtfPos, SignatureParser.POSITION);
+        textFieldEventBind(this.txtfPhone, SignatureParser.PHONE);
+        textFieldEventBind(this.txtfMPhone, SignatureParser.MPHONE);
+        textFieldEventBind(this.txtfCityPhone, SignatureParser.CITYPHONE);
+        textFieldEventBind(this.txtfCityFax, SignatureParser.CITYFAX);
         txtfCityEvent();
         comBoxCityTypeAction();
 
@@ -76,6 +77,15 @@ public class SignWindow extends AnchorPane {
     private TextField htmlLine;
 
     @FXML
+    private ToggleButton btnDeleteMPhone;
+
+    @FXML
+    private ToggleButton btnDeletePhone;
+
+    @FXML
+    private ToggleButton btnDeleteFax;
+
+    @FXML
     private void load(){
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
@@ -99,19 +109,33 @@ public class SignWindow extends AnchorPane {
     }
 
     @FXML
-    private void btnDeleteFax(ActionEvent event) {
-
+    private void btnDeleteFaxAction(ActionEvent event) {
+        if(!btnDeleteFax.isSelected()){
+            signatureParser.showRows(19, 18);
+        } else {
+            signatureParser.hideRows(19, 18);
+        }
+        reload();
     }
 
     @FXML
-    private void btnDeleteMPhone(ActionEvent event) {
-
+    private void btnDeleteMPhoneAction(ActionEvent event) {
+        if(!btnDeleteMPhone.isSelected()){
+            signatureParser.showRows(10, 11);
+        } else {
+            signatureParser.hideRows(10, 11);
+        }
+        reload();
     }
 
     @FXML
-    private void btnDeletePhone(ActionEvent event) {
-        signatureParser.deleteRow(5);
-        signatureParser.deleteRow(6);
+    private void btnDeletePhoneAction(ActionEvent event) {
+        if(!btnDeletePhone.isSelected()){
+            signatureParser.showRows(7, 8);
+        } else {
+            signatureParser.hideRows(7, 8);
+        }
+        reload();
     }
 
 
