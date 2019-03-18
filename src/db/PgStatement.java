@@ -1,5 +1,7 @@
 package db;
 
+import com.sun.istack.internal.Nullable;
+
 import java.util.ArrayList;
 
 public class PgStatement {
@@ -68,8 +70,13 @@ public class PgStatement {
         return "'" + data + "'";
     }
 
-    public static String select(String table, String content){
-        return "SELECT " + content + " FROM " + table + " ";
+    public static String select(String table, String content, @Nullable String criterium){
+        String select = "SELECT " + content + " FROM " + table + " ";
+        if(criterium == null) {
+            return select;
+        } else {
+            return select + "WHERE " + criterium + " ";
+        }
     }
 
     public static String update(String tableToUpdate, String columnToSet, String value, String criterium){ return "UPDATE " + tableToUpdate + " SET " + columnToSet + " = " + value + " WHERE " + criterium + ";"; }
@@ -93,11 +100,11 @@ public class PgStatement {
      * @param ascending true for ascending sorting, false for descending sorting
      * @return Complete statement
      */
-    public static String selectAscending(String table, String content, String column, boolean ascending){
+    public static String selectAscending(String table, String content, @Nullable String criterium, String column, boolean ascending){
         if(ascending) {
-            return select(table, content) + "order by " + column + " asc ";
+            return select(table, content, criterium) + "order by " + column + " asc ";
         } else {
-            return select(table, content) + "order by " + column + " desc ";
+            return select(table, content, criterium) + "order by " + column + " desc ";
         }
     }
 }

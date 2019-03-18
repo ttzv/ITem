@@ -138,7 +138,7 @@ public class DbCon {
     public boolean getNewUsers(int count) throws SQLException {
         UserHolder.clear();
         Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users", "*", "whencreated", false) + "limit " + count);
+        ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users,city", "*","users.city=city.id", "whencreated", false) + "limit " + count);
         while(resultSet.next()){
             String[] resultUserData = new String[User.columns.length];
             for (int i = 0; i <= User.columns.length - 1 ; i++) {
@@ -153,10 +153,10 @@ public class DbCon {
     }
 
 
-    //todo: test this
+    @Deprecated
     public User getNewestUser() throws SQLException {
         Statement st = conn.createStatement();
-        ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users", "*", "whencreated", false));
+        ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users", "*", null, "whencreated", false));
         resultSet.next();
         String[] resultUserData = new String[User.columns.length];
         for (int i = 0; i <= User.columns.length - 1 ; i++) {

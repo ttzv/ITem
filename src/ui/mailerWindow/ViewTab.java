@@ -46,7 +46,11 @@ public class ViewTab extends Tab {
     }
 
     public MailMsgParser getParser() {
-        return parser;
+        if(parser!=null) {
+            return parser;
+        } else {
+            throw new NullPointerException("(Mailer) Could not find message, perhaps it is not loaded?");
+        }
     }
 
     public String getName() {

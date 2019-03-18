@@ -58,6 +58,15 @@ public class SignWindow extends AnchorPane {
             reload();
         }
 
+        btnDeleteFax.setOnAction(event -> {
+            if(!btnDeleteFax.isSelected()){
+                signatureParser.showRows(19, 18);
+            } else {
+                signatureParser.hideRows(19, 18);
+            }
+            reload();
+        });
+
     }
 
     @FXML
@@ -134,9 +143,9 @@ public class SignWindow extends AnchorPane {
     @FXML
     private void btnDeleteFaxAction(ActionEvent event) {
         if(!btnDeleteFax.isSelected()){
-            signatureParser.showRows(19, 18);
+            hideFax(true);
         } else {
-            signatureParser.hideRows(19, 18);
+            hideFax(false);
         }
         reload();
     }
@@ -144,9 +153,9 @@ public class SignWindow extends AnchorPane {
     @FXML
     private void btnDeleteMPhoneAction(ActionEvent event) {
         if(!btnDeleteMPhone.isSelected()){
-            signatureParser.showRows(10, 11);
+            hideMPhone(true);
         } else {
-            signatureParser.hideRows(10, 11);
+            hideMPhone(false);
         }
         reload();
     }
@@ -154,9 +163,9 @@ public class SignWindow extends AnchorPane {
     @FXML
     private void btnDeletePhoneAction(ActionEvent event) {
         if(!btnDeletePhone.isSelected()){
-            signatureParser.showRows(7, 8);
+            hidePhone(true);
         } else {
-            signatureParser.hideRows(7, 8);
+            hidePhone(false);
         }
         reload();
     }
@@ -194,5 +203,81 @@ public class SignWindow extends AnchorPane {
         webViewSignature.getEngine().loadContent(signatureParser.getOutputString());
     }
 
+    public void setTxtfName(String txtfName) {
+        this.txtfName.setText(txtfName);
+    }
 
+    public void setTxtfPos(String txtfPos) {
+        this.txtfPos.setText(txtfPos);
+    }
+
+    public void setTxtfPhone(String txtfPhone) {
+        String phone="";
+        if(txtfPhone != null){
+            phone = txtfPhone;
+            hidePhone(false);
+        } else {
+            hidePhone(true);
+        }
+        this.txtfPhone.setText(phone);
+    }
+
+    public void setTxtfMPhone(String txtfMPhone) {
+        String mPhone="";
+        if(txtfPhone != null){
+            mPhone = txtfMPhone;
+            hideMPhone(false);
+        } else {
+            hideMPhone(true);
+        }
+        this.txtfMPhone.setText(mPhone);
+    }
+
+    public void setTxtfCityPhone(String txtfCityPhone) {
+        this.txtfCityPhone.setText(txtfCityPhone);
+    }
+
+    public void setTxtfCityFax(String txtfCityFax) {
+        String cityFax = "";
+        if(txtfCityFax != null) {
+            cityFax = txtfCityFax;
+            hideFax(false);
+            btnDeleteFax.setSelected(false);
+        } else {
+            hideFax(true);
+            btnDeleteFax.setSelected(true);
+        }
+        this.txtfCityFax.setText(cityFax);
+
+    }
+
+    public void setTxtfCity(String  txtfCity) {
+        this.txtfCity.setText(txtfCity);
+    }
+
+    public void selectComboxVal(int val){
+        this.comBoxCityType.getSelectionModel().select(val);
+    }
+
+    private void hidePhone(boolean hide){
+        if(hide){
+            signatureParser.hideRows(7, 8);
+        } else {
+            signatureParser.showRows(7, 8);
+        }
+    }
+    private void hideMPhone(boolean hide){
+        if(hide){
+            signatureParser.hideRows(10, 11);
+        } else {
+            signatureParser.showRows(10, 11);
+        }
+    }
+    private void hideFax(boolean hide){
+        if(hide){
+            signatureParser.hideRows(19, 18);
+        } else {
+            signatureParser.showRows(19, 18);
+        }
+    }
 }

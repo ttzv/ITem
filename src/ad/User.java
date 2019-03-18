@@ -21,8 +21,10 @@ public class User extends LinkedList<String> {
                                             "useraccountcontrol",
                                             "mail",
                                             "whenCreated",
-                                            "city"};
-
+                                            "name",
+                                            "type",
+                                            "phone",
+                                            "fax"};
     public User(String... data) {
         for (String d : data){
             this.add(d);
@@ -54,6 +56,12 @@ public class User extends LinkedList<String> {
     public String getWhenCreated(){return this.get(6);}
 
     public String getCity(){return this.get(7);}
+
+    public String getCityType(){return this.get(8);}
+
+    public String getCityPhone(){return this.get(9);}
+
+    public String getCityFax(){return this.get(10);}
 
     public String[] getComplete(){
         return this.toArray(new String [0]);

@@ -220,9 +220,22 @@ public class MainWindow extends AnchorPane {
     private void changeUser(){
         this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
         this.labelCity.setText(UserHolder.getCurrentUser().getCity());
-        MailerWindow w = (MailerWindow) scenePicker.getScene(0);
-        w.setUserName(UserHolder.getCurrentUser().getDisplayName());
         this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
+
+        MailerWindow mw = (MailerWindow) scenePicker.getScene(0);
+        mw.setUserName(UserHolder.getCurrentUser().getDisplayName());
+
+        SignWindow sw = (SignWindow) scenePicker.getScene(1);
+        sw.setTxtfName(UserHolder.getCurrentUser().getDisplayName());
+        sw.setTxtfCity(UserHolder.getCurrentUser().getCity());
+        sw.setTxtfCityPhone(UserHolder.getCurrentUser().getCityPhone());
+        sw.setTxtfCityFax(UserHolder.getCurrentUser().getCityFax());
+        String cType = UserHolder.getCurrentUser().getCityType();
+        if(cType.equals("Filia")){
+            sw.selectComboxVal(1);
+        } else if (cType.equals("Centrala")) {
+            sw.selectComboxVal(0);
+        }
     }
 
 
