@@ -3,7 +3,6 @@ package ui.mainAppWindow;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,15 +10,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.IOException;
-
-public class UserEdit extends AnchorPane {
+public class CityEdit extends AnchorPane{
 
     private Stage stage;
 
-    public UserEdit() {
+    public CityEdit() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("useredit.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("cityedit.fxml"));
             fxmlLoader.setController(this);
             fxmlLoader.setRoot(this);
             AnchorPane root = fxmlLoader.load();
@@ -29,11 +26,11 @@ public class UserEdit extends AnchorPane {
         }catch(Exception e) {
             e.printStackTrace();
         }
-            stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
-                if(!newValue){
-                    stage.close();
-                }
-            });
+        stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue){
+                stage.close();
+            }
+        });
 
     }
 
@@ -50,23 +47,16 @@ public class UserEdit extends AnchorPane {
     }
 
     @FXML
-    private TextField labUserPos;
+    private TextField labCityPhone;
 
     @FXML
-    private TextField labUserPhone;
+    private TextField labCityFax;
 
     @FXML
-    private TextField labUserMPhone;
-
-    @FXML
-    private Label labelUsername;
+    private Label labelCityName;
 
     @FXML
     void btnSaveAndClose(ActionEvent event) {
-        System.out.println("close");
-        stage.close();
+
     }
-
-
-
 }

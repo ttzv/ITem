@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
@@ -26,7 +27,8 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Plik">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Wyjdź" />
+                        <MenuItem mnemonicParsing="false" onAction="#findAction" text="Wyszukaj" />
+                    <MenuItem mnemonicParsing="false" onAction="#exitAction" text="Wyjdź" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Pomoc">
@@ -46,8 +48,38 @@
                <children>
                   <HBox fx:id="hBoxUserInfo" alignment="CENTER_RIGHT" layoutY="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="900.0" spacing="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <Label fx:id="labelUsername" alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 25; -fx-font-style: italic; -fx-font-weight: bold;" text="USERNAME" />
-                        <Label fx:id="labelCity" style="-fx-text-fill: #e8e9ea; -fx-font-size: 18; -fx-font-weight: bolder;" text="CITY" />
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <ImageView fx:id="imgUserEdit" fitHeight="19.0" fitWidth="22.0" onMouseClicked="#imgUserEditAction" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/pencil.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <ColorAdjust brightness="1.0" />
+                                 </effect>
+                              </ImageView>
+                              <Label fx:id="labelUsername" alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 25; -fx-font-style: italic; -fx-font-weight: bold;" text="USERNAME" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <ImageView fx:id="imgCityEdit" fitHeight="17.0" fitWidth="23.0" onMouseClicked="#imgCityEditAction" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/pencil.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <ColorAdjust brightness="1.0" />
+                                 </effect>
+                              </ImageView>
+                              <Label fx:id="labelCity" style="-fx-text-fill: #e8e9ea; -fx-font-size: 18; -fx-font-weight: bolder;" text="CITY" />
+                           </children>
+                        </HBox>
                      </children>
                      <padding>
                         <Insets right="50.0" />

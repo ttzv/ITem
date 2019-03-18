@@ -3,6 +3,7 @@ package ui.mainAppWindow;
 import ad.LDAPParser;
 import ad.UserHolder;
 import db.DbCon;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,9 @@ public class MainWindow extends AnchorPane {
     private ScenePicker scenePicker;
 
     private FXMLLoader fxmlLoader;
+
+    private UserEdit userEditPop;
+    private CityEdit cityEditPop;
 
 
     @FXML
@@ -70,6 +74,10 @@ public class MainWindow extends AnchorPane {
     public AnchorPane contentPane;
     @FXML
     public StatusBar statusBar;
+    @FXML
+    private ImageView imgUserEdit;
+    @FXML
+    private ImageView imgCityEdit;
 
     public MainWindow(){
         fxmlLoader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
@@ -95,6 +103,8 @@ public class MainWindow extends AnchorPane {
         labelUsername.setText("");
         infoBarAssetsVisible(false);
 
+        userEditPop = new UserEdit();
+        cityEditPop = new CityEdit();
 
         loadOnStart();
     }
@@ -206,6 +216,26 @@ public class MainWindow extends AnchorPane {
     void imgBtnPrevUser(MouseEvent event) {
         UserHolder.previous();
         changeUser();
+    }
+
+    @FXML
+    void exitAction(ActionEvent event) {
+        Platform.exit();
+    }
+
+    @FXML
+    void findAction(ActionEvent event) {
+        //todo
+    }
+
+    @FXML
+    void imgCityEditAction(MouseEvent event) {
+        cityEditPop.showAt(event.getScreenX(), event.getScreenY());
+    }
+
+    @FXML
+    void imgUserEditAction(MouseEvent event) {
+        userEditPop.showAt(event.getScreenX(), event.getScreenY());
     }
 
 
