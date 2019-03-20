@@ -238,6 +238,8 @@
                <children>
                   <Label text="Liczba użytkowników ładowanych z bazy" GridPane.columnSpan="2" />
                   <ComboBox fx:id="cBoxUserQty" onAction="#userQtySelection" prefHeight="25.0" prefWidth="60.0" visibleRowCount="5" GridPane.columnIndex="2" />
+                  <Label text="Zapisuj hasło E-mail po wysłaniu powitania" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                  <CheckBox fx:id="cBoxAutoMailSavePass" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
                <padding>
                   <Insets left="5.0" top="5.0" />

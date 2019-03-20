@@ -102,6 +102,9 @@ public class SettingsWindow extends AnchorPane {
     @FXML
     private ComboBox<Integer> cBoxUserQty;
 
+    @FXML
+    private CheckBox cBoxAutoMailSavePass;
+
 
 
     public SettingsWindow() {
@@ -213,6 +216,17 @@ public class SettingsWindow extends AnchorPane {
         System.out.println(initIndex);
         this.cBoxUserQty.getSelectionModel().select(initIndex);
 
+        String savePassSetting = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
+        if(savePassSetting.equals("true")){
+            this.cBoxAutoMailSavePass.setSelected(true);
+        } else {
+            this.cBoxAutoMailSavePass.setSelected(false);
+        }
+
+
+
+
+
         //TODO: make ui for DB and LDAP connection, part below is temporary solution, no ui for this yet
         /*DbCon dbCon = null;
         try {
@@ -248,6 +262,13 @@ public class SettingsWindow extends AnchorPane {
         btnDbPerformAction(true);
         btnLdapPerformAction(true);
         btnMailPerformAction(true);
+
+        if(cBoxAutoMailSavePass.isSelected()){
+            Cfg.getInstance().setProperty(Cfg.SAVEPASS, "true");
+        } else {
+            Cfg.getInstance().setProperty(Cfg.SAVEPASS, "false");
+        }
+
         Cfg.getInstance().saveFile();
     }
 

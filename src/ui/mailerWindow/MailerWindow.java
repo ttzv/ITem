@@ -97,11 +97,12 @@ public class MailerWindow extends AnchorPane {
         }
 
         sender.sendMail();
-
-        try {
-            savePass();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(tabBuilder.getSelectedTab().getName().contains("powitanie") && Cfg.getInstance().retrieveProp(Cfg.SAVEPASS).equals("true")) {
+            try {
+                savePass();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

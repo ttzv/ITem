@@ -13,6 +13,7 @@ package properties;
      public static String SMTP_PORT = "smtpStartTLS";
      public static String SMTP_TLS = "smtpPort";
      public static String SMTP_LOGIN = "smtpLogin";
+     public static String SAVEPASS = "savePass";
      //ldap
      public static String LDAP_URL = "ldapUrl";
      public static String LDAP_PORT = "ldapPort";
