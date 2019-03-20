@@ -2,6 +2,7 @@ package file;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class SignatureParser implements FileParser {
@@ -30,7 +31,7 @@ public class SignatureParser implements FileParser {
     private String cityFaxConstantValue = "Fax. ";
     private ArrayList<Integer> availableLines;
 
-    private ArrayList<Integer> hiddenRows;
+    private HashSet<Integer> hiddenRows;
 
 
     public SignatureParser (StringBuilder stringBuilder){
@@ -45,7 +46,7 @@ public class SignatureParser implements FileParser {
         Integer[] avail = {NAME, POSITION, PHONE, MPHONE, CITY, CITYPHONE, CITYFAX};
         availableLines = new ArrayList<Integer>(Arrays.asList(avail));
 
-        hiddenRows = new ArrayList<>();
+        hiddenRows = new HashSet<>();
     }
 
     /**

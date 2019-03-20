@@ -17,6 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import properties.Cfg;
 import pwSafe.PHolder;
+import ui.mainAppWindow.popups.CityEdit;
+import ui.mainAppWindow.popups.UserEdit;
 import ui.signWindow.SignWindow;
 import ui.mailerWindow.InfoWindow;
 import ui.mailerWindow.MailerWindow;
@@ -260,12 +262,16 @@ public class MainWindow extends AnchorPane {
         sw.setTxtfCity(UserHolder.getCurrentUser().getCity());
         sw.setTxtfCityPhone(UserHolder.getCurrentUser().getCityPhone());
         sw.setTxtfCityFax(UserHolder.getCurrentUser().getCityFax());
+        sw.setTxtfPos(UserHolder.getCurrentUser().getPosition());
+        sw.setTxtfPhone(UserHolder.getCurrentUser().getUserPhone());
+        sw.setTxtfMPhone(UserHolder.getCurrentUser().getUserMPhone());
         String cType = UserHolder.getCurrentUser().getCityType();
         if(cType.equals("Filia")){
             sw.selectComboxVal(1);
         } else if (cType.equals("Centrala")) {
             sw.selectComboxVal(0);
         }
+         sw.reload();
     }
 
 

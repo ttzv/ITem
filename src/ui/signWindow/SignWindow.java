@@ -49,23 +49,22 @@ public class SignWindow extends AnchorPane {
         textFieldEventBind(this.txtfCityFax, SignatureParser.CITYFAX);
         txtfCityEvent();
         comBoxCityTypeAction();
+        btnDeletePhoneAction();
+        btnDeleteMPhoneAction();
+        btnDeleteFaxAction();
 
         String signFilePath = Cfg.getInstance().retrieveProp(Cfg.SIGN_LOC);
         if(!signFilePath.isEmpty()){
             Loader loader = new Loader();
-            loader.load(new File(signFilePath));
-            signatureParser = new SignatureParser(loader.readContent());
-            reload();
+            boolean loaded = loader.load(new File(signFilePath));
+            if(loaded) {
+                signatureParser = new SignatureParser(loader.readContent());
+                reload();
+            }
         }
 
-        btnDeleteFax.setOnAction(event -> {
-            if(!btnDeleteFax.isSelected()){
-                signatureParser.showRows(19, 18);
-            } else {
-                signatureParser.hideRows(19, 18);
-            }
-            reload();
-        });
+
+
 
     }
 
@@ -140,34 +139,40 @@ public class SignWindow extends AnchorPane {
         clipboard.setContent(clipboardContent);
     }
 
-    @FXML
-    private void btnDeleteFaxAction(ActionEvent event) {
-        if(!btnDeleteFax.isSelected()){
-            hideFax(true);
-        } else {
-            hideFax(false);
-        }
-        reload();
+
+    private void btnDeleteFaxAction() {
+        btnDeleteFax.setOnAction(event ->{
+            if(btnDeleteFax.isSelected()){
+                hideFax(true);
+            } else {
+                hideFax(false);
+            }
+            reload();
+        });
     }
 
-    @FXML
-    private void btnDeleteMPhoneAction(ActionEvent event) {
-        if(!btnDeleteMPhone.isSelected()){
-            hideMPhone(true);
-        } else {
-            hideMPhone(false);
-        }
-        reload();
+
+    private void btnDeleteMPhoneAction() {
+        btnDeleteMPhone.setOnAction(event -> {
+            if (btnDeleteMPhone.isSelected()) {
+                hideMPhone(true);
+            } else {
+                hideMPhone(false);
+            }
+            reload();
+        });
     }
 
-    @FXML
-    private void btnDeletePhoneAction(ActionEvent event) {
-        if(!btnDeletePhone.isSelected()){
-            hidePhone(true);
-        } else {
-            hidePhone(false);
-        }
-        reload();
+
+    private void btnDeletePhoneAction() {
+        btnDeletePhone.setOnAction(event -> {
+            if (btnDeletePhone.isSelected()) {
+                hidePhone(true);
+            } else {
+                hidePhone(false);
+            }
+            reload();
+        });
     }
 
 
@@ -199,7 +204,7 @@ public class SignWindow extends AnchorPane {
         });
     }
 
-    private void reload(){
+    public void reload(){
         webViewSignature.getEngine().loadContent(signatureParser.getOutputString());
     }
 
@@ -213,22 +218,26 @@ public class SignWindow extends AnchorPane {
 
     public void setTxtfPhone(String txtfPhone) {
         String phone="";
-        if(txtfPhone != null){
+        if(!txtfPhone.isEmpty()){
             phone = txtfPhone;
             hidePhone(false);
+            btnDeletePhone.setSelected(false);
         } else {
             hidePhone(true);
+            btnDeletePhone.setSelected(true);
         }
         this.txtfPhone.setText(phone);
     }
 
     public void setTxtfMPhone(String txtfMPhone) {
         String mPhone="";
-        if(txtfPhone != null){
+        if(!txtfMPhone.isEmpty()){
             mPhone = txtfMPhone;
             hideMPhone(false);
+            btnDeleteMPhone.setSelected(false);
         } else {
             hideMPhone(true);
+            btnDeleteMPhone.setSelected(true);
         }
         this.txtfMPhone.setText(mPhone);
     }
@@ -239,7 +248,7 @@ public class SignWindow extends AnchorPane {
 
     public void setTxtfCityFax(String txtfCityFax) {
         String cityFax = "";
-        if(txtfCityFax != null) {
+        if(!txtfCityFax.isEmpty()) {
             cityFax = txtfCityFax;
             hideFax(false);
             btnDeleteFax.setSelected(false);
@@ -261,16 +270,16 @@ public class SignWindow extends AnchorPane {
 
     private void hidePhone(boolean hide){
         if(hide){
-            signatureParser.hideRows(7, 8);
+            signatureParser.hideRows(6, 7, 8);
         } else {
-            signatureParser.showRows(7, 8);
+            signatureParser.showRows(6, 7, 8);
         }
     }
     private void hideMPhone(boolean hide){
         if(hide){
-            signatureParser.hideRows(10, 11);
+            signatureParser.hideRows(9, 10, 11);
         } else {
-            signatureParser.showRows(10, 11);
+            signatureParser.showRows(9, 10, 11);
         }
     }
     private void hideFax(boolean hide){

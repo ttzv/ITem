@@ -24,10 +24,17 @@ public class User extends LinkedList<String> {
                                             "name",
                                             "type",
                                             "phone",
-                                            "fax"};
+                                            "fax",
+                                            "position",
+                                            "userphone",
+                                            "usermphone"};
     public User(String... data) {
         for (String d : data){
-            this.add(d);
+            if(d == null || d.isEmpty()){
+                this.add("");
+            } else {
+                this.add(d);
+            }
         }
     }
 
@@ -62,6 +69,12 @@ public class User extends LinkedList<String> {
     public String getCityPhone(){return this.get(9);}
 
     public String getCityFax(){return this.get(10);}
+
+    public String getPosition(){return this.get(11);}
+
+    public String getUserPhone(){return this.get(12);}
+
+    public String getUserMPhone(){return this.get(13);}
 
     public String[] getComplete(){
         return this.toArray(new String [0]);

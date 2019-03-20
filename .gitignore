@@ -10,3 +10,6 @@ templates/
 .project
 .classpath
 deprecated
+*.iml
+*.ipr
+*.iws

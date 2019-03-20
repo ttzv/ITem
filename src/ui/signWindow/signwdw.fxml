@@ -74,19 +74,19 @@
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <children>
                                     <TextField fx:id="txtfPhone" prefHeight="25.0" prefWidth="142.0" />
-                                    <ToggleButton fx:id="btnDeletePhone" mnemonicParsing="false" onAction="#btnDeletePhoneAction" prefHeight="25.0" prefWidth="31.0" text="-" />
+                                    <ToggleButton fx:id="btnDeletePhone" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="-" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <children>
                                     <TextField fx:id="txtfMPhone" prefHeight="25.0" prefWidth="142.0" />
-                                    <ToggleButton fx:id="btnDeleteMPhone" mnemonicParsing="false" onAction="#btnDeleteMPhoneAction" prefHeight="25.0" prefWidth="31.0" text="-" />
+                                    <ToggleButton fx:id="btnDeleteMPhone" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="-" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <children>
                                     <TextField fx:id="txtfCityFax" prefHeight="25.0" prefWidth="142.0" />
-                                    <ToggleButton fx:id="btnDeleteFax" mnemonicParsing="false" onAction="#btnDeleteFaxAction" prefHeight="25.0" prefWidth="31.0" text="-" />
+                                    <ToggleButton fx:id="btnDeleteFax" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="-" />
                                  </children>
                               </HBox>
                            </children>

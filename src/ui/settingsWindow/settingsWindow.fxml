@@ -72,8 +72,8 @@
                                     <Label text="Login" />
                                     <Label text="Zapamiętaj hasło" GridPane.rowIndex="2" />
                                     <Label text="Hasło" GridPane.rowIndex="1" />
-                                    <CheckBox fx:id="cbxRemember" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <PasswordField fx:id="fieldPass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <CheckBox fx:id="cbxRemember" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -124,13 +124,13 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TextField fx:id="fieldLdapAcc" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Konto Administrator" GridPane.rowIndex="1" />
                   <Label text="Hasło" GridPane.rowIndex="2" />
                   <Label text="LDAP URL" />
-                  <TextField fx:id="fieldLdapUrl" GridPane.columnIndex="1" />
                   <Label alignment="CENTER_RIGHT" text="  :" GridPane.columnIndex="2" />
+                  <TextField fx:id="fieldLdapUrl" GridPane.columnIndex="1" />
                   <TextField fx:id="fieldLdapPort" prefHeight="25.0" prefWidth="20.0" GridPane.columnIndex="3" />
+                  <TextField fx:id="fieldLdapAcc" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <PasswordField fx:id="fieldLdapPass" prefHeight="25.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <HBox spacing="20.0" GridPane.rowIndex="3">
                      <children>
@@ -178,11 +178,11 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TextField fx:id="fieldDbLogin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Login" GridPane.rowIndex="1" />
                   <Label text="Hasło" GridPane.rowIndex="2" />
                   <Label text="URL" />
                   <TextField fx:id="fieldDbUrl" GridPane.columnIndex="1" />
+                  <TextField fx:id="fieldDbLogin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <PasswordField fx:id="fieldDbPass" prefHeight="25.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <HBox spacing="20.0" GridPane.rowIndex="4">
                      <children>
@@ -217,7 +217,6 @@
             </GridPane>
          </children>
       </TitledBorder>
-      <Button layoutX="14.0" layoutY="566.0" mnemonicParsing="false" onAction="#btnSaveAllSettingsEvent" text="Zapisz wszystko" />
       <TitledBorder fx:id="containerDbSett1" layoutY="367.0" maxWidth="1.7976931348623157E308" prefHeight="199.0" prefWidth="900.0" stylesheets="@../utils/style.css" title="Pozostałe">
          <children>
             <GridPane>
@@ -246,5 +245,6 @@
             </GridPane>
          </children>
       </TitledBorder>
+      <Button layoutX="14.0" layoutY="566.0" mnemonicParsing="false" onAction="#btnSaveAllSettingsEvent" text="Zapisz wszystko" />
    </children>
 </fx:root>

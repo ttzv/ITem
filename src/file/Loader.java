@@ -15,12 +15,18 @@ public class Loader {
         load(file);
     }
 
-    public void load (File file){
-        try {
-            bufferedReader = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(file.getPath()), StandardCharsets.UTF_8));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    public boolean load (File file){
+        if(file.exists()) {
+            try {
+                bufferedReader = new BufferedReader(new InputStreamReader(
+                        new FileInputStream(file.getPath()), StandardCharsets.UTF_8));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            System.err.println("File: " + file.toString() + "  was not found.");
+            return false;
         }
     };
 

@@ -37,7 +37,7 @@
                         <SeparatorMenuItem mnemonicParsing="false" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Narzędzia">
+                  <Menu mnemonicParsing="false" text="Narzędzia" visible="false">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#showDbToolsWindow" text="DB..." />
                     </items>

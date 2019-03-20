@@ -45,9 +45,13 @@ public class DbCon {
         return true;
     }
 
-    public void customQuery(String query) throws SQLException {
+    public void customQuery(String... queries) throws SQLException {
         Statement st = conn.createStatement();
-        st.executeUpdate(query);
+        for (String query : queries) {
+            if(!query.isEmpty()) {
+                st.executeUpdate(query);
+            }
+        }
         st.close();
     }
 
