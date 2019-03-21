@@ -27,6 +27,7 @@ import ui.gSuiteWindow.GSuiteWindow;
 import ui.sceneControl.ScenePicker;
 import ui.settingsWindow.SettingsWindow;
 import uiUtils.StatusBar;
+import uiUtils.UiObjectsWrapper;
 
 import javax.naming.NamingException;
 import java.io.IOException;
@@ -40,6 +41,9 @@ public class MainWindow extends AnchorPane {
 
     private UserEdit userEditPop;
     private CityEdit cityEditPop;
+    private SearchWindow searchWindow;
+    private boolean infoBarAssetsVisible;
+    private UiObjectsWrapper uiObjectsWrapper;
 
 
     @FXML
@@ -81,7 +85,11 @@ public class MainWindow extends AnchorPane {
     @FXML
     private ImageView imgCityEdit;
 
-    public MainWindow(){
+
+
+    public MainWindow(UiObjectsWrapper uiObjectsWrapper) {
+        this.uiObjectsWrapper = uiObjectsWrapper;
+        uiObjectsWrapper.registerObject(uiObjectsWrapper.MainWindow, this);
         fxmlLoader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -93,12 +101,16 @@ public class MainWindow extends AnchorPane {
 
     }
 
+    public MainWindow getMainWindow(){
+        return this;
+    }
+
     public FXMLLoader getFxmlLoader() {
         return fxmlLoader;
     }
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         scenePicker = new ScenePicker();
         scenePicker.addAll(new MailerWindow(this), new SignWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
         labelCity.setText("");
@@ -107,42 +119,47 @@ public class MainWindow extends AnchorPane {
 
         userEditPop = new UserEdit();
         cityEditPop = new CityEdit();
+        searchWindow = new SearchWindow(uiObjectsWrapper);
+        searchWindow.load();
 
         loadOnStart();
     }
-
 
 
     public void goScn1(ActionEvent actionEvent) {
         selectScene(0);
         statusBar.setVanishingText("Mailing - wysyłanie szablonów wiadomości z danymi dostępowymi");
     }
+
     @FXML
     public void goScn2(ActionEvent actionEvent) {
         selectScene(1);
         statusBar.setVanishingText("Selected Scene 2");
     }
+
     @FXML
     public void goScn3(ActionEvent actionEvent) {
         selectScene(2);
         statusBar.setVanishingText("Selected Scene 3");
     }
+
     @FXML
     public void goScn4(ActionEvent actionEvent) {
         selectScene(3);
         statusBar.setVanishingText("Selected Scene 4");
     }
+
     @FXML
     public void goScn5(ActionEvent actionEvent) {
         selectScene(4);
         statusBar.setVanishingText("Ustawienia połączeń z serwerem poczty, katalogiem LDAP, bazą danych itp.");
     }
 
-    private void selectScene(int index){
+    private void selectScene(int index) {
 
         Pane paneToSet = scenePicker.getScene(index);
         this.contentPane.getChildren().setAll(paneToSet);
-        AnchorPane.setRightAnchor(paneToSet,0.);
+        AnchorPane.setRightAnchor(paneToSet, 0.);
         AnchorPane.setLeftAnchor(paneToSet, 0.);
         AnchorPane.setTopAnchor(paneToSet, 0.);
         AnchorPane.setBottomAnchor(paneToSet, 0.);
@@ -150,12 +167,13 @@ public class MainWindow extends AnchorPane {
         this.scenePicker.setActiveScene(index);
     }
 
-    private void loadOnStart(){
+    private void loadOnStart() {
         int active = scenePicker.getActiveScene();
-        if(active >= 0) {
+        if (active >= 0) {
             selectScene(active);
         }
     }
+
     @FXML
     public void showMailSett(ActionEvent actionEvent) {
         InfoWindow infoWindow = new InfoWindow();
@@ -163,11 +181,7 @@ public class MainWindow extends AnchorPane {
     }
 
     @FXML
-    void showDbToolsWindow(ActionEvent event) {
-
-    }
-
-    @FXML //not used currently
+        //not used currently
     void loadNewestUser(ActionEvent event) throws NamingException, SQLException {
         LDAPParser ldapParser = new LDAPParser();
         ldapParser.loadCfgCredentials();
@@ -187,7 +201,6 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     void loadNewUsers() throws NamingException, SQLException {
-        infoBarAssetsVisible(true);
 
         int userQtyToLoad = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.DB_USER_QTY));
         LDAPParser ldapParser = new LDAPParser();
@@ -227,7 +240,11 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     void findAction(ActionEvent event) {
-        //todo
+        try {
+            searchWindow.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -241,15 +258,19 @@ public class MainWindow extends AnchorPane {
     }
 
 
-
-    private void infoBarAssetsVisible(boolean b){
+    protected void infoBarAssetsVisible(boolean b) {
+        infoBarAssetsVisible = b;
         this.hBoxQty.setVisible(b);
         this.hBoxUserInfo.setVisible(b);
         this.imgNext.setVisible(b);
         this.imgPrev.setVisible(b);
     }
 
-    private void changeUser(){
+    public boolean isInfoBarAssetsVisible() {
+        return infoBarAssetsVisible;
+    }
+
+    protected void changeUser() {
         this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
         this.labelCity.setText(UserHolder.getCurrentUser().getCity());
         this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
@@ -266,18 +287,33 @@ public class MainWindow extends AnchorPane {
         sw.setTxtfPhone(UserHolder.getCurrentUser().getUserPhone());
         sw.setTxtfMPhone(UserHolder.getCurrentUser().getUserMPhone());
         String cType = UserHolder.getCurrentUser().getCityType();
-        if(cType.equals("Filia")){
+        if (cType.equals("Filia")) {
             sw.selectComboxVal(1);
         } else if (cType.equals("Centrala")) {
             sw.selectComboxVal(0);
         }
-         sw.reload();
+        sw.reload();
     }
 
 
-
-    public void setStatusBarText(String text){
+    public void setStatusBarText(String text) {
         this.statusBar.setVanishingText(text);
+    }
+
+    public void setLabelUsername(String labelUsername) {
+        this.labelUsername.setText(labelUsername);
+    }
+
+    public void setLabelCity(String labelCity) {
+        this.labelCity.setText(labelCity);
+    }
+
+    public void setLabelCurrentCnt(String labelCurrentCnt) {
+        this.labelCurrentCnt.setText(labelCurrentCnt);
+    }
+
+    public void setLabelMaxCnt(String labelMaxCnt) {
+        this.labelMaxCnt.setText(labelMaxCnt);
     }
 
 }

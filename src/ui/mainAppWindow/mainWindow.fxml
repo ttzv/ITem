@@ -37,11 +37,6 @@
                         <SeparatorMenuItem mnemonicParsing="false" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Narzędzia" visible="false">
-                    <items>
-                      <MenuItem mnemonicParsing="false" onAction="#showDbToolsWindow" text="DB..." />
-                    </items>
-                  </Menu>
               </menus>
             </MenuBar>
             <AnchorPane style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES">
@@ -157,17 +152,17 @@
                               <DropShadow />
                            </effect>
                         </Button>
-                        <Button fx:id="scene3" mnemonicParsing="false" onAction="#goScn3" prefHeight="52.0" prefWidth="110.0" text="Telefony">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Button>
-                        <Button fx:id="scene4" mnemonicParsing="false" onAction="#goScn4" prefHeight="52.0" prefWidth="110.0" text="Scene4">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Button>
                         <Button fx:id="scene5" mnemonicParsing="false" onAction="#goScn5" prefHeight="52.0" prefWidth="110.0" text="Ustawienia">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Button>
+                        <Button fx:id="scene3" mnemonicParsing="false" onAction="#goScn3" prefHeight="52.0" prefWidth="110.0" text="Telefony" visible="false">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Button>
+                        <Button fx:id="scene4" mnemonicParsing="false" onAction="#goScn4" prefHeight="52.0" prefWidth="110.0" text="Scene4" visible="false">
                            <effect>
                               <DropShadow />
                            </effect>

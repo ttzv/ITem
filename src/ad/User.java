@@ -1,5 +1,6 @@
 package ad;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -17,7 +18,7 @@ public class User extends LinkedList<String> {
     public static final String[] columns = {"samaccountname",
                                             "givenname",
                                             "sn",
-                                            "displayname",
+                                            "displayname"/*,
                                             "useraccountcontrol",
                                             "mail",
                                             "whenCreated",
@@ -27,7 +28,7 @@ public class User extends LinkedList<String> {
                                             "fax",
                                             "position",
                                             "userphone",
-                                            "usermphone"};
+                                            "usermphone"*/};
     public User(String... data) {
         for (String d : data){
             if(d == null || d.isEmpty()){
@@ -80,7 +81,8 @@ public class User extends LinkedList<String> {
         return this.toArray(new String [0]);
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return Arrays.toString(getComplete());
+    }
 }

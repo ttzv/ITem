@@ -39,9 +39,9 @@ public class DbMain {
 
         //System.out.println( Utility.extractCityFromDn("CN=Magdalena Kwiatkowska,OU=Gdansk,OU=Pracownicy,DC=atal,DC=local") );
 */
-       DbCon dbCon = new DbCon();
+       //DbCon dbCon = new DbCon();
 
-       dbCon.globalSearch("Cieszyn", 10);
-        dbCon.globalSearch("tzwak", 0);
+       //dbCon.globalSearch("Filia", 10);
+      // dbCon.globalSearch("Małachowski", 0);
     }
 }

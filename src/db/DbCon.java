@@ -164,7 +164,7 @@ public class DbCon {
      */
     public List<User> globalSearch(String value, int limiter) throws SQLException {
         ArrayList<User> foundUsers = new ArrayList<>();
-        //Statement st = conn.createStatement();
+        Statement st = conn.createStatement();
         String allSearchCriterium = "(";
         for (int i = 0; i < User.columns.length; i++) {
             if(i < User.columns.length - 1) {
@@ -174,15 +174,25 @@ public class DbCon {
             }
         }
 
-        allSearchCriterium += " AND (users.city=city.id)";
+       // allSearchCriterium += " AND (users.city=city.id)";
 
         String query = PgStatement.select("users,city", "*", allSearchCriterium) + " limit " + limiter;
         if(limiter == 0) {
             query = PgStatement.select("users,city", "*", allSearchCriterium);
         }
+
         System.out.println(query);
 
-        //ResultSet resultSet = st.executeQuery(query);
+        ResultSet resultSet = st.executeQuery(query);
+
+        while(resultSet.next()){
+            String[] resultUserData = new String[User.columns.length];
+            for (int i = 0; i <= User.columns.length - 1 ; i++) {
+                resultUserData[i] = resultSet.getString(User.columns[i]);
+            }
+            User user = new User(resultUserData);
+            foundUsers.add(user);
+        }
         return foundUsers;
     }
 
