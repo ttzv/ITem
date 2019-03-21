@@ -18,7 +18,7 @@ public class DbMain {
         ldapParser.setAd_adminPass(ldapPass);
         ldapParser.initializeLdapContext();
 */
-        char[] dbPass = {'a','d','m','i','n'};
+       /* char[] dbPass = {'a','d','m','i','n'};
         DbCon dbCon = new DbCon();
         dbCon.setDbUrl("localhost/jitmg");
         dbCon.setDbUser("postgres");
@@ -38,6 +38,10 @@ public class DbMain {
 
 
         //System.out.println( Utility.extractCityFromDn("CN=Magdalena Kwiatkowska,OU=Gdansk,OU=Pracownicy,DC=atal,DC=local") );
+*/
+       DbCon dbCon = new DbCon();
 
+       dbCon.globalSearch("Cieszyn", 10);
+        dbCon.globalSearch("tzwak", 0);
     }
 }

@@ -11,7 +11,7 @@ public class UserHolder {
     private static int currentIndex;
 
     public static User getCurrentUser() {
-        return newUsers.get(currentIndex);
+        return newUsers.get(getCurrentIndex());
     }
 
     public static void setCurrentUser(User bcurrentUser) {
@@ -49,7 +49,12 @@ public class UserHolder {
     }
 
     public static int getCurrentIndex() {
-        return currentIndex;
+        if(currentIndex >= newUsers.size()) {
+            currentIndex = 0;
+            return 0;
+        } else {
+            return currentIndex;
+        }
     }
 
     public static int getMaxCount(){

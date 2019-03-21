@@ -108,7 +108,7 @@ public class DbCon {
             if(!exists) {
 
                 String query = PgStatement.insert(table, User.columns, PgStatement.apostrophied(user.getComplete()));
-                System.out.println(query);
+                //System.out.println(query);
                 st.executeUpdate(query);
                 newUsers.add(user);
             }
@@ -151,9 +151,39 @@ public class DbCon {
             User user = new User(resultUserData);
             UserHolder.addUser(user);
         }
-        System.out.println(resultSet.getRow());
+        //System.out.println(resultSet.getRow());
         resultSet.close();
         return true;
+    }
+
+    /**
+     * Performs search in Users table for inputted value
+     * @param value value to search for in database
+     * @param limiter maximum amount of rows returned by query, no limit of set to 0
+     * @return list of Users with fitting value
+     */
+    public List<User> globalSearch(String value, int limiter) throws SQLException {
+        ArrayList<User> foundUsers = new ArrayList<>();
+        //Statement st = conn.createStatement();
+        String allSearchCriterium = "(";
+        for (int i = 0; i < User.columns.length; i++) {
+            if(i < User.columns.length - 1) {
+                allSearchCriterium += " " + User.columns[i] + "=" + PgStatement.apostrophied(value) + " OR";
+            } else {
+                allSearchCriterium += " " + User.columns[i] + "=" + PgStatement.apostrophied(value) + ")";
+            }
+        }
+
+        allSearchCriterium += " AND (users.city=city.id)";
+
+        String query = PgStatement.select("users,city", "*", allSearchCriterium) + " limit " + limiter;
+        if(limiter == 0) {
+            query = PgStatement.select("users,city", "*", allSearchCriterium);
+        }
+        System.out.println(query);
+
+        //ResultSet resultSet = st.executeQuery(query);
+        return foundUsers;
     }
 
 

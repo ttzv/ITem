@@ -22,9 +22,9 @@ public class ViewTab extends Tab {
         parser.parseFlaggedTopic();
         webView.getEngine().loadContent(String.valueOf(parser.getOutputString()));
 
-        this.setOnSelectionChanged(event -> {
+       /* this.setOnSelectionChanged(event -> {
             System.out.println("changed");
-        });
+        });*/
     }
 
     public void reload(){

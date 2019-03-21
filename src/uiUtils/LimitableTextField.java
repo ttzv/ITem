@@ -70,14 +70,14 @@ public class LimitableTextField extends TextField {
                 return change;
             } else if(change.isContentChange()){
                 blinkError(3);
-                System.out.println("rejected " + change);
+                //System.out.println("rejected " + change);
             }
             return null;
         };
     }
 
     private void blinkError(int repeats){
-        System.out.println( exec.getActiveCount());
+       // System.out.println( exec.getActiveCount());
         int delay = 100;
         Task task = new Task() {
             @Override

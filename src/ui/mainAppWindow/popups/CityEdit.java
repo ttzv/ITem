@@ -92,7 +92,7 @@ public class CityEdit extends AnchorPane {
             queryFax = PgStatement.update("city", "fax", PgStatement.apostrophied(cityFax), "name='" + user.getCity() + "'");
         }
 
-        System.out.println(queryPhone + "\n" + queryFax);
+        //System.out.println(queryPhone + "\n" + queryFax);
 
         dbCon.customQuery(queryPhone, queryFax);
     }

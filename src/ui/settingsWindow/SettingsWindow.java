@@ -213,7 +213,7 @@ public class SettingsWindow extends AnchorPane {
         if (!initProp.isEmpty()) {
             initIndex = Integer.parseInt(initProp) - 1 ;
         }
-        System.out.println(initIndex);
+        //System.out.println(initIndex);
         this.cBoxUserQty.getSelectionModel().select(initIndex);
 
         String savePassSetting = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
@@ -495,11 +495,11 @@ public class SettingsWindow extends AnchorPane {
         Task task = new Task() {
             @Override
             protected Object call() throws Exception {
-                System.out.println("visible");
+                //System.out.println("visible");
                 Platform.runLater(() -> node.setVisible(true));
                 Thread.sleep(1750);
                 Platform.runLater(() -> node.setVisible(false));
-                System.out.println("reset");
+                //System.out.println("reset");
                 return null;
             }
         };

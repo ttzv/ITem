@@ -55,7 +55,7 @@ public class UserEdit extends AnchorPane {
         this.txtUserMPhone.setText("");
         this.txtUserPhone.setText("");
         this.txtUserPos.setText("");
-        System.out.println("initialized");
+        //System.out.println("initialized");
     }
 
     @FXML
@@ -107,7 +107,7 @@ public class UserEdit extends AnchorPane {
         }
 
 
-        System.out.println(queryPos + "\n" + queryPhone + "\n" + queryMPhone);
+        //System.out.println(queryPos + "\n" + queryPhone + "\n" + queryMPhone);
 
         dbCon.customQuery(queryPos, queryPhone, queryMPhone);
     }

@@ -114,7 +114,7 @@ public abstract class Propsicl {
         if(!modifiable) {
             defaultProps.put(key, val);
         } else {
-            System.out.println("Cannot modify default properties after create() method was called, modify defaults properly by overriding defaultPropsVals() method of Propsicl");
+            System.err.println("Cannot modify default properties after create() method was called, modify defaults properly by overriding defaultPropsVals() method of Propsicl");
         }
     }
 
@@ -122,7 +122,7 @@ public abstract class Propsicl {
         if(modifiable) {
             props.put(key, val);
         } else {
-            System.out.println("properties object not initialized, use init() method before making any changes");
+            System.err.println("properties object not initialized, use init() method before making any changes");
         }
     }
 
