@@ -174,7 +174,7 @@ public class DbCon {
             }
         }
 
-       // allSearchCriterium += " AND (users.city=city.id)";
+        allSearchCriterium += " AND (users.city=city.id)";
 
         String query = PgStatement.select("users,city", "*", allSearchCriterium) + " limit " + limiter;
         if(limiter == 0) {

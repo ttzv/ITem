@@ -120,7 +120,6 @@ public class MainWindow extends AnchorPane {
         userEditPop = new UserEdit();
         cityEditPop = new CityEdit();
         searchWindow = new SearchWindow(uiObjectsWrapper);
-        searchWindow.load();
 
         loadOnStart();
     }
@@ -217,8 +216,6 @@ public class MainWindow extends AnchorPane {
         dbCon.getNewUsers(userQtyToLoad);
 
         changeUser();
-
-        this.labelMaxCnt.setText(Integer.toString(UserHolder.getMaxCount()));
     }
 
     @FXML
@@ -240,11 +237,7 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     void findAction(ActionEvent event) {
-        try {
             searchWindow.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -274,6 +267,7 @@ public class MainWindow extends AnchorPane {
         this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
         this.labelCity.setText(UserHolder.getCurrentUser().getCity());
         this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
+        this.labelMaxCnt.setText(Integer.toString(UserHolder.getMaxCount()));
 
         MailerWindow mw = (MailerWindow) scenePicker.getScene(0);
         mw.setUserName(UserHolder.getCurrentUser().getDisplayName());

@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -28,7 +29,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchWindow {
+public class SearchWindow extends AnchorPane {
 
     private FXMLLoader fxmlLoader;
     private Stage stage;
@@ -36,10 +37,20 @@ public class SearchWindow {
     private UiObjectsWrapper uiObjectsWrapper;
 
     public SearchWindow(UiObjectsWrapper uiObjectsWrapper) {
-        this.uiObjectsWrapper = uiObjectsWrapper;
-        fxmlLoader = new FXMLLoader(getClass().getResource("searchwdw.fxml"));
-        stage = new Stage(StageStyle.UNDECORATED);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("searchwdw.fxml"));
+            fxmlLoader.setController(this);
+            fxmlLoader.setRoot(this);
+            AnchorPane root = fxmlLoader.load();
+            stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         closeOnFocusChange(stage);
+
+        this.uiObjectsWrapper = uiObjectsWrapper;
         mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
     }
 
@@ -52,18 +63,7 @@ public class SearchWindow {
         });
     }
 
-    public void load(){
-        Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
 
-            stage.setScene(new Scene(root));
-        }
-
-    }
 
     private void selectionHandler(){
         this.listwvResults.setOnMouseClicked((MouseEvent event) -> {
@@ -73,7 +73,7 @@ public class SearchWindow {
                     UserHolder.clear();
                     UserHolder.addUser(selectedUser);
                     if(!mainWindow.isInfoBarAssetsVisible()){
-                            mainWindow.infoBarAssetsVisible(true);
+                        mainWindow.infoBarAssetsVisible(true);
                     }
                    mainWindow.changeUser();
                 }
@@ -81,8 +81,8 @@ public class SearchWindow {
         });
     }
 
-    public void show() throws IOException {
-        stage.show();
+    public void show() {
+        this.stage.show();
     }
 
     @FXML

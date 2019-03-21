@@ -13,3 +13,4 @@ deprecated
 *.iml
 *.ipr
 *.iws
+coverage-error.log
