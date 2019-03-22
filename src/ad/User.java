@@ -22,6 +22,7 @@ public class User extends LinkedList<String> {
                                             "useraccountcontrol",
                                             "mail",
                                             "whenCreated",
+                                            "city",
                                             "name",
                                             "type",
                                             "phone",
@@ -29,6 +30,15 @@ public class User extends LinkedList<String> {
                                             "position",
                                             "userphone",
                                             "usermphone"};
+
+    public static final String[] insertColumns = {columns[0],
+                                                  columns[1],
+                                                  columns[2],
+                                                  columns[3],
+                                                  columns[4],
+                                                  columns[5],
+                                                  columns[6],
+                                                  columns[7]};
     public User(String... data) {
         for (String d : data){
             if(d == null || d.isEmpty()){
@@ -63,19 +73,19 @@ public class User extends LinkedList<String> {
 
     public String getWhenCreated(){return this.get(6);}
 
-    public String getCity(){return this.get(7);}
+    public String getCity(){return this.get(8);}
 
-    public String getCityType(){return this.get(8);}
+    public String getCityType(){return this.get(9);}
 
-    public String getCityPhone(){return this.get(9);}
+    public String getCityPhone(){return this.get(10);}
 
-    public String getCityFax(){return this.get(10);}
+    public String getCityFax(){return this.get(11);}
 
-    public String getPosition(){return this.get(11);}
+    public String getPosition(){return this.get(12);}
 
-    public String getUserPhone(){return this.get(12);}
+    public String getUserPhone(){return this.get(13);}
 
-    public String getUserMPhone(){return this.get(13);}
+    public String getUserMPhone(){return this.get(14);}
 
     public String[] getComplete(){
         return this.toArray(new String [0]);
@@ -84,5 +94,17 @@ public class User extends LinkedList<String> {
     @Override
     public String toString() {
         return Arrays.toString(getComplete());
+    }
+
+    public String[] getToInsert(){
+        String[] insertCols = {this.get(0),
+                               this.get(1),
+                               this.get(2),
+                               this.get(3),
+                               this.get(4),
+                               this.get(5),
+                               this.get(6),
+                               this.get(7)};
+        return insertCols;
     }
 }

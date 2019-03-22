@@ -57,7 +57,7 @@ public class SearchWindow extends AnchorPane {
     private void closeOnFocusChange(Stage stage){
         stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                System.out.println(newValue);
+                //System.out.println(newValue);
                 stage.close();
             }
         });

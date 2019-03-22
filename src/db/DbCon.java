@@ -107,7 +107,7 @@ public class DbCon {
             boolean exists = existsInDB(table, column, user.getSamAccountName());
             if(!exists) {
 
-                String query = PgStatement.insert(table, User.columns, PgStatement.apostrophied(user.getComplete()));
+                String query = PgStatement.insert(table, User.insertColumns, PgStatement.apostrophied(user.getComplete()));
                 //System.out.println(query);
                 st.executeUpdate(query);
                 newUsers.add(user);
@@ -164,7 +164,6 @@ public class DbCon {
      */
     public List<User> globalSearch(String value, int limiter) throws SQLException {
         ArrayList<User> foundUsers = new ArrayList<>();
-        Statement st = conn.createStatement();
         String allSearchCriterium = "(";
         for (int i = 0; i < User.columns.length; i++) {
             if(i < User.columns.length - 1) {
@@ -181,9 +180,10 @@ public class DbCon {
             query = PgStatement.select("users,city", "*", allSearchCriterium);
         }
 
-        System.out.println(query);
-
+        //System.out.println(query);
+        Statement st = conn.createStatement();
         ResultSet resultSet = st.executeQuery(query);
+
 
         while(resultSet.next()){
             String[] resultUserData = new String[User.columns.length];
@@ -193,6 +193,9 @@ public class DbCon {
             User user = new User(resultUserData);
             foundUsers.add(user);
         }
+
+        st.close();
+
         return foundUsers;
     }
 

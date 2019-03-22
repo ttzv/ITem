@@ -127,31 +127,31 @@ public class MainWindow extends AnchorPane {
 
     public void goScn1(ActionEvent actionEvent) {
         selectScene(0);
-        statusBar.setVanishingText("Mailing - wysyłanie szablonów wiadomości z danymi dostępowymi");
+        //statusBar.setVanishingText("Mailing - wysyłanie szablonów wiadomości z danymi dostępowymi");
     }
 
     @FXML
     public void goScn2(ActionEvent actionEvent) {
         selectScene(1);
-        statusBar.setVanishingText("Selected Scene 2");
+        //statusBar.setVanishingText("Selected Scene 2");
     }
 
     @FXML
     public void goScn3(ActionEvent actionEvent) {
         selectScene(2);
-        statusBar.setVanishingText("Selected Scene 3");
+        //statusBar.setVanishingText("Selected Scene 3");
     }
 
     @FXML
     public void goScn4(ActionEvent actionEvent) {
         selectScene(3);
-        statusBar.setVanishingText("Selected Scene 4");
+        //statusBar.setVanishingText("Selected Scene 4");
     }
 
     @FXML
     public void goScn5(ActionEvent actionEvent) {
         selectScene(4);
-        statusBar.setVanishingText("Ustawienia połączeń z serwerem poczty, katalogiem LDAP, bazą danych itp.");
+        //statusBar.setVanishingText("Ustawienia połączeń z serwerem poczty, katalogiem LDAP, bazą danych itp.");
     }
 
     private void selectScene(int index) {
@@ -179,7 +179,7 @@ public class MainWindow extends AnchorPane {
         infoWindow.getStage().show();
     }
 
-    @FXML
+    /*@FXML
         //not used currently
     void loadNewestUser(ActionEvent event) throws NamingException, SQLException {
         LDAPParser ldapParser = new LDAPParser();
@@ -196,7 +196,7 @@ public class MainWindow extends AnchorPane {
         UserHolder.setCurrentUser(dbCon.getNewestUser());
 
         changeUser();
-    }
+    }*/
 
     @FXML
     void loadNewUsers() throws NamingException, SQLException {
@@ -268,6 +268,8 @@ public class MainWindow extends AnchorPane {
         this.labelCity.setText(UserHolder.getCurrentUser().getCity());
         this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
         this.labelMaxCnt.setText(Integer.toString(UserHolder.getMaxCount()));
+
+        infoBarAssetsVisible(true);
 
         MailerWindow mw = (MailerWindow) scenePicker.getScene(0);
         mw.setUserName(UserHolder.getCurrentUser().getDisplayName());
