@@ -4,6 +4,7 @@ com\ttzv\itmg\ui\sceneControl\ScenePicker.class
 com\ttzv\itmg\ui\gSuiteWindow\GSuiteWindow.class
 com\ttzv\itmg\ui\mailerWindow\ViewTab.class
 com\ttzv\itmg\file\MailMsgParser.class
+uiUtils\LimitableTextField$1.class
 com\ttzv\itmg\properties\Cfg$CfgHolder.class
 com\ttzv\itmg\pass\PasswordGenerator.class
 com\ttzv\itmg\pass\PasswordGenerator$PasswordGeneratorBuilder.class
@@ -22,6 +23,8 @@ com\ttzv\itmg\ui\mailerWindow\MsgFileChooser.class
 com\ttzv\itmg\ad\UserHolder.class
 com\ttzv\itmg\uiUtils\StatusBar.class
 com\ttzv\itmg\uiUtils\LimitableTextField$1.class
+uiUtils\StatusBar$1.class
+uiUtils\StatusBar.class
 com\ttzv\itmg\ui\signWindow\SignWindow.class
 com\ttzv\itmg\pass\PasswordGenerator$1.class
 com\ttzv\itmg\uiUtils\UiObjectsWrapper.class
@@ -42,8 +45,10 @@ com\ttzv\itmg\utility\Utility.class
 com\ttzv\itmg\file\FileParser.class
 com\ttzv\itmg\uiUtils\LimitableTextField.class
 com\ttzv\itmg\ui\mainAppWindow\popups\UserEdit.class
+uiUtils\LimitableTextField.class
 com\ttzv\itmg\ui\mailerWindow\InfoWindow.class
 com\ttzv\itmg\file\Loader.class
+uiUtils\TitledBorder.class
 com\ttzv\itmg\ad\User.class
 com\ttzv\itmg\ui\crmWindow\CrmWindow.class
 com\ttzv\itmg\ui\mainAppWindow\Main.class

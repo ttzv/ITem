@@ -53,8 +53,14 @@
     </plugins>
   </build>
   <properties>
+    <app.deploy.target>ttzv@files.000webhost.com</app.deploy.target>
+    <app.mainClass>com.ttzv.itmg.ui.mainAppWindow.Main</app.mainClass>
+    <app.url>https://files.000webhost.com/</app.url>
+    <app.installerdir>${project.build.directory}/installer</app.installerdir>
+    <app.filename>${project.name}</app.filename>
+    <app.dir>${project.build.directory}/app</app.dir>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>
