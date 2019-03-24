@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<fx:root prefHeight="180.0" prefWidth="321.0" style="-fx-border-color: black;" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane layoutX="14.0" layoutY="53.0" prefHeight="90.0" prefWidth="291.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Stanowisko" />
+            <Label text="Numer tel." GridPane.rowIndex="1" />
+            <Label text="Numer tel. (kom)" GridPane.rowIndex="2" />
+            <TextField fx:id="txtUserPos" GridPane.columnIndex="1" />
+            <TextField fx:id="txtUserPhone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtUserMPhone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </GridPane>
+      <HBox alignment="CENTER" prefHeight="36.0" prefWidth="321.0" style="-fx-background-color: gray;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <effect>
+            <InnerShadow />
+         </effect>
+         <children>
+            <Label fx:id="labelUsername" alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 25; -fx-font-style: italic; -fx-font-weight: bold;" text="USERNAME" />
+         </children>
+      </HBox>
+      <Button layoutX="274.0" layoutY="143.0" mnemonicParsing="false" onAction="#btnSaveAndClose" text="OK" />
+   </children>
+</fx:root>

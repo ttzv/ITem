@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<fx:root prefHeight="500.0" prefWidth="780.0" style="-fx-background-color: blue;" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="355.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCENE 4 TODO" wrappingWidth="144.13671875" />
+   </children>
+</fx:root>
