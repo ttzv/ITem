@@ -14,4 +14,4 @@ deprecated
 *.ipr
 *.iws
 coverage-error.log
-target
+target/
