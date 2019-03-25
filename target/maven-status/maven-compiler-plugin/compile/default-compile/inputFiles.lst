@@ -17,10 +17,8 @@ C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\settingsWindow\SettingsWindow.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\MailMsgParser.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\Main.java
-C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\uiUtils\StatusBar.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\crmWindow\CrmWindow.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\popups\CityEdit.java
-C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\uiUtils\LimitableTextField.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\signWindow\SignWindow.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\MsgFileChooser.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\utility\Utility.java
@@ -40,4 +38,3 @@ C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\sender\Sender.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\Loader.java
 C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\gSuiteWindow\GSuiteWindow.java
-C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\uiUtils\TitledBorder.java

@@ -15,8 +15,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import uiUtils.LimitableTextField?>
-<?import uiUtils.TitledBorder?>
+<?import com.ttzv.itmg.uiUtils.LimitableTextField?>
+<?import com.ttzv.itmg.uiUtils.TitledBorder?>
 
 <fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
