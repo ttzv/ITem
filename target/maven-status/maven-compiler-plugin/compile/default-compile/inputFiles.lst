@@ -1,40 +1,43 @@
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\signWindow\SignWindow.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\MsgFileChooser.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\db\DbCon.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\Main.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ad\User.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\db\DbMain.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\pass\PasswordGenerator.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\settingsWindow\SettingsWindow.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\sceneControl\ScenePicker.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\Loader.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\SearchWindow.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\popups\CityEdit.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\sender\Sender.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\tests\Main.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\FileParser.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\MailMsgParser.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\utility\BorderedTitledPane\BorderedTitledPane.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\dbToolsWindow\DbTools.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\StatusBar.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\MainWindow.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\InfoWindow.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\TabBuilder.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\UiObjectsWrapper.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\MailerWindow.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ad\LDAPParser.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\properties\Cfg.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\ViewTab.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\utility\Utility.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\db\PgStatement.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\properties\Propsicl.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\crmWindow\CrmWindow.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ad\UserHolder.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\TitledBorder.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\pwSafe\PHolder.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\gSuiteWindow\GSuiteWindow.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\SignatureParser.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\pwSafe\Crypt.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\CountDown.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\LimitableTextField.java
-C:\Users\Tomasz\Google Drive (tomasz.zwak@gmail.com)\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\popups\UserEdit.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ad\User.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\tests\Main.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\SignatureParser.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\TitledBorder.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ad\LDAPParser.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\pwSafe\Crypt.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\StatusBar.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\pwSafe\PHolder.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\TabBuilder.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\CountDown.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\properties\Propsicl.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ad\UserHolder.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\UiObjectsWrapper.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\MainWindow.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\InfoWindow.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\FileParser.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\settingsWindow\SettingsWindow.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\MailMsgParser.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\Main.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\uiUtils\StatusBar.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\crmWindow\CrmWindow.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\popups\CityEdit.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\uiUtils\LimitableTextField.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\signWindow\SignWindow.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\MsgFileChooser.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\utility\Utility.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\db\DbMain.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\uiUtils\LimitableTextField.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\MailerWindow.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\pass\PasswordGenerator.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\SearchWindow.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\db\PgStatement.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\dbToolsWindow\DbTools.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\db\DbCon.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\properties\Cfg.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mailerWindow\ViewTab.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\sceneControl\ScenePicker.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\utility\BorderedTitledPane\BorderedTitledPane.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\mainAppWindow\popups\UserEdit.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\sender\Sender.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\file\Loader.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\com\ttzv\itmg\ui\gSuiteWindow\GSuiteWindow.java
+C:\Users\tzwak\Dysk Google\JavaWork\jProjects\Mailer\src\main\java\uiUtils\TitledBorder.java
