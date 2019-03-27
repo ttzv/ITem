@@ -4,6 +4,8 @@ import com.ttzv.itmg.ad.User;
 import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.db.DbCon;
 import com.ttzv.itmg.db.PgStatement;
+import com.ttzv.itmg.ui.mainAppWindow.MainWindow;
+import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +21,10 @@ import java.sql.SQLException;
 public class CityEdit extends AnchorPane {
 
     private Stage stage;
+    private UiObjectsWrapper uiObjectsWrapper;
 
-    public CityEdit() {
+    public CityEdit(UiObjectsWrapper uiObjectsWrapper) {
+        this.uiObjectsWrapper = uiObjectsWrapper;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/cityedit.fxml"));
             fxmlLoader.setController(this);
@@ -63,7 +67,7 @@ public class CityEdit extends AnchorPane {
     @FXML
     private Label labelCityName;
 
-    @FXML
+    @FXML //USED IN FXML
     void btnSaveAndClose(ActionEvent event) throws SQLException {
         updateDatabase(UserHolder.getCurrentUser());
         stage.close();
@@ -95,5 +99,13 @@ public class CityEdit extends AnchorPane {
         //System.out.println(queryPhone + "\n" + queryFax);
 
         dbCon.customQuery(queryPhone, queryFax);
+
+        User currentUser = UserHolder.getCurrentUser();
+        UserHolder.clear();
+        UserHolder.addUser(dbCon.reloadUser(currentUser));
+        MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
+        mainWindow.changeUser();
     }
+
+
 }

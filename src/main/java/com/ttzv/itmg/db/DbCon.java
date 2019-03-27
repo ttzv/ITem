@@ -117,27 +117,6 @@ public class DbCon {
         return newUsers;
     }
 
-    /**
-     * Updates records in database with information parsed from LDAP
-     **/
-    public void updateUsersInfo() throws SQLException {
-        String tabletest = "users";
-        String columntest = "city";
-
-        Statement st = conn.createStatement();
-        String updateQuery;
-        String criterium;
-        List<User> users = ldapParser.getUsersDataList();
-
-        for (User u : users) {
-            criterium = "samaccountname='"+u.getSamAccountName()+"'";
-            updateQuery = PgStatement.update(tabletest, columntest, PgStatement.apostrophied(u.getCity()), criterium);
-            st.executeUpdate(updateQuery);
-        }
-
-        st.close();
-
-    }
 
     public boolean getNewUsers(int count) throws SQLException {
         UserHolder.clear();
@@ -199,19 +178,8 @@ public class DbCon {
         return foundUsers;
     }
 
-
-    @Deprecated
-    public User getNewestUser() throws SQLException {
-        Statement st = conn.createStatement();
-        ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users", "*", null, "whencreated", false));
-        resultSet.next();
-        String[] resultUserData = new String[User.columns.length];
-        for (int i = 0; i <= User.columns.length - 1 ; i++) {
-            resultUserData[i] = resultSet.getString(User.columns[i]);
-        }
-        User user = new User(resultUserData);
-        resultSet.close();
-        return user;
+    public User reloadUser (User user) throws SQLException {
+        return globalSearch(user.getSamAccountName(), 1).get(0);
     }
 
 

@@ -117,8 +117,8 @@ public class MainWindow extends AnchorPane {
         labelUsername.setText("");
         infoBarAssetsVisible(false);
 
-        userEditPop = new UserEdit();
-        cityEditPop = new CityEdit();
+        userEditPop = new UserEdit(uiObjectsWrapper);
+        cityEditPop = new CityEdit(uiObjectsWrapper);
         searchWindow = new SearchWindow(uiObjectsWrapper);
 
         loadOnStart();
@@ -263,7 +263,7 @@ public class MainWindow extends AnchorPane {
         return infoBarAssetsVisible;
     }
 
-    protected void changeUser() {
+    public void changeUser() {
         this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
         this.labelCity.setText(UserHolder.getCurrentUser().getCity());
         this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
@@ -289,6 +289,8 @@ public class MainWindow extends AnchorPane {
             sw.selectComboxVal(0);
         }
         sw.reload();
+
+        System.out.println("performing change");
     }
 
 

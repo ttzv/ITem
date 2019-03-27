@@ -4,6 +4,8 @@ import com.ttzv.itmg.ad.User;
 import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.db.DbCon;
 import com.ttzv.itmg.db.PgStatement;
+import com.ttzv.itmg.ui.mainAppWindow.MainWindow;
+import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +21,10 @@ import java.sql.SQLException;
 public class UserEdit extends AnchorPane {
 
     private Stage stage;
+    private UiObjectsWrapper uiObjectsWrapper;
 
-    public UserEdit() {
+    public UserEdit(UiObjectsWrapper uiObjectsWrapper) {
+        this.uiObjectsWrapper = uiObjectsWrapper;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/useredit.fxml"));
             fxmlLoader.setController(this);
@@ -109,6 +113,12 @@ public class UserEdit extends AnchorPane {
         //System.out.println(queryPos + "\n" + queryPhone + "\n" + queryMPhone);
 
         dbCon.customQuery(queryPos, queryPhone, queryMPhone);
+
+        User currentUser = UserHolder.getCurrentUser();
+        UserHolder.clear();
+        UserHolder.addUser(dbCon.reloadUser(currentUser));
+        MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
+        mainWindow.changeUser();
     }
 
 
