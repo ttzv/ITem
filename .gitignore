@@ -16,3 +16,4 @@ deprecated
 coverage-error.log
 target/
 *.iss
+Output/

@@ -247,7 +247,9 @@ public class MailerWindow extends AnchorPane {
     public void userFieldEvent(){
         this.txtUser.textProperty().addListener((observable, oldValue, newValue) -> {
             String fInput = Utility.reformatUserInput(newValue);
-            this.txtLog.setText(fInput);
+            if(Cfg.getInstance().retrieveProp(Cfg.AUTOFILL_LOGIN).equals("true")) {
+                this.txtLog.setText(fInput);
+            }
             this.sender.setAddressPrefix(fInput);
             updateAddressLabelText();
         });

@@ -105,6 +105,9 @@ public class SettingsWindow extends AnchorPane {
     @FXML
     private CheckBox cBoxAutoMailSavePass;
 
+    @FXML
+    private CheckBox cBoxAutoFillLogin;
+
 
 
     public SettingsWindow() {
@@ -223,8 +226,12 @@ public class SettingsWindow extends AnchorPane {
             this.cBoxAutoMailSavePass.setSelected(false);
         }
 
-
-
+        String autoFillLogin = Cfg.getInstance().retrieveProp(Cfg.AUTOFILL_LOGIN);
+        if(autoFillLogin.equals("true")){
+            this.cBoxAutoFillLogin.setSelected(true);
+        } else {
+            this.cBoxAutoFillLogin.setSelected(false);
+        }
 
 
         //TODO: make ui for DB and LDAP connection, part below is temporary solution, no ui for this yet
@@ -268,6 +275,13 @@ public class SettingsWindow extends AnchorPane {
         } else {
             Cfg.getInstance().setProperty(Cfg.SAVEPASS, "false");
         }
+
+        if(cBoxAutoFillLogin.isSelected()){
+            Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "true");
+        } else {
+            Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "false");
+        }
+
 
         Cfg.getInstance().saveFile();
     }
