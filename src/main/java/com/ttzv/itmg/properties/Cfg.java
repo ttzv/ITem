@@ -3,7 +3,10 @@ package com.ttzv.itmg.properties;
 //this is apparently Singleton pattern, Bill Pugh pattern was used
  public class Cfg extends Propsicl {
 
-     //Property keys below
+    private String saveDir;
+
+
+    //Property keys below
      //window
      public static String ActiveWindow = "ActiveWindow";
      public static String MsgParentPath = "MsgParentPath";

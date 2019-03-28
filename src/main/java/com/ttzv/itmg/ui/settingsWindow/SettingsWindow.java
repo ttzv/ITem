@@ -265,23 +265,16 @@ public class SettingsWindow extends AnchorPane {
     }
 
     @FXML
+    void btnAcceptMiscSettingsEvent(ActionEvent event) {
+        btnMiscPerformAction();
+    }
+
+    @FXML
     public void btnSaveAllSettingsEvent() throws IOException {
         btnDbPerformAction(true);
         btnLdapPerformAction(true);
         btnMailPerformAction(true);
-
-        if(cBoxAutoMailSavePass.isSelected()){
-            Cfg.getInstance().setProperty(Cfg.SAVEPASS, "true");
-        } else {
-            Cfg.getInstance().setProperty(Cfg.SAVEPASS, "false");
-        }
-
-        if(cBoxAutoFillLogin.isSelected()){
-            Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "true");
-        } else {
-            Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "false");
-        }
-
+        btnMiscPerformAction();
 
         Cfg.getInstance().saveFile();
     }
@@ -387,6 +380,20 @@ public class SettingsWindow extends AnchorPane {
 
         testDBCredentials();
 
+    }
+
+    private void btnMiscPerformAction() {
+        if(cBoxAutoMailSavePass.isSelected()){
+            Cfg.getInstance().setProperty(Cfg.SAVEPASS, "true");
+        } else {
+            Cfg.getInstance().setProperty(Cfg.SAVEPASS, "false");
+        }
+
+        if(cBoxAutoFillLogin.isSelected()){
+            Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "true");
+        } else {
+            Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "false");
+        }
     }
 
     private void testMailCredentials(){

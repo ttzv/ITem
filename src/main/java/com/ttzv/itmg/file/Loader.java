@@ -16,7 +16,7 @@ public class Loader {
     }
 
     public boolean load (File file){
-        if(file.exists()) {
+        if(file.exists() && file != null) {
             try {
                 bufferedReader = new BufferedReader(new InputStreamReader(
                         new FileInputStream(file.getPath()), StandardCharsets.UTF_8));

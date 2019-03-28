@@ -242,6 +242,7 @@
                   <CheckBox fx:id="cBoxAutoMailSavePass" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="Autouzupełnianie nazwy użytkownika" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                   <CheckBox fx:id="cBoxAutoFillLogin" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptMiscSettingsEvent" prefHeight="25.0" prefWidth="51.0" text="Zapisz" GridPane.rowIndex="4" />
                </children>
                <padding>
                   <Insets left="5.0" top="5.0" />

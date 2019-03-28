@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Properties;
 
@@ -37,19 +38,7 @@ public abstract class Propsicl {
     private String defPropsName;
     private String mainPropsName;
     private boolean modifiable;
-
-    public Propsicl(){
-
-        //false until create() method is called to prevent changing default properties during runtime
-        modifiable = false;
-
-        defaultProps = new Properties();
-        propsPath = FileSystems.getDefault().getPath("cfg");
-
-        defPropsName = this.getClass().getSimpleName() + "_def.props";
-        mainPropsName = this.getClass().getSimpleName() + "_main.props";
-
-    }
+    private String saveDir;
 
     /**
      * Method used for checking if files with properties exists
@@ -152,7 +141,7 @@ public abstract class Propsicl {
 
 
     /**
-     * Loads defaults form default.props file and main props from main.props file, initializes main properties object with defaults list and populates it with values red from main.props.
+     * Loads defaults form default.props file and main props from main.props file, initializes main properties object with defaults list and populates it with values read from main.props.
      */
     private void create(){
         //load from default props file and store in default object
@@ -170,6 +159,7 @@ public abstract class Propsicl {
             io.printStackTrace();
         }
 
+        System.out.println(getClass().getSimpleName() + ": Loading properties from: " + propsPath.toAbsolutePath());
         System.out.println(getClass().getSimpleName() + ": Default properties loaded: " + defaultProps.keySet().size());
         System.out.println(getClass().getSimpleName() + ": Properties loaded: " + props.keySet().size());
 
@@ -217,7 +207,23 @@ public abstract class Propsicl {
      * Method encapsulating creation of directories, files, initialization of properties etc, use at the start of application or module/class(constructor preferably).
      * @throws IOException
      */
-    public void init() throws IOException {
+    public void init(String saveDir) throws IOException {
+        //false until create() method is called to prevent changing default properties during runtime
+        modifiable = false;
+
+        defaultProps = new Properties();
+        if(saveDir.isEmpty()) {
+            propsPath = Paths.get("cfg");
+        } else {
+            propsPath = Paths.get(System.getProperty("user.home"))
+                    .resolve("AppData")
+                    .resolve("Local")
+                    .resolve(saveDir)
+                    .resolve("cfg");
+        }
+
+        defPropsName = this.getClass().getSimpleName() + "_def.props";
+        mainPropsName = this.getClass().getSimpleName() + "_main.props";
 
         //Create directory tree
         this.createPropsDir();
@@ -230,4 +236,7 @@ public abstract class Propsicl {
         this.create();
     }
 
+    public Path getPropsPath() {
+        return propsPath;
+    }
 }

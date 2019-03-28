@@ -1,5 +1,7 @@
 package com.ttzv.itmg.pwSafe;
 
+import com.ttzv.itmg.properties.Cfg;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -31,7 +33,7 @@ public class Crypt {
 
         this.hExt = ".dat";
         this.hExtK = ".kdat";
-        this.pwPath = FileSystems.getDefault().getPath("cfg");
+        this.pwPath = Cfg.getInstance().getPropsPath();
         this.name = name;
 
     }

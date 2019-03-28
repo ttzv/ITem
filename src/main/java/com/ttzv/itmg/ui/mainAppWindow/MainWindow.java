@@ -3,6 +3,7 @@ package com.ttzv.itmg.ui.mainAppWindow;
 import com.ttzv.itmg.ad.LDAPParser;
 import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.db.DbCon;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -88,6 +89,7 @@ public class MainWindow extends AnchorPane {
 
 
     public MainWindow(UiObjectsWrapper uiObjectsWrapper) {
+
         this.uiObjectsWrapper = uiObjectsWrapper;
         uiObjectsWrapper.registerObject(uiObjectsWrapper.MainWindow, this);
         fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));

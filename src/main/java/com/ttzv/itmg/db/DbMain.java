@@ -1,6 +1,9 @@
 package com.ttzv.itmg.db;
 
 import javax.naming.NamingException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class DbMain {
@@ -40,5 +43,10 @@ public class DbMain {
 
        //dbCon.globalSearch("Filia", 10);
       // dbCon.globalSearch("Małachowski", 0);
+
+        Path testpath = Paths.get(System.getProperty("user.home"))
+                .resolve("AppData")
+                .resolve("Local");
+        System.out.println(testpath);
     }
 }
