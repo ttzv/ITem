@@ -2,21 +2,22 @@ package com.ttzv.itmg.file;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class Loader {
 
     private BufferedReader bufferedReader;
 
-    public Loader(){
+    public Loader() {
 
     }
 
-    public Loader(File file){
+    public Loader(File file) {
         load(file);
     }
 
-    public boolean load (File file){
-        if(file.exists() && file != null) {
+    public boolean load(File file) {
+        if (file.exists() && file != null) {
             try {
                 bufferedReader = new BufferedReader(new InputStreamReader(
                         new FileInputStream(file.getPath()), StandardCharsets.UTF_8));
@@ -43,4 +44,21 @@ public class Loader {
         }
         return null;
     }
+
+    public ArrayList<String> contentToArray() {
+
+        ArrayList<String> list = new ArrayList<>();
+        String stringLine;
+        try {
+            while ((stringLine = bufferedReader.readLine()) != null) {
+                list.add(stringLine);
+            }
+            return list;
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return null;
+    }
 }
+
+
