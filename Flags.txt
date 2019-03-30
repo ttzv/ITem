@@ -1,5 +1,0 @@
-Temat <!T></!T>
-Login <!L></!L>
-Hasło <!P></!P>
-
-

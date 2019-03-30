@@ -29,11 +29,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        for (String a : args
-        ) {
-            System.out.println(a);
-
-        }
         launch(args);
 
     }
