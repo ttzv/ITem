@@ -108,10 +108,9 @@ public class SettingsWindow extends AnchorPane {
     @FXML
     private CheckBox cBoxAutoFillLogin;
 
-    //todo ->
     @FXML
     private CheckBox cBoxAlwaysOpenDir;
-    // <- todo
+
 
 
 
@@ -236,6 +235,13 @@ public class SettingsWindow extends AnchorPane {
             this.cBoxAutoFillLogin.setSelected(true);
         } else {
             this.cBoxAutoFillLogin.setSelected(false);
+        }
+
+        String alwaysOpenDir = Cfg.getInstance().retrieveProp(Cfg.DIR_ALWAYSOPEN);
+        if(alwaysOpenDir.equals("true")){
+            this.cBoxAlwaysOpenDir.setSelected(true);
+        } else {
+            this.cBoxAlwaysOpenDir.setSelected(false);
         }
 
 
@@ -398,6 +404,12 @@ public class SettingsWindow extends AnchorPane {
             Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "true");
         } else {
             Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "false");
+        }
+
+        if(cBoxAlwaysOpenDir.isSelected()){
+            Cfg.getInstance().setProperty(Cfg.DIR_ALWAYSOPEN, "true");
+        } else {
+            Cfg.getInstance().setProperty(Cfg.DIR_ALWAYSOPEN, "false");
         }
     }
 

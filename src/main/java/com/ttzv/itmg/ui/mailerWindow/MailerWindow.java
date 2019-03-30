@@ -76,7 +76,7 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     void btnSendAction(ActionEvent event) {
-        mainWindow.setStatusBarText("Wysłano do " + this.sender.getReceiverAddress());
+
         sender.setSmtpHost(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
         sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
         sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
@@ -106,6 +106,7 @@ public class MailerWindow extends AnchorPane {
 
         sender.sendMail();
 
+        mainWindow.setStatusBarText("Wysłano do " + this.sender.getReceiverAddress());
 
     }
 

@@ -27,6 +27,8 @@ package com.ttzv.itmg.properties;
      public static String DB_USER_QTY = "dbLoadedUserQuantity";
      //signature
      public static String SIGN_LOC = "signatureLocation";
+     public static String SIGN_TARGETPATH = "signatureSavingDirectory";
+     public static String DIR_ALWAYSOPEN = "dirAlwaysOpen";
 
 
 

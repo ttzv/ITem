@@ -1,6 +1,8 @@
 package com.ttzv.itmg.ui.signWindow;
 
+import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.file.Loader;
+import com.ttzv.itmg.file.Saver;
 import com.ttzv.itmg.file.SignatureParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,11 +15,17 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import com.ttzv.itmg.properties.Cfg;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class SignWindow extends AnchorPane {
 
@@ -143,13 +151,52 @@ public class SignWindow extends AnchorPane {
     }
 
     @FXML
-    void btnOpenHtmlDirAction(ActionEvent event) {
+    void btnOpenHtmlDirAction(ActionEvent event) throws IOException {
+       openTargetDir();
+    }
 
+    private void openTargetDir() throws IOException {
+        String cfgTargetPath = Cfg.getInstance().retrieveProp(Cfg.SIGN_TARGETPATH);
+        if(!cfgTargetPath.isEmpty()) {
+            Path path = Paths.get(cfgTargetPath, UserHolder.getCurrentUser().getDisplayName());
+            if(Files.exists(path)) {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(new File(path.toUri()));
+            }
+        }
     }
 
     @FXML
-    void btnSaveHtmlFileAction(ActionEvent event) {
+    void btnSaveHtmlFileAction(ActionEvent event) throws IOException {
+        if (UserHolder.getCurrentUser() != null){
+            Saver saver = new Saver(signatureParser.getOutputString());
+            saver.setExtension(saver.HTML);
+            saver.setFileName(UserHolder.getCurrentUser().getSamAccountName());
 
+            String cfgTargetPath = Cfg.getInstance().retrieveProp(Cfg.SIGN_TARGETPATH);
+            File targetPath;
+
+            if(cfgTargetPath.isEmpty() ) {
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                targetPath = directoryChooser.showDialog(null);
+                Cfg.getInstance().setProperty(Cfg.SIGN_TARGETPATH, targetPath.getPath());
+                Cfg.getInstance().saveFile();
+
+            } else {
+                targetPath = new File(cfgTargetPath);
+            }
+            Path finalSavePath = targetPath.toPath().resolve(UserHolder.getCurrentUser().getDisplayName());
+            if(!Files.exists(finalSavePath)){
+                Files.createDirectory(finalSavePath);
+            }
+
+            saver.setTargetPath(finalSavePath);
+            saver.saveFile();
+
+            if(Cfg.getInstance().retrieveProp(Cfg.DIR_ALWAYSOPEN).equals("true")){
+                openTargetDir();
+            }
+        }
     }
 // <- todo
 
