@@ -108,6 +108,11 @@ public class SettingsWindow extends AnchorPane {
     @FXML
     private CheckBox cBoxAutoFillLogin;
 
+    //todo ->
+    @FXML
+    private CheckBox cBoxAlwaysOpenDir;
+    // <- todo
+
 
 
     public SettingsWindow() {

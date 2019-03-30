@@ -3,7 +3,6 @@ package com.ttzv.itmg.properties;
 //this is apparently Singleton pattern, Bill Pugh pattern was used
  public class Cfg extends Propsicl {
 
-    private String saveDir;
 
 
     //Property keys below

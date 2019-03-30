@@ -243,6 +243,8 @@
                   <Label text="Autouzupełnianie nazwy użytkownika" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                   <CheckBox fx:id="cBoxAutoFillLogin" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <Button alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptMiscSettingsEvent" prefHeight="25.0" prefWidth="51.0" text="Zapisz" GridPane.rowIndex="4" />
+                  <Label text="Zawsze otwieraj katalog po zapisaniu pliku" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                  <CheckBox fx:id="cBoxAlwaysOpenDir" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                </children>
                <padding>
                   <Insets left="5.0" top="5.0" />

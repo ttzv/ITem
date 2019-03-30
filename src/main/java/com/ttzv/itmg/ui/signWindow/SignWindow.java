@@ -2,6 +2,7 @@ package com.ttzv.itmg.ui.signWindow;
 
 import com.ttzv.itmg.file.Loader;
 import com.ttzv.itmg.file.SignatureParser;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
@@ -135,7 +136,22 @@ public class SignWindow extends AnchorPane {
         clipboardContent.putString(signatureParser.getOutputString());
         clipboard.setContent(clipboardContent);
     }
+ //todo ->
+    @FXML
+    void btnGenerateOutlookSignatureAction(ActionEvent event) {
 
+    }
+
+    @FXML
+    void btnOpenHtmlDirAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnSaveHtmlFileAction(ActionEvent event) {
+
+    }
+// <- todo
 
     private void btnDeleteFaxAction() {
         btnDeleteFax.setOnAction(event ->{
