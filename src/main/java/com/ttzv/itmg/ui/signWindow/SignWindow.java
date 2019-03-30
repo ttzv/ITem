@@ -110,12 +110,12 @@ public class SignWindow extends AnchorPane {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         Loader loader = new Loader();
-        loader.load(file);
-        signatureParser = new SignatureParser(loader.readContent());
-        reload();
-
-        Cfg.getInstance().setProperty(Cfg.SIGN_LOC, file.getPath());
-        Cfg.getInstance().saveFile();
+        if ( loader.load(file) ) {
+            signatureParser = new SignatureParser(loader.readContent());
+            reload();
+            Cfg.getInstance().setProperty(Cfg.SIGN_LOC, file.getPath());
+            Cfg.getInstance().saveFile();
+        }
     }
 
     @FXML

@@ -17,16 +17,21 @@ public class Loader {
     }
 
     public boolean load(File file) {
-        if (file.exists() && file != null) {
-            try {
-                bufferedReader = new BufferedReader(new InputStreamReader(
-                        new FileInputStream(file.getPath()), StandardCharsets.UTF_8));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+        if(file != null) {
+            if (file.exists()) {
+                try {
+                    bufferedReader = new BufferedReader(new InputStreamReader(
+                            new FileInputStream(file.getPath()), StandardCharsets.UTF_8));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            } else {
+                System.err.println("File: " + file.toString() + "  was not found.");
+                return false;
             }
-            return true;
         } else {
-            System.err.println("File: " + file.toString() + "  was not found.");
+            System.err.println(this.getClass().getSimpleName() + ": No file received");
             return false;
         }
     }
