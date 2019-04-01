@@ -149,7 +149,7 @@ public class SignWindow extends AnchorPane {
     void btnGenerateOutlookSignatureAction(ActionEvent event) {
 
     }
-
+    // <- todo
     @FXML
     void btnOpenHtmlDirAction(ActionEvent event) throws IOException {
        openTargetDir();
@@ -170,13 +170,14 @@ public class SignWindow extends AnchorPane {
     void btnSaveHtmlFileAction(ActionEvent event) throws IOException {
         if (UserHolder.getCurrentUser() != null){
             Saver saver = new Saver(signatureParser.getOutputString());
+            System.out.println(signatureParser.getOutputString());
             saver.setExtension(saver.HTML);
             saver.setFileName(UserHolder.getCurrentUser().getSamAccountName());
 
             String cfgTargetPath = Cfg.getInstance().retrieveProp(Cfg.SIGN_TARGETPATH);
             File targetPath;
 
-            if(cfgTargetPath.isEmpty() ) {
+            if(cfgTargetPath.isEmpty() || !Files.exists(Paths.get(cfgTargetPath)) ) {
                 DirectoryChooser directoryChooser = new DirectoryChooser();
                 targetPath = directoryChooser.showDialog(null);
                 Cfg.getInstance().setProperty(Cfg.SIGN_TARGETPATH, targetPath.getPath());
@@ -198,7 +199,7 @@ public class SignWindow extends AnchorPane {
             }
         }
     }
-// <- todo
+
 
     private void btnDeleteFaxAction() {
         btnDeleteFax.setOnAction(event ->{

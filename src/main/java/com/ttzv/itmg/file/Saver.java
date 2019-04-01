@@ -3,6 +3,7 @@ package com.ttzv.itmg.file;
 import sun.security.util.Password;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,7 +52,7 @@ public final String TXT = ".txt";
 
         //BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(filePath.toFile()));
 
-        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toFile())));
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toFile()), StandardCharsets.UTF_8));
 
         //System.out.println(filePath.toFile().getAbsolutePath());
 
