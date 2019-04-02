@@ -150,6 +150,7 @@ public class MailerWindow extends AnchorPane {
         tabBuilder.promptForChooser();
         //tabBuilder.build();
         this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
+        promptLabelEnabler();
     }
 
 

@@ -101,15 +101,19 @@ public class MailMsgParser implements FileParser{
      */
     public void parseFlaggedTopic(){
         int flagTopicStartOffset, flagTopicEndOffset;
-        flagTopicStartOffset = stringBuilder.lastIndexOf(flagTopicStart) + flagTopicStart.length();
+        flagTopicStartOffset = stringBuilder.lastIndexOf(flagTopicStart);
         flagTopicEndOffset = stringBuilder.lastIndexOf(flagTopicEnd);
+        if(flagTopicStartOffset > 0 && flagTopicEndOffset > 0) {
+            flagTopicStartOffset += flagTopicStart.length();
+            System.out.println(flagTopicStartOffset + " | " + flagTopicEndOffset);
 
-       // System.out.println(flagTopicStartOffset + " | " + flagTopicEndOffset);
+            String flaggedTopic = stringBuilder.substring(flagTopicStartOffset, flagTopicEndOffset);
+            stringBuilder.replace(flagTopicStartOffset - flagTopicStart.length(), flagTopicEndOffset + flagTopicEnd.length(), "");
 
-        String flaggedTopic = stringBuilder.substring(flagTopicStartOffset, flagTopicEndOffset);
-        stringBuilder.replace(flagTopicStartOffset - flagTopicStart.length(), flagTopicEndOffset + flagTopicEnd.length(), "");
-
-        this.flaggedTopic = flaggedTopic;
+            this.flaggedTopic = flaggedTopic;
+        } else {
+            this.flaggedTopic = "";
+        }
 
     }
 
@@ -118,22 +122,29 @@ public class MailMsgParser implements FileParser{
     }
 
     /**
-     * Allows to reparse text with modified flagged values, usually best to use after modifying flaggedLogin or flaggedPassword
+     * Allows to reparse text with modified flagged values, usually best to use after modifying flaggedLogin or flaggedPassword,
+     * if no flags are present in text nothing changes in document.
      */
     public void reparse(){
-        flagLoginStartOffset = stringBuilder.lastIndexOf(flagLoginStart) + flagLoginStart.length();
+        flagLoginStartOffset = stringBuilder.lastIndexOf(flagLoginStart);
         flagLoginEndOffset = stringBuilder.lastIndexOf(flagLoginEnd);
+
+        if(flagLoginStartOffset > 0 && flagLoginEndOffset > 0){
+            flagLoginStartOffset += flagLoginStart.length();
+            this.stringBuilder.replace(flagLoginStartOffset, flagLoginEndOffset, "");
+            this.stringBuilder.insert(flagLoginStartOffset, flaggedLogin);
+        }
         //System.out.println(flagLoginStartOffset + " | " + flagLoginEndOffset);
 
-        this.stringBuilder.replace(flagLoginStartOffset, flagLoginEndOffset, "");
-        this.stringBuilder.insert(flagLoginStartOffset, flaggedLogin);
 
-        flagPassStartOffset = stringBuilder.lastIndexOf(flagPasswordStart) + flagPasswordStart.length();
+        flagPassStartOffset = stringBuilder.lastIndexOf(flagPasswordStart);
         flagPassEndOffset = stringBuilder.lastIndexOf(flagPasswordEnd);
         //System.out.println(flagPassStartOffset + " | " + flagPassEndOffset);
-
-        this.stringBuilder.replace(flagPassStartOffset, flagPassEndOffset, "");
-        this.stringBuilder.insert(flagPassStartOffset, flaggedPassword);
+        if(flagPassStartOffset > 0 && flagPassEndOffset > 0) {
+            flagPassStartOffset =+ flagPasswordStart.length();
+            this.stringBuilder.replace(flagPassStartOffset, flagPassEndOffset, "");
+            this.stringBuilder.insert(flagPassStartOffset, flaggedPassword);
+        }
 
         //System.out.println(getFlaggedTopic());
 

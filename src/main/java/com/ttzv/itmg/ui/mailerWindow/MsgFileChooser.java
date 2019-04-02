@@ -34,7 +34,7 @@ public class MsgFileChooser {
     public void show(){
         msgs = fileChooser.showOpenMultipleDialog(null);
         if(msgs != null) {
-            saveParentPath();
+            //saveParentPath();
             saveMsgList();
         } else
             msgs = new ArrayList<>(0);
@@ -69,7 +69,7 @@ public class MsgFileChooser {
     }
 
     /**
-     * save list of files chosen in this directory, if diretory stays the same new values are added to existing, if directory changes list is erased.
+     * save list of files chosen in this directory, if directory stays the same new values are added to existing, if directory changes list is erased.
      */
     public void saveMsgList() {
         List<String> fileNames;
