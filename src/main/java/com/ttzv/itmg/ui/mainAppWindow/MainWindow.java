@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -31,6 +33,7 @@ import com.ttzv.itmg.uiUtils.StatusBar;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 
 import javax.naming.NamingException;
+import javax.sound.sampled.Clip;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -252,6 +255,15 @@ public class MainWindow extends AnchorPane {
         userEditPop.showAt(event.getScreenX(), event.getScreenY());
     }
 
+    @FXML
+    void pathToClipboard(ActionEvent event) {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent clipboardContent = new ClipboardContent();
+        clipboardContent.putString("%USERPROFILE%\\AppData\\Roaming\\Microsoft\\Signatures");
+        clipboard.setContent(clipboardContent);
+        statusBar.setVanishingText("Skopiowano do schowka");
+    }
+
 
     protected void infoBarAssetsVisible(boolean b) {
         infoBarAssetsVisible = b;
@@ -292,7 +304,7 @@ public class MainWindow extends AnchorPane {
         }
         sw.reload();
 
-        System.out.println("performing change");
+        //System.out.println("performing change");
     }
 
 

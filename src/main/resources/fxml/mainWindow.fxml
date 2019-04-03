@@ -34,6 +34,7 @@
                 <Menu mnemonicParsing="false" text="Pomoc">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#showMailSett" text="E-Mail" />
+                        <MenuItem mnemonicParsing="false" onAction="#pathToClipboard" text="Ścieżka podpisu Outlook" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                   </items>
                 </Menu>

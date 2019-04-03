@@ -21,6 +21,7 @@ private String extension;
 
 public final String HTML = ".html";
 public final String TXT = ".txt";
+public final String HTM = ".htm";
 
 
     public Saver(String stringToSave) {

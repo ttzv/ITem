@@ -144,12 +144,7 @@ public class SignWindow extends AnchorPane {
         clipboardContent.putString(signatureParser.getOutputString());
         clipboard.setContent(clipboardContent);
     }
- //todo ->
-    @FXML
-    void btnGenerateOutlookSignatureAction(ActionEvent event) {
 
-    }
-    // <- todo
     @FXML
     void btnOpenHtmlDirAction(ActionEvent event) throws IOException {
        openTargetDir();
@@ -171,7 +166,7 @@ public class SignWindow extends AnchorPane {
         if (UserHolder.getCurrentUser() != null){
             Saver saver = new Saver(signatureParser.getOutputString());
             System.out.println(signatureParser.getOutputString());
-            saver.setExtension(saver.HTML);
+            saver.setExtension(saver.HTM);
             saver.setFileName(UserHolder.getCurrentUser().getSamAccountName());
 
             String cfgTargetPath = Cfg.getInstance().retrieveProp(Cfg.SIGN_TARGETPATH);
