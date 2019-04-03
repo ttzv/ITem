@@ -103,9 +103,9 @@ public class MailMsgParser implements FileParser{
         int flagTopicStartOffset, flagTopicEndOffset;
         flagTopicStartOffset = stringBuilder.lastIndexOf(flagTopicStart);
         flagTopicEndOffset = stringBuilder.lastIndexOf(flagTopicEnd);
-        if(flagTopicStartOffset > 0 && flagTopicEndOffset > 0) {
+        if(flagTopicStartOffset >= 0 && flagTopicEndOffset >= 0) {
             flagTopicStartOffset += flagTopicStart.length();
-            System.out.println(flagTopicStartOffset + " | " + flagTopicEndOffset);
+            //System.out.println(flagTopicStartOffset + " | " + flagTopicEndOffset);
 
             String flaggedTopic = stringBuilder.substring(flagTopicStartOffset, flagTopicEndOffset);
             stringBuilder.replace(flagTopicStartOffset - flagTopicStart.length(), flagTopicEndOffset + flagTopicEnd.length(), "");
@@ -129,7 +129,7 @@ public class MailMsgParser implements FileParser{
         flagLoginStartOffset = stringBuilder.lastIndexOf(flagLoginStart);
         flagLoginEndOffset = stringBuilder.lastIndexOf(flagLoginEnd);
 
-        if(flagLoginStartOffset > 0 && flagLoginEndOffset > 0){
+        if(flagLoginStartOffset >= 0 && flagLoginEndOffset >= 0){
             flagLoginStartOffset += flagLoginStart.length();
             this.stringBuilder.replace(flagLoginStartOffset, flagLoginEndOffset, "");
             this.stringBuilder.insert(flagLoginStartOffset, flaggedLogin);
@@ -140,8 +140,8 @@ public class MailMsgParser implements FileParser{
         flagPassStartOffset = stringBuilder.lastIndexOf(flagPasswordStart);
         flagPassEndOffset = stringBuilder.lastIndexOf(flagPasswordEnd);
         //System.out.println(flagPassStartOffset + " | " + flagPassEndOffset);
-        if(flagPassStartOffset > 0 && flagPassEndOffset > 0) {
-            flagPassStartOffset =+ flagPasswordStart.length();
+        if(flagPassStartOffset >= 0 && flagPassEndOffset >= 0) {
+            flagPassStartOffset += flagPasswordStart.length();
             this.stringBuilder.replace(flagPassStartOffset, flagPassEndOffset, "");
             this.stringBuilder.insert(flagPassStartOffset, flaggedPassword);
         }

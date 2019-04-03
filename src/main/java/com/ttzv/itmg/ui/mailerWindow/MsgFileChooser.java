@@ -87,13 +87,10 @@ public class MsgFileChooser {
         }
             if (!fileNames.isEmpty()) {
                 Cfg.getInstance().setProperty(Cfg.MsgList, fileNames.toString());
-                try {
-                    Cfg.getInstance().saveFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
             }
+            saveParentPath();
         }
-    }
+
 
     /**
      * If properties related to messages are present use this method to get List of files, only files that exists are placed in the list
