@@ -95,18 +95,23 @@ public class MailerWindow extends AnchorPane {
             e.printStackTrace();
         }
 
+        //sender.sendMail();
+
+        String statusText = "Wysłano do " + this.sender.getReceiverAddress();
+
         String savePass = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
-        if(tabBuilder.getSelectedTab().getName().contains("powitanie") && savePass.equals("true")) {
+        if(tabBuilder.getSelectedTab().getName().toLowerCase().contains("powitanie") && savePass.equals("true")) {
             try {
                 savePass();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            statusText = statusText.concat(", zapisano hasło w bazie");
         }
 
-        sender.sendMail();
 
-        mainWindow.setStatusBarText("Wysłano do " + this.sender.getReceiverAddress());
+
+        mainWindow.setStatusBarText(statusText);
 
     }
 
@@ -114,7 +119,7 @@ public class MailerWindow extends AnchorPane {
         DbCon dbCon = new DbCon();
         dbCon.loadCfgCredentials();
         dbCon.initConnection();
-        dbCon.customStatement(PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "samaccountname=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getSamAccountName())) );
+        dbCon.customStatement( PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "samaccountname=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getSamAccountName())) );
     }
 
     @FXML
