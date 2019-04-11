@@ -111,6 +111,12 @@ public class SettingsWindow extends AnchorPane {
     @FXML
     private CheckBox cBoxAlwaysOpenDir;
 
+    @FXML
+    private TextField txtfUserRegex;
+
+    @FXML
+    private TextField txtfLoginRegex;
+
 
 
 
@@ -243,6 +249,9 @@ public class SettingsWindow extends AnchorPane {
         } else {
             this.cBoxAlwaysOpenDir.setSelected(false);
         }
+
+        this.txtfUserRegex.setText(Cfg.getInstance().retrieveProp(Cfg.USER_REGEX));
+        this.txtfLoginRegex.setText(Cfg.getInstance().retrieveProp(Cfg.LOGIN_REGEX));
 
 
         //TODO: make ui for DB and LDAP connection, part below is temporary solution, no ui for this yet
@@ -411,6 +420,16 @@ public class SettingsWindow extends AnchorPane {
         } else {
             Cfg.getInstance().setProperty(Cfg.DIR_ALWAYSOPEN, "false");
         }
+
+        if (!this.txtfUserRegex.getText().isEmpty()){
+            Cfg.getInstance().setProperty(Cfg.USER_REGEX, this.txtfUserRegex.getText());
+        }
+
+        if (!this.txtfLoginRegex.getText().isEmpty()){
+            Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, this.txtfLoginRegex.getText());
+        }
+
+
     }
 
     private void testMailCredentials(){

@@ -17,6 +17,8 @@ package com.ttzv.itmg.properties;
      public static String SMTP_LOGIN = "smtpLogin";
      public static String SAVEPASS = "savePass";
      public static String AUTOFILL_LOGIN = "autoFillLogin";
+     public static String USER_REGEX = "userRegexFilter";
+     public static String LOGIN_REGEX = "loginRegexFilter";
      //ldap
      public static String LDAP_URL = "ldapUrl";
      public static String LDAP_PORT = "ldapPort";

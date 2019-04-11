@@ -15,7 +15,7 @@ public class UserHolder {
     }
 
     public static void setCurrentUser(User bcurrentUser) {
-        currentUser = bcurrentUser;
+        newUsers.set(getCurrentIndex(), bcurrentUser);
     }
 
     public static void addUser (User u){

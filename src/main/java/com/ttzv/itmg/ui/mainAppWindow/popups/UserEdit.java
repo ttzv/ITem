@@ -112,14 +112,17 @@ public class UserEdit extends AnchorPane {
 
         //System.out.println(queryPos + "\n" + queryPhone + "\n" + queryMPhone);
 
-        dbCon.customQuery(queryPos, queryPhone, queryMPhone);
+        dbCon.customStatement(queryPos, queryPhone, queryMPhone);
 
         User currentUser = UserHolder.getCurrentUser();
-        UserHolder.clear();
-        UserHolder.addUser(dbCon.reloadUser(currentUser));
+        UserHolder.setCurrentUser(dbCon.reloadUser(currentUser));
         MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
         mainWindow.changeUser();
     }
+
+
+
+
 
 
 

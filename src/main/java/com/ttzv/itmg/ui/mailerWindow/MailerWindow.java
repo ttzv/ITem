@@ -114,7 +114,7 @@ public class MailerWindow extends AnchorPane {
         DbCon dbCon = new DbCon();
         dbCon.loadCfgCredentials();
         dbCon.initConnection();
-        dbCon.customQuery(PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "samaccountname=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getSamAccountName())) );
+        dbCon.customStatement(PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "samaccountname=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getSamAccountName())) );
     }
 
     @FXML
@@ -161,7 +161,7 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     public void initialize(){
-               
+
         this.tabBuilder = new TabBuilder();
         if(tabBuilder.isReady()){
             this.tabBuilder.preload();
@@ -169,8 +169,27 @@ public class MailerWindow extends AnchorPane {
             this.labTopic.setText(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
         }
 
-        this.txtUser.setRegexFilter(LimitableTextField.NAME_ONLY);
-        this.txtLog.setRegexFilter(LimitableTextField.RESTRICT_SYMBOLS);
+        String userRegex = Cfg.getInstance().retrieveProp(Cfg.USER_REGEX);
+        if (userRegex.isEmpty()) {
+            this.txtUser.setRegexFilter(LimitableTextField.NAME_ONLY);
+            Cfg.getInstance().setProperty(Cfg.USER_REGEX, LimitableTextField.NAME_ONLY);
+        } else {
+            this.txtUser.setRegexFilter(userRegex);
+        }
+
+        String loginRegex = Cfg.getInstance().retrieveProp(Cfg.LOGIN_REGEX);
+        if(!loginRegex.isEmpty()) {
+            this.txtLog.setRegexFilter(loginRegex);
+        } else {
+            this.txtLog.setRegexFilter(LimitableTextField.RESTRICT_SYMBOLS);
+            Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, LimitableTextField.RESTRICT_SYMBOLS);
+        }
+
+        try {
+            Cfg.getInstance().saveFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         promptLabelEnabler();
         passFieldEvent();

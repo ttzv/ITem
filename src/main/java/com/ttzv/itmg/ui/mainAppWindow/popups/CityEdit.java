@@ -98,11 +98,10 @@ public class CityEdit extends AnchorPane {
 
         //System.out.println(queryPhone + "\n" + queryFax);
 
-        dbCon.customQuery(queryPhone, queryFax);
+        dbCon.customStatement(queryPhone, queryFax);
 
         User currentUser = UserHolder.getCurrentUser();
-        UserHolder.clear();
-        UserHolder.addUser(dbCon.reloadUser(currentUser));
+        UserHolder.setCurrentUser(dbCon.reloadUser(currentUser));
         MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
         mainWindow.changeUser();
     }

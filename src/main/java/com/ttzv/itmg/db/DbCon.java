@@ -45,9 +45,14 @@ public class DbCon {
         return true;
     }
 
-    public void customQuery(String... queries) throws SQLException {
+    /**
+     * Executes custom statements, mltiple supported
+     * @param statements one or more statements
+     * @throws SQLException
+     */
+    public void customStatement(String... statements) throws SQLException {
         Statement st = conn.createStatement();
-        for (String query : queries) {
+        for (String query : statements) {
             if(!query.isEmpty()) {
                 st.executeUpdate(query);
             }
@@ -62,8 +67,8 @@ public class DbCon {
         String[] columns = User.columns;
         for (User u : ldapusers) {
             //String qpart ="(" +"'"+u.getSamAccountName()+"'" +","+ "'"+u.getGivenName()+"'" +","+ "'"+u.getSn()+"'" +","+ "'"+u.getDisplayName()+"'" +","+ "'"+u.getUserAccountControl()+"'"+")";
-            String query = PgStatement.insert("users", columns, PgStatement.apostrophied(u.getComplete())); //hopefully this works in the same way
-            st.executeUpdate(query);
+            String statement = PgStatement.insert("users", columns, PgStatement.apostrophied(u.getComplete())); //hopefully this works in the same way
+            st.executeUpdate(statement);
         }
 
         st.close();
