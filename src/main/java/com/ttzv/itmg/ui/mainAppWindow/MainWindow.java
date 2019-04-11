@@ -117,7 +117,7 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scenePicker = new ScenePicker();
-        scenePicker.addAll(new MailerWindow(this), new SignWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow());
+        scenePicker.addAll(new MailerWindow(uiObjectsWrapper), new SignWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow(uiObjectsWrapper));
         labelCity.setText("");
         labelUsername.setText("");
         infoBarAssetsVisible(false);
