@@ -5,6 +5,8 @@ import java.util.HashMap;
 public class UiObjectsWrapper {
 
     public final Integer MainWindow = 1;
+    public final Integer MailerWindow = 2;
+
 
     private HashMap<Integer, Object> map;
 

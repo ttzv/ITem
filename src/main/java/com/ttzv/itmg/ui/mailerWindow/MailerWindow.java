@@ -4,6 +4,7 @@ import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.db.DbCon;
 import com.ttzv.itmg.db.PgStatement;
 import com.ttzv.itmg.file.MailMsgParser;
+import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,6 +60,8 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     private Label labAddress;
+
+
 
 
 
@@ -174,27 +177,7 @@ public class MailerWindow extends AnchorPane {
             this.labTopic.setText(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
         }
 
-        String userRegex = Cfg.getInstance().retrieveProp(Cfg.USER_REGEX);
-        if (userRegex.isEmpty()) {
-            this.txtUser.setRegexFilter(LimitableTextField.NAME_ONLY);
-            Cfg.getInstance().setProperty(Cfg.USER_REGEX, LimitableTextField.NAME_ONLY);
-        } else {
-            this.txtUser.setRegexFilter(userRegex);
-        }
-
-        String loginRegex = Cfg.getInstance().retrieveProp(Cfg.LOGIN_REGEX);
-        if(!loginRegex.isEmpty()) {
-            this.txtLog.setRegexFilter(loginRegex);
-        } else {
-            this.txtLog.setRegexFilter(LimitableTextField.RESTRICT_SYMBOLS);
-            Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, LimitableTextField.RESTRICT_SYMBOLS);
-        }
-
-        try {
-            Cfg.getInstance().saveFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        configureTextFilters();
 
         promptLabelEnabler();
         passFieldEvent();
@@ -212,9 +195,29 @@ public class MailerWindow extends AnchorPane {
 
     }
 
+    public void configureTextFilters() {
+        String userRegex = Cfg.getInstance().retrieveProp(Cfg.USER_REGEX);
+        if (userRegex.isEmpty()) {
+            this.txtUser.setRegexFilter(LimitableTextField.NAME_ONLY);
+            Cfg.getInstance().setProperty(Cfg.USER_REGEX, LimitableTextField.NAME_ONLY);
+        } else {
+            this.txtUser.setRegexFilter(userRegex);
+        }
 
-    public MailerWindow(MainWindow mainWindow) {
-        this.mainWindow = mainWindow;
+        String loginRegex = Cfg.getInstance().retrieveProp(Cfg.LOGIN_REGEX);
+        if(!loginRegex.isEmpty()) {
+            this.txtLog.setRegexFilter(loginRegex);
+        } else {
+            this.txtLog.setRegexFilter(LimitableTextField.RESTRICT_SYMBOLS);
+            Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, LimitableTextField.RESTRICT_SYMBOLS);
+        }
+
+    }
+
+
+    public MailerWindow(UiObjectsWrapper uiObjectsWrapper) {
+        this.mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
+        uiObjectsWrapper.registerObject(uiObjectsWrapper.MailerWindow, this);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mailerWindow.fxml"));
         fxmlLoader.setRoot(this);
