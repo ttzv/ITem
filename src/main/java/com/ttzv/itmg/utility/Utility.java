@@ -13,6 +13,8 @@ public class Utility {
         if(input.contains("-")) {
             input = input.substring(0, input.indexOf("-"));
         }
+        
+
         String[] polArrFind = {"ą", "ć", "ę", "ż", "ń", "ó", "ł", "ź", "ś"};//, "Ą", "Ę", "Ć", "Ż", "Ł", "Ś", "Ź"};
         String[] replArr = {"a", "c", "e", "z", "n", "o", "l", "z", "s"};//, "A", "E", "C", "Z", "L", "S", "Z"};
 
