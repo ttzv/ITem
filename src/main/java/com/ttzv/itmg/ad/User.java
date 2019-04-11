@@ -22,7 +22,6 @@ public class User extends LinkedList<String> {
                                             "useraccountcontrol",
                                             "mail",
                                             "whenCreated",
-                                            "initmailpass",
                                             "city",
                                             "name",
                                             "type",
@@ -74,21 +73,19 @@ public class User extends LinkedList<String> {
 
     public String getWhenCreated(){return this.get(6);}
 
-    public String getInitMailPass(){return this.get(7);}
+    public String getCity(){return this.get(8);}
 
-    public String getCity(){return this.get(9);}
+    public String getCityType(){return this.get(9);}
 
-    public String getCityType(){return this.get(10);}
+    public String getCityPhone(){return this.get(10);}
 
-    public String getCityPhone(){return this.get(11);}
+    public String getCityFax(){return this.get(11);}
 
-    public String getCityFax(){return this.get(12);}
+    public String getPosition(){return this.get(12);}
 
-    public String getPosition(){return this.get(13);}
+    public String getUserPhone(){return this.get(13);}
 
-    public String getUserPhone(){return this.get(14);}
-
-    public String getUserMPhone(){return this.get(15);}
+    public String getUserMPhone(){return this.get(14);}
 
     public String[] getComplete(){
         return this.toArray(new String [0]);
