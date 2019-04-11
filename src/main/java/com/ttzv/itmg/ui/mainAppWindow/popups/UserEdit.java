@@ -74,6 +74,18 @@ public class UserEdit extends AnchorPane {
     private Label labelUsername;
 
     @FXML
+    private TextField txtfPhonePin;
+
+    @FXML
+    private TextField txtfPhonePUK;
+
+    @FXML
+    private TextField txtfUserEmailAddress;
+
+    @FXML
+    private TextField txtfUserEmailInitPass;
+
+    @FXML
     void btnSaveAndClose(ActionEvent event) throws SQLException {
         updateDatabase(UserHolder.getCurrentUser());
         stage.close();
@@ -83,6 +95,8 @@ public class UserEdit extends AnchorPane {
         this.txtUserPos.setText(user.getPosition());
         this.txtUserPhone.setText(user.getUserPhone());
         this.txtUserMPhone.setText(user.getUserMPhone());
+        this.txtfUserEmailAddress.setText(user.getMail());
+        this.txtfUserEmailInitPass.setText(user.getInitMailPass());
     }
 
     private void updateDatabase(User user) throws SQLException {
@@ -108,6 +122,8 @@ public class UserEdit extends AnchorPane {
         if(!mPhone.isEmpty()) {
             queryMPhone = PgStatement.update("users", "usermphone", PgStatement.apostrophied(mPhone), "samaccountname='" + user.getSamAccountName() + "'");
         }
+
+
 
 
         //System.out.println(queryPos + "\n" + queryPhone + "\n" + queryMPhone);

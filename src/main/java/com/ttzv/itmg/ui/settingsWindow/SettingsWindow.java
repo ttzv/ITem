@@ -2,6 +2,8 @@ package com.ttzv.itmg.ui.settingsWindow;
 
 import com.ttzv.itmg.ad.LDAPParser;
 import com.ttzv.itmg.db.DbCon;
+import com.ttzv.itmg.ui.mailerWindow.MailerWindow;
+import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -25,6 +27,7 @@ public class SettingsWindow extends AnchorPane {
     private Crypt cMail;
     private Crypt cLdap;
     private Crypt cDb;
+    private UiObjectsWrapper uiObjectsWrapper;
 
 
     @FXML
@@ -119,8 +122,9 @@ public class SettingsWindow extends AnchorPane {
 
 
 
+    public SettingsWindow(UiObjectsWrapper uiObjectsWrapper) {
+        this.uiObjectsWrapper = uiObjectsWrapper;
 
-    public SettingsWindow() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/settingsWindow.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -285,8 +289,9 @@ public class SettingsWindow extends AnchorPane {
     }
 
     @FXML
-    void btnAcceptMiscSettingsEvent(ActionEvent event) {
+    void btnAcceptMiscSettingsEvent(ActionEvent event) throws IOException {
         btnMiscPerformAction();
+        Cfg.getInstance().saveFile();
     }
 
     @FXML
@@ -428,6 +433,9 @@ public class SettingsWindow extends AnchorPane {
         if (!this.txtfLoginRegex.getText().isEmpty()){
             Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, this.txtfLoginRegex.getText());
         }
+
+        MailerWindow mailerWindow = (MailerWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MailerWindow);
+        mailerWindow.configureTextFilters();
 
 
     }
