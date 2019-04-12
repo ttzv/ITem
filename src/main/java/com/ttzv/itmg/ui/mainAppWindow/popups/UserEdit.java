@@ -123,12 +123,24 @@ public class UserEdit extends AnchorPane {
             queryMPhone = PgStatement.update("users", "usermphone", PgStatement.apostrophied(mPhone), "samaccountname='" + user.getSamAccountName() + "'");
         }
 
+        String email = this.txtfUserEmailAddress.getText();
+        String queryEmail = "";
+        if(!email.isEmpty()) {
+            queryEmail = PgStatement.update("users", "mail", PgStatement.apostrophied(email), "samaccountname='" + user.getSamAccountName() + "'");
+        }
+
+        String emailPass = this.txtfUserEmailInitPass.getText();
+        String queryEmailPass = "";
+        if(!emailPass.isEmpty()) {
+            queryEmailPass = PgStatement.update("users", "initmailpass", PgStatement.apostrophied(emailPass), "samaccountname='" + user.getSamAccountName() + "'");
+        }
+
 
 
 
         //System.out.println(queryPos + "\n" + queryPhone + "\n" + queryMPhone);
 
-        dbCon.customStatement(queryPos, queryPhone, queryMPhone);
+        dbCon.customStatement(queryPos, queryPhone, queryMPhone, queryEmail, queryEmailPass);
 
         User currentUser = UserHolder.getCurrentUser();
         UserHolder.setCurrentUser(dbCon.reloadUser(currentUser));

@@ -42,8 +42,8 @@
             <Label text="Wstępne hasło" GridPane.rowIndex="7" />
             <Label text="PIN" GridPane.rowIndex="3" />
             <Label text="PUK" GridPane.rowIndex="4" />
-            <TextField fx:id="txtfPhonePin" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="txtfPhonePUK" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="txtfPhonePin" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txtfPhonePUK" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="txtfUserEmailAddress" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="txtfUserEmailInitPass" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
