@@ -1,17 +1,18 @@
 package com.ttzv.itmg.ui.mainAppWindow.popups;
 
+import com.ttzv.itmg.ad.DbCell;
 import com.ttzv.itmg.ad.User;
 import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.db.DbCon;
 import com.ttzv.itmg.db.PgStatement;
 import com.ttzv.itmg.ui.mainAppWindow.MainWindow;
+import com.ttzv.itmg.uiUtils.DatabaseBoundTextField;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -62,28 +63,28 @@ public class UserEdit extends AnchorPane {
     }
 
     @FXML
-    private TextField txtUserPos;
+    private DatabaseBoundTextField<DbCell> txtUserPos;
 
     @FXML
-    private TextField txtUserPhone;
+    private DatabaseBoundTextField<DbCell> txtUserPhone;
 
     @FXML
-    private TextField txtUserMPhone;
+    private DatabaseBoundTextField<DbCell> txtUserMPhone;
 
     @FXML
     private Label labelUsername;
 
     @FXML
-    private TextField txtfPhonePin;
+    private DatabaseBoundTextField<DbCell> txtfPhonePin;
 
     @FXML
-    private TextField txtfPhonePUK;
+    private DatabaseBoundTextField<DbCell> txtfPhonePUK;
 
     @FXML
-    private TextField txtfUserEmailAddress;
+    private DatabaseBoundTextField<DbCell> txtfUserEmailAddress;
 
     @FXML
-    private TextField txtfUserEmailInitPass;
+    private DatabaseBoundTextField<DbCell> txtfUserEmailInitPass;
 
     @FXML
     void btnSaveAndClose(ActionEvent event) throws SQLException {
@@ -100,56 +101,56 @@ public class UserEdit extends AnchorPane {
     }
 
     private void updateDatabase(User user) throws SQLException {
+        String table = "users";
+
         DbCon dbCon = new DbCon();
         dbCon.loadCfgCredentials();
         dbCon.initConnection();
 
+        this.txtUserPos.
+                setDbCell(new DbCell(table, "position", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+
+        this.txtUserPhone.
+                setDbCell(new DbCell(table, "userphone", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+
+        this.txtUserMPhone.
+                setDbCell(new DbCell(table, "usermphone", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+
+        this.txtfUserEmailAddress.
+                setDbCell(new DbCell(table, "mail", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+
+        this.txtfUserEmailInitPass.
+                setDbCell(new DbCell(table, "initmailpass", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+
 
         String position = this.txtUserPos.getText();
-        String queryPos = "";
-        if(!position.isEmpty() || !position.equals(UserHolder.getCurrentUser().getPosition())) {
-            queryPos = PgStatement.update("users", "position", PgStatement.apostrophied(position), "samaccountname='" + user.getSamAccountName() + "'");
+        if(!position.equals(UserHolder.getCurrentUser().getPosition())) {
+           this.txtUserPos.getDbCell().update(position);
         }
 
         String phone = this.txtUserPhone.getText();
-        String queryPhone = "";
-        if(!phone.isEmpty() || !phone.equals(UserHolder.getCurrentUser().getUserPhone())) {
-            queryPhone = PgStatement.update("users", "userphone", PgStatement.apostrophied(phone), "samaccountname='" + user.getSamAccountName() + "'");
+        if(!phone.equals(UserHolder.getCurrentUser().getUserPhone())) {
+            this.txtUserPhone.getDbCell().update(phone);
         }
 
         String mPhone = this.txtUserMPhone.getText();
-        String queryMPhone = "";
-        if(!mPhone.isEmpty() || !mPhone.equals(UserHolder.getCurrentUser().getUserMPhone())) {
-            queryMPhone = PgStatement.update("users", "usermphone", PgStatement.apostrophied(mPhone), "samaccountname='" + user.getSamAccountName() + "'");
+        if(!mPhone.equals(UserHolder.getCurrentUser().getUserMPhone())) {
+            this.txtUserMPhone.getDbCell().update(mPhone);
         }
 
         String email = this.txtfUserEmailAddress.getText();
-        String queryEmail = "";
-        if(!email.isEmpty() || !email.equals(UserHolder.getCurrentUser().getMail())) {
-            queryEmail = PgStatement.update("users", "mail", PgStatement.apostrophied(email), "samaccountname='" + user.getSamAccountName() + "'");
+        if(!email.equals(UserHolder.getCurrentUser().getMail())) {
+            this.txtfUserEmailAddress.getDbCell().update(email);
         }
 
         String emailPass = this.txtfUserEmailInitPass.getText();
-        String queryEmailPass = "";
-        if(!emailPass.isEmpty() || !emailPass.equals(UserHolder.getCurrentUser().getInitMailPass())) {
-            queryEmailPass = PgStatement.update("users", "initmailpass", PgStatement.apostrophied(emailPass), "samaccountname='" + user.getSamAccountName() + "'");
+        if(!emailPass.equals(UserHolder.getCurrentUser().getInitMailPass())) {
+            this.txtfUserEmailInitPass.getDbCell().update(emailPass);
         }
-
-
-        //System.out.println(queryPos + "\n" + queryPhone + "\n" + queryMPhone);
-
-        dbCon.customStatement(queryPos, queryPhone, queryMPhone, queryEmail, queryEmailPass);
 
         User currentUser = UserHolder.getCurrentUser();
         UserHolder.setCurrentUser(dbCon.reloadUser(currentUser));
         MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
         mainWindow.changeUser();
     }
-
-
-
-
-
-
-
 }

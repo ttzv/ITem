@@ -52,9 +52,9 @@ public class DbCon {
      */
     public void customStatement(String... statements) throws SQLException {
         Statement st = conn.createStatement();
-        for (String query : statements) {
-            if(!query.isEmpty()) {
-                st.executeUpdate(query);
+        for (String statement : statements) {
+            if(!statement.isEmpty()) {
+                st.executeUpdate(statement);
             }
         }
         st.close();
@@ -66,7 +66,7 @@ public class DbCon {
     public void update (String table, String criterium, String... columnsToUpdate) throws SQLException {
         String statement = "";
         if(!table.isEmpty() && !criterium.isEmpty() && columnsToUpdate.length>0){
-            statement = "UPDATE users SET " + table;
+            statement = "UPDATE " + table + " SET " ;
             int cnt = 0;
             while (cnt < columnsToUpdate.length){
                     statement = statement.concat(columnsToUpdate[cnt]);
@@ -82,7 +82,7 @@ public class DbCon {
             System.err.println("DbCon: One or more values are empty");
         }
         System.out.println(statement);
-        //customStatement(statement);
+        customStatement(statement);
     }
 
     public void ldapToDb() throws SQLException {

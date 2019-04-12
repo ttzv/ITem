@@ -38,8 +38,12 @@ public class DbCell {
     }
 
     public void update(String value) throws SQLException {
-        String valToSetIn = column  + "=" + PgStatement.apostrophied(value);
-        dbCon.update(table, criterium, valToSetIn );
+        if(value.equals("NULL")){
+             clearCell();
+        } else {
+            String valToSetIn = column + "=" + PgStatement.apostrophied(value);
+            dbCon.update(table, criterium, valToSetIn);
+        }
     }
 
 
