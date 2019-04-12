@@ -44,9 +44,16 @@ public class DbMain {
        //dbCon.globalSearch("Filia", 10);
       // dbCon.globalSearch("Małachowski", 0);
 
-        Path testpath = Paths.get(System.getProperty("user.home"))
-                .resolve("AppData")
-                .resolve("Local");
-        System.out.println(testpath);
+       // Path testpath = Paths.get(System.getProperty("user.home"))
+             //   .resolve("AppData")
+            //    .resolve("Local");
+       // System.out.println(testpath);
+
+        DbCon dbCon = new DbCon();
+        try {
+            dbCon.update("users", "samaccountname=" + PgStatement.apostrophied("tzwak"), "phone='test1'");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -60,6 +60,31 @@ public class DbCon {
         st.close();
     }
 
+    /**
+     * Performs UPDATE on specific record in database, can update multiple cells simultaneously if multiple columns are passed to columsToUpdate parameter
+     */
+    public void update (String table, String criterium, String... columnsToUpdate) throws SQLException {
+        String statement = "";
+        if(!table.isEmpty() && !criterium.isEmpty() && columnsToUpdate.length>0){
+            statement = "UPDATE users SET " + table;
+            int cnt = 0;
+            while (cnt < columnsToUpdate.length){
+                    statement = statement.concat(columnsToUpdate[cnt]);
+                    if(columnsToUpdate.length>1 && cnt != columnsToUpdate.length-1) {
+                        statement = statement.concat(",");
+                    } else {
+                        statement = statement.concat(" ");
+                    }
+                cnt++;
+            }
+            statement = statement.concat("WHERE " + criterium);
+        } else {
+            System.err.println("DbCon: One or more values are empty");
+        }
+        System.out.println(statement);
+        //customStatement(statement);
+    }
+
     public void ldapToDb() throws SQLException {
         Statement st = conn.createStatement();
 

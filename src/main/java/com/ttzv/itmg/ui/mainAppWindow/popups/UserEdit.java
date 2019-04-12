@@ -107,35 +107,33 @@ public class UserEdit extends AnchorPane {
 
         String position = this.txtUserPos.getText();
         String queryPos = "";
-        if(!position.isEmpty()) {
+        if(!position.isEmpty() || !position.equals(UserHolder.getCurrentUser().getPosition())) {
             queryPos = PgStatement.update("users", "position", PgStatement.apostrophied(position), "samaccountname='" + user.getSamAccountName() + "'");
         }
 
         String phone = this.txtUserPhone.getText();
         String queryPhone = "";
-        if(!phone.isEmpty()) {
+        if(!phone.isEmpty() || !phone.equals(UserHolder.getCurrentUser().getUserPhone())) {
             queryPhone = PgStatement.update("users", "userphone", PgStatement.apostrophied(phone), "samaccountname='" + user.getSamAccountName() + "'");
         }
 
         String mPhone = this.txtUserMPhone.getText();
         String queryMPhone = "";
-        if(!mPhone.isEmpty()) {
+        if(!mPhone.isEmpty() || !mPhone.equals(UserHolder.getCurrentUser().getUserMPhone())) {
             queryMPhone = PgStatement.update("users", "usermphone", PgStatement.apostrophied(mPhone), "samaccountname='" + user.getSamAccountName() + "'");
         }
 
         String email = this.txtfUserEmailAddress.getText();
         String queryEmail = "";
-        if(!email.isEmpty()) {
+        if(!email.isEmpty() || !email.equals(UserHolder.getCurrentUser().getMail())) {
             queryEmail = PgStatement.update("users", "mail", PgStatement.apostrophied(email), "samaccountname='" + user.getSamAccountName() + "'");
         }
 
         String emailPass = this.txtfUserEmailInitPass.getText();
         String queryEmailPass = "";
-        if(!emailPass.isEmpty()) {
+        if(!emailPass.isEmpty() || !emailPass.equals(UserHolder.getCurrentUser().getInitMailPass())) {
             queryEmailPass = PgStatement.update("users", "initmailpass", PgStatement.apostrophied(emailPass), "samaccountname='" + user.getSamAccountName() + "'");
         }
-
-
 
 
         //System.out.println(queryPos + "\n" + queryPhone + "\n" + queryMPhone);
