@@ -173,20 +173,20 @@ public class DbCon {
      */
     public List<User> globalSearch(String value, int limiter) throws SQLException {
         ArrayList<User> foundUsers = new ArrayList<>();
-        String allSearchCriterium = "(";
+        StringBuilder allSearchCriterium = new StringBuilder("(");
         for (int i = 0; i < User.columns.length; i++) {
             if(i < User.columns.length - 1) {
-                allSearchCriterium += " " + User.columns[i] + "=" + PgStatement.apostrophied(value) + " OR";
+                allSearchCriterium.append(" ").append(User.columns[i]).append("=").append(PgStatement.apostrophied(value)).append(" OR");
             } else {
-                allSearchCriterium += " " + User.columns[i] + "=" + PgStatement.apostrophied(value) + ")";
+                allSearchCriterium.append(" ").append(User.columns[i]).append("=").append(PgStatement.apostrophied(value)).append(")");
             }
         }
 
-        allSearchCriterium += " AND (users.city=city.id)";
+        allSearchCriterium.append(" AND (users.city=city.id)");
 
-        String query = PgStatement.select("users,city", "*", allSearchCriterium) + " limit " + limiter;
+        String query = PgStatement.select("users,city", "*", allSearchCriterium.toString()) + " limit " + limiter;
         if(limiter == 0) {
-            query = PgStatement.select("users,city", "*", allSearchCriterium);
+            query = PgStatement.select("users,city", "*", allSearchCriterium.toString());
         }
 
         //System.out.println(query);

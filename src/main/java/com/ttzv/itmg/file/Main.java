@@ -48,8 +48,8 @@ public class Main {
 
 
     }
-
-    public static void genStatement(String[] values){
+     //listapracownikow
+ /*   public static void genStatement(String[] values){
         String query = "UPDATE users SET ";
         int cnt = 1;
         while (cnt < values.length){
@@ -70,5 +70,27 @@ public class Main {
         query = query.concat(" WHERE displayname=" + PgStatement.apostrophied(values[0]) + ";");
         if(values.length>=3)
         System.out.println(query);
+    }*/
+     public static void genStatement(String[] values){
+        String query = "UPDATE users SET ";
+        int cnt = 1;
+            while (cnt < values.length){
+                if(cnt == 1){
+                    query = query.concat("user=" + PgStatement.apostrophied(values[cnt]));
+                }
+                if(cnt == 2){
+                    query = query.concat(", number=" + PgStatement.apostrophied(values[cnt]));
+                }
+                if (cnt == 3){
+                    query = query.concat(", pin=" + PgStatement.apostrophied(values[cnt]) + " ");
+                }
+
+                cnt++;
+            //System.out.println(cnt);
+            }
+
+            query = query.concat(" WHERE displayname=" + PgStatement.apostrophied(values[1]) + ";");
+            if(values.length>=3)
+            System.out.println(query);
     }
 }
