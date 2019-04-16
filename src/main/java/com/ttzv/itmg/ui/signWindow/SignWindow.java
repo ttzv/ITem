@@ -4,6 +4,7 @@ import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.file.Loader;
 import com.ttzv.itmg.file.Saver;
 import com.ttzv.itmg.file.SignatureParser;
+import com.ttzv.itmg.uiUtils.TextFieldFormatters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,6 +47,10 @@ public class SignWindow extends AnchorPane {
     public void initialize(){
         this.comBoxCityType.getItems().addAll("Centrala","Filia");
         this.comBoxCityType.getSelectionModel().select(1);
+
+        TextFieldFormatters textFieldFormatters = new TextFieldFormatters();
+
+        this.txtfMPhone.setTextFormatter(textFieldFormatters.selectTextFormatter(textFieldFormatters.FORMAT_MOBILE_NUMBER));
 
         textFieldEventBind(this.txtfName, SignatureParser.NAME);
         textFieldEventBind(this.txtfPos, SignatureParser.POSITION);
