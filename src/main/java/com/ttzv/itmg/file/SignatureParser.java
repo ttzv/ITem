@@ -26,8 +26,8 @@ public class SignatureParser implements FileParser {
 
     private String phoneConstantValue = "tel. (+48) ";
     private String mphoneConstantValue = "kom. (+48) ";
-    private String cityPhoneConstantValue = "Tel. ";
-    private String cityFaxConstantValue = "Fax. ";
+    private String cityPhoneConstantValue = "Tel. (+48) ";
+    private String cityFaxConstantValue = "Fax. (+48) ";
     private ArrayList<Integer> availableLines;
 
     private HashSet<Integer> hiddenRows;

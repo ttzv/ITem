@@ -13,41 +13,44 @@ public class TextFieldFormatters {
     private final String phoneSeparator = " ";
 
     public TextFormatter<String> selectTextFormatter(int converter) {
-        UnaryOperator<TextFormatter.Change> filter = getFilter();
+        UnaryOperator<TextFormatter.Change> filter = getFilter(converter);
         TextFormatter<String> textFormatter = new TextFormatter<String>(filter);
         return textFormatter;
     }
 
-    private UnaryOperator<TextFormatter.Change> getFilter(){
+    private UnaryOperator<TextFormatter.Change> getFilter(int converter){
             return change -> {
                 if(change.isContentChange()) {
                     String newText = change.getControlNewText();
                     String cText = change.getControlText();
                     if (newText.matches("\\d{9}")) {
                         String text = change.getControlNewText();
-                        text = insertSpacesAt(text, 3, 6);
+                        if(converter == FORMAT_MOBILE_NUMBER) {
+                            text = insertSpacesAt(text, 3, 6);
+                        } else if(converter == FORMAT_PHONE_NUMBER){
+                            text = insertSpacesAt(text, 2, 5, 7);
+                        }
                         System.out.println("text: " + text + "l:" + newText.length() + " | " + change.getRangeEnd());
                         change.setRange(0, change.getRangeEnd());
-
                         change.setText(text);
                         change.setAnchor(text.length());
                         change.setCaretPosition(text.length());
 //                        TextField textField = (TextField) change.getControl();
 //                        textField.setText(text);
                         System.out.println(change + " | " + change.getCaretPosition());
-                        return change;
-                    } else if(cText.matches("(\\d{3}\\s){2}\\d{3}")){
+//                        return change;
+                    } else if(cText.matches("(\\d{3}\\s){2}\\d{3}") || cText.matches("(\\d{2}\\s)\\d{3}(\\s\\d{2}){2}")){
                         String text = newText.replaceAll(" ", "");
                         change.setRange(0, change.getRangeEnd());
                         change.setText(text);
                         change.setAnchor(text.length());
                         change.setCaretPosition(text.length());
-                        return change;
                     } else {
+                        System.out.println(change);
                         return change;
                     }
                 }
-                return null;
+                return change;
             };
     }
 
@@ -59,6 +62,7 @@ public class TextFieldFormatters {
         return stringBuilder.toString();
     }
 
+    //not used
     private StringConverter<String> getStringConverter(int converter){
         if(converter == FORMAT_MOBILE_NUMBER){
             return new StringConverter<String>() {

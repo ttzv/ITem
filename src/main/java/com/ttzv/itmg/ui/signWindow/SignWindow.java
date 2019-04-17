@@ -50,7 +50,10 @@ public class SignWindow extends AnchorPane {
 
         TextFieldFormatters textFieldFormatters = new TextFieldFormatters();
 
+        this.txtfPhone.setTextFormatter(textFieldFormatters.selectTextFormatter(textFieldFormatters.FORMAT_PHONE_NUMBER));
         this.txtfMPhone.setTextFormatter(textFieldFormatters.selectTextFormatter(textFieldFormatters.FORMAT_MOBILE_NUMBER));
+        this.txtfCityPhone.setTextFormatter(textFieldFormatters.selectTextFormatter(textFieldFormatters.FORMAT_PHONE_NUMBER));
+        this.txtfCityFax.setTextFormatter(textFieldFormatters.selectTextFormatter(textFieldFormatters.FORMAT_PHONE_NUMBER));
 
         textFieldEventBind(this.txtfName, SignatureParser.NAME);
         textFieldEventBind(this.txtfPos, SignatureParser.POSITION);
