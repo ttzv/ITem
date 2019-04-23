@@ -100,14 +100,14 @@ public class DbCon {
     }
 
     /**
-     * Checks if given value exists in table
+     * Checks if given value exists in selected column
      * @param table table where search will be performed
      * @param column column to search into
      * @param value value to search for
      * @return true if value exists, otherwise false
      * @throws SQLException when connection with database could not be estabilished or query was invalid
      */
-    public boolean existsInDB(String table, String column, String value) throws SQLException {
+    public boolean exists(String table, String column, String value) throws SQLException {
         Statement st = conn.createStatement();
 
         String exists = PgStatement.exists(table,column,value);
@@ -134,11 +134,11 @@ public class DbCon {
         List<User> newUsers = new ArrayList<>();
 
         for(User user : ldapusers){
-            boolean exists = existsInDB(table, column, user.getSamAccountName());
+            boolean exists = exists(table, column, user.getSamAccountName());
             if(!exists) {
 
                 String query = PgStatement.insert(table, User.insertColumns, PgStatement.apostrophied(user.getComplete()));
-                //System.out.println(query);
+                System.out.println(query);
                 st.executeUpdate(query);
                 newUsers.add(user);
             }

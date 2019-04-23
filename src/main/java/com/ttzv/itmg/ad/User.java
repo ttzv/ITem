@@ -39,7 +39,7 @@ public class User extends LinkedList<String> {
                                                   columns[4],
                                                   columns[5],
                                                   columns[6],
-                                                  columns[7]};
+                                                  columns[8]};
     public User(String... data) {
         for (String d : data){
             if(d == null || d.isEmpty()){
