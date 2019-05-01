@@ -147,7 +147,12 @@ public class DbCon {
         return newUsers;
     }
 
-
+    /**
+     *
+     * @param count number of users to retrieve from database
+     * @return true if method performed correctly
+     * @throws SQLException database connection not estabilished
+     */
     public boolean getNewUsers(int count) throws SQLException {
         UserHolder.clear();
         Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

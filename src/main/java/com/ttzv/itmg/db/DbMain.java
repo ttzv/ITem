@@ -1,5 +1,7 @@
 package com.ttzv.itmg.db;
 
+import com.ttzv.itmg.ad.LDAPParser;
+
 import javax.naming.NamingException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -49,11 +51,13 @@ public class DbMain {
             //    .resolve("Local");
        // System.out.println(testpath);
 
-        DbCon dbCon = new DbCon();
+ /*       DbCon dbCon = new DbCon();
         try {
             dbCon.update("users", "samaccountname=" + PgStatement.apostrophied("tzwak"), "phone='test1'");
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
+
+
     }
 }

@@ -98,7 +98,7 @@ public class MailerWindow extends AnchorPane {
             e.printStackTrace();
         }
 
-        //sender.sendMail();
+        sender.sendMail();
 
         String statusText = "Wysłano do " + this.sender.getReceiverAddress();
 
