@@ -77,6 +77,7 @@ public class LDAPParser
         //ldapEnv.put(Context.PROVIDER_URL,  "ldap://ataladc1.atal.local:389");
         ldapEnv.put(Context.PROVIDER_URL,  "ldap://" + ldap_URL + ":" + ldap_port);
         //ldapEnv.put(Context.SECURITY_AUTHENTICATION, "simple");
+        ldapEnv.put("java.naming.ldap.attributes.binary", "objectGUID");
 
         //ldapEnv.put(Context.SECURITY_PRINCIPAL, "CN=Serwis,CN=Users,DC=atal,DC=local");
         ldapEnv.put(Context.SECURITY_PRINCIPAL, ad_adminUser);
@@ -94,7 +95,7 @@ public class LDAPParser
         SearchControls searchCtls = new SearchControls();
 
         //Specify the attributes to return
-        String returnedAtts[] = {"sn", "givenName", "displayName", "samAccountName", "userAccountControl", "mail", "whenCreated","distinguishedName"};
+        String returnedAtts[] = {"sn", "givenName", "displayName", "samAccountName", "userAccountControl", "mail", "whenCreated","distinguishedName", "objectGUID"};
         searchCtls.setReturningAttributes(returnedAtts);
 
         //Specify the search scope
@@ -104,7 +105,7 @@ public class LDAPParser
         String searchFilter = "(&(objectClass=user))";
 
         //Specify the Base for the search
-        String searchBase = "ou=Pracownicy,dc=atal,dc=local";
+        String searchBase = "ou=Pracownicy,dc=testhome,dc=local";
         //initialize counter to total the results
         int totalResults = 0;
         // create ArrayList to store parsed data
@@ -131,6 +132,12 @@ public class LDAPParser
                         + attrs.get("samAccountName") + " "
                         + attrs.get("userAccountControl") + " ");
                 */
+
+                System.out.println(attrs);
+
+                byte[] oguid = (byte[])attrs.get("ObjectGUID").get();
+
+                System.out.println(Utility.formatObjectGUID(oguid));
 
                 Attribute attr_samAccountName;
                 Attribute attr_givenName;

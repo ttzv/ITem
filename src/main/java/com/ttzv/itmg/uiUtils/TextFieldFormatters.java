@@ -30,14 +30,14 @@ public class TextFieldFormatters {
                         } else if(converter == FORMAT_PHONE_NUMBER){
                             text = insertSpacesAt(text, 2, 5, 7);
                         }
-                        System.out.println("text: " + text + "l:" + newText.length() + " | " + change.getRangeEnd());
+                       // System.out.println("text: " + text + "l:" + newText.length() + " | " + change.getRangeEnd());
                         change.setRange(0, change.getRangeEnd());
                         change.setText(text);
                         change.setAnchor(text.length());
                         change.setCaretPosition(text.length());
 //                        TextField textField = (TextField) change.getControl();
 //                        textField.setText(text);
-                        System.out.println(change + " | " + change.getCaretPosition());
+                        //System.out.println(change + " | " + change.getCaretPosition());
 //                        return change;
                     } else if(cText.matches("(\\d{3}\\s){2}\\d{3}") || cText.matches("(\\d{2}\\s)\\d{3}(\\s\\d{2}){2}")){
                         String text = newText.replaceAll(" ", "");
@@ -46,7 +46,7 @@ public class TextFieldFormatters {
                         change.setAnchor(text.length());
                         change.setCaretPosition(text.length());
                     } else {
-                        System.out.println(change);
+                        //System.out.println(change);
                         return change;
                     }
                 }
