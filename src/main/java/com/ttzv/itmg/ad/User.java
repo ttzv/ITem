@@ -15,7 +15,8 @@ import java.util.LinkedList;
  */
 public class User extends LinkedList<String> {
 
-    public static final String[] columns = {"samaccountname",
+    public static final String[] columns = {"userGUID",
+                                            "samaccountname",
                                             "givenname",
                                             "sn",
                                             "displayname",
@@ -39,7 +40,8 @@ public class User extends LinkedList<String> {
                                                   columns[4],
                                                   columns[5],
                                                   columns[6],
-                                                  columns[8]};
+                                                  columns[7],
+                                                  columns[9]};
     public User(String... data) {
         for (String d : data){
             if(d == null || d.isEmpty()){
@@ -50,45 +52,47 @@ public class User extends LinkedList<String> {
         }
     }
 
+    public String getUserGUID(){ return this.get(0); }
+
     public String getSamAccountName(){
-      return this.get(0);
+      return this.get(1);
     }
 
     public String getGivenName(){
-        return this.get(1);
-    }
-
-    public String getSn(){
         return this.get(2);
     }
 
-    public String getDisplayName(){
+    public String getSn(){
         return this.get(3);
     }
 
-    public String getUserAccountControl(){
+    public String getDisplayName(){
         return this.get(4);
     }
 
-    public String getMail(){return this.get(5);}
+    public String getUserAccountControl(){
+        return this.get(5);
+    }
 
-    public String getWhenCreated(){return this.get(6);}
+    public String getMail(){return this.get(6);}
 
-    public String getInitMailPass(){return this.get(7);}
+    public String getWhenCreated(){return this.get(7);}
 
-    public String getCity(){return this.get(9);}
+    public String getInitMailPass(){return this.get(8);}
 
-    public String getCityType(){return this.get(10);}
+    public String getCity(){return this.get(10);}
 
-    public String getCityPhone(){return this.get(11);}
+    public String getCityType(){return this.get(11);}
 
-    public String getCityFax(){return this.get(12);}
+    public String getCityPhone(){return this.get(12);}
 
-    public String getPosition(){return this.get(13);}
+    public String getCityFax(){return this.get(13);}
 
-    public String getUserPhone(){return this.get(14);}
+    public String getPosition(){return this.get(14);}
 
-    public String getUserMPhone(){return this.get(15);}
+    public String getUserPhone(){return this.get(15);}
+
+    public String getUserMPhone(){return this.get(16);}
 
     public String[] getComplete(){
         return this.toArray(new String [0]);
@@ -97,17 +101,5 @@ public class User extends LinkedList<String> {
     @Override
     public String toString() {
         return Arrays.toString(getComplete());
-    }
-
-    public String[] getToInsert(){
-        String[] insertCols = {this.get(0),
-                               this.get(1),
-                               this.get(2),
-                               this.get(3),
-                               this.get(4),
-                               this.get(5),
-                               this.get(6),
-                               this.get(7)};
-        return insertCols;
     }
 }

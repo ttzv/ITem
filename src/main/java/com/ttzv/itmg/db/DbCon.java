@@ -81,8 +81,16 @@ public class DbCon {
         } else {
             System.err.println("DbCon: One or more values are empty");
         }
-        System.out.println(statement);
+        //System.out.println(statement);
         customStatement(statement);
+    }
+
+    public void addGUID() throws SQLException {
+        List<User> ldapusers = ldapParser.getUsersDataList();
+        for (User u :
+                ldapusers) {
+            update("users", "samaccountname="+PgStatement.apostrophied(u.getSamAccountName()), "userGUID="+PgStatement.apostrophied(u.getUserGUID()));
+        }
     }
 
     public void ldapToDb() throws SQLException {

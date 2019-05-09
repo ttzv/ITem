@@ -95,7 +95,7 @@ public class LDAPParser
         SearchControls searchCtls = new SearchControls();
 
         //Specify the attributes to return
-        String returnedAtts[] = {"sn", "givenName", "displayName", "samAccountName", "userAccountControl", "mail", "whenCreated","distinguishedName", "objectGUID"};
+        String returnedAtts[] = {"objectGUID", "sn", "givenName", "displayName", "samAccountName", "userAccountControl", "mail", "whenCreated","distinguishedName"};
         searchCtls.setReturningAttributes(returnedAtts);
 
         //Specify the search scope
@@ -105,7 +105,7 @@ public class LDAPParser
         String searchFilter = "(&(objectClass=user))";
 
         //Specify the Base for the search
-        String searchBase = "ou=Pracownicy,dc=testhome,dc=local";
+        String searchBase = "ou=Pracownicy,dc=atal,dc=local";
         //initialize counter to total the results
         int totalResults = 0;
         // create ArrayList to store parsed data
@@ -133,12 +133,9 @@ public class LDAPParser
                         + attrs.get("userAccountControl") + " ");
                 */
 
-                System.out.println(attrs);
+                //System.out.println(attrs);
 
-                byte[] oguid = (byte[])attrs.get("ObjectGUID").get();
-
-                System.out.println(Utility.formatObjectGUID(oguid));
-
+                Attribute attr_objectGUID;
                 Attribute attr_samAccountName;
                 Attribute attr_givenName;
                 Attribute attr_sn;
@@ -148,7 +145,7 @@ public class LDAPParser
                 Attribute attr_whenCreated;
                 Attribute attr_distinguishedName;
 
-
+                String objectGUID;
                 String samAccountName;
                 String givenName;
                 String sn;
@@ -157,6 +154,13 @@ public class LDAPParser
                 String mail;
                 String whenCreated;
                 String distinguishedName;
+
+                if( ( attr_objectGUID = attrs.get("objectGUID") ) == null)
+                {
+                    objectGUID = "null";
+                } else {
+                    objectGUID = Utility.formatObjectGUID(attr_objectGUID.get());
+                }
 
                 if( ( attr_samAccountName = attrs.get("samAccountName")) == null)
                 {
@@ -216,7 +220,7 @@ public class LDAPParser
                 }
                 city = cityNameToId(Utility.extractCityFromDn(distinguishedName));
 
-                usersDataList.add(new User(samAccountName, givenName, sn, displayName, userAccountControl, mail, whenCreated, city));
+                usersDataList.add(new User(objectGUID, samAccountName, givenName, sn, displayName, userAccountControl, mail, whenCreated, city));
             }
 
             ldapContext.close();

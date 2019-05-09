@@ -47,8 +47,9 @@ public class Utility {
         return "";
     }
 
-    public static String formatObjectGUID(byte[] guid){
-        return convertToDashedString(guid);
+    public static String formatObjectGUID(Object guid){
+
+        return convertToDashedString( (byte[]) guid);
     }
 
     public static String convertToDashedString(byte[] objectGUID) {
