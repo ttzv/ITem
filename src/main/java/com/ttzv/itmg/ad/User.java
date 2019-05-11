@@ -1,7 +1,6 @@
 package com.ttzv.itmg.ad;
 
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Class for convenient storing information about every user in separate list
@@ -11,95 +10,147 @@ import java.util.LinkedList;
  * 2 - sn
  * 3 - displayName
  * 4 - userAccountControl
- * Null values should be checked by parser and null string inserted if needed
+ * Null values should be checked by parser and empty string inserted if needed
  */
-public class User extends LinkedList<String> {
+public class User {
 
-    public static final String[] columns = {"userGUID",
-                                            "samaccountname",
-                                            "givenname",
-                                            "sn",
-                                            "displayname",
-                                            "useraccountcontrol",
-                                            "mail",
-                                            "whenCreated",
-                                            "initmailpass",
-                                            "city",
-                                            "name",
-                                            "type",
-                                            "phone",
-                                            "fax",
-                                            "position",
-                                            "userphone",
-                                            "usermphone"};
+    private LinkedHashMap<UserData, String> userInformationMap;
 
-    public static final String[] insertColumns = {columns[0],
-                                                  columns[1],
-                                                  columns[2],
-                                                  columns[3],
-                                                  columns[4],
-                                                  columns[5],
-                                                  columns[6],
-                                                  columns[7],
-                                                  columns[9]};
+    private String userGUID;
+    private String samAccountName;
+    private String givenName;
+    private String sn;
+    private String displayName;
+    private String userAccountControl;
+    private String mail;
+    private String whenCreated;
+    private String initMailPass;
+    private String city;
+    private String name;
+    private String type;
+    private String cityPhone;
+    private String fax;
+    private String position;
+    private String userPhone;
+    private String userMPhone;
+
+    /**
+     * Main array containing all possible user data identifiers, modify this at first.
+     */
+    public static final String[] columns = UserData.getAllColumns();
+
+    /**
+     * Array containing user data identifiers used when importing from LDAP
+     */
+    public static final UserData[] insertColumns = {UserData.userGUID,
+                                                    UserData.samaccountname,
+                                                    UserData.givenname,
+                                                    UserData.sn,
+                                                    UserData.displayname,
+                                                    UserData.useraccountcontrol,
+                                                    UserData.mail,
+                                                    UserData.whenCreated,
+                                                    UserData.city};
+
+
     public User(String... data) {
-        for (String d : data){
-            if(d == null || d.isEmpty()){
-                this.add("");
-            } else {
-                this.add(d);
+        LinkedList<String> dataList = new LinkedList<>(Arrays.asList(data));
+
+        this.userInformationMap = new LinkedHashMap<>();
+        if (data.length <= columns.length){
+            for (int i = 0; i <= columns.length - 1 ; i++) {
+                try {dataList.get(i);} catch (IndexOutOfBoundsException e){} finally {
+                    dataList.add("");
+                }
+                    this.userInformationMap.put(UserData.getById(i), dataList.get(i));
             }
+        } else {
+            System.err.println("User: Too many elements in User object (" + data.length + "), current max is (" + columns.length);
         }
     }
 
-    public String getUserGUID(){ return this.get(0); }
 
-    public String getSamAccountName(){
-      return this.get(1);
+    public String getUserGUID() {
+        return userInformationMap.get(UserData.userGUID);
     }
 
-    public String getGivenName(){
-        return this.get(2);
+    public String getSamAccountName() {
+        return userInformationMap.get(UserData.samaccountname);
     }
 
-    public String getSn(){
-        return this.get(3);
+    public String getGivenName() {
+        return userInformationMap.get(UserData.givenname);
     }
 
-    public String getDisplayName(){
-        return this.get(4);
+    public String getSn() {
+        return userInformationMap.get(UserData.sn);
     }
 
-    public String getUserAccountControl(){
-        return this.get(5);
+    public String getDisplayName() {
+        return userInformationMap.get(UserData.displayname);
     }
 
-    public String getMail(){return this.get(6);}
+    public String getUserAccountControl() {
+        return userInformationMap.get(UserData.useraccountcontrol);
+    }
 
-    public String getWhenCreated(){return this.get(7);}
+    public String getMail() {
+        return userInformationMap.get(UserData.mail);
+    }
 
-    public String getInitMailPass(){return this.get(8);}
+    public String getWhenCreated() {
+        return userInformationMap.get(UserData.whenCreated);
+    }
 
-    public String getCity(){return this.get(10);}
+    public String getInitMailPass() {
+        return userInformationMap.get(UserData.initmailpass);
+    }
 
-    public String getCityType(){return this.get(11);}
+    public String getCity() {
+        return userInformationMap.get(UserData.city);
+    }
 
-    public String getCityPhone(){return this.get(12);}
+    public String getName() {
+        return userInformationMap.get(UserData.name);
+    }
 
-    public String getCityFax(){return this.get(13);}
+    public String getCityType() {
+        return userInformationMap.get(UserData.type);
+    }
 
-    public String getPosition(){return this.get(14);}
+    public String getCityPhone() {
+        return userInformationMap.get(UserData.phone);
+    }
 
-    public String getUserPhone(){return this.get(15);}
+    public String getCityFax() {
+        return userInformationMap.get(UserData.fax);
+    }
 
-    public String getUserMPhone(){return this.get(16);}
+    public String getPosition() {
+        return userInformationMap.get(UserData.position);
+    }
+
+    public String getUserPhone() {
+        return userInformationMap.get(UserData.userphone);
+    }
+
+    public String getUserMPhone() {
+        return userInformationMap.get(UserData.usermphone);
+    }
 
     public String[] getComplete(){
-        return this.toArray(new String [0]);
+        ArrayList<String> complete = new ArrayList<>();
+        Arrays.asList(insertColumns).forEach(identifier -> {
+            String data = userInformationMap.get(identifier);
+            if(!data.isEmpty()) {
+                complete.add(data);
+            }
+        });
+    return complete.toArray(new String[0]);
     }
 
-    @Override
-    public String toString() {
-        return Arrays.toString(getComplete());
-    }
+//    @Override
+//    public String toString() {
+//        return Arrays.toString(getComplete());
+//    }
 }

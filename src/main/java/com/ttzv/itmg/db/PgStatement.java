@@ -14,13 +14,13 @@ public class PgStatement {
      * @param values - list of values for insertion, must be in order with columns
      * @return build PostgreSQL INSERT statement ready for query
      */
-    public static String insert (String table, String[] columns, String [] values ){
+    public static String insert (String table, Object[] columns, Object [] values ){
         String insertStatement = "INSERT INTO " + table + " ";
         StringBuilder sb = new StringBuilder(insertStatement);
         //building column data
         sb.append("(");
-        for (String s : columns){
-            sb.append(s);
+        for (Object s : columns){
+            sb.append(s.toString());
             sb.append(",");
         }
         sb.deleteCharAt(sb.length()-1);
@@ -28,8 +28,8 @@ public class PgStatement {
         sb.append("VALUES ");
 
         sb.append("(");
-        for (String s : values){
-            sb.append(s);
+        for (Object s : values){
+            sb.append(s.toString());
             sb.append(",");
         }
         sb.deleteCharAt(sb.length()-1);
