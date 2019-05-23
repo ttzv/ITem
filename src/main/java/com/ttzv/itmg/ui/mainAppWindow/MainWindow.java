@@ -279,7 +279,7 @@ public class MainWindow extends AnchorPane {
 
     public void changeUser() {
         this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
-        this.labelCity.setText(UserHolder.getCurrentUser().getCity());
+        this.labelCity.setText(UserHolder.getCurrentUser().getCityName());
         this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
         this.labelMaxCnt.setText(Integer.toString(UserHolder.getMaxCount()));
 
@@ -290,7 +290,7 @@ public class MainWindow extends AnchorPane {
 
         SignWindow sw = (SignWindow) scenePicker.getScene(1);
         sw.setTxtfName(UserHolder.getCurrentUser().getDisplayName());
-        sw.setTxtfCity(UserHolder.getCurrentUser().getCity());
+        sw.setTxtfCity(UserHolder.getCurrentUser().getCityName());
         sw.setTxtfCityPhone(UserHolder.getCurrentUser().getCityPhone());
         sw.setTxtfCityFax(UserHolder.getCurrentUser().getCityFax());
         sw.setTxtfPos(UserHolder.getCurrentUser().getPosition());

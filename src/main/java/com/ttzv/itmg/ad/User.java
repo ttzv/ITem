@@ -25,8 +25,8 @@ public class User {
     private String mail;
     private String whenCreated;
     private String initMailPass;
-    private String city;
-    private String name;
+    private String cityId;
+    private String cityName;
     private String type;
     private String cityPhone;
     private String fax;
@@ -35,12 +35,13 @@ public class User {
     private String userMPhone;
 
     /**
-     * Main array containing all possible user data identifiers, modify this at first.
+     * Main array containing all possible user data identifiers, to add new modify UserColumns enum
      */
     public static final String[] columns = UserData.getAllColumns();
 
     /**
      * Array containing user data identifiers used when importing from LDAP
+     * Used only for LDAP import
      */
     public static final UserData[] insertColumns = {UserData.userGUID,
                                                     UserData.samaccountname,
@@ -50,7 +51,7 @@ public class User {
                                                     UserData.useraccountcontrol,
                                                     UserData.mail,
                                                     UserData.whenCreated,
-                                                    UserData.city};
+                                                    UserData.cityId};
 
 
     public User(String... data) {
@@ -67,6 +68,7 @@ public class User {
         } else {
             System.err.println("User: Too many elements in User object (" + data.length + "), current max is (" + columns.length);
         }
+
     }
 
 
@@ -106,12 +108,12 @@ public class User {
         return userInformationMap.get(UserData.initmailpass);
     }
 
-    public String getCity() {
-        return userInformationMap.get(UserData.city);
+    public String getCityId() {
+        return userInformationMap.get(UserData.cityId);
     }
 
-    public String getName() {
-        return userInformationMap.get(UserData.name);
+    public String getCityName() {
+        return userInformationMap.get(UserData.cityName);
     }
 
     public String getCityType() {
@@ -146,11 +148,15 @@ public class User {
                 complete.add(data);
             }
         });
-    return complete.toArray(new String[0]);
+        return complete.toArray(new String[0]);
     }
 
-//    @Override
-//    public String toString() {
-//        return Arrays.toString(getComplete());
-//    }
+    public LinkedHashMap<UserData, String> getUserInformationMap() {
+        return userInformationMap;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(getComplete());
+    }
 }

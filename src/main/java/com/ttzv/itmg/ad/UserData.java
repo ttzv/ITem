@@ -12,9 +12,9 @@ public enum UserData {
             useraccountcontrol("useraccountcontrol",5),
             mail("mail",6),
             whenCreated("whenCreated",7),
-            initmailpass("initmailpass",8),
-            city("city",9),
-            name("name",10),
+            cityId("city",8),
+            initmailpass("initmailpass",9),
+            cityName("name",10),
             type("type",11),
             phone("phone",12),
             fax("fax",13),
@@ -71,6 +71,6 @@ public enum UserData {
     }*/
 
     public static String[] getAllColumns(){
-        return Stream.of(UserData.values()).map(UserData::name).toArray(String[]::new);
+        return Stream.of(UserData.values()).map(UserData::getColName).toArray(String[]::new);
     }
 }

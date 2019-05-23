@@ -221,7 +221,9 @@ public class LDAPParser
                 city = cityNameToId(Utility.extractCityFromDn(distinguishedName));
 
                 usersDataList.add(new User(objectGUID, samAccountName, givenName, sn, displayName, userAccountControl, mail, whenCreated, city));
+                System.out.println(distinguishedName);
             }
+
 
             ldapContext.close();
         } catch (NamingException e1) {
@@ -251,7 +253,6 @@ public class LDAPParser
                 return "c008";
             default:
                 return "ERVAL";
-
         }
     }
 }
