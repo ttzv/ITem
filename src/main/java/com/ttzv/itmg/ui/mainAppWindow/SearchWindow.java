@@ -108,6 +108,7 @@ public class SearchWindow extends AnchorPane {
         this.listwvResults.setItems(observableList);
 
         this.labResultCount.setText( Integer.toString(foundUsers.size()) );
+
     }
 
 

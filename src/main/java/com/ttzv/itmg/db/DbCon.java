@@ -90,6 +90,7 @@ public class DbCon {
         for (User u :
                 ldapusers) {
             update("users", "samaccountname="+PgStatement.apostrophied(u.getSamAccountName()), "userGUID="+PgStatement.apostrophied(u.getUserGUID()));
+            System.out.println("Updated GUID " + u);
         }
     }
 
@@ -113,7 +114,7 @@ public class DbCon {
      * @param column column to search into
      * @param value value to search for
      * @return true if value exists, otherwise false
-     * @throws SQLException when connection with database could not be estabilished or query was invalid
+     * @throws SQLException when connection with database could not be established or query was invalid
      */
     public boolean exists(String table, String column, String value) throws SQLException {
         Statement st = conn.createStatement();
@@ -140,6 +141,8 @@ public class DbCon {
 
         List<User> ldapusers = ldapParser.getUsersDataList();
         List<User> newUsers = new ArrayList<>();
+
+        //addGUID();
 
         for(User user : ldapusers){
             boolean exists = exists(table, column, user.getSamAccountName());

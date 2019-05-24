@@ -27,9 +27,9 @@ public class User {
     private String initMailPass;
     private String cityId;
     private String cityName;
-    private String type;
+    private String cityType;
     private String cityPhone;
-    private String fax;
+    private String cityFax;
     private String position;
     private String userPhone;
     private String userMPhone;
