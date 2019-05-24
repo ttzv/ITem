@@ -9,7 +9,6 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Properties;
 
@@ -77,8 +76,8 @@ public class LDAPParser
         ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory"); //always the same
         //ldapEnv.put(Context.PROVIDER_URL,  "ldap://ataladc1.atal.local:389");
         ldapEnv.put(Context.PROVIDER_URL,  "ldap://" + ldap_URL + ":" + ldap_port);
-        ldapEnv.put("java.naming.ldap.attributes.binary", "objectGUID");
         //ldapEnv.put(Context.SECURITY_AUTHENTICATION, "simple");
+        ldapEnv.put("java.naming.ldap.attributes.binary", "objectGUID");
 
         //ldapEnv.put(Context.SECURITY_PRINCIPAL, "CN=Serwis,CN=Users,DC=atal,DC=local");
         ldapEnv.put(Context.SECURITY_PRINCIPAL, ad_adminUser);
@@ -96,7 +95,7 @@ public class LDAPParser
         SearchControls searchCtls = new SearchControls();
 
         //Specify the attributes to return
-        String returnedAtts[] = {"sn", "givenName", "displayName", "samAccountName", "userAccountControl", "mail", "whenCreated","distinguishedName", "objectGUID"};
+        String returnedAtts[] = {"objectGUID", "sn", "givenName", "displayName", "samAccountName", "userAccountControl", "mail", "whenCreated","distinguishedName"};
         searchCtls.setReturningAttributes(returnedAtts);
 
         //Specify the search scope
@@ -126,18 +125,17 @@ public class LDAPParser
                 //System.out.println(sr.getName());
                 Attributes attrs = sr.getAttributes();
 
-
-                System.out.println(attrs);
-
-
-                /*System.out.println(attrs.get("givenName") + " "
+                /*
+                System.out.println(attrs.get("givenName") + " "
                         + attrs.get("sn") + " "
                         + attrs.get("displayName") + " "
                         + attrs.get("samAccountName") + " "
-                        + attrs.get("userAccountControl") + " ");*/
+                        + attrs.get("userAccountControl") + " ");
+                */
 
+                //System.out.println(attrs);
 
-
+                Attribute attr_objectGUID;
                 Attribute attr_samAccountName;
                 Attribute attr_givenName;
                 Attribute attr_sn;
@@ -147,7 +145,7 @@ public class LDAPParser
                 Attribute attr_whenCreated;
                 Attribute attr_distinguishedName;
 
-
+                String objectGUID;
                 String samAccountName;
                 String givenName;
                 String sn;
@@ -156,6 +154,13 @@ public class LDAPParser
                 String mail;
                 String whenCreated;
                 String distinguishedName;
+
+                if( ( attr_objectGUID = attrs.get("objectGUID") ) == null)
+                {
+                    objectGUID = "null";
+                } else {
+                    objectGUID = Utility.formatObjectGUID(attr_objectGUID.get());
+                }
 
                 if( ( attr_samAccountName = attrs.get("samAccountName")) == null)
                 {
@@ -215,8 +220,10 @@ public class LDAPParser
                 }
                 city = cityNameToId(Utility.extractCityFromDn(distinguishedName));
 
-                usersDataList.add(new User(samAccountName, givenName, sn, displayName, userAccountControl, mail, whenCreated, city));
+                usersDataList.add(new User(objectGUID, samAccountName, givenName, sn, displayName, userAccountControl, mail, whenCreated, city));
+                System.out.println(distinguishedName);
             }
+
 
             ldapContext.close();
         } catch (NamingException e1) {
@@ -246,7 +253,6 @@ public class LDAPParser
                 return "c008";
             default:
                 return "ERVAL";
-
         }
     }
 }

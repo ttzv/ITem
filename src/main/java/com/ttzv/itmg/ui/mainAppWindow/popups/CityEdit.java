@@ -45,7 +45,7 @@ public class CityEdit extends AnchorPane {
     }
 
     public void showAt(double x, double y) {
-        this.labelCityName.setText(UserHolder.getCurrentUser().getCity());
+        this.labelCityName.setText(UserHolder.getCurrentUser().getCityName());
         preloadInfo(UserHolder.getCurrentUser());
         stage.setX(x);
         stage.setY(y);
@@ -87,13 +87,13 @@ public class CityEdit extends AnchorPane {
         String cityPhone = this.txtCityPhone.getText();
         String queryPhone = "";
         if (!cityPhone.isEmpty()) {
-            queryPhone = PgStatement.update("city", "phone", PgStatement.apostrophied(cityPhone), "name='" + user.getCity() + "'");
+            queryPhone = PgStatement.update("city", "phone", PgStatement.apostrophied(cityPhone), "name='" + user.getCityName() + "'");
         }
 
         String cityFax = this.txtCityFax.getText();
         String queryFax = "";
         if (!cityFax.isEmpty()) {
-            queryFax = PgStatement.update("city", "fax", PgStatement.apostrophied(cityFax), "name='" + user.getCity() + "'");
+            queryFax = PgStatement.update("city", "fax", PgStatement.apostrophied(cityFax), "name='" + user.getCityName() + "'");
         }
 
         //System.out.println(queryPhone + "\n" + queryFax);

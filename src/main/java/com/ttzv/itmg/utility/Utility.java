@@ -1,7 +1,10 @@
 package com.ttzv.itmg.utility;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
+import java.util.BitSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,5 +45,48 @@ public class Utility {
             return matcher.group(1);
         }
         return "";
+    }
+
+    public static String formatObjectGUID(Object guid){
+
+        return convertToDashedString( (byte[]) guid);
+    }
+
+    public static String convertToDashedString(byte[] objectGUID) {
+        StringBuilder displayStr = new StringBuilder();
+        displayStr.append(prefixZeros((int) objectGUID[3] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[2] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[1] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[0] & 0xFF));
+        displayStr.append("-");
+        displayStr.append(prefixZeros((int) objectGUID[5] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[4] & 0xFF));
+        displayStr.append("-");
+        displayStr.append(prefixZeros((int) objectGUID[7] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[6] & 0xFF));
+        displayStr.append("-");
+        displayStr.append(prefixZeros((int) objectGUID[8] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[9] & 0xFF));
+        displayStr.append("-");
+        displayStr.append(prefixZeros((int) objectGUID[10] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[11] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[12] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[13] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[14] & 0xFF));
+        displayStr.append(prefixZeros((int) objectGUID[15] & 0xFF));
+        return displayStr.toString();
+    }
+
+
+    private static String prefixZeros(int value) {
+        if (value <= 0xF) {
+            StringBuilder sb = new StringBuilder("0");
+            sb.append(Integer.toHexString(value));
+
+            return sb.toString();
+
+        } else {
+            return Integer.toHexString(value);
+        }
     }
 }
