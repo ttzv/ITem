@@ -60,10 +60,18 @@ public class User {
         this.userInformationMap = new LinkedHashMap<>();
         if (data.length <= columns.length){
             for (int i = 0; i <= columns.length - 1 ; i++) {
-                try {dataList.get(i);} catch (IndexOutOfBoundsException e){} finally {
+                try {dataList.get(i).toString();}
+                catch (IndexOutOfBoundsException e){
+                   //System.out.println(" user index " + i +" filled by empty string");
                     dataList.add("");
+                } catch (NullPointerException e){
+                    dataList.set(i,"");
                 }
+                /*if(dataList.get(i) == null){
+                    dataList.set(i, "");
+                }*/
                     this.userInformationMap.put(UserData.getById(i), dataList.get(i));
+                //System.out.println(this.userInformationMap);
             }
         } else {
             System.err.println("User: Too many elements in User object (" + data.length + "), current max is (" + columns.length);
@@ -151,12 +159,40 @@ public class User {
         return complete.toArray(new String[0]);
     }
 
+    public String[] getAllData(){
+        ArrayList<String> complete = new ArrayList<>();
+        Arrays.asList(UserData.values()).forEach(identifier -> {
+            String data = userInformationMap.get(identifier);
+            if(!data.isEmpty()) {
+                complete.add(data);
+            }
+        });
+        return complete.toArray(new String[0]);
+    }
+
     public LinkedHashMap<UserData, String> getUserInformationMap() {
         return userInformationMap;
+    }
+
+    public boolean compareGUID(String guid){
+        return getUserGUID().equals(guid);
     }
 
     @Override
     public String toString() {
         return Arrays.toString(getComplete());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getUserGUID(), user.getUserGUID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserGUID());
     }
 }

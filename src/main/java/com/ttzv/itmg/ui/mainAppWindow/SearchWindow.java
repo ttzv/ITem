@@ -1,8 +1,12 @@
 package com.ttzv.itmg.ui.mainAppWindow;
 
 import com.ttzv.itmg.ad.User;
+import com.ttzv.itmg.ad.UserData;
 import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.db.DbCon;
+import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,13 +14,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
+import javafx.util.Callback;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -27,6 +32,7 @@ public class SearchWindow extends AnchorPane {
     private Stage stage;
     private MainWindow mainWindow;
     private UiObjectsWrapper uiObjectsWrapper;
+    List<User> foundUsers;
 
     public SearchWindow(UiObjectsWrapper uiObjectsWrapper) {
         try {
@@ -58,6 +64,24 @@ public class SearchWindow extends AnchorPane {
 
 
     private void selectionHandler(){
+        this.resultsList.setOnMouseClicked((MouseEvent event) -> {
+            if(event.getClickCount() == 2){
+                int selectedIndex = this.resultsList.getSelectionModel().getSelectedIndex();
+                String selectedUserGUID = this.resultsList.getSelectionModel().getSelectedItem().get(0).toString();
+                for (User u : foundUsers) {
+                    if(u.compareGUID(selectedUserGUID)){
+                        UserHolder.clear();
+                        UserHolder.addUser(u);
+                        if(!mainWindow.isInfoBarAssetsVisible()){
+                            mainWindow.infoBarAssetsVisible(true);
+                        }
+                        mainWindow.changeUser();
+                        break;
+                    }
+                }
+            }
+        });
+/*
         this.listwvResults.setOnMouseClicked((MouseEvent event) -> {
             if(event.getClickCount() == 2){
                 User selectedUser = this.listwvResults.getSelectionModel().getSelectedItem();
@@ -71,6 +95,7 @@ public class SearchWindow extends AnchorPane {
                 }
             }
         });
+*/
     }
 
     public void show() {
@@ -89,7 +114,7 @@ public class SearchWindow extends AnchorPane {
     private TextField txtfSearch;
 
     @FXML
-    private ListView<User> listwvResults;
+    private TableView<ObservableList> resultsList;
 
     @FXML
     private Label labResultCount;
@@ -101,13 +126,52 @@ public class SearchWindow extends AnchorPane {
         dbCon.loadCfgCredentials();
         dbCon.initConnection();
 
-        List<User> foundUsers = dbCon.globalSearch(this.txtfSearch.getText(), 0);
 
-        ObservableList<User> observableList = FXCollections.observableArrayList(foundUsers);
+        foundUsers = dbCon.globalSearch(this.txtfSearch.getText(), 0);
 
-        this.listwvResults.setItems(observableList);
+        //ArrayList<Map<UserData, String>> listOfUserInfoMaps = foundUsers.stream().map(User::getUserInformationMap).collect(Collectors.toCollection(ArrayList::new));
+
+
+        buildTableView(foundUsers);
 
         this.labResultCount.setText( Integer.toString(foundUsers.size()) );
+
+    }
+
+    public void buildTableView(List<User> foundData){
+
+        String[] columns = User.columns;
+
+        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+
+
+        for (int i = 0; i < columns.length; i++) {
+            final int j = i;
+            String u = columns[i];
+            TableColumn<ObservableList, String> col = new TableColumn<ObservableList, String>(u);
+            col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                @Override
+                public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
+                    //System.out.println("Data no = " + j + " | " + param.getValue().get(j).toString());
+                    return new SimpleStringProperty(param.getValue().get(j).toString());
+                }
+            });
+            this.resultsList.getColumns().addAll(col);
+        }
+
+        for (User u : foundData) {
+            ObservableList<String> row = FXCollections.observableArrayList();
+            for (UserData ud :
+                    u.getUserInformationMap().keySet()) {
+                row.add(u.getUserInformationMap().get(ud));
+               //System.out.println("Data from observaelist | " + row);
+            }
+            data.add(row);
+        }
+
+
+
+        this.resultsList.setItems(data);
 
     }
 

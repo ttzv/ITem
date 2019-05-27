@@ -221,7 +221,7 @@ public class LDAPParser
                 city = cityNameToId(Utility.extractCityFromDn(distinguishedName));
 
                 usersDataList.add(new User(objectGUID, samAccountName, givenName, sn, displayName, userAccountControl, mail, whenCreated, city));
-                System.out.println(distinguishedName);
+               // System.out.println(distinguishedName);
             }
 
 
