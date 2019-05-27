@@ -126,11 +126,7 @@ public class SearchWindow extends AnchorPane {
         dbCon.loadCfgCredentials();
         dbCon.initConnection();
 
-
         foundUsers = dbCon.globalSearch(this.txtfSearch.getText(), 0);
-
-        //ArrayList<Map<UserData, String>> listOfUserInfoMaps = foundUsers.stream().map(User::getUserInformationMap).collect(Collectors.toCollection(ArrayList::new));
-
 
         buildTableView(foundUsers);
 
@@ -156,6 +152,7 @@ public class SearchWindow extends AnchorPane {
                     return new SimpleStringProperty(param.getValue().get(j).toString());
                 }
             });
+
             this.resultsList.getColumns().addAll(col);
         }
 
@@ -164,7 +161,6 @@ public class SearchWindow extends AnchorPane {
             for (UserData ud :
                     u.getUserInformationMap().keySet()) {
                 row.add(u.getUserInformationMap().get(ud));
-               //System.out.println("Data from observaelist | " + row);
             }
             data.add(row);
         }

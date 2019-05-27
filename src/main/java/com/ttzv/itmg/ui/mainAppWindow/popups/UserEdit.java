@@ -108,19 +108,19 @@ public class UserEdit extends AnchorPane {
         dbCon.initConnection();
 
         this.txtUserPos.
-                setDbCell(new DbCell(table, "position", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+                setDbCell(new DbCell(table, "position", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
 
         this.txtUserPhone.
-                setDbCell(new DbCell(table, "userphone", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+                setDbCell(new DbCell(table, "userphone", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
 
         this.txtUserMPhone.
-                setDbCell(new DbCell(table, "usermphone", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+                setDbCell(new DbCell(table, "usermphone", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
 
         this.txtfUserEmailAddress.
-                setDbCell(new DbCell(table, "mail", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+                setDbCell(new DbCell(table, "mail", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
 
         this.txtfUserEmailInitPass.
-                setDbCell(new DbCell(table, "initmailpass", "samaccountname=" + PgStatement.apostrophied(user.getSamAccountName()), dbCon));
+                setDbCell(new DbCell(table, "initmailpass", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
 
 
         String position = this.txtUserPos.getText();

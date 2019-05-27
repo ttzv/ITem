@@ -2,6 +2,7 @@ package com.ttzv.itmg.db;
 
 import com.ttzv.itmg.ad.LDAPParser;
 import com.ttzv.itmg.ad.User;
+import com.ttzv.itmg.ad.UserData;
 import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.properties.Cfg;
 import com.ttzv.itmg.pwSafe.PHolder;
@@ -89,7 +90,7 @@ public class DbCon {
         List<User> ldapusers = ldapParser.getUsersDataList();
         for (User u :
                 ldapusers) {
-            update("users", "samaccountname="+PgStatement.apostrophied(u.getSamAccountName()), "userGUID="+PgStatement.apostrophied(u.getUserGUID()));
+            update("users", "userguid="+PgStatement.apostrophied(u.getUserGUID()), "userGUID="+PgStatement.apostrophied(u.getUserGUID()));
             System.out.println("Updated GUID " + u);
         }
     }
@@ -136,7 +137,7 @@ public class DbCon {
     //todo: test this
     public List<User> updateUsersTable() throws SQLException {
         String table = "users";
-        String column = "samaccountname";
+        String column = "userguid";
         Statement st = conn.createStatement();
 
         List<User> ldapusers = ldapParser.getUsersDataList();
@@ -145,7 +146,7 @@ public class DbCon {
         //addGUID();
 
         for(User user : ldapusers){
-            boolean exists = exists(table, column, user.getSamAccountName());
+            boolean exists = exists(table, column, user.getUserGUID());
             if(!exists) {
 
                 String query = PgStatement.insert(table, User.insertColumns, PgStatement.apostrophied(user.getComplete()));
@@ -225,7 +226,7 @@ public class DbCon {
     }
 
     public User reloadUser (User user) throws SQLException {
-        return globalSearch(user.getSamAccountName(), 1).get(0);
+        return globalSearch(user.getUserGUID(), 1).get(0);
     }
 
 
