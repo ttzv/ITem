@@ -1,14 +1,17 @@
 package com.ttzv.itmg.utility;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.BitSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utility {
+
+    public static String restrictedSymbols = "%_/\\=-+?*";
 
     public static String fileSeparator = System.getProperty("file.separator");
 
@@ -89,4 +92,18 @@ public class Utility {
             return Integer.toHexString(value);
         }
     }
+
+    public static String ldapStringToDate(String date) throws ParseException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return localDate.toString();
+    }
+
+   /* public static String ldapStringToDate(String date) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss.0Z");
+        Date tdate = simpleDateFormat.parse(date);
+        SimpleDateFormat formatted = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        formatted.format(tdate);
+        return formatted;
+    }*/
 }

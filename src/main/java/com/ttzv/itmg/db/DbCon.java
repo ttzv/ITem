@@ -6,6 +6,7 @@ import com.ttzv.itmg.ad.UserData;
 import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.properties.Cfg;
 import com.ttzv.itmg.pwSafe.PHolder;
+import com.ttzv.itmg.utility.Utility;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -59,6 +60,16 @@ public class DbCon {
             }
         }
         st.close();
+    }
+
+    public int delete(String table, String criterium) throws SQLException {
+        Statement st = conn.createStatement();
+        String statement = PgStatement.delete(table, criterium);
+        int cnt = st.executeUpdate(statement);
+
+        st.close();
+
+        return cnt;
     }
 
     /**
@@ -130,11 +141,18 @@ public class DbCon {
         return result;
     }
 
+
+    /*public ResultSet select(String identifier) throws SQLException {
+        Statement st = conn.createStatement();
+
+        ResultSet resultSet = st.executeQuery(PgStatement.select("users", "*", "userguid=" + identifier));
+
+     }*/
+
     /**
      * Updates table USERS with new values from LDAP
      * @return List of users that were added to a database during update execution
      */
-    //todo: test this
     public List<User> updateUsersTable() throws SQLException {
         String table = "users";
         String column = "userguid";
@@ -160,7 +178,6 @@ public class DbCon {
     }
 
     /**
-     *
      * @param count number of users to retrieve from database
      * @return true if method performed correctly
      * @throws SQLException database connection not estabilished
@@ -170,16 +187,25 @@ public class DbCon {
         Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users,city", "*","users.city=city.id", "whencreated", false) + "limit " + count);
         while(resultSet.next()){
-            String[] resultUserData = new String[User.columns.length];
+            User user = buildUserFromDB(resultSet);
+            /*String[] resultUserData = new String[User.columns.length];
             for (int i = 0; i <= User.columns.length - 1 ; i++) {
                 resultUserData[i] = resultSet.getString(User.columns[i]);
             }
-            User user = new User(resultUserData);
+            User user = new User(resultUserData);*/
             UserHolder.addUser(user);
         }
         //System.out.println(resultSet.getRow());
         resultSet.close();
         return true;
+    }
+
+    public User buildUserFromDB(ResultSet resultSet) throws SQLException {
+        String[] resultUserData = new String[User.columns.length];
+        for (int i = 0; i <= User.columns.length - 1 ; i++) {
+            resultUserData[i] = resultSet.getString(User.columns[i]);
+        }
+        return new User(resultUserData);
     }
 
     /**
@@ -188,39 +214,47 @@ public class DbCon {
      * @param limiter maximum amount of rows returned by query, no limit of set to 0
      * @return list of Users with fitting value
      */
+    //todo: make search case insensitive and support substring searches
     public List<User> globalSearch(String value, int limiter) throws SQLException {
+        if(Utility.restrictedSymbols.contains(value)){
+            value="";
+        }
+
         ArrayList<User> foundUsers = new ArrayList<>();
-        StringBuilder allSearchCriterium = new StringBuilder("(");
-        for (int i = 0; i < User.columns.length; i++) {
-            if(i < User.columns.length - 1) {
-                allSearchCriterium.append(" ").append(User.columns[i]).append("=").append(PgStatement.apostrophied(value)).append(" OR");
-            } else {
-                allSearchCriterium.append(" ").append(User.columns[i]).append("=").append(PgStatement.apostrophied(value)).append(")");
+
+        if(!value.isEmpty()) {
+            StringBuilder allSearchCriterium = new StringBuilder("(");
+            for (int i = 0; i < User.columns.length; i++) {
+                if (i < User.columns.length - 1) {
+                    allSearchCriterium.append(" ").append(User.columns[i]).append(" ILIKE ").append(PgStatement.apostrophied("%" + value + "%")).append(" OR");
+                } else {
+                    allSearchCriterium.append(" ").append(User.columns[i]).append(" ILIKE ").append(PgStatement.apostrophied("%" + value + "%")).append(")");
+                }
             }
-        }
 
-        allSearchCriterium.append(" AND (users.city=city.id)");
+            allSearchCriterium.append(" AND (users.city=city.id)");
 
-        String query = PgStatement.select("users,city", "*", allSearchCriterium.toString()) + " limit " + limiter;
-        if(limiter == 0) {
-            query = PgStatement.select("users,city", "*", allSearchCriterium.toString());
-        }
-
-        //System.out.println(query);
-        Statement st = conn.createStatement();
-        ResultSet resultSet = st.executeQuery(query);
-
-
-        while(resultSet.next()){
-            String[] resultUserData = new String[User.columns.length];
-            for (int i = 0; i <= User.columns.length - 1 ; i++) {
-                resultUserData[i] = resultSet.getString(User.columns[i]);
+            String query = PgStatement.select("users,city", "*", allSearchCriterium.toString()) + " limit " + limiter;
+            if (limiter == 0) {
+                query = PgStatement.select("users,city", "*", allSearchCriterium.toString());
             }
-            User user = new User(resultUserData);
-            foundUsers.add(user);
-        }
 
-        st.close();
+            //System.out.println(query);
+            Statement st = conn.createStatement();
+            ResultSet resultSet = st.executeQuery(query);
+
+
+            while (resultSet.next()) {
+                String[] resultUserData = new String[User.columns.length];
+                for (int i = 0; i <= User.columns.length - 1; i++) {
+                    resultUserData[i] = resultSet.getString(User.columns[i]);
+                }
+                User user = new User(resultUserData);
+                foundUsers.add(user);
+            }
+
+            st.close();
+        }
 
         return foundUsers;
     }

@@ -107,4 +107,8 @@ public class PgStatement {
             return select(table, content, criterium) + "order by " + column + " desc ";
         }
     }
+
+    public static String delete(String from, String criterium){
+        return "DELETE from " + from + " WHERE " + criterium + " ";
+    }
 }

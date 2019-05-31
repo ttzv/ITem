@@ -178,6 +178,20 @@ public class User {
         return getUserGUID().equals(guid);
     }
 
+    /**
+     * Determine which information is different from user given in parameter
+     * @return List of String userdata identifiers if differences were found, otherwise empty list
+     */
+    public List<String> findDiff(User user){
+        List<String> diff = new ArrayList<>();
+        for (UserData ud : insertColumns) {
+            if(!this.userInformationMap.get(ud).equals(user.getUserInformationMap().get(ud))){
+                diff.add(ud.toString());
+            }
+        }
+        return diff;
+    }
+
     @Override
     public String toString() {
         return Arrays.toString(getComplete());

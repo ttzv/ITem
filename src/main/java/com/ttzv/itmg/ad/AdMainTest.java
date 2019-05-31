@@ -1,12 +1,15 @@
 package com.ttzv.itmg.ad;
 
 import com.ttzv.itmg.db.PgStatement;
+import com.ttzv.itmg.utility.Utility;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 public class AdMainTest {
-    public static void main(String[] args) {
-        User user = new User("object_1" ,
+    public static void main(String[] args) throws ParseException {
+/*        User user = new User("object_1" ,
                                     "object_2" ,
                                     "object_3" ,
                                     "object_4" ,
@@ -19,6 +22,12 @@ public class AdMainTest {
 
         System.out.println(Arrays.asList(user.getComplete()));
 
-        System.out.println(Arrays.asList(PgStatement.apostrophied(UserData.getAllColumns())));
+        System.out.println(Arrays.asList(PgStatement.apostrophied(UserData.getAllColumns())));*/
+
+    String date = "20150930135426";
+    String rdate = "20160107091549.0Z";
+
+
+        System.out.println(Utility.ldapStringToDate(date));
     }
 }

@@ -126,8 +126,8 @@ public class SearchWindow extends AnchorPane {
         dbCon.loadCfgCredentials();
         dbCon.initConnection();
 
-        foundUsers = dbCon.globalSearch(this.txtfSearch.getText(), 0);
 
+        foundUsers = dbCon.globalSearch(this.txtfSearch.getText(), 0);
         buildTableView(foundUsers);
 
         this.labResultCount.setText( Integer.toString(foundUsers.size()) );
@@ -136,10 +136,11 @@ public class SearchWindow extends AnchorPane {
 
     public void buildTableView(List<User> foundData){
 
+        this.resultsList.getColumns().clear();
+
         String[] columns = User.columns;
 
         ObservableList<ObservableList> data = FXCollections.observableArrayList();
-
 
         for (int i = 0; i < columns.length; i++) {
             final int j = i;
