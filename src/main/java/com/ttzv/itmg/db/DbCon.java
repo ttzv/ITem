@@ -106,6 +106,15 @@ public class DbCon {
         }
     }
 
+    public void addWhenChanged() throws SQLException {
+        List<User> ldapusers = ldapParser.getUsersDataList();
+        for (User u :
+                ldapusers) {
+            update("users", "userGUID=" + PgStatement.apostrophied(u.getUserGUID()), "whenChanged=" + PgStatement.apostrophied(u.getWhenChanged()));
+            System.out.println("Updated whenchanged " + u);
+        }
+    }
+
     public void ldapToDb() throws SQLException {
         Statement st = conn.createStatement();
 
@@ -162,6 +171,7 @@ public class DbCon {
         List<User> newUsers = new ArrayList<>();
 
         //addGUID();
+        //addWhenChanged();
 
         for(User user : ldapusers){
             boolean exists = exists(table, column, user.getUserGUID());
@@ -188,11 +198,6 @@ public class DbCon {
         ResultSet resultSet = st.executeQuery(PgStatement.selectAscending("users,city", "*","users.city=city.id", "whencreated", false) + "limit " + count);
         while(resultSet.next()){
             User user = buildUserFromDB(resultSet);
-            /*String[] resultUserData = new String[User.columns.length];
-            for (int i = 0; i <= User.columns.length - 1 ; i++) {
-                resultUserData[i] = resultSet.getString(User.columns[i]);
-            }
-            User user = new User(resultUserData);*/
             UserHolder.addUser(user);
         }
         //System.out.println(resultSet.getRow());

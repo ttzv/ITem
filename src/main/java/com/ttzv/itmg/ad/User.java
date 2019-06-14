@@ -24,6 +24,7 @@ public class User {
     private String userAccountControl;
     private String mail;
     private String whenCreated;
+    private String whenChanged;
     private String initMailPass;
     private String cityId;
     private String cityName;
@@ -51,7 +52,8 @@ public class User {
                                                     UserData.useraccountcontrol,
                                                     UserData.mail,
                                                     UserData.whenCreated,
-                                                    UserData.cityId};
+                                                    UserData.cityId,
+                                                    UserData.whenChanged};
 
 
     public User(String... data) {
@@ -111,6 +113,8 @@ public class User {
     public String getWhenCreated() {
         return userInformationMap.get(UserData.whenCreated);
     }
+
+    public String getWhenChanged() { return userInformationMap.get(UserData.whenChanged); }
 
     public String getInitMailPass() {
         return userInformationMap.get(UserData.initmailpass);

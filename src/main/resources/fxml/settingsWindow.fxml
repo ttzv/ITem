@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.ttzv.itmg.uiUtils.LimitableTextField?>
 <?import com.ttzv.itmg.uiUtils.TitledBorder?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -8,7 +9,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -250,6 +253,33 @@
                   <Label text="Filtr pola Login (Mailing)" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                   <TextField fx:id="txtfUserRegex" GridPane.columnIndex="5" />
                   <TextField fx:id="txtfLoginRegex" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="25.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                     <children>
+                        <RadioButton fx:id="rbPassRandom" mnemonicParsing="false" prefHeight="17.0" prefWidth="92.0" text="Losowe">
+                           <tooltip>
+                              <Tooltip text="Generuje ośmioznakowe losowe hasło" />
+                           </tooltip>
+                        </RadioButton>
+                        <RadioButton fx:id="rbPassWords" mnemonicParsing="false" prefHeight="17.0" prefWidth="136.0" text="Z listy wyrazów">
+                           <tooltip>
+                              <Tooltip text="Generuje hasło korzystając z podanych przez użytkownika list wyrazów" />
+                           </tooltip>
+                        </RadioButton>
+                        <Button fx:id="btnPassWordFiles" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Pliki..." />
+                     </children>
+                  </HBox>
+                  <Label text="Generator haseł (Mailing)" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                  <Label text="Szablon generatora haseł" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="25.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                     <children>
+                        <LimitableTextField fx:id="txtfPassPattern" prefHeight="25.0" prefWidth="242.0">
+                           <tooltip>
+                              <Tooltip prefWidth="150.0" text="Pattern for password generator:    W-Word    N-Number    S-Symbol" wrapText="true" />
+                           </tooltip>
+                        </LimitableTextField>
+                        <Button fx:id="btnDefaultPassPattern" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Domyślny" />
+                     </children>
+                  </HBox>
                </children>
                <padding>
                   <Insets left="5.0" top="5.0" />

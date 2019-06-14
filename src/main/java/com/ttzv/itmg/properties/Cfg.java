@@ -31,6 +31,12 @@ package com.ttzv.itmg.properties;
      public static String SIGN_LOC = "signatureLocation";
      public static String SIGN_TARGETPATH = "signatureSavingDirectory";
      public static String DIR_ALWAYSOPEN = "dirAlwaysOpen";
+     //password generator
+     public static String PASS_GEN_METHOD = "passGenMethod";
+     public static String PROPERTY_PASS_RANDOM = "random";
+     public static String PROPERTY_PASS_PATTERN = "pattern";
+     public static String PASS_GEN_PATTERN = "passGenPattern";
+     public static String PASS_FILES = "passFiles";
 
 
 

@@ -144,7 +144,7 @@ public class LDAPParser
                 Attribute attr_mail;
                 Attribute attr_whenCreated;
                 Attribute attr_distinguishedName;
-//                Attribute attr_whenChanged;
+                Attribute attr_whenChanged;
 
                 String objectGUID;
                 String samAccountName;
@@ -155,7 +155,7 @@ public class LDAPParser
                 String mail;
                 String whenCreated;
                 String distinguishedName;
-//                String whenChanged;
+                String whenChanged;
 
                 if( ( attr_objectGUID = attrs.get("objectGUID") ) == null)
                 {
@@ -222,14 +222,14 @@ public class LDAPParser
                 }
                 city = cityNameToId(Utility.extractCityFromDn(distinguishedName));
 
-                /*if( ( attr_whenChanged= attrs.get("whenChanged") ) == null)
+                if( ( attr_whenChanged = attrs.get("whenChanged") ) == null)
                 {
                     whenChanged = "null";
                 } else {
                     whenChanged = attr_whenChanged.get().toString();
-                }*/
+                }
 
-                usersDataList.add(new User(objectGUID, samAccountName, givenName, sn, displayName, userAccountControl, mail, whenCreated, city/*, whenChanged*/));
+                usersDataList.add(new User(objectGUID, samAccountName, givenName, sn, displayName, userAccountControl, mail, whenCreated, city, whenChanged));
                // System.out.println(distinguishedName);
             }
 

@@ -4,6 +4,7 @@ import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.db.DbCon;
 import com.ttzv.itmg.db.PgStatement;
 import com.ttzv.itmg.file.MailMsgParser;
+import com.ttzv.itmg.pass.WordListPasswordGenerator;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -68,12 +69,20 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     void btnPassGenerate(ActionEvent event) {
-        PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
-                .useDigits(true)
-                .useLower(true)
-                .useUpper(true)
-                .usePunctuation(true).build();
-        this.txtPass.setText(passwordGenerator.generate(8));
+        String generatedString = new String();
+        String passConfig = Cfg.getInstance().retrieveProp(Cfg.PASS_GEN_METHOD);
+        if(passConfig.equals(Cfg.PROPERTY_PASS_RANDOM)) {
+            PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
+                    .useDigits(true)
+                    .useLower(true)
+                    .useUpper(true)
+                    .usePunctuation(true).build();
+            generatedString = passwordGenerator.generate(8);
+        } else if(passConfig.equals(Cfg.PROPERTY_PASS_PATTERN)) {
+            WordListPasswordGenerator wordListPasswordGenerator = new WordListPasswordGenerator(Cfg.getInstance().retrieveProp(Cfg.PASS_GEN_PATTERN));
+            generatedString = wordListPasswordGenerator.getGeneratedString();
+        }
+        this.txtPass.setText(generatedString);
     }
 
 

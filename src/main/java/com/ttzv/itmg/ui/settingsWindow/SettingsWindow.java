@@ -3,6 +3,7 @@ package com.ttzv.itmg.ui.settingsWindow;
 import com.ttzv.itmg.ad.LDAPParser;
 import com.ttzv.itmg.db.DbCon;
 import com.ttzv.itmg.ui.mailerWindow.MailerWindow;
+import com.ttzv.itmg.uiUtils.LimitableTextField;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -119,6 +120,22 @@ public class SettingsWindow extends AnchorPane {
 
     @FXML
     private TextField txtfLoginRegex;
+
+    @FXML
+    private RadioButton rbPassRandom;
+
+    @FXML
+    private RadioButton rbPassWords;
+
+    @FXML
+    private Button btnPassWordFiles;
+
+    @FXML
+    private LimitableTextField txtfPassPattern;
+
+    @FXML
+    private Button btnDefaultPassPattern;
+
 
 
 
@@ -256,6 +273,55 @@ public class SettingsWindow extends AnchorPane {
 
         this.txtfUserRegex.setText(Cfg.getInstance().retrieveProp(Cfg.USER_REGEX));
         this.txtfLoginRegex.setText(Cfg.getInstance().retrieveProp(Cfg.LOGIN_REGEX));
+
+        //password generator ui
+
+        final ToggleGroup toggleGroup = new ToggleGroup();
+        rbPassRandom.setToggleGroup(toggleGroup);
+        rbPassRandom.setUserData("Random");
+        rbPassWords.setToggleGroup(toggleGroup);
+        rbPassWords.setUserData("Pattern");
+
+        txtfPassPattern.setRegexFilter("[WNS]*");
+        txtfPassPattern.setText("WWNS");
+
+        btnDefaultPassPattern.setOnAction(event -> {
+            this.txtfPassPattern.setText("WWNS");
+        });
+
+        toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            boolean isDisabled = toggleGroup.getSelectedToggle().getUserData()=="Random";
+                this.btnPassWordFiles.setDisable(isDisabled);
+                this.txtfPassPattern.setDisable(isDisabled);
+                this.btnDefaultPassPattern.setDisable(isDisabled);
+                if(isDisabled){
+                    Cfg.getInstance().setProperty(Cfg.PASS_GEN_METHOD, Cfg.PROPERTY_PASS_RANDOM);
+                } else {
+                    Cfg.getInstance().setProperty(Cfg.PASS_GEN_METHOD, Cfg.PROPERTY_PASS_PATTERN);
+                }
+            try {
+                Cfg.getInstance().saveFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        String passGenMethod = Cfg.getInstance().retrieveProp(Cfg.PASS_GEN_METHOD);
+        if(passGenMethod.equals(Cfg.PROPERTY_PASS_PATTERN)){
+            rbPassWords.setSelected(true);
+        } else {
+            rbPassRandom.setSelected(true);
+        }
+
+        this.txtfPassPattern.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            String text = this.txtfPassPattern.getText();
+            if(!text.isEmpty()){
+                Cfg.getInstance().setProperty(Cfg.PASS_GEN_PATTERN, text);
+            }
+        });
+
+
+
 
 
         //TODO: make ui for DB and LDAP connection, part below is temporary solution, no ui for this yet

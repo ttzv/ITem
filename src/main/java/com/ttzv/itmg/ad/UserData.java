@@ -4,23 +4,24 @@ import java.util.stream.Stream;
 
 public enum UserData {
 
-            userGUID("userGUID",0),
-            samaccountname("samaccountname",1),
-            givenname("givenname",2),
-            sn("sn",3),
-            displayname("displayname",4),
-            useraccountcontrol("useraccountcontrol",5),
-            mail("mail",6),
-            whenCreated("whenCreated",7),
-            cityId("city",8),
-            initmailpass("initmailpass",9),
-            cityName("name",10),
-            type("type",11),
-            phone("phone",12),
-            fax("fax",13),
-            position("position",14),
-            userphone("userphone",15),
-            usermphone("usermphone",16);
+            userGUID(           "userGUID",             0),
+            samaccountname(     "samaccountname",       1),
+            givenname(          "givenname",            2),
+            sn(                 "sn",                   3),
+            displayname(        "displayname",          4),
+            useraccountcontrol( "useraccountcontrol",   5),
+            mail(               "mail",                 6),
+            whenCreated(        "whenCreated",          7),
+            cityId(             "city",                 8),
+            whenChanged(        "whenChanged",          9),
+            initmailpass(       "initmailpass",         10),
+            cityName(           "name",                 11),
+            type(               "type",                 12),
+            phone(              "phone",                13),
+            fax(                "fax",                  14),
+            position(           "position",             15),
+            userphone(          "userphone",            16),
+            usermphone(         "usermphone",           17);
 
             private final String colName;
             private final int id;
