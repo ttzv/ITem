@@ -1,11 +1,8 @@
 package com.ttzv.itmg.ad;
 
-import com.ttzv.itmg.db.PgStatement;
 import com.ttzv.itmg.utility.Utility;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 
 public class AdMainTest {
     public static void main(String[] args) throws ParseException {

@@ -1,6 +1,6 @@
 package com.ttzv.itmg.file;
 
-import java.io.*;
+import java.io.BufferedReader;
 
 /**
  * Parses given HTML file and detects flagged lines. Current flags are: <!L></!L> - for Login and <!P></!P> for Password

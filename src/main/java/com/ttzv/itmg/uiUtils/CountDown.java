@@ -1,14 +1,5 @@
 package com.ttzv.itmg.uiUtils;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableLongValue;
-import javafx.beans.value.ObservableValue;
-
-import java.util.Observable;
-import java.util.Scanner;
-
 public class CountDown implements Runnable{
 
     private long upperLimit;

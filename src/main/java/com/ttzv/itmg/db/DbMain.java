@@ -1,13 +1,5 @@
 package com.ttzv.itmg.db;
 
-import com.ttzv.itmg.ad.LDAPParser;
-
-import javax.naming.NamingException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.SQLException;
-
 public class DbMain {
 
     public static void main(String[] args) {

@@ -1,6 +1,5 @@
 package com.ttzv.itmg.uiUtils;
 
-import com.sun.javafx.css.Stylesheet;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

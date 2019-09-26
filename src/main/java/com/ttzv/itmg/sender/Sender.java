@@ -1,9 +1,12 @@
 package com.ttzv.itmg.sender;
 
-import javafx.scene.control.Alert;
 import com.ttzv.itmg.properties.Cfg;
+import javafx.scene.control.Alert;
 
-import javax.mail.*;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;

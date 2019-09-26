@@ -2,7 +2,6 @@ package com.ttzv.itmg.ad;
 
 import com.ttzv.itmg.db.DbCon;
 import com.ttzv.itmg.db.PgStatement;
-import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 

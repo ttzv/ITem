@@ -1,8 +1,8 @@
 package com.ttzv.itmg.ui.mailerWindow;
 
-import javafx.stage.FileChooser;
 import com.ttzv.itmg.properties.Cfg;
 import com.ttzv.itmg.utility.Utility;
+import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;

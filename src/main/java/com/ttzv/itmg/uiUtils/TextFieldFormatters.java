@@ -1,6 +1,5 @@
 package com.ttzv.itmg.uiUtils;
 
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.util.StringConverter;
 

@@ -1,16 +1,14 @@
 package com.ttzv.itmg.ui.mainAppWindow;
 
-import com.sun.javafx.application.ParametersImpl;
+
+import com.ttzv.itmg.properties.Cfg;
+import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import com.ttzv.itmg.properties.Cfg;
-import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class Main extends Application {
 

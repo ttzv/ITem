@@ -4,8 +4,15 @@ import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.db.DbCon;
 import com.ttzv.itmg.db.PgStatement;
 import com.ttzv.itmg.file.MailMsgParser;
+import com.ttzv.itmg.pass.PasswordGenerator;
 import com.ttzv.itmg.pass.WordListPasswordGenerator;
+import com.ttzv.itmg.properties.Cfg;
+import com.ttzv.itmg.pwSafe.PHolder;
+import com.ttzv.itmg.sender.Sender;
+import com.ttzv.itmg.ui.mainAppWindow.MainWindow;
+import com.ttzv.itmg.uiUtils.LimitableTextField;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
+import com.ttzv.itmg.utility.Utility;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,13 +20,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
-import com.ttzv.itmg.pass.PasswordGenerator;
-import com.ttzv.itmg.properties.Cfg;
-import com.ttzv.itmg.sender.Sender;
-import com.ttzv.itmg.ui.mainAppWindow.MainWindow;
-import com.ttzv.itmg.pwSafe.PHolder;
-import com.ttzv.itmg.uiUtils.LimitableTextField;
-import com.ttzv.itmg.utility.Utility;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -80,7 +80,11 @@ public class MailerWindow extends AnchorPane {
             generatedString = passwordGenerator.generate(8);
         } else if(passConfig.equals(Cfg.PROPERTY_PASS_PATTERN)) {
             WordListPasswordGenerator wordListPasswordGenerator = new WordListPasswordGenerator(Cfg.getInstance().retrieveProp(Cfg.PASS_GEN_PATTERN));
-            generatedString = wordListPasswordGenerator.getGeneratedString();
+            try {
+                generatedString = wordListPasswordGenerator.getGeneratedString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         this.txtPass.setText(generatedString);
     }

@@ -1,17 +1,8 @@
 package com.ttzv.itmg.uiUtils;
 
 
-import com.ttzv.itmg.ad.User;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 @Deprecated

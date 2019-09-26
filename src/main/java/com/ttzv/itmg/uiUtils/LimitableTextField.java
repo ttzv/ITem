@@ -5,7 +5,6 @@ import javafx.concurrent.Task;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.UnaryOperator;

@@ -2,8 +2,13 @@ package com.ttzv.itmg.ui.settingsWindow;
 
 import com.ttzv.itmg.ad.LDAPParser;
 import com.ttzv.itmg.db.DbCon;
+import com.ttzv.itmg.properties.Cfg;
+import com.ttzv.itmg.pwSafe.Crypt;
+import com.ttzv.itmg.pwSafe.PHolder;
+import com.ttzv.itmg.sender.Sender;
 import com.ttzv.itmg.ui.mailerWindow.MailerWindow;
 import com.ttzv.itmg.uiUtils.LimitableTextField;
+import com.ttzv.itmg.uiUtils.TitledBorder;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -14,11 +19,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import com.ttzv.itmg.properties.Cfg;
-import com.ttzv.itmg.pwSafe.Crypt;
-import com.ttzv.itmg.pwSafe.PHolder;
-import com.ttzv.itmg.sender.Sender;
-import com.ttzv.itmg.uiUtils.TitledBorder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

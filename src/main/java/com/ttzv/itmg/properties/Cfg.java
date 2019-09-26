@@ -47,6 +47,7 @@ package com.ttzv.itmg.properties;
          defPropSet(SMTP_HOST, "smtp.gmail.com");
          defPropSet(SMTP_PORT,"587");
          defPropSet(SMTP_TLS, "true");
+         defPropSet(PASS_GEN_PATTERN, "WWNS");
      }
 
      public static Cfg getInstance(){

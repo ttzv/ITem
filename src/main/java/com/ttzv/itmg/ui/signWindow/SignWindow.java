@@ -4,6 +4,7 @@ import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.file.Loader;
 import com.ttzv.itmg.file.Saver;
 import com.ttzv.itmg.file.SignatureParser;
+import com.ttzv.itmg.properties.Cfg;
 import com.ttzv.itmg.uiUtils.TextFieldFormatters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,9 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import com.ttzv.itmg.properties.Cfg;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;

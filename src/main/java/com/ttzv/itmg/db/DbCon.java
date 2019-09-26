@@ -2,7 +2,6 @@ package com.ttzv.itmg.db;
 
 import com.ttzv.itmg.ad.LDAPParser;
 import com.ttzv.itmg.ad.User;
-import com.ttzv.itmg.ad.UserData;
 import com.ttzv.itmg.ad.UserHolder;
 import com.ttzv.itmg.properties.Cfg;
 import com.ttzv.itmg.pwSafe.PHolder;

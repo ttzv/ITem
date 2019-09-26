@@ -1,10 +1,11 @@
 package com.ttzv.itmg.ui.sceneControl;
 
-import javafx.scene.layout.Pane;
 import com.ttzv.itmg.properties.Cfg;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScenePicker {
 
