@@ -57,7 +57,7 @@ public class Loader {
         String stringLine;
         try {
             while ((stringLine = bufferedReader.readLine()) != null) {
-                stringBuilder.append(stringLine + "\n");
+                stringBuilder.append(stringLine).append("\n");
             }
             bufferedReader.close();
             return stringBuilder;
@@ -74,14 +74,13 @@ public class Loader {
         try {
             while ((stringLine = bufferedReader.readLine()) != null) {
                 list.add(stringLine);
-                System.out.println("LINE READ: " + stringLine);
             }
             bufferedReader.close();
             return list;
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        return null;
+        return list;
     }
 }
 

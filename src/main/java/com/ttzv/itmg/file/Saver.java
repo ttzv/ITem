@@ -43,17 +43,9 @@ public final String HTM = ".htm";
 
         String fileName = this.fileName + this.extension;
 
-       // System.out.println(fileName);
-
         Path filePath = this.targetPath.resolve(fileName);
 
-       // System.out.println(filePath.toAbsolutePath().toString());
-
-        //BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(filePath.toFile()));
-
         BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toFile()), StandardCharsets.UTF_8));
-
-        //System.out.println(filePath.toFile().getAbsolutePath());
 
         bufferedWriter.write(stringToSave);
 

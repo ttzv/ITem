@@ -20,17 +20,15 @@ public class WordListPasswordGenerator {
     private String generatedString;
     private int wordFileNo = 0;
 
-    public WordListPasswordGenerator(String pattern /*, List<File> wordLists*/){
+    public WordListPasswordGenerator(String pattern){
         this.pattern = pattern.toCharArray();
         //temporary
         this.wordLists = new ArrayList<>();
 
         URL url = this.getClass().getResource("/text/adjectives.txt");
-        System.out.println(" txt File URL: " + url);
         this.wordLists.add(url);
 
         url = this.getClass().getResource("/text/nouns.txt");
-        System.out.println(" txt File URL: " + url);
         this.wordLists.add(url);
         //temporary
 
@@ -66,7 +64,6 @@ public class WordListPasswordGenerator {
 
     private String addWord(int listNo) throws IOException {
         loader.load(wordLists.get(listNo));
-        System.out.println(wordLists.get(0));
         ArrayList<String> wordList = loader.contentToArray();
         return wordList.get(new Random().nextInt(wordList.size()));
     }

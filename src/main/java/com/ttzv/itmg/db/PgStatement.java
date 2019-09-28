@@ -1,8 +1,6 @@
 package com.ttzv.itmg.db;
 
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 
 public class PgStatement {
@@ -71,7 +69,7 @@ public class PgStatement {
         return "'" + data + "'";
     }
 
-    public static String select(String table, String content, @Nullable String criterium){
+    public static String select(String table, String content, String criterium){
         String select = "SELECT " + content + " FROM " + table + " ";
         if(criterium == null) {
             return select;
@@ -101,7 +99,7 @@ public class PgStatement {
      * @param ascending true for ascending sorting, false for descending sorting
      * @return Complete statement
      */
-    public static String selectAscending(String table, String content, @Nullable String criterium, String column, boolean ascending){
+    public static String selectAscending(String table, String content, String criterium, String column, boolean ascending){
         if(ascending) {
             return select(table, content, criterium) + "order by " + column + " asc ";
         } else {

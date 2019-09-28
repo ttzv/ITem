@@ -1,8 +1,5 @@
 package com.ttzv.itmg.properties;
 
-
-import org.jetbrains.annotations.Nullable;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -208,7 +205,7 @@ public abstract class Propsicl {
      * Method encapsulating creation of directories, files, initialization of properties etc, use at the start of application or module/class(constructor preferably).
      * @throws IOException
      */
-    public void init(@Nullable String saveDir) throws IOException {
+    public void init(String saveDir) throws IOException {
         //false until create() method is called to prevent changing default properties during runtime
         modifiable = false;
 

@@ -1,7 +1,8 @@
-package com.ttzv.itmg.ui.mainAppWindow;
+package com.ttzv.itmg;
 
 
 import com.ttzv.itmg.properties.Cfg;
+import com.ttzv.itmg.ui.mainAppWindow.MainWindow;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -21,9 +22,7 @@ public class Main extends Application {
         primaryStage.setTitle("Mailer");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        primaryStage.setOnCloseRequest(event -> {
-            System.exit(0);
-        });
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
     }
 
     public static void main(String[] args) {
