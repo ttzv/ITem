@@ -1,0 +1,17 @@
+/*Main button class to use for rectangular small buttons with background image*/
+.rect_button{
+-fx-background-image: url(../img/cancel.png); /* must be overridable */
+-fx-background-size: 20 20;
+-fx-background-repeat: no-repeat;
+-fx-background-position: center;
+}
+/*Main button class to use for round small buttons with background image (placeholder values)*/
+.round_button{
+-fx-background-radius: 5em;
+-fx-max-width: 45;
+-fx-max-height: 45; 
+-fx-background-image: url(../img/Add.png); /* must be overridable */
+-fx-background-position: center; 
+-fx-background-size: 35 35; 
+-fx-background-repeat: no-repeat;
+}

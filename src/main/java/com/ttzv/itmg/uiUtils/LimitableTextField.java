@@ -31,6 +31,10 @@ public class LimitableTextField extends TextField {
         this.regexFilter = "";
     }
 
+    /**
+     * Here you can set any filter you want using regular expression
+     * @param regexFilter - regular expression to filter field content by
+     */
     public void setRegexFilter(String regexFilter) {
         this.regexFilter = regexFilter;
     }

@@ -7,7 +7,6 @@ import com.ttzv.itmg.properties.Cfg;
 import com.ttzv.itmg.pwSafe.PHolder;
 import com.ttzv.itmg.ui.crmWindow.CrmWindow;
 import com.ttzv.itmg.ui.gSuiteWindow.GSuiteWindow;
-import com.ttzv.itmg.ui.mailerWindow.InfoWindow;
 import com.ttzv.itmg.ui.mailerWindow.MailerWindow;
 import com.ttzv.itmg.ui.mainAppWindow.popups.CityEdit;
 import com.ttzv.itmg.ui.mainAppWindow.popups.UserEdit;

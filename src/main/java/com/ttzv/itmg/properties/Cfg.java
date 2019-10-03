@@ -37,6 +37,9 @@ package com.ttzv.itmg.properties;
      public static String PROPERTY_PASS_PATTERN = "pattern";
      public static String PASS_GEN_PATTERN = "passGenPattern";
      public static String PASS_FILES = "passFiles";
+     //textfields regex
+     public static String LTF_NAME_ONLY = "ltfNameOnly";
+     public static String LTF_RESTRICT_SYMBOLS = "ltfRestrictSymbols";
 
 
 
@@ -48,6 +51,8 @@ package com.ttzv.itmg.properties;
          defPropSet(SMTP_PORT,"587");
          defPropSet(SMTP_TLS, "true");
          defPropSet(PASS_GEN_PATTERN, "WWNS");
+         defPropSet(LTF_NAME_ONLY, "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ-]*|\\s|[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*\\s+[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ-]*");
+         defPropSet(LTF_RESTRICT_SYMBOLS, "[A-Za-z]*|\\.|\\d|[A-Za-z]+\\.\\w+|[-]");
      }
 
      public static Cfg getInstance(){

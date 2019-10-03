@@ -211,8 +211,7 @@ public class MailerWindow extends AnchorPane {
     public void configureTextFilters() {
         String userRegex = Cfg.getInstance().retrieveProp(Cfg.USER_REGEX);
         if (userRegex.isEmpty()) {
-            this.txtUser.setRegexFilter(LimitableTextField.NAME_ONLY);
-            Cfg.getInstance().setProperty(Cfg.USER_REGEX, LimitableTextField.NAME_ONLY);
+            this.txtUser.setRegexFilter(Cfg.getInstance().retrieveProp(Cfg.LTF_NAME_ONLY));
         } else {
             this.txtUser.setRegexFilter(userRegex);
         }
@@ -221,8 +220,7 @@ public class MailerWindow extends AnchorPane {
         if(!loginRegex.isEmpty()) {
             this.txtLog.setRegexFilter(loginRegex);
         } else {
-            this.txtLog.setRegexFilter(LimitableTextField.RESTRICT_SYMBOLS);
-            Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, LimitableTextField.RESTRICT_SYMBOLS);
+            this.txtLog.setRegexFilter(Cfg.getInstance().retrieveProp(Cfg.LTF_RESTRICT_SYMBOLS));
         }
 
     }

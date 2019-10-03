@@ -59,6 +59,10 @@ public class StatusBar extends Label {
         new Thread(task).start();
     }
 
+    /**
+     * Add some text to currently shown text in StatusBar
+     * @param text - text to add
+     */
     public void appendText(String text){
         String ctext = this.getText();
         ctext += text;

@@ -1,4 +1,4 @@
-package com.ttzv.itmg.ui.mailerWindow;
+package com.ttzv.itmg.ui.mainAppWindow;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,7 +10,6 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
 public class InfoWindow {
 
     private Stage stage;
@@ -28,7 +27,8 @@ public class InfoWindow {
     }
 
     public Stage getStage() {
-        createInfo();
+        //TODO: change this class to fxml like the rest of the project
+        //createInfo();
         return stage;
     }
 
