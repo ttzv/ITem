@@ -1,77 +1,51 @@
+/**
+ * Sample Skeleton for 'infoWindow.fxml' Controller Class
+ */
+
 package com.ttzv.itmg.ui.mainAppWindow;
 
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+
 public class InfoWindow {
 
-    private Stage stage;
-    private GridPane gridPane;
+    @FXML // fx:id="l1"
+    private Label l1; // Value injected by FXMLLoader
 
-    public InfoWindow(){
-        this.stage = new Stage();
-        this.stage.setTitle("Informacje");
-        gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(1);
-        //gridPane.setGridLinesVisible(true);
-        gridPane.setPadding(new Insets(20, 20, 20, 20));
-        stage.setScene(new Scene(gridPane));
+    @FXML // fx:id="l2"
+    private Label l2; // Value injected by FXMLLoader
+
+    @FXML // fx:id="l3"
+    private Label l3; // Value injected by FXMLLoader
+
+    @FXML // fx:id="b1"
+    private Button b1; // Value injected by FXMLLoader
+
+    @FXML // fx:id="b2"
+    private Button b2; // Value injected by FXMLLoader
+
+    @FXML // fx:id="b3"
+    private Button b3; // Value injected by FXMLLoader
+
+    public InfoWindow() {
     }
 
-    public Stage getStage() {
-        //TODO: change this class to fxml like the rest of the project
-        //createInfo();
-        return stage;
+    public void initialize () {
+        textToClipboard(b1, l1);
+        textToClipboard(b2, l2);
+        textToClipboard(b3, l3);
     }
 
-    public void createInfo(){
-        Label info = new Label("Dostępne flagi. Umieść w wiadomości html przed załadowaniem do programu.");
-        Label loginLabel = new Label("Login");
-        Label loginLabelContent = new Label("<!L></!L>");
-        Label passLabel = new Label("Hasło");
-        Label passLabelContent = new Label("<!P></!P>");
-        Label topicLabel = new Label("Temat");
-        Label topicLabelContent = new Label("<!T></!T>");
-        Image imgCopy = new Image("img/cp.png", 15, 15, true, true);
-        Button b1 = new Button();
-        b1.setGraphic(new ImageView(imgCopy));
-        Button b2 = new Button();
-        b2.setGraphic(new ImageView(imgCopy));
-        Button b3 = new Button();
-        b3.setGraphic(new ImageView(imgCopy));
+    private void textToClipboard(Button b, Label l){
         Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        b1.setOnAction(event -> {
-            content.putString("<!L></!L>");
-            clipboard.setContent(content);
+        ClipboardContent clipboardContent = new ClipboardContent();
+        b.setOnAction(actionEvent -> {
+            clipboardContent.putString(l.getText());
+            clipboard.setContent(clipboardContent);
         });
-        b2.setOnAction(event -> {
-            content.putString("<!P></!P>");
-            clipboard.setContent(content);
-        });
-        b3.setOnAction(event -> {
-            content.putString("<!T></!T>");
-            clipboard.setContent(content);
-        });
-        gridPane.add(info, 0, 0, 3, 1);
-        gridPane.add(loginLabel, 0, 1);
-        gridPane.add(loginLabelContent, 1, 1);
-        gridPane.add(b1, 2, 1);
-        gridPane.add(passLabel, 0, 2);
-        gridPane.add(passLabelContent, 1, 2);
-        gridPane.add(b2, 2, 2);
-        gridPane.add(topicLabel, 0, 3);
-        gridPane.add(topicLabelContent, 1, 3);
-        gridPane.add(b3, 2, 3);
-
 
     }
 }

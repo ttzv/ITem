@@ -7,6 +7,7 @@ module com.ttzv.itmg {
     requires javafx.web;
     requires java.desktop;
     requires jakarta.mail;
+    requires ttzv.uiUtils;
 
     opens com.ttzv.itmg to javafx.fxml;
     opens com.ttzv.itmg.ui.mainAppWindow to javafx.fxml;

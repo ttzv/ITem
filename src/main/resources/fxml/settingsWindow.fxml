@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.ttzv.itmg.uiUtils.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import ttzv.uiUtils.TitledBorder?>
+<?import ttzv.uiUtils.LimitableTextField?>
 <fx:root prefHeight="660.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledBorder fx:id="containerMailSett" prefHeight="378.0" prefWidth="430.0" stylesheets="@../style/style.css" title="E-mail" AnchorPane.leftAnchor="0.0">
+      <TitledBorder fx:id="containerMailSett" prefHeight="378.0" prefWidth="430.0" stylesheets="@../style/style_titledborder.css" title="E-mail" AnchorPane.leftAnchor="0.0">
          <children>
             <AnchorPane>
                <children>
                   <VBox prefHeight="341.0" prefWidth="398.0">
                      <children>
-                        <TitledBorder stylesheets="@../style/style.css" title="Poczta">
+                        <TitledBorder stylesheets="@../style/style_titledborder.css" title="Poczta">
                            <children>
                               <GridPane>
                                  <columnConstraints>
@@ -40,7 +41,7 @@
                               </GridPane>
                            </children>
                         </TitledBorder>
-                        <TitledBorder stylesheets="@../style/style.css" title="Dane konta">
+                        <TitledBorder stylesheets="@../style/style_titledborder.css" title="Dane konta">
                            <children>
                               <GridPane>
                                  <columnConstraints>
@@ -94,7 +95,7 @@
             </AnchorPane>
          </children>
       </TitledBorder>
-      <TitledBorder fx:id="containerLdapSett" layoutX="415.0" prefHeight="178.0" prefWidth="485.0" stylesheets="@../style/style.css" title="AD/LDAP" AnchorPane.leftAnchor="415.0" AnchorPane.rightAnchor="0.0">
+      <TitledBorder fx:id="containerLdapSett" layoutX="415.0" prefHeight="178.0" prefWidth="485.0" stylesheets="@../style/style_titledborder.css" title="AD/LDAP" AnchorPane.leftAnchor="415.0" AnchorPane.rightAnchor="0.0">
          <children>
             <GridPane prefHeight="201.0" prefWidth="429.0">
                <columnConstraints>
@@ -149,7 +150,7 @@
             </GridPane>
          </children>
       </TitledBorder>
-      <TitledBorder fx:id="containerDbSett" layoutX="415.0" layoutY="178.0" prefHeight="199.0" prefWidth="485.0" stylesheets="@../style/style.css" title="Baza Danych" AnchorPane.leftAnchor="415.0" AnchorPane.rightAnchor="0.0">
+      <TitledBorder fx:id="containerDbSett" layoutX="415.0" layoutY="178.0" prefHeight="199.0" prefWidth="485.0" stylesheets="@../style/style_titledborder.css" title="Baza Danych" AnchorPane.leftAnchor="415.0" AnchorPane.rightAnchor="0.0">
          <children>
             <GridPane prefHeight="201.0" prefWidth="453.0">
                <columnConstraints>
@@ -203,7 +204,7 @@
             </GridPane>
          </children>
       </TitledBorder>
-      <TitledBorder fx:id="containerDbSett1" layoutY="367.0" maxWidth="1.7976931348623157E308" prefHeight="199.0" prefWidth="900.0" stylesheets="@../style/style.css" title="Pozostałe">
+      <TitledBorder fx:id="containerDbSett1" layoutY="367.0" maxWidth="1.7976931348623157E308" prefHeight="199.0" prefWidth="900.0" stylesheets="@../style/style_titledborder.css" title="Pozostałe">
          <children>
             <GridPane>
               <columnConstraints>

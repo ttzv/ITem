@@ -10,7 +10,6 @@ import com.ttzv.itmg.properties.Cfg;
 import com.ttzv.itmg.pwSafe.PHolder;
 import com.ttzv.itmg.sender.Sender;
 import com.ttzv.itmg.ui.mainAppWindow.MainWindow;
-import com.ttzv.itmg.uiUtils.LimitableTextField;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import com.ttzv.itmg.utility.Utility;
 import javafx.event.ActionEvent;
@@ -20,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
+import ttzv.uiUtils.LimitableTextField;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 
 public class MailerWindow extends AnchorPane {
 
-    private com.ttzv.itmg.ui.mailerWindow.TabBuilder tabBuilder;
+    private TabBuilder tabBuilder;
     private Sender sender;
     private final MainWindow mainWindow;
 

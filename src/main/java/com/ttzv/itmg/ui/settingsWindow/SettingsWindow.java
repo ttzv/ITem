@@ -7,8 +7,6 @@ import com.ttzv.itmg.pwSafe.Crypt;
 import com.ttzv.itmg.pwSafe.PHolder;
 import com.ttzv.itmg.sender.Sender;
 import com.ttzv.itmg.ui.mailerWindow.MailerWindow;
-import com.ttzv.itmg.uiUtils.LimitableTextField;
-import com.ttzv.itmg.uiUtils.TitledBorder;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -19,6 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import ttzv.uiUtils.LimitableTextField;
+import ttzv.uiUtils.TitledBorder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

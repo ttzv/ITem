@@ -1,7 +1,6 @@
 /*Main button class to use for rectangular small buttons with background image*/
 .rect_button{
--fx-background-image: url(../img/cancel.png); /* must be overridable */
--fx-background-size: 20 20;
+-fx-background-size: 22 22;
 -fx-background-repeat: no-repeat;
 -fx-background-position: center;
 }
@@ -9,9 +8,21 @@
 .round_button{
 -fx-background-radius: 5em;
 -fx-max-width: 45;
--fx-max-height: 45; 
--fx-background-image: url(../img/Add.png); /* must be overridable */
+-fx-max-height: 45;
 -fx-background-position: center; 
 -fx-background-size: 35 35; 
 -fx-background-repeat: no-repeat;
 }
+
+.btn_mailerw_clear{
+-fx-background-image: url(../img/cancel.png);
+}
+
+.btn_small_copy{
+-fx-background-image: url(../img/cp.png);
+}
+
+.btn_mainw_refresh{
+-fx-background-image: url(../img/refresh.png);
+}
+

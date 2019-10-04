@@ -13,12 +13,13 @@ import com.ttzv.itmg.ui.mainAppWindow.popups.UserEdit;
 import com.ttzv.itmg.ui.sceneControl.ScenePicker;
 import com.ttzv.itmg.ui.settingsWindow.SettingsWindow;
 import com.ttzv.itmg.ui.signWindow.SignWindow;
-import com.ttzv.itmg.uiUtils.StatusBar;
 import com.ttzv.itmg.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
@@ -29,6 +30,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import ttzv.uiUtils.StatusBar;
 
 import javax.naming.NamingException;
 import java.io.IOException;
@@ -176,9 +180,15 @@ public class MainWindow extends AnchorPane {
     }
 
     @FXML
-    public void showMailSett(ActionEvent actionEvent) {
-        InfoWindow infoWindow = new InfoWindow();
-        infoWindow.getStage().show();
+    public void showMailSett(ActionEvent actionEvent) throws IOException {
+        //TODO: create utility method for quick initialization of new windows from fxml files, something like *showWindow(String file)*
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/infoWindow.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Pomoc");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     /*@FXML
