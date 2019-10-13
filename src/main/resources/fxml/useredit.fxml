@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.ttzv.itmg.uiUtils.*?>
+<?import com.ttzv.item.uiUtils.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.InnerShadow?>

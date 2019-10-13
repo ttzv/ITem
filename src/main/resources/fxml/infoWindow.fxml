@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="119.0" prefWidth="497.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ttzv.itmg.ui.mainAppWindow.InfoWindow">
+<AnchorPane prefHeight="119.0" prefWidth="497.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ttzv.item.ui.mainAppWindow.InfoWindow">
    <children>
       <GridPane layoutX="72.0" layoutY="136.0" prefHeight="145.0" prefWidth="472.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -46,6 +46,7 @@
                   <String fx:value="rect_button" />
                   <String fx:value="btn_small_copy" />
                </styleClass></Button>
+            <Button mnemonicParsing="false" text="COPY" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
          <padding>
             <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />

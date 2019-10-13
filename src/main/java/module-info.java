@@ -7,19 +7,20 @@ module com.ttzv.itmg {
     requires javafx.web;
     requires java.desktop;
     requires jakarta.mail;
+    requires org.update4j;
     requires ttzv.uiUtils;
 
-    opens com.ttzv.itmg to javafx.fxml;
-    opens com.ttzv.itmg.ui.mainAppWindow to javafx.fxml;
-    opens com.ttzv.itmg.ui.mainAppWindow.popups to javafx.fxml;
-    opens com.ttzv.itmg.ui.crmWindow to javafx.fxml;
-    opens com.ttzv.itmg.ui.dbToolsWindow to javafx.fxml;
-    opens com.ttzv.itmg.ui.mailerWindow to javafx.fxml;
-    opens com.ttzv.itmg.ui.gSuiteWindow to javafx.fxml;
-    opens com.ttzv.itmg.ui.settingsWindow to javafx.fxml;
-    opens com.ttzv.itmg.ui.signWindow to javafx.fxml;
+    opens com.ttzv.item to javafx.fxml;
+    opens com.ttzv.item.ui.mainAppWindow to javafx.fxml;
+    opens com.ttzv.item.ui.mainAppWindow.popups to javafx.fxml;
+    opens com.ttzv.item.ui.crmWindow to javafx.fxml;
+    opens com.ttzv.item.ui.dbToolsWindow to javafx.fxml;
+    opens com.ttzv.item.ui.mailerWindow to javafx.fxml;
+    opens com.ttzv.item.ui.gSuiteWindow to javafx.fxml;
+    opens com.ttzv.item.ui.settingsWindow to javafx.fxml;
+    opens com.ttzv.item.ui.signWindow to javafx.fxml;
 
-    exports com.ttzv.itmg;
-    exports com.ttzv.itmg.uiUtils;
+    exports com.ttzv.item;
+    exports com.ttzv.item.uiUtils;
 
 }
