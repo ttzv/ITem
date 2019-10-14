@@ -9,6 +9,7 @@ module com.ttzv.itmg {
     requires jakarta.mail;
     requires org.update4j;
     requires ttzv.uiUtils;
+    requires ttzv.propsicl;
 
     opens com.ttzv.item to javafx.fxml;
     opens com.ttzv.item.ui.mainAppWindow to javafx.fxml;
