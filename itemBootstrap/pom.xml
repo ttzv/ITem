@@ -21,6 +21,13 @@
             <artifactId>update4j</artifactId>
             <version>1.4.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>ttzv.propsicl</groupId>
+            <artifactId>propsicl</artifactId>
+            <version>0.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

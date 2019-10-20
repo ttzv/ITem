@@ -13,13 +13,19 @@ public class Bootstrap {
 
     public static void main(String[] args) throws IOException {
 
+        Config.getInstance().init(null);
+        Config.getInstance().setProperty(Config.CONFIG_URL, "");
+        Config.getInstance().saveFile();
+
+
+
         if(!Files.exists(Paths.get(CONFIG_PATH))) {
             Files.createDirectories(Paths.get(CONFIG_PATH).getParent());
         }
 
         Configuration config = null;
 
-        try (InputStream in = new URL("ftp://192.168.1.113/item/config/config.xml").openStream()) {
+        try (InputStream in = new URL(Config.getInstance().retrieveProp(Config.CONFIG_URL)).openStream()) {
             config = Configuration.read(new InputStreamReader(in));
 
             //saving xml for offline mode

@@ -5,6 +5,7 @@ module com.ttzv.itemBootstrap{
     requires java.sql;
     requires jdk.xml.dom;
     requires org.update4j;
+    requires ttzv.propsicl;
 
     exports com.ttzv.itemBootstrap;
 }
