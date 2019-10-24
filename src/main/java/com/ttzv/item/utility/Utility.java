@@ -3,6 +3,7 @@ package com.ttzv.item.utility;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utility {
+
+    public static String DEFAULT_ENTITY_SEPARATOR = ":";
 
     public static String restrictedSymbols = "%_/\\=-+?*";
 
@@ -56,28 +59,26 @@ public class Utility {
     }
 
     public static String convertToDashedString(byte[] objectGUID) {
-        StringBuilder displayStr = new StringBuilder();
-        displayStr.append(prefixZeros((int) objectGUID[3] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[2] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[1] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[0] & 0xFF));
-        displayStr.append("-");
-        displayStr.append(prefixZeros((int) objectGUID[5] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[4] & 0xFF));
-        displayStr.append("-");
-        displayStr.append(prefixZeros((int) objectGUID[7] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[6] & 0xFF));
-        displayStr.append("-");
-        displayStr.append(prefixZeros((int) objectGUID[8] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[9] & 0xFF));
-        displayStr.append("-");
-        displayStr.append(prefixZeros((int) objectGUID[10] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[11] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[12] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[13] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[14] & 0xFF));
-        displayStr.append(prefixZeros((int) objectGUID[15] & 0xFF));
-        return displayStr.toString();
+        return prefixZeros((int) objectGUID[3] & 0xFF) +
+                prefixZeros((int) objectGUID[2] & 0xFF) +
+                prefixZeros((int) objectGUID[1] & 0xFF) +
+                prefixZeros((int) objectGUID[0] & 0xFF) +
+                "-" +
+                prefixZeros((int) objectGUID[5] & 0xFF) +
+                prefixZeros((int) objectGUID[4] & 0xFF) +
+                "-" +
+                prefixZeros((int) objectGUID[7] & 0xFF) +
+                prefixZeros((int) objectGUID[6] & 0xFF) +
+                "-" +
+                prefixZeros((int) objectGUID[8] & 0xFF) +
+                prefixZeros((int) objectGUID[9] & 0xFF) +
+                "-" +
+                prefixZeros((int) objectGUID[10] & 0xFF) +
+                prefixZeros((int) objectGUID[11] & 0xFF) +
+                prefixZeros((int) objectGUID[12] & 0xFF) +
+                prefixZeros((int) objectGUID[13] & 0xFF) +
+                prefixZeros((int) objectGUID[14] & 0xFF) +
+                prefixZeros((int) objectGUID[15] & 0xFF);
     }
 
 
@@ -96,7 +97,32 @@ public class Utility {
     public static String ldapStringToDate(String date) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDate localDate = LocalDate.parse(date, formatter);
-        return localDate.toString();
+        LocalTime localTime = LocalTime.parse(date, formatter);
+        return localDate.toString() + " " + localTime;
+    }
+
+    //todo: remove
+    public static String cityNameToId(String city){
+        switch (city){
+            case "Cieszyn":
+                return "c001";
+            case "Katowice":
+                return "c002";
+            case "Krakow":
+                return "c003";
+            case "Warszawa":
+                return "c004";
+            case "Poznan":
+                return "c005";
+            case "Gdansk":
+                return "c006";
+            case "Wroclaw":
+                return "c007";
+            case "Lodz":
+                return "c008";
+            default:
+                return "ERVAL";
+        }
     }
 
    /* public static String ldapStringToDate(String date) throws ParseException {

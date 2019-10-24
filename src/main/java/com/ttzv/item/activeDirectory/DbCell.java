@@ -1,6 +1,6 @@
-package com.ttzv.item.ad;
+package com.ttzv.item.activeDirectory;
 
-import com.ttzv.item.db.DbCon;
+import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.db.PgStatement;
 
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ public class DbCell {
     private String table;
     private String column;
     private String criterium;
-    private DbCon dbCon;
+    private UserDaoDatabaseImpl userDaoDatabaseImpl;
 
     /**
      * Creates a DbCell corresponding to a single cell in a single columns in a single table
@@ -23,17 +23,17 @@ public class DbCell {
      * @param column column to edit
      * @param criterium value that allows to determine exactly one record in database (Use primary key or other unique value)
      */
-    public DbCell(String table, String column, String criterium, DbCon dbCon) {
+    public DbCell(String table, String column, String criterium, UserDaoDatabaseImpl userDaoDatabaseImpl) {
         super();
         this.table = table;
         this.column = column;
         this.criterium = criterium;
-        this.dbCon = dbCon;
+        this.userDaoDatabaseImpl = userDaoDatabaseImpl;
     }
 
     public void clearCell() throws SQLException {
         String valToSetIn = column  + "=" + "DEFAULT";
-        dbCon.update(table, criterium, valToSetIn );
+        userDaoDatabaseImpl.update(table, criterium, valToSetIn );
     }
 
     public void update(String value) throws SQLException {
@@ -41,7 +41,7 @@ public class DbCell {
              clearCell();
         } else {
             String valToSetIn = column + "=" + PgStatement.apostrophied(value);
-            dbCon.update(table, criterium, valToSetIn);
+            userDaoDatabaseImpl.update(table, criterium, valToSetIn);
         }
     }
 

@@ -85,10 +85,12 @@ public class Crypt {
         writer.close();
     }
 
-    public char[] read() throws IOException, GeneralSecurityException {
+    public char[] read() {
         //pass
         String pass = "";
+        char[] decrypted = new char[0];
         Path r = pwPath.resolve(name + hExt);
+        try {
         if(Files.exists(r)) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(r.toFile())));
             pass = reader.readLine();
@@ -100,8 +102,12 @@ public class Crypt {
         if(Files.exists(r)){
             key = Files.readAllBytes(r);
         }
+            decrypted = decrypt(pass, new SecretKeySpec(key, "AES")).toCharArray();
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
 
-        return decrypt(pass, new SecretKeySpec(key, "AES")).toCharArray();
+        return decrypted;
     }
 
 
@@ -132,6 +138,10 @@ public class Crypt {
         Cipher pbeCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         pbeCipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(base64Decode(iv)));
         return new String(pbeCipher.doFinal(base64Decode(property)), StandardCharsets.UTF_8);
+    }
+
+    public static Crypt newCrypt (String name){
+        return new Crypt(name);
     }
 
     private static byte[] base64Decode(String property) {

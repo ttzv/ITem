@@ -1,7 +1,7 @@
 package com.ttzv.item.ui.mailerWindow;
 
-import com.ttzv.item.ad.UserHolder;
-import com.ttzv.item.db.DbCon;
+import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.db.PgStatement;
 import com.ttzv.item.file.MailMsgParser;
 import com.ttzv.item.pass.PasswordGenerator;
@@ -132,10 +132,10 @@ public class MailerWindow extends AnchorPane {
     }
 
     private void savePass() throws SQLException {
-        DbCon dbCon = new DbCon();
-        dbCon.loadCfgCredentials();
-        dbCon.initConnection();
-        dbCon.customStatement( PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "userguid=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getUserGUID())) );
+        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
+        userDaoDatabaseImpl.loadCfgCredentials();
+        userDaoDatabaseImpl.initConnection();
+        userDaoDatabaseImpl.customStatement( PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "userguid=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getGUID())) );
     }
 
     @FXML

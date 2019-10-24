@@ -1,8 +1,8 @@
 package com.ttzv.item.ui.mainAppWindow;
 
-import com.ttzv.item.ad.LDAPParser;
-import com.ttzv.item.ad.UserHolder;
-import com.ttzv.item.db.DbCon;
+import com.ttzv.item.activeDirectory.LDAPParser;
+import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.ui.crmWindow.CrmWindow;
@@ -218,14 +218,14 @@ public class MainWindow extends AnchorPane {
         ldapParser.loadCfgCredentials();
         ldapParser.initializeLdapContext();
 
-        DbCon dbCon = new DbCon(ldapParser);
-        dbCon.loadCfgCredentials();
-        dbCon.setDbPass(PHolder.db);
-        dbCon.initConnection();
+        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl(ldapParser);
+        userDaoDatabaseImpl.loadCfgCredentials();
+        userDaoDatabaseImpl.setDbPass(PHolder.db);
+        userDaoDatabaseImpl.initConnection();
 
-        dbCon.updateUsersTable();
+        userDaoDatabaseImpl.updateUsersTable();
 
-        dbCon.getNewUsers(userQtyToLoad);
+        userDaoDatabaseImpl.getNewUsers(userQtyToLoad);
 
         changeUser();
     }
@@ -286,7 +286,7 @@ public class MainWindow extends AnchorPane {
 
     public void changeUser() {
         this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
-        this.labelCity.setText(UserHolder.getCurrentUser().getCityName());
+        this.labelCity.setText(UserHolder.getCurrentUser().getCity());
         this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
         this.labelMaxCnt.setText(Integer.toString(UserHolder.getMaxCount()));
 
@@ -297,12 +297,12 @@ public class MainWindow extends AnchorPane {
 
         SignWindow sw = (SignWindow) scenePicker.getScene(1);
         sw.setTxtfName(UserHolder.getCurrentUser().getDisplayName());
-        sw.setTxtfCity(UserHolder.getCurrentUser().getCityName());
+        sw.setTxtfCity(UserHolder.getCurrentUser().getCity());
         sw.setTxtfCityPhone(UserHolder.getCurrentUser().getCityPhone());
         sw.setTxtfCityFax(UserHolder.getCurrentUser().getCityFax());
         sw.setTxtfPos(UserHolder.getCurrentUser().getPosition());
-        sw.setTxtfPhone(UserHolder.getCurrentUser().getUserPhone());
-        sw.setTxtfMPhone(UserHolder.getCurrentUser().getUserMPhone());
+        sw.setTxtfPhone(UserHolder.getCurrentUser().getPersonalPhoneNumber());
+        sw.setTxtfMPhone(UserHolder.getCurrentUser().getPersonalPhoneNumber());
         String cType = UserHolder.getCurrentUser().getCityType();
         if (cType.equals("Filia")) {
             sw.selectComboxVal(1);

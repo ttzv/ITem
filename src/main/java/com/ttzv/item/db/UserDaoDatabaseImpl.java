@@ -1,8 +1,8 @@
 package com.ttzv.item.db;
 
-import com.ttzv.item.ad.LDAPParser;
-import com.ttzv.item.ad.User;
-import com.ttzv.item.ad.UserHolder;
+import com.ttzv.item.activeDirectory.LDAPParser;
+import com.ttzv.item.activeDirectory.User;
+import com.ttzv.item.activeDirectory.UserHolder;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.utility.Utility;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class DbCon {
+public class UserDaoDatabaseImpl {
 
     private Connection conn;
     private String dbUrl;
@@ -21,12 +21,12 @@ public class DbCon {
 
     private LDAPParser ldapParser;
 
-    public DbCon(LDAPParser ldapParser) {
+    public UserDaoDatabaseImpl(LDAPParser ldapParser) {
         this.ldapParser = ldapParser;
-        this.ldapParser.queryLdap();
+        //this.ldapParser.queryLdap();
     }
 
-    public DbCon(){}
+    public UserDaoDatabaseImpl(){}
 
     public void loadCfgCredentials(){
         this.setDbUrl(Cfg.getInstance().retrieveProp(Cfg.DB_URL));
@@ -100,7 +100,7 @@ public class DbCon {
         List<User> ldapusers = ldapParser.getUsersDataList();
         for (User u :
                 ldapusers) {
-            update("users", "userguid="+PgStatement.apostrophied(u.getUserGUID()), "userGUID="+PgStatement.apostrophied(u.getUserGUID()));
+            update("users", "userguid="+PgStatement.apostrophied(u.getGUID()), "userGUID="+PgStatement.apostrophied(u.getGUID()));
             System.out.println("Updated GUID " + u);
         }
     }
@@ -109,7 +109,7 @@ public class DbCon {
         List<User> ldapusers = ldapParser.getUsersDataList();
         for (User u :
                 ldapusers) {
-            update("users", "userGUID=" + PgStatement.apostrophied(u.getUserGUID()), "whenChanged=" + PgStatement.apostrophied(u.getWhenChanged()));
+            update("users", "userGUID=" + PgStatement.apostrophied(u.getGUID()), "whenChanged=" + PgStatement.apostrophied(u.getWhenChanged()));
             System.out.println("Updated whenchanged " + u);
         }
     }
@@ -173,7 +173,7 @@ public class DbCon {
         //addWhenChanged();
 
         for(User user : ldapusers){
-            boolean exists = exists(table, column, user.getUserGUID());
+            boolean exists = exists(table, column, user.getGUID());
             if(!exists) {
 
                 String query = PgStatement.insert(table, User.insertColumns, PgStatement.apostrophied(user.getComplete()));
@@ -264,7 +264,7 @@ public class DbCon {
     }
 
     public User reloadUser (User user) throws SQLException {
-        return globalSearch(user.getUserGUID(), 1).get(0);
+        return globalSearch(user.getGUID(), 1).get(0);
     }
 
 

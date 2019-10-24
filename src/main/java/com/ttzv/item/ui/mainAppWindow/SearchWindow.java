@@ -1,9 +1,9 @@
 package com.ttzv.item.ui.mainAppWindow;
 
-import com.ttzv.item.ad.User;
-import com.ttzv.item.ad.UserData;
-import com.ttzv.item.ad.UserHolder;
-import com.ttzv.item.db.DbCon;
+import com.ttzv.item.activeDirectory.User;
+import com.ttzv.item.activeDirectory.UserData;
+import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -122,12 +122,12 @@ public class SearchWindow extends AnchorPane {
 
     @FXML
     void btnPerformAction(ActionEvent event) throws SQLException {
-        DbCon dbCon = new DbCon();
-        dbCon.loadCfgCredentials();
-        dbCon.initConnection();
+        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
+        userDaoDatabaseImpl.loadCfgCredentials();
+        userDaoDatabaseImpl.initConnection();
 
 
-        foundUsers = dbCon.globalSearch(this.txtfSearch.getText(), 0);
+        foundUsers = userDaoDatabaseImpl.globalSearch(this.txtfSearch.getText(), 0);
         buildTableView(foundUsers);
 
         this.labResultCount.setText( Integer.toString(foundUsers.size()) );

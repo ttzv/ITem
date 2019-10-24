@@ -1,8 +1,8 @@
 package com.ttzv.item.ui.mainAppWindow.popups;
 
-import com.ttzv.item.ad.User;
-import com.ttzv.item.ad.UserHolder;
-import com.ttzv.item.db.DbCon;
+import com.ttzv.item.activeDirectory.User;
+import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.db.PgStatement;
 import com.ttzv.item.ui.mainAppWindow.MainWindow;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
@@ -45,7 +45,7 @@ public class CityEdit extends AnchorPane {
     }
 
     public void showAt(double x, double y) {
-        this.labelCityName.setText(UserHolder.getCurrentUser().getCityName());
+        this.labelCityName.setText(UserHolder.getCurrentUser().getCity());
         preloadInfo(UserHolder.getCurrentUser());
         stage.setX(x);
         stage.setY(y);
@@ -79,29 +79,29 @@ public class CityEdit extends AnchorPane {
     }
 
     private void updateDatabase(User user) throws SQLException {
-        DbCon dbCon = new DbCon();
-        dbCon.loadCfgCredentials();
-        dbCon.initConnection();
+        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
+        userDaoDatabaseImpl.loadCfgCredentials();
+        userDaoDatabaseImpl.initConnection();
 
 
         String cityPhone = this.txtCityPhone.getText();
         String queryPhone = "";
         if (!cityPhone.isEmpty()) {
-            queryPhone = PgStatement.update("city", "phone", PgStatement.apostrophied(cityPhone), "name='" + user.getCityName() + "'");
+            queryPhone = PgStatement.update("city", "phone", PgStatement.apostrophied(cityPhone), "name='" + user.getCity() + "'");
         }
 
         String cityFax = this.txtCityFax.getText();
         String queryFax = "";
         if (!cityFax.isEmpty()) {
-            queryFax = PgStatement.update("city", "fax", PgStatement.apostrophied(cityFax), "name='" + user.getCityName() + "'");
+            queryFax = PgStatement.update("city", "fax", PgStatement.apostrophied(cityFax), "name='" + user.getCity() + "'");
         }
 
         //System.out.println(queryPhone + "\n" + queryFax);
 
-        dbCon.customStatement(queryPhone, queryFax);
+        userDaoDatabaseImpl.customStatement(queryPhone, queryFax);
 
         User currentUser = UserHolder.getCurrentUser();
-        UserHolder.setCurrentUser(dbCon.reloadUser(currentUser));
+        UserHolder.setCurrentUser(userDaoDatabaseImpl.reloadUser(currentUser));
         MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
         mainWindow.changeUser();
     }

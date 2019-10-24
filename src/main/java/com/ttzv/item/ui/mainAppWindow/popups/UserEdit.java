@@ -1,9 +1,9 @@
 package com.ttzv.item.ui.mainAppWindow.popups;
 
-import com.ttzv.item.ad.DbCell;
-import com.ttzv.item.ad.User;
-import com.ttzv.item.ad.UserHolder;
-import com.ttzv.item.db.DbCon;
+import com.ttzv.item.activeDirectory.DbCell;
+import com.ttzv.item.activeDirectory.User;
+import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.db.PgStatement;
 import com.ttzv.item.ui.mainAppWindow.MainWindow;
 import com.ttzv.item.uiUtils.DatabaseBoundTextField;
@@ -94,8 +94,8 @@ public class UserEdit extends AnchorPane {
 
     private void preloadInfo(User user){
         this.txtUserPos.setText(user.getPosition());
-        this.txtUserPhone.setText(user.getUserPhone());
-        this.txtUserMPhone.setText(user.getUserMPhone());
+        this.txtUserPhone.setText(user.getLandlineNumber());
+        this.txtUserMPhone.setText(user.getPersonalPhoneNumber());
         this.txtfUserEmailAddress.setText(user.getMail());
         this.txtfUserEmailInitPass.setText(user.getInitMailPass());
     }
@@ -103,24 +103,24 @@ public class UserEdit extends AnchorPane {
     private void updateDatabase(User user) throws SQLException {
         String table = "users";
 
-        DbCon dbCon = new DbCon();
-        dbCon.loadCfgCredentials();
-        dbCon.initConnection();
+        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
+        userDaoDatabaseImpl.loadCfgCredentials();
+        userDaoDatabaseImpl.initConnection();
 
         this.txtUserPos.
-                setDbCell(new DbCell(table, "position", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
+                setDbCell(new DbCell(table, "position", "userguid=" + PgStatement.apostrophied(user.getGUID()), userDaoDatabaseImpl));
 
         this.txtUserPhone.
-                setDbCell(new DbCell(table, "userphone", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
+                setDbCell(new DbCell(table, "userphone", "userguid=" + PgStatement.apostrophied(user.getGUID()), userDaoDatabaseImpl));
 
         this.txtUserMPhone.
-                setDbCell(new DbCell(table, "usermphone", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
+                setDbCell(new DbCell(table, "usermphone", "userguid=" + PgStatement.apostrophied(user.getGUID()), userDaoDatabaseImpl));
 
         this.txtfUserEmailAddress.
-                setDbCell(new DbCell(table, "mail", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
+                setDbCell(new DbCell(table, "mail", "userguid=" + PgStatement.apostrophied(user.getGUID()), userDaoDatabaseImpl));
 
         this.txtfUserEmailInitPass.
-                setDbCell(new DbCell(table, "initmailpass", "userguid=" + PgStatement.apostrophied(user.getUserGUID()), dbCon));
+                setDbCell(new DbCell(table, "initmailpass", "userguid=" + PgStatement.apostrophied(user.getGUID()), userDaoDatabaseImpl));
 
 
         String position = this.txtUserPos.getText();
@@ -129,12 +129,12 @@ public class UserEdit extends AnchorPane {
         }
 
         String phone = this.txtUserPhone.getText();
-        if(!phone.equals(UserHolder.getCurrentUser().getUserPhone())) {
+        if(!phone.equals(UserHolder.getCurrentUser().getLandlineNumber())) {
             this.txtUserPhone.getDbCell().update(phone);
         }
 
         String mPhone = this.txtUserMPhone.getText();
-        if(!mPhone.equals(UserHolder.getCurrentUser().getUserMPhone())) {
+        if(!mPhone.equals(UserHolder.getCurrentUser().getPersonalPhoneNumber())) {
             this.txtUserMPhone.getDbCell().update(mPhone);
         }
 
@@ -149,7 +149,7 @@ public class UserEdit extends AnchorPane {
         }
 
         User currentUser = UserHolder.getCurrentUser();
-        UserHolder.setCurrentUser(dbCon.reloadUser(currentUser));
+        UserHolder.setCurrentUser(userDaoDatabaseImpl.reloadUser(currentUser));
         MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
         mainWindow.changeUser();
     }

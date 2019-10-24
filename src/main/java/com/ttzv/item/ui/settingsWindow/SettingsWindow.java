@@ -1,7 +1,7 @@
 package com.ttzv.item.ui.settingsWindow;
 
-import com.ttzv.item.ad.LDAPParser;
-import com.ttzv.item.db.DbCon;
+import com.ttzv.item.activeDirectory.LDAPParser;
+import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
@@ -163,12 +163,8 @@ public class SettingsWindow extends AnchorPane {
 
         this.cMail = new Crypt("mCr");
         if(this.cMail.exists()){
-            try {
-                PHolder.mail = cMail.read();
-                this.fieldPass.setText(new String(PHolder.mail));
-            } catch (IOException | GeneralSecurityException e) {
-                e.printStackTrace();
-            }
+            PHolder.mail = cMail.read();
+            this.fieldPass.setText(new String(PHolder.mail));
         }
 
         String tlsSetting = Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS);
@@ -192,12 +188,8 @@ public class SettingsWindow extends AnchorPane {
 
         this.cLdap = new Crypt("lCr");
         if(this.cLdap.exists()){
-            try {
-                PHolder.ldap = cLdap.read();
-                this.fieldLdapPass.setText(new String(PHolder.ldap));
-            } catch (IOException | GeneralSecurityException e) {
-                e.printStackTrace();
-            }
+            PHolder.ldap = cLdap.read();
+            this.fieldLdapPass.setText(new String(PHolder.ldap));
         }
         String remCbxLdapSetting = Cfg.getInstance().retrieveProp("SettSaveLdapCbx");
         if(remCbxLdapSetting.equals("true")){
@@ -212,12 +204,8 @@ public class SettingsWindow extends AnchorPane {
 
         this.cDb = new Crypt("dCr");
         if(this.cDb.exists()){
-            try {
-                PHolder.db = cDb.read();
-                this.fieldDbPass.setText(new String(PHolder.db));
-            } catch (IOException | GeneralSecurityException e) {
-                e.printStackTrace();
-            }
+            PHolder.db = cDb.read();
+            this.fieldDbPass.setText(new String(PHolder.db));
         }
         String remCbxDbSetting = Cfg.getInstance().retrieveProp("SettSaveDbCbx");
         if(remCbxDbSetting.equals("true")){
@@ -580,11 +568,11 @@ public class SettingsWindow extends AnchorPane {
         Task isValid = new Task() {
             @Override
             protected Object call() throws Exception {
-                DbCon dbCon = new DbCon();
-                dbCon.setDbUrl(fieldDbUrl.getText());
-                dbCon.setDbUser(fieldDbLogin.getText());
-                dbCon.setDbPass(PHolder.db);
-                dbCon.initConnection();
+                UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
+                userDaoDatabaseImpl.setDbUrl(fieldDbUrl.getText());
+                userDaoDatabaseImpl.setDbUser(fieldDbLogin.getText());
+                userDaoDatabaseImpl.setDbPass(PHolder.db);
+                userDaoDatabaseImpl.initConnection();
                 return null;
             }
         };

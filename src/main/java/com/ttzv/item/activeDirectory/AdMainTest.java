@@ -1,11 +1,22 @@
-package com.ttzv.item.ad;
+package com.ttzv.item.activeDirectory;
 
+import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.utility.Utility;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 public class AdMainTest {
     public static void main(String[] args) throws ParseException {
+
+        try {
+            Cfg.getInstance().init(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        UserDaoLdapImpl userDAO = new UserDaoLdapImpl();
+        userDAO.getResults();
 /*        User user = new User("object_1" ,
                                     "object_2" ,
                                     "object_3" ,
