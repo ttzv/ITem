@@ -1,9 +1,8 @@
 package com.ttzv.item.db;
 
-import com.ttzv.item.activeDirectory.LDAPParser;
-import com.ttzv.item.activeDirectory.User;
-import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.activeDirectory.*;
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.utility.Utility;
 
@@ -12,21 +11,126 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class UserDaoDatabaseImpl {
+public class UserDaoDatabaseImpl implements EntityDAO<User> {
 
-    private Connection conn;
+    private final static String TABLE_USERS = "users";
+    private final static String TABLE_USER_DETAIL = "user_details";
+
+    private Connection connection;
+
+    public UserDaoDatabaseImpl() throws SQLException {
+        JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector(Cfg.getInstance().retrieveProp(Cfg.DB_DRIVER),
+                Cfg.getInstance().retrieveProp(Cfg.DB_URL),
+                Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN),
+                Crypt.newCrypt("dCr").read());
+        this.connection = jdbcDriverSelector.createConnection();
+    }
+
+    @Override
+    public List<User> getAllEntities() {
+        String query = "SELECT * FROM " + TABLE_USERS
+                + " INNER JOIN " + TABLE_USER_DETAIL
+                + " ON " + TABLE_USERS + ".guid=" + TABLE_USER_DETAIL + ".guid";
+        List<User> userList = new ArrayList<>();
+        for (List<String> list :
+                executeQuery(query)) {
+            userList.add(new User(DynamicEntity.newDynamicEntity().process(list)));
+        }
+        return userList;
+    }
+
+    @Override
+    public User getEntity(String id) {
+        String query = "SELECT * FROM " + TABLE_USERS
+                + " INNER JOIN " + TABLE_USER_DETAIL
+                + " ON " + TABLE_USERS + ".guid=" + TABLE_USER_DETAIL + ".guid"
+                + " WHERE " + TABLE_USERS + ".guid='" + id + "'";
+        List<String> result = unNestList(executeQuery(query));
+        assert result != null;
+        return new User(DynamicEntity.newDynamicEntity().process(result));
+    }
+
+    @Override
+    public boolean updateEntity(User entity) {
+        entity
+        return false;
+    }
+
+    @Override
+    public boolean deleteEntity(User entity) {
+        return false;
+    }
+
+    private void executeUpdate(String sql){
+        if (connection != null) {
+            Statement statement = null;
+            try {
+                statement = connection.createStatement();
+                statement.executeUpdate(sql);
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private List<List<String>> executeQuery(String query){
+        ResultSet resultSet = null;
+        Statement statement = null;
+        List<List<String>> resultList = new ArrayList<>();
+        List<String> innerlist = null;
+        if (connection != null) {
+            try {
+                statement = connection.createStatement();
+                resultSet = statement.executeQuery(query);
+                ResultSetMetaData rsmd = resultSet.getMetaData();
+                while (resultSet.next()){
+                    innerlist = new ArrayList<>();
+                    for (int i = 1; i <= rsmd.getColumnCount() ; i++) {
+                        innerlist.add(rsmd.getColumnLabel(i) + Utility.DEFAULT_ENTITY_SEPARATOR + resultSet.getString(i));
+                    }
+                    resultList.add(innerlist);
+                }
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultList;
+    }
+
+    /**
+     * Return nested list if list in parameter contains only one element - utility method for resultset
+     */
+    private List<String> unNestList(List<List<String>> list){
+        if(list.size() == 1){
+            return list.get(0);
+        } else {
+            System.err.println("List contains more than one elements or is empty" +
+                    "\n" + list);
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     private String dbUrl;
     private String dbUser;
     private char[] dbPass;
-
-    private LDAPParser ldapParser;
-
-    public UserDaoDatabaseImpl(LDAPParser ldapParser) {
-        this.ldapParser = ldapParser;
-        //this.ldapParser.queryLdap();
-    }
-
-    public UserDaoDatabaseImpl(){}
 
     public void loadCfgCredentials(){
         this.setDbUrl(Cfg.getInstance().retrieveProp(Cfg.DB_URL));
@@ -292,4 +396,5 @@ public class UserDaoDatabaseImpl {
     public void setDbPass(char[] dbPass) {
         this.dbPass = dbPass;
     }
+
 }
