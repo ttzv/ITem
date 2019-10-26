@@ -80,9 +80,6 @@ public class CityEdit extends AnchorPane {
 
     private void updateDatabase(User user) throws SQLException {
         UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
-        userDaoDatabaseImpl.loadCfgCredentials();
-        userDaoDatabaseImpl.initConnection();
-
 
         String cityPhone = this.txtCityPhone.getText();
         String queryPhone = "";

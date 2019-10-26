@@ -218,10 +218,7 @@ public class MainWindow extends AnchorPane {
         ldapParser.loadCfgCredentials();
         ldapParser.initializeLdapContext();
 
-        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl(ldapParser);
-        userDaoDatabaseImpl.loadCfgCredentials();
-        userDaoDatabaseImpl.setDbPass(PHolder.db);
-        userDaoDatabaseImpl.initConnection();
+        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
 
         userDaoDatabaseImpl.updateUsersTable();
 

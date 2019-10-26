@@ -18,7 +18,7 @@ public class DynamicEntity {
     private final String SEPARATOR = Utility.DEFAULT_ENTITY_SEPARATOR;
     private Map<String, String> entityMap;
 
-    DynamicEntity(){
+    public DynamicEntity(){
         entityMap = new HashMap<>();
     }
 

@@ -123,9 +123,6 @@ public class SearchWindow extends AnchorPane {
     @FXML
     void btnPerformAction(ActionEvent event) throws SQLException {
         UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
-        userDaoDatabaseImpl.loadCfgCredentials();
-        userDaoDatabaseImpl.initConnection();
-
 
         foundUsers = userDaoDatabaseImpl.globalSearch(this.txtfSearch.getText(), 0);
         buildTableView(foundUsers);

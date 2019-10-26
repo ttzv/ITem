@@ -11,6 +11,8 @@ module com.ttzv.itmg {
     requires ttzv.uiUtils;
     requires ttzv.propsicl;
     requires jdk.crypto.ec;//TODO: required for gmail's elliptic curve interface, remove this and bake into jlink image with system modules
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
 
     opens com.ttzv.item to javafx.fxml;
     opens com.ttzv.item.ui.mainAppWindow to javafx.fxml;

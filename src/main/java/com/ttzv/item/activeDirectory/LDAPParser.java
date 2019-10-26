@@ -158,7 +158,7 @@ public class LDAPParser
         }
     }
 
-    public static class QueryBuilder {
+    protected static class QueryBuilder {
 
         private String[] searchAttributes;
         private String searchFilter;

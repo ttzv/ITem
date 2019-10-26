@@ -1,6 +1,7 @@
 package com.ttzv.item.ui.settingsWindow;
 
 import com.ttzv.item.activeDirectory.LDAPParser;
+import com.ttzv.item.db.JdbcDriverSelector;
 import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
@@ -568,11 +569,7 @@ public class SettingsWindow extends AnchorPane {
         Task isValid = new Task() {
             @Override
             protected Object call() throws Exception {
-                UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
-                userDaoDatabaseImpl.setDbUrl(fieldDbUrl.getText());
-                userDaoDatabaseImpl.setDbUser(fieldDbLogin.getText());
-                userDaoDatabaseImpl.setDbPass(PHolder.db);
-                userDaoDatabaseImpl.initConnection();
+                JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector() //todo: finish
                 return null;
             }
         };

@@ -9,7 +9,7 @@ import java.util.List;
 public class UserDaoLdapImpl implements EntityDAO<User> {
 
     private LDAPParser ldapParser;
-    //todo: allow changing below paramet,ers in runtime
+    //todo: allow changing below parameters in runtime
     private final String searchBase;
     private final String searchFilter;
     private String[] searchAttributes;

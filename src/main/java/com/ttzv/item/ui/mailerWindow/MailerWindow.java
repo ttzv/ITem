@@ -133,8 +133,6 @@ public class MailerWindow extends AnchorPane {
 
     private void savePass() throws SQLException {
         UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
-        userDaoDatabaseImpl.loadCfgCredentials();
-        userDaoDatabaseImpl.initConnection();
         userDaoDatabaseImpl.customStatement( PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "userguid=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getGUID())) );
     }
 

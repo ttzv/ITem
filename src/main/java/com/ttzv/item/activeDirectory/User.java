@@ -7,8 +7,6 @@ import com.ttzv.item.utility.Utility;
  */
 public class User {
 
-
-
     private DynamicEntity userEntity;
 
     public User(DynamicEntity userEntity) {
@@ -18,6 +16,7 @@ public class User {
     public DynamicEntity getUserEntity() {
         return userEntity;
     }
+
     //standard getters and setters to allow compatibility with rest of the app.
     public String getGivenName() {
         return userEntity.getValue(UserData.sn.toString());

@@ -29,6 +29,7 @@ import ttzv.propsicl.Propsicl;
      public static String DB_URL = "dbUrl";
      public static String DB_LOGIN = "dbLogin";
      public static String DB_USER_QTY = "dbLoadedUserQuantity";
+    public static final String DB_DRIVER = "dbDriver";
      //signature
      public static String SIGN_LOC = "signatureLocation";
      public static String SIGN_TARGETPATH = "signatureSavingDirectory";

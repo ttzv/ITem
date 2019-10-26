@@ -104,8 +104,6 @@ public class UserEdit extends AnchorPane {
         String table = "users";
 
         UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
-        userDaoDatabaseImpl.loadCfgCredentials();
-        userDaoDatabaseImpl.initConnection();
 
         this.txtUserPos.
                 setDbCell(new DbCell(table, "position", "userguid=" + PgStatement.apostrophied(user.getGUID()), userDaoDatabaseImpl));
