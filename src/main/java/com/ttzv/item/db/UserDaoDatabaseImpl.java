@@ -6,19 +6,28 @@ import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.utility.Utility;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UserDaoDatabaseImpl implements EntityDAO<User> {
-
+    //User object is constructed from two tables, first represents data retrieved from LDAP, second is for addidional data about User updated in application
     private final static String TABLE_USERS = "users";
     private final static String TABLE_USER_DETAIL = "user_details";
 
     private Connection connection;
 
     public UserDaoDatabaseImpl() throws SQLException {
+        Cfg.getInstance().setProperty(Cfg.DB_DRIVER, "POSTGRES");
+        try {
+            Cfg.getInstance().saveFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector(Cfg.getInstance().retrieveProp(Cfg.DB_DRIVER),
                 Cfg.getInstance().retrieveProp(Cfg.DB_URL),
                 Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN),
@@ -34,7 +43,15 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         List<User> userList = new ArrayList<>();
         for (List<String> list :
                 executeQuery(query)) {
-            userList.add(new User(DynamicEntity.newDynamicEntity().process(list)));
+            //create User objects with replaced keys to provide out-of-the-box compatibility with other objects
+            //1.Create user using DynamicEntity
+            //2.Replace all Keys in entityMap to familiar User object keys
+            //3.Add as new object to list
+            userList.add(new User(DynamicEntity.newDynamicEntity()
+                    .process(list)
+                    .replaceKeys(
+                            new KeyMapper<User>(Paths.get(KeyMapper.KEY_MAP_JSON_PATH)), KeyMapper.OBJECTKEY))
+            );
         }
         return userList;
     }
@@ -47,12 +64,55 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
                 + " WHERE " + TABLE_USERS + ".guid='" + id + "'";
         List<String> result = unNestList(executeQuery(query));
         assert result != null;
-        return new User(DynamicEntity.newDynamicEntity().process(result));
+        return new User(DynamicEntity.newDynamicEntity()
+                .process(result)
+                .replaceKeys(
+                new KeyMapper<User>(Paths.get(KeyMapper.KEY_MAP_JSON_PATH)), KeyMapper.OBJECTKEY)
+        );
     }
 
     @Override
     public boolean updateEntity(User entity) {
-        entity
+
+        KeyMapper<User> keyMapper = new KeyMapper<>(KeyMapper.KEY_MAP_JSON_PATH);
+        DynamicEntity uEntity = entity.getUserEntity()
+                .replaceKeys(
+                        new KeyMapper<User>(Paths.get(KeyMapper.KEY_MAP_JSON_PATH)), KeyMapper.DBKEY
+                ).setSeparator("=");
+        String criteriumOfUpdating = keyMapper.getMapping(UserData.objectGUID.toString()).get(KeyMapper.DBKEY) + "='" + entity.getGUID() + "';";
+        //prepare entity
+        //retrieve all DB keys that are mapped to LDAP keys to construct UPDATE for USERS table
+        //USER table is only updated with data from LDAP
+        List<String> ldapUniqueKeys = keyMapper.getAllMappingsOf(KeyMapper.LDAPKEY)
+                .stream()
+                .map(k -> keyMapper.getCorrespondingMapping(k, KeyMapper.DBKEY))
+                .collect(Collectors.toList());
+        List<String> ldapUniquePairs = null;
+        for (String luk : ldapUniqueKeys) {
+            ldapUniquePairs = uEntity.getList("'").stream().filter(s -> s.contains(luk)).collect(Collectors.toList());
+        }
+        String sql0 = this.updateSql(TABLE_USERS, ldapUniquePairs, criteriumOfUpdating);
+
+        //retrieve all DB keys that don't have corresponding LDAP mapping to construct UPDATE for USER_DETAIL table
+        List<String> dbUniquekeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
+        dbUniquekeys.removeAll(ldapUniqueKeys);
+        List<String> dbUniquePairs = null;
+        for (String duk : dbUniquekeys) {
+            dbUniquePairs = uEntity.getList("'").stream().filter(s -> s.contains(duk)).collect(Collectors.toList());
+        }
+        String sql = this.updateSql(TABLE_USER_DETAIL, dbUniquePairs, criteriumOfUpdating)
+
+
+
+        /*String sql = "UPDATE " + TABLE_USERS;
+        KeyMapper keyMapper = new KeyMapper(Paths.get(KeyMapper.KEY_MAP_JSON_PATH));
+        List<String> userLdapColumns = getTableColumns(TABLE_USERS);
+        if (userLdapColumns.size() == 0) userLdapColumns = keyMapper.getAllMappingsOf(entity.getClass().getSimpleName(), KeyMapper.DBKEY);
+        List<String> userDetailColumns = getTableColumns(TABLE_USER_DETAIL);
+        Map<String, String> entityMap = entity.getUserEntity().getMap();
+
+        Map<String, String> = new HashMap<>()
+*/
         return false;
     }
 
@@ -110,6 +170,48 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
                     "\n" + list);
             return null;
         }
+
+    }
+
+    private List<String> getTableColumns(String table) {
+        List<String> columnsList = new ArrayList<>();
+        String sql = "SELECT * FROM " + table + " LIMIT 1";
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                columnsList.add(rsmd.getColumnName(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return columnsList;
+    }
+
+    /**
+     * Performs UPDATE on specific record in database, can update multiple cells simultaneously if multiple columns are passed to columsToUpdate parameter
+     */
+    private String updateSql (String table, List<String> entityPairs, String criterium) {
+        String statement = "";
+        if(!table.isEmpty() && !criterium.isEmpty() && entityPairs.size()>0){
+            statement = "UPDATE " + table + " SET " ;
+            int cnt = 0;
+            while (cnt < entityPairs.size()){
+                statement = statement.concat(entityPairs.get(cnt));
+                if(entityPairs.size()>1 && cnt != entityPairs.size()-1) {
+                    statement = statement.concat(",");
+                } else {
+                    statement = statement.concat(" ");
+                }
+                cnt++;
+            }
+            statement = statement.concat("WHERE " + criterium);
+        } else {
+            System.err.println("DbCon: One or more values are empty");
+        }
+        //System.out.println(statement);
+        return statement;
     }
 
 
@@ -175,30 +277,7 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         return cnt;
     }
 
-    /**
-     * Performs UPDATE on specific record in database, can update multiple cells simultaneously if multiple columns are passed to columsToUpdate parameter
-     */
-    public void update (String table, String criterium, String... columnsToUpdate) throws SQLException {
-        String statement = "";
-        if(!table.isEmpty() && !criterium.isEmpty() && columnsToUpdate.length>0){
-            statement = "UPDATE " + table + " SET " ;
-            int cnt = 0;
-            while (cnt < columnsToUpdate.length){
-                    statement = statement.concat(columnsToUpdate[cnt]);
-                    if(columnsToUpdate.length>1 && cnt != columnsToUpdate.length-1) {
-                        statement = statement.concat(",");
-                    } else {
-                        statement = statement.concat(" ");
-                    }
-                cnt++;
-            }
-            statement = statement.concat("WHERE " + criterium);
-        } else {
-            System.err.println("DbCon: One or more values are empty");
-        }
-        //System.out.println(statement);
-        customStatement(statement);
-    }
+
 
     public void addGUID() throws SQLException {
         List<User> ldapusers = ldapParser.getUsersDataList();

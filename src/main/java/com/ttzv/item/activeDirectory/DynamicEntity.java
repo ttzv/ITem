@@ -2,12 +2,8 @@ package com.ttzv.item.activeDirectory;
 
 import com.ttzv.item.utility.Utility;
 
-import java.awt.*;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -15,8 +11,10 @@ import java.util.Set;
  * some defined Separator. Objects created by this class can retrieve their key-value data and further process or be provided for other objects.
  */
 public class DynamicEntity {
-    private final String SEPARATOR = Utility.DEFAULT_ENTITY_SEPARATOR;
+
+    private String separator = Utility.DEFAULT_ENTITY_SEPARATOR;
     private Map<String, String> entityMap;
+    private KeyMapper keyMapper;
 
     public DynamicEntity(){
         entityMap = new HashMap<>();
@@ -29,9 +27,23 @@ public class DynamicEntity {
     public DynamicEntity process(List<String> vals){
         for (String val :
                 vals) {
-            String [] splitted = val.split(SEPARATOR);
+            String [] splitted = val.split(separator);
             add(splitted[0], splitted[1]);
         }
+        return this;
+    }
+
+    /**
+     * Use this method to replace entity keys to provide compatibility with other objects.
+     * @param mapper - KeyMapper to use in this operation
+     */
+    public <T> DynamicEntity replaceKeys(KeyMapper<T> mapper, int keyType){
+        Map<String, String> replacedMap = new HashMap<>();
+        for (String key : entityMap.keySet()) {
+            String newKey = mapper.getMapping(key).get(keyType);
+            replacedMap.put(newKey, entityMap.get(key));
+        }
+        this.entityMap = replacedMap;
         return this;
     }
 
@@ -39,7 +51,12 @@ public class DynamicEntity {
      * Return separator of this Entity
      */
     public String getSeparator(){
-        return SEPARATOR;
+        return separator;
+    }
+
+    public DynamicEntity setSeparator(String separator) {
+        this.separator = separator;
+        return this;
     }
 
     /**
@@ -98,8 +115,38 @@ public class DynamicEntity {
         return (this.entityMap.replace(key, value) != null);
     }
 
+    /**
+     * Constructs a List of key-value parameters from this entityMap. This look almost the same as before calling process() method
+     * except it takes into consideration any changed parameters such as replaced keys (using KeyMapper) and changed separator.
+     * This method should make integration with different data storages easier
+     * @param valWrap - String parameter, allows to wrap all Values in returned list between provided symbol. Created to use with Database updating.
+     * @return List constructed from entityMap.
+     */
+    public List<String> getList (String valWrap){
+        return this.entityMap.keySet().stream().map(k -> k + separator + valWrap + entityMap.get(k) + valWrap).collect(Collectors.toList());
+    }
+
+    /**
+     * Constrycts a List same as getList(String valWrap) but without wrapper.
+     * @return List where Values are not wrapped in anything
+     */
+    public List<String> getList (){
+       return this.getList("");
+    }
+
+    /**
+     * Removes a mapping from this entityMap
+     * @param key key that should be removed with corresponding value
+     * @return this dynamicEntity with removed mapping
+     */
+    public DynamicEntity removePair (String key){
+        this.entityMap.remove(key);
+        return this;
+    }
+
     public static DynamicEntity newDynamicEntity(){
         return new DynamicEntity();
     }
+
 
 }

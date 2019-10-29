@@ -38,7 +38,11 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
         List<User> allUsers = new ArrayList<>();
         for (List<String> list :
                 getResults()) {
-            allUsers.add(new User(DynamicEntity.newDynamicEntity().process(list)));
+            allUsers.add(new User(DynamicEntity.newDynamicEntity()
+                    .process(list)
+                    .replaceKeys(
+                            new KeyMapper<User>(KeyMapper.KEY_MAP_JSON_PATH), KeyMapper.OBJECTKEY))
+            );
         }
         return allUsers;
     }
