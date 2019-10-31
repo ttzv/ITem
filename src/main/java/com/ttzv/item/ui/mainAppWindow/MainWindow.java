@@ -1,10 +1,9 @@
 package com.ttzv.item.ui.mainAppWindow;
 
-import com.ttzv.item.activeDirectory.LDAPParser;
-import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.parser.LDAPParser;
+import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.ui.crmWindow.CrmWindow;
 import com.ttzv.item.ui.gSuiteWindow.GSuiteWindow;
 import com.ttzv.item.ui.mailerWindow.MailerWindow;

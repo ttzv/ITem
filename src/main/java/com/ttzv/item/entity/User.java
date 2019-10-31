@@ -1,5 +1,6 @@
-package com.ttzv.item.activeDirectory;
+package com.ttzv.item.entity;
 
+import com.ttzv.item.activeDirectory.UserData;
 import com.ttzv.item.utility.Utility;
 
 /**

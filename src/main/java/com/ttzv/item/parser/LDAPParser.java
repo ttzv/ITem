@@ -1,19 +1,18 @@
-package com.ttzv.item.activeDirectory;
+package com.ttzv.item.parser;
 
+import com.ttzv.item.entity.User;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
-import com.ttzv.item.pwSafe.PHolder;
-import com.ttzv.item.utility.Utility;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LDAPParser
 {
@@ -35,7 +34,7 @@ public class LDAPParser
         }
     }
 
-    public void loadCfgCredentials() {
+    private void loadCfgCredentials() {
         this.setLdap_URL(Cfg.getInstance().retrieveProp(Cfg.LDAP_URL));
         this.setLdap_port(Cfg.getInstance().retrieveProp(Cfg.LDAP_PORT));
         this.setAd_adminUser(Cfg.getInstance().retrieveProp(Cfg.LDAP_ACC));
@@ -86,7 +85,7 @@ public class LDAPParser
         return new QueryBuilder();
     }
 
-    public void initializeLdapContext() throws NamingException{
+    private void initializeLdapContext() throws NamingException{
 
         Properties ldapEnv = new Properties();
         ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory"); //always the same
@@ -158,7 +157,7 @@ public class LDAPParser
         }
     }
 
-    protected static class QueryBuilder {
+    public static class QueryBuilder {
 
         private String[] searchAttributes;
         private String searchFilter;

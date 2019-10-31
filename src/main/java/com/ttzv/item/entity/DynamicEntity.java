@@ -1,5 +1,6 @@
-package com.ttzv.item.activeDirectory;
+package com.ttzv.item.entity;
 
+import com.ttzv.item.entity.KeyMapper;
 import com.ttzv.item.utility.Utility;
 
 import java.util.*;

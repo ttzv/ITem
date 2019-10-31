@@ -1,4 +1,4 @@
-package com.ttzv.item.db;
+package com.ttzv.item.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

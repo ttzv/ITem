@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -123,6 +124,20 @@ public class Utility {
             default:
                 return "ERVAL";
         }
+    }
+
+    /**
+     * Return nested list if list in parameter contains only one element - utility method for resultset
+     */
+    public static List<String> unNestList(List<List<String>> list){
+        if(list.size() == 1){
+            return list.get(0);
+        } else {
+            System.err.println("List contains more than one elements or is empty" +
+                    "\n" + list);
+            return null;
+        }
+
     }
 
    /* public static String ldapStringToDate(String date) throws ParseException {

@@ -1,6 +1,6 @@
 package com.ttzv.item.ui.mailerWindow;
 
-import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.db.PgStatement;
 import com.ttzv.item.file.MailMsgParser;

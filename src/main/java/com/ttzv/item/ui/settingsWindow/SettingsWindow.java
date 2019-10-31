@@ -1,8 +1,7 @@
 package com.ttzv.item.ui.settingsWindow;
 
-import com.ttzv.item.activeDirectory.LDAPParser;
+import com.ttzv.item.parser.LDAPParser;
 import com.ttzv.item.db.JdbcDriverSelector;
-import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;

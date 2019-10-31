@@ -1,38 +1,24 @@
-package com.ttzv.item.db;
+package com.ttzv.item.dao;
 
-import com.ttzv.item.activeDirectory.*;
+import com.ttzv.item.entity.*;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
-import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.utility.Utility;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class UserDaoDatabaseImpl implements EntityDAO<User> {
-    //User object is constructed from two tables, first represents data retrieved from LDAP, second is for addidional data about User updated in application
+public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<User> {
+    //User object is constructed from two tables, first represents data retrieved from LDAP, second is for addidional data about User updated in application or from different source
     private final static String TABLE_USERS = "users";
     private final static String TABLE_USER_DETAIL = "user_details";
 
-    private Connection connection;
-
     public UserDaoDatabaseImpl() throws SQLException {
-        Cfg.getInstance().setProperty(Cfg.DB_DRIVER, "POSTGRES");
-        try {
-            Cfg.getInstance().saveFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector(Cfg.getInstance().retrieveProp(Cfg.DB_DRIVER),
-                Cfg.getInstance().retrieveProp(Cfg.DB_URL),
-                Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN),
-                Crypt.newCrypt("dCr").read());
-        this.connection = jdbcDriverSelector.createConnection();
+        super();
     }
 
     @Override
@@ -62,7 +48,7 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
                 + " INNER JOIN " + TABLE_USER_DETAIL
                 + " ON " + TABLE_USERS + ".guid=" + TABLE_USER_DETAIL + ".guid"
                 + " WHERE " + TABLE_USERS + ".guid='" + id + "'";
-        List<String> result = unNestList(executeQuery(query));
+        List<String> result = Utility.unNestList(executeQuery(query));
         assert result != null;
         return new User(DynamicEntity.newDynamicEntity()
                 .process(result)
@@ -93,6 +79,8 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         }
         String sql0 = this.updateSql(TABLE_USERS, ldapUniquePairs, criteriumOfUpdating);
 
+        executeUpdate(sql0);
+
         //retrieve all DB keys that don't have corresponding LDAP mapping to construct UPDATE for USER_DETAIL table
         List<String> dbUniquekeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
         dbUniquekeys.removeAll(ldapUniqueKeys);
@@ -100,8 +88,9 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         for (String duk : dbUniquekeys) {
             dbUniquePairs = uEntity.getList("'").stream().filter(s -> s.contains(duk)).collect(Collectors.toList());
         }
-        String sql = this.updateSql(TABLE_USER_DETAIL, dbUniquePairs, criteriumOfUpdating)
+        String sql1 = this.updateSql(TABLE_USER_DETAIL, dbUniquePairs, criteriumOfUpdating);
 
+        executeUpdate(sql1);
 
 
         /*String sql = "UPDATE " + TABLE_USERS;
@@ -112,8 +101,7 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         Map<String, String> entityMap = entity.getUserEntity().getMap();
 
         Map<String, String> = new HashMap<>()
-*/
-        return false;
+*/      return true; //todo
     }
 
     @Override
@@ -121,7 +109,8 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         return false;
     }
 
-    private void executeUpdate(String sql){
+    /*@Override
+    public boolean executeUpdate(String sql){ //todo: move to abstract
         if (connection != null) {
             Statement statement = null;
             try {
@@ -130,11 +119,14 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
                 statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+                return false;
             }
         }
+        return true;
     }
 
-    private List<List<String>> executeQuery(String query){
+    @Override
+    public List<List<String>> executeQuery(String query){ //todo: move to abstract
         ResultSet resultSet = null;
         Statement statement = null;
         List<List<String>> resultList = new ArrayList<>();
@@ -159,60 +151,9 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         return resultList;
     }
 
-    /**
-     * Return nested list if list in parameter contains only one element - utility method for resultset
-     */
-    private List<String> unNestList(List<List<String>> list){
-        if(list.size() == 1){
-            return list.get(0);
-        } else {
-            System.err.println("List contains more than one elements or is empty" +
-                    "\n" + list);
-            return null;
-        }
 
-    }
+*/
 
-    private List<String> getTableColumns(String table) {
-        List<String> columnsList = new ArrayList<>();
-        String sql = "SELECT * FROM " + table + " LIMIT 1";
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                columnsList.add(rsmd.getColumnName(i));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return columnsList;
-    }
-
-    /**
-     * Performs UPDATE on specific record in database, can update multiple cells simultaneously if multiple columns are passed to columsToUpdate parameter
-     */
-    private String updateSql (String table, List<String> entityPairs, String criterium) {
-        String statement = "";
-        if(!table.isEmpty() && !criterium.isEmpty() && entityPairs.size()>0){
-            statement = "UPDATE " + table + " SET " ;
-            int cnt = 0;
-            while (cnt < entityPairs.size()){
-                statement = statement.concat(entityPairs.get(cnt));
-                if(entityPairs.size()>1 && cnt != entityPairs.size()-1) {
-                    statement = statement.concat(",");
-                } else {
-                    statement = statement.concat(" ");
-                }
-                cnt++;
-            }
-            statement = statement.concat("WHERE " + criterium);
-        } else {
-            System.err.println("DbCon: One or more values are empty");
-        }
-        //System.out.println(statement);
-        return statement;
-    }
 
 
 
@@ -230,7 +171,7 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private String dbUrl;
+   /* private String dbUrl;
     private String dbUser;
     private char[] dbPass;
 
@@ -252,11 +193,11 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         return true;
     }
 
-    /**
+    *//**
      * Executes custom statements, mltiple supported
      * @param statements one or more statements
      * @throws SQLException
-     */
+     *//*
     public void customStatement(String... statements) throws SQLException {
         Statement st = conn.createStatement();
         for (String statement : statements) {
@@ -311,14 +252,14 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         st.close();
     }
 
-    /**
+    *//**
      * Checks if given value exists in selected column
      * @param table table where search will be performed
      * @param column column to search into
      * @param value value to search for
      * @return true if value exists, otherwise false
      * @throws SQLException when connection with database could not be established or query was invalid
-     */
+     *//*
     public boolean exists(String table, String column, String value) throws SQLException {
         Statement st = conn.createStatement();
 
@@ -333,17 +274,17 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
     }
 
 
-    /*public ResultSet select(String identifier) throws SQLException {
+    *//*public ResultSet select(String identifier) throws SQLException {
         Statement st = conn.createStatement();
 
         ResultSet resultSet = st.executeQuery(PgStatement.select("users", "*", "userguid=" + identifier));
 
-     }*/
+     }*//*
 
-    /**
+    *//**
      * Updates table USERS with new values from LDAP
      * @return List of users that were added to a database during update execution
-     */
+     *//*
     public List<User> updateUsersTable() throws SQLException {
         String table = "users";
         String column = "userguid";
@@ -369,11 +310,11 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         return newUsers;
     }
 
-    /**
+    *//**
      * @param count number of users to retrieve from database
      * @return true if method performed correctly
      * @throws SQLException database connection not estabilished
-     */
+     *//*
     public boolean getNewUsers(int count) throws SQLException {
         UserHolder.clear();
         Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -395,12 +336,12 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
         return new User(resultUserData);
     }
 
-    /**
+    *//**
      * Performs search in Users table for inputted value
      * @param value value to search for in database
      * @param limiter maximum amount of rows returned by query, no limit of set to 0
      * @return list of Users with fitting value
-     */
+     *//*
     //todo: make search case insensitive and support substring searches
     public List<User> globalSearch(String value, int limiter) throws SQLException {
         if(Utility.restrictedSymbols.contains(value)){
@@ -474,6 +415,6 @@ public class UserDaoDatabaseImpl implements EntityDAO<User> {
 
     public void setDbPass(char[] dbPass) {
         this.dbPass = dbPass;
-    }
+    }*/
 
 }

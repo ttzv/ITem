@@ -1,8 +1,8 @@
 package com.ttzv.item.ui.mainAppWindow;
 
-import com.ttzv.item.activeDirectory.User;
-import com.ttzv.item.activeDirectory.UserData;
-import com.ttzv.item.activeDirectory.UserHolder;
+import com.ttzv.item.entity.User;
+import com.ttzv.item.entity.UserData;
+import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.beans.property.SimpleStringProperty;

@@ -1,4 +1,4 @@
-package com.ttzv.item.activeDirectory;
+package com.ttzv.item.entity;
 
 import java.util.List;
 

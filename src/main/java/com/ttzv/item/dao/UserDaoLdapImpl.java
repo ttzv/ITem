@@ -1,6 +1,10 @@
-package com.ttzv.item.activeDirectory;
+package com.ttzv.item.dao;
 
-import com.ttzv.item.utility.Utility;
+import com.ttzv.item.entity.DynamicEntity;
+import com.ttzv.item.entity.EntityDAO;
+import com.ttzv.item.entity.KeyMapper;
+import com.ttzv.item.entity.User;
+import com.ttzv.item.parser.LDAPParser;
 
 import javax.naming.directory.SearchControls;
 import java.util.ArrayList;
