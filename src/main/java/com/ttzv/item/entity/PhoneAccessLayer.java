@@ -4,12 +4,12 @@ import java.util.List;
 
 public class PhoneAccessLayer implements EntityAccessLayer<Phone> {
     @Override
-    public List<Phone> sort(List<Phone> entities, String order) {
+    public List<Phone> sort(List<Phone> entities, Integer order) {
         return null;
     }
 
     @Override
-    public List<Phone> sortBy(List<Phone> entities, String order, String key) {
+    public List<Phone> sortBy(List<Phone> entities, Integer order, String key) {
         return null;
     }
 

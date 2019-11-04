@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 public class Utility {
 
+
     public static String DEFAULT_ENTITY_SEPARATOR = ":";
 
     public static String restrictedSymbols = "%_/\\=-+?*";

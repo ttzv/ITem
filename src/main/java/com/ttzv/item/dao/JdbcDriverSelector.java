@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class JdbcDriverSelector {
+public class JdbcDriverSelector { //todo: refactor to implement DataSource and decouple configuration
     
     private final static String POSTGRES = "POSTGRES";
     private final static String MYSQL = "MYSQL";

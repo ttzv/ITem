@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<City> {
 
-    private final String TABLE_CITY = "CITY_TABLE";
+    private final String TABLE_CITY = "city";
     private KeyMapper<City> keyMapper;
 
     public CityDaoDatabaseImpl() throws SQLException {
@@ -18,7 +18,7 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     }
 
     @Override
-    public List<City> getAllEntities() {
+    public List<City> getAllEntities() throws SQLException {
         String query = "SELECT * FROM " + TABLE_CITY;
         List<City> cityList = new ArrayList<>();
         for (List<String> list :
@@ -33,7 +33,7 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     }
 
     @Override
-    public City getEntity(String id) {
+    public City getEntity(String id) throws SQLException {
         String mappedKey = keyMapper.getMapping(CityData.name.toString()).get(KeyMapper.DBKEY);
         String query = "SELECT * FROM " + TABLE_CITY +
                 " WHERE " + TABLE_CITY + "." + mappedKey + "='" + id + "'";
@@ -45,7 +45,7 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     }
 
     @Override
-    public boolean updateEntity(City entity) {
+    public boolean updateEntity(City entity) throws SQLException {
         DynamicEntity uEntity = entity.getCityEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
         String criteriumOfUpdating = keyMapper.getMapping(CityData.name.toString()).get(KeyMapper.DBKEY) + "='" + entity.getName() + "'";
         String sql = updateSql(TABLE_CITY, uEntity.getList("'"), criteriumOfUpdating);
@@ -56,5 +56,5 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     @Override
     public boolean deleteEntity(City entity) {
         return false;
-    }
+    } //todo: implement
 }

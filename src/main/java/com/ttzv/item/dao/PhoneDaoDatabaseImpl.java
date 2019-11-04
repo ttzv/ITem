@@ -1,10 +1,10 @@
 package com.ttzv.item.dao;
 
-import com.ttzv.item.entity.EntityDAO;
-import com.ttzv.item.entity.KeyMapper;
-import com.ttzv.item.entity.Phone;
+import com.ttzv.item.entity.*;
+import com.ttzv.item.utility.Utility;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Phone> {
@@ -18,18 +18,39 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
     }
 
     @Override
-    public List<Phone> getAllEntities() {
-        return null;
+    public List<Phone> getAllEntities() throws SQLException {
+        String query = "SELECT * FROM " + TABLE_PHONE;
+        List<Phone> phoneList = new ArrayList<>();
+        for (List<String> list :
+                executeQuery(query)) {
+            phoneList.add(new Phone(DynamicEntity.newDynamicEntity()
+                    .process(list)
+                    .replaceKeys(
+                            keyMapper, KeyMapper.OBJECTKEY))
+            );
+        }
+        return phoneList;
     }
 
     @Override
-    public Phone getEntity(String id) {
-        return null;
+    public Phone getEntity(String id) throws SQLException {
+        String mappedKey = keyMapper.getMapping(PhoneData.ownerid.toString()).get(KeyMapper.DBKEY);
+        String query = "SELECT * FROM " + TABLE_PHONE +
+                " WHERE " + TABLE_PHONE + "." + mappedKey + "='" + id + "'";
+        List<String> result = Utility.unNestList(executeQuery(query));
+        assert result != null;
+        return new Phone(DynamicEntity.newDynamicEntity()
+                .process(result)
+                .replaceKeys(keyMapper, KeyMapper.OBJECTKEY));
     }
 
     @Override
-    public boolean updateEntity(Phone entity) {
-        return false;
+    public boolean updateEntity(Phone entity) throws SQLException {
+        DynamicEntity uEntity = entity.getPhoneEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
+        String criteriumOfUpdating = keyMapper.getMapping(PhoneData.ownerid.toString()).get(KeyMapper.DBKEY) + "='" + entity.getOwnerid() + "'";
+        String sql = updateSql(TABLE_PHONE, uEntity.getList("'"), criteriumOfUpdating);
+
+        return executeUpdate(sql);
     }
 
     @Override
@@ -37,13 +58,4 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
         return false;
     }
 
-    @Override
-    public boolean executeUpdate(String sql) {
-        return false;
-    }
-
-    @Override
-    public List<List<String>> executeQuery(String query) {
-        return null;
-    }
 }

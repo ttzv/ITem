@@ -68,7 +68,7 @@ public class KeyMapper<T> {
         } else {
             if (isDuplicate(mappingsList, mappings)) {
                 System.err.println("One of keys in provided mappings:\n" +
-                        Arrays.asList(mappings) + "\n" +
+                        mappings + "\n" +
                         "already exists in mappings list in group \"" + group + "\"");
             } else {
                 mappingsList.add(new ArrayList<>(mappings));

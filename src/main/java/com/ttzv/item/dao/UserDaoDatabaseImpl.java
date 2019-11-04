@@ -22,7 +22,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     @Override
-    public List<User> getAllEntities() {
+    public List<User> getAllEntities() throws SQLException {
         String query = "SELECT * FROM " + TABLE_USERS
                 + " INNER JOIN " + TABLE_USER_DETAIL
                 + " ON " + TABLE_USERS + ".guid=" + TABLE_USER_DETAIL + ".guid";
@@ -43,7 +43,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     @Override
-    public User getEntity(String id) {
+    public User getEntity(String id) throws SQLException {
         String query = "SELECT * FROM " + TABLE_USERS
                 + " INNER JOIN " + TABLE_USER_DETAIL
                 + " ON " + TABLE_USERS + ".guid=" + TABLE_USER_DETAIL + ".guid"
@@ -58,7 +58,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     @Override
-    public boolean updateEntity(User entity) {
+    public boolean updateEntity(User entity) throws SQLException {
 
         KeyMapper<User> keyMapper = new KeyMapper<>(KeyMapper.KEY_MAP_JSON_PATH);
         DynamicEntity uEntity = entity.getUserEntity()

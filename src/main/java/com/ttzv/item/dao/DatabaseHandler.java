@@ -9,12 +9,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//Connection closes after every query or statement
 public abstract class DatabaseHandler {
 
-    private Connection connection;
+    private JdbcDriverSelector jdbcDriverSelector;
 
     public DatabaseHandler() throws SQLException {
-        //temporary
+        //temporary //todo: decouple
         Cfg.getInstance().setProperty(Cfg.DB_DRIVER, "POSTGRES");
         try {
             Cfg.getInstance().saveFile();
@@ -27,10 +28,10 @@ public abstract class DatabaseHandler {
                 Cfg.getInstance().retrieveProp(Cfg.DB_URL),
                 Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN),
                 Crypt.newCrypt("dCr").read());
-        this.connection = jdbcDriverSelector.createConnection();
     }
 
-    public boolean executeUpdate(String sql){
+    public boolean executeUpdate(String sql) throws SQLException {
+        Connection connection = jdbcDriverSelector.createConnection();
         if (connection != null) {
             Statement statement = null;
             try {
@@ -41,11 +42,13 @@ public abstract class DatabaseHandler {
                 e.printStackTrace();
                 return false;
             }
+            connection.close();
         }
         return true;
     }
 
-    public List<List<String>> executeQuery(String query){ //todo: move to abstract
+    public List<List<String>> executeQuery(String query) throws SQLException {
+        Connection connection = jdbcDriverSelector.createConnection();
         ResultSet resultSet = null;
         Statement statement = null;
         List<List<String>> resultList = new ArrayList<>();
@@ -66,15 +69,16 @@ public abstract class DatabaseHandler {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            connection.close();
         }
         return resultList;
     }
 
 
     /**
-     * Performs UPDATE on specific record in database, can update multiple cells simultaneously if multiple columns are passed to columsToUpdate parameter
+     * Generates UPDATE SQL statement on specific record in database, can update multiple cells simultaneously if multiple columns are passed to entityPairs parameter
      */
-    public String updateSql (String table, List<String> entityPairs, String criterium) { //todo: move to abstract
+    public String updateSql (String table, List<String> entityPairs, String criterium) {
         String statement = "";
         if(!table.isEmpty() && !criterium.isEmpty() && entityPairs.size()>0){
             statement = "UPDATE " + table + " SET " ;
@@ -96,7 +100,8 @@ public abstract class DatabaseHandler {
         return statement;
     }
 
-    public List<String> getTableColumns(String table) { //todo: move to abstract
+    public List<String> getTableColumns(String table) throws SQLException {
+        Connection connection = jdbcDriverSelector.createConnection();
         List<String> columnsList = new ArrayList<>();
         String sql = "SELECT * FROM " + table + " LIMIT 1";
         try {
@@ -109,6 +114,7 @@ public abstract class DatabaseHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        connection.close();
         return columnsList;
     }
 }

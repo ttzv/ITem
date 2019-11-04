@@ -4,12 +4,12 @@ import java.util.List;
 
 public class CityAccessLayer implements EntityAccessLayer<City> {
     @Override
-    public List<City> sort(List<City> entities, String order) {
+    public List<City> sort(List<City> entities, Integer order) {
         return null;
     }
 
     @Override
-    public List<City> sortBy(List<City> entities, String order, String key) {
+    public List<City> sortBy(List<City> entities, Integer order, String key) {
         return null;
     }
 

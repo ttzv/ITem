@@ -93,7 +93,6 @@ public class Sender {
             transport = session.getTransport("smtp");
             msg.saveChanges();
             transport.connect(senderAddress, new String(senderPassword));
-
             validConn = true;
 
     }

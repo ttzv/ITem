@@ -3,6 +3,7 @@ package com.ttzv.item.parser;
 import com.ttzv.item.entity.User;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
+import javafx.print.Printer;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -88,6 +89,7 @@ public class LDAPParser
     private void initializeLdapContext() throws NamingException{
 
         Properties ldapEnv = new Properties();
+        ldapEnv.store();
         ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory"); //always the same
         ldapEnv.put(Context.PROVIDER_URL,  "ldap://" + ldap_URL + ":" + ldap_port);
         ldapEnv.put("java.naming.ldap.attributes.binary", "objectGUID");
@@ -103,14 +105,10 @@ public class LDAPParser
      * Get preconfigured LdapParser. Configuration is retrieved from .properties file and can be freely modified (preferably by some UI)
      * @return new LdapParser configured by .properties file and ready to use.
      */
-    public static LDAPParser getLdapParser(){
+    public static LDAPParser getLdapParser() throws NamingException {
         LDAPParser ldapParser = new LDAPParser();
         ldapParser.loadCfgCredentials();
-        try {
-            ldapParser.initializeLdapContext();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
+        ldapParser.initializeLdapContext();
         return ldapParser;
     }
 
@@ -121,40 +119,40 @@ public class LDAPParser
      * @param queryBuilder LDAPParser.QueryBuilder object used to build LDAP query - entry method is LDAPParser.QueryBuilder.builder()
      * @return Count of results retrieved from LDAP
      */
-    public int queryLdap(QueryBuilder queryBuilder) {
+    public int queryLdap(QueryBuilder queryBuilder) throws NamingException {
         if(queryBuilder.isValidated()) {
             NamingEnumeration<SearchResult> answer = null;
             results = new ArrayList<>();
             totalResults = 0;
-            try {
-                answer = ldapContext.search(queryBuilder.getSearchBase(), queryBuilder.getSearchFilter(), queryBuilder.getSearchControls());
-                while (answer.hasMoreElements()) {
-                    SearchResult sr = answer.next();
-                    totalResults++;
-                    Attributes returnedAttrs = sr.getAttributes();
-                    List<String> returnedAttributeList = Arrays.stream(queryBuilder.getSearchAttributes())
-                            .map(s -> {
-                                //each defined attribute is retrieved and collected in list with corresponding attribute identifier, null attributes are changed to empty strings
-                                        try {
-                                            return (returnedAttrs.get(s) == null) ? (s + LDAP_SEPARATOR + "") : (s + LDAP_SEPARATOR + returnedAttrs.get(s).get().toString());
-                                        } catch (NamingException e) {
-                                            e.printStackTrace();
-                                        }
-                                        return s;
+            answer = ldapContext.search(queryBuilder.getSearchBase(), queryBuilder.getSearchFilter(), queryBuilder.getSearchControls());
+            while (answer.hasMoreElements()) {
+                SearchResult sr = answer.next();
+                totalResults++;
+                Attributes returnedAttrs = sr.getAttributes();
+                List<String> returnedAttributeList = Arrays.stream(queryBuilder.getSearchAttributes())
+                        .map(s -> {
+                            //each defined attribute is retrieved and collected in list with corresponding attribute identifier, null attributes are changed to empty strings
+                                    try {
+                                        return (returnedAttrs.get(s) == null) ? (s + LDAP_SEPARATOR + "") : (s + LDAP_SEPARATOR + returnedAttrs.get(s).get().toString());
+                                    } catch (NamingException e) {
+                                        e.printStackTrace();
                                     }
-                            )
-                            .collect(Collectors.toList());
-                    results.add(returnedAttributeList);
-                }
-                ldapContext.close();
-            } catch (NamingException e1) {
-                e1.printStackTrace();
+                                    return s;
+                                }
+                        )
+                        .collect(Collectors.toList());
+                results.add(returnedAttributeList);
             }
+            ldapContext.close();
             return totalResults;
         } else {
             System.err.println("Query not validated or missing query parameters - check QueryBuilder.validate() method");
             return -1;
         }
+    }
+
+    public void close() throws NamingException {
+        this.ldapContext.close();
     }
 
     public static class QueryBuilder {
