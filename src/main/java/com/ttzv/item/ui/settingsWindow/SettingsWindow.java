@@ -1,5 +1,6 @@
 package com.ttzv.item.ui.settingsWindow;
 
+import com.ttzv.item.dao.JdbcDriverSelector;
 import com.ttzv.item.parser.LDAPParser;
 import com.ttzv.item.db.JdbcDriverSelector;
 import com.ttzv.item.properties.Cfg;
@@ -135,6 +136,9 @@ public class SettingsWindow extends AnchorPane {
 
     @FXML
     private Button btnDefaultPassPattern;
+
+    @FXML
+    private ComboBox<?> cBoxDbDriverList;
 
 
 
@@ -568,7 +572,13 @@ public class SettingsWindow extends AnchorPane {
         Task isValid = new Task() {
             @Override
             protected Object call() throws Exception {
-                JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector() //todo: finish
+                JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector(
+                        cBoxDbDriverList.getSelectionModel().getSelectedItem().toString(),
+                        fieldDbUrl.getText(),
+                        fieldDbLogin.getText(),
+                        fieldDbPass.getText().toCharArray()
+                );
+                jdbcDriverSelector.createConnection().close();
                 return null;
             }
         };

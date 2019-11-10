@@ -1,8 +1,9 @@
 package com.ttzv.item.entity;
 
-public class Phone {
+public class Phone implements DynamicEntityCompatible, Comparable<Phone>
+{
 
-    private String ownerid;
+    private String ownerid; //guid
     private String number;
     private String model;
     private String imei;
@@ -15,7 +16,8 @@ public class Phone {
         this.phoneEntity = phoneEntity;
     }
 
-    public DynamicEntity getPhoneEntity() {
+    @Override
+    public DynamicEntity getEntity() {
         return phoneEntity;
     }
 
@@ -65,5 +67,10 @@ public class Phone {
 
     public void setPuk(String puk) {
         this.puk = puk;
+    }
+
+    @Override
+    public int compareTo(Phone o) {
+        return this.getNumber().compareTo(o.getNumber());
     }
 }

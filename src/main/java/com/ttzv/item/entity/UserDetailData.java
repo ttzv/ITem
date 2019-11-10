@@ -1,17 +1,9 @@
 package com.ttzv.item.entity;
 
-public enum CityData implements Mappable{
+import java.sql.DatabaseMetaData;
 
-    name("name"),
-    landLineNumber("landLineNumber"),
-    faxNumber("faxNumber"),
-    postalCode("postalCode");
-
-    String udname;
-
-    CityData(String udname) {
-        this.udname = udname;
-    }
+public enum UserDetailData implements Mappable {
+    ;
 
     @Override
     public String getDbKey(KeyMapper keyMapper) {

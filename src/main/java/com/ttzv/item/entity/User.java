@@ -1,20 +1,34 @@
 package com.ttzv.item.entity;
 
-import com.ttzv.item.activeDirectory.UserData;
 import com.ttzv.item.utility.Utility;
+
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * Basic User "bean" class used for various operations in this application. Supports creating User from objects implementing DynamicEntity interface.
  */
-public class User {
+public class User implements DynamicEntityCompatible, Comparable<User>{
 
     private DynamicEntity userEntity;
+
+    private String guid;
+    private String samaccountname;
+    private String givenname;
+    private String sn;
+    private String displayname;
+    private String useraccountcontrol;
+    private String mail;
+    private String whenCreated;
+    private String distinguishedName;
+    private String whenChanged;
 
     public User(DynamicEntity userEntity) {
         this.userEntity = userEntity;
     }
 
-    public DynamicEntity getUserEntity() {
+    @Override
+    public DynamicEntity getEntity() {
         return userEntity;
     }
 
@@ -138,5 +152,28 @@ public class User {
 
     public String getCityFax() {
         return userEntity.getValue(UserData.cityfax.toString());
+    }
+
+    @Override
+    public int compareTo(User o) {
+        Date userCreationDate = Utility.parseDate(this.getWhenCreated());
+        Date comparedUserCreationDate = Utility.parseDate(o.getWhenCreated());
+        if(userCreationDate != null && comparedUserCreationDate != null)
+            return userCreationDate.compareTo(comparedUserCreationDate);
+        else
+            return -1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userEntity.getValue(UserData.objectGUID.toString()).equals(user.userEntity.getValue(UserData.objectGUID.toString()));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userEntity.getValue(UserData.objectGUID.toString()));
     }
 }

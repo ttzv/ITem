@@ -38,7 +38,7 @@ public class DynamicEntity {
      * Use this method to replace entity keys to provide compatibility with other objects.
      * @param mapper - KeyMapper to use in this operation
      */
-    public <T> DynamicEntity replaceKeys(KeyMapper<T> mapper, int keyType){
+    public DynamicEntity replaceKeys(KeyMapper mapper, int keyType){
         Map<String, String> replacedMap = new HashMap<>();
         for (String key : entityMap.keySet()) {
             String newKey = mapper.getMapping(key).get(keyType);

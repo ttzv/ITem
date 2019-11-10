@@ -19,6 +19,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
     private final String searchFilter;
     private String[] searchAttributes;
     private int searchControlsScope;
+    private KeyMapper keyMapper;
 
     public UserDaoLdapImpl() throws NamingException {
         this.searchBase = "ou=Pracownicy,dc=atal,dc=local";
@@ -26,6 +27,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
         this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "samAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", "whenChanged"};
         this.searchControlsScope = SearchControls.SUBTREE_SCOPE;
         this.ldapParser = LDAPParser.getLdapParser();
+        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
     }
 
     public List<List<String>> getResults() throws NamingException {
@@ -36,6 +38,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
                 .setSearchControlsScope(searchControlsScope)
                 .validate());
         return this.ldapParser.getResults();
+
     }
 
     @Override
@@ -46,7 +49,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
             allUsers.add(new User(DynamicEntity.newDynamicEntity()
                     .process(list)
                     .replaceKeys(
-                            new KeyMapper<User>(KeyMapper.KEY_MAP_JSON_PATH), KeyMapper.OBJECTKEY))
+                            keyMapper, KeyMapper.OBJECTKEY))
             );
         }
         return allUsers;

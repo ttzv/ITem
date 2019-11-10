@@ -10,10 +10,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException {
         initCfg();
 
         UiObjectsWrapper uiObjectsWrapper = new UiObjectsWrapper();
@@ -23,6 +24,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> System.exit(0));
+
     }
 
     public static void main(String[] args) {

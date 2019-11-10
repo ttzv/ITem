@@ -10,11 +10,11 @@ import java.util.List;
 public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Phone> {
 
     private final String TABLE_PHONE = "phones";
-    private KeyMapper<Phone> keyMapper;
+    private KeyMapper keyMapper;
 
     public PhoneDaoDatabaseImpl() throws SQLException {
         super();
-        keyMapper = new KeyMapper<>(KeyMapper.KEY_MAP_JSON_PATH);
+        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, Phone.class);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
 
     @Override
     public boolean updateEntity(Phone entity) throws SQLException {
-        DynamicEntity uEntity = entity.getPhoneEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
+        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
         String criteriumOfUpdating = keyMapper.getMapping(PhoneData.ownerid.toString()).get(KeyMapper.DBKEY) + "='" + entity.getOwnerid() + "'";
         String sql = updateSql(TABLE_PHONE, uEntity.getList("'"), criteriumOfUpdating);
 

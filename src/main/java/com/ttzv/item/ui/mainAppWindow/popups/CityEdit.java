@@ -1,8 +1,9 @@
 package com.ttzv.item.ui.mainAppWindow.popups;
 
+import com.ttzv.item.entity.City;
+import com.ttzv.item.entity.EntityDAO;
 import com.ttzv.item.entity.User;
 import com.ttzv.item.entity.UserHolder;
-import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.db.PgStatement;
 import com.ttzv.item.ui.mainAppWindow.MainWindow;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
@@ -23,7 +24,7 @@ public class CityEdit extends AnchorPane {
     private Stage stage;
     private UiObjectsWrapper uiObjectsWrapper;
 
-    public CityEdit(UiObjectsWrapper uiObjectsWrapper) {
+    public CityEdit(UiObjectsWrapper uiObjectsWrapper, EntityDAO cityDao) {
         this.uiObjectsWrapper = uiObjectsWrapper;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/cityedit.fxml"));
@@ -73,13 +74,12 @@ public class CityEdit extends AnchorPane {
         stage.close();
     }
 
-    private void preloadInfo(User user) {
-        this.txtCityPhone.setText(user.getCityPhone());
-        this.txtCityFax.setText(user.getCityFax());
+    private void preloadInfo(City city) {
+        this.txtCityPhone.setText(city.getLandLineNumber());
+        this.txtCityFax.setText(city.getFaxNumber());
     }
 
     private void updateDatabase(User user) throws SQLException {
-        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
 
         String cityPhone = this.txtCityPhone.getText();
         String queryPhone = "";

@@ -1,6 +1,6 @@
 package com.ttzv.item.entity;
 
-public class City {
+public class City implements DynamicEntityCompatible, Comparable<City>{
 
     private String name;
     private String landLineNumber;
@@ -13,7 +13,8 @@ public class City {
         this.cityEntity = cityEntity;
     }
 
-    public DynamicEntity getCityEntity() {
+    @Override
+    public DynamicEntity getEntity() {
         return cityEntity;
     }
 
@@ -47,5 +48,10 @@ public class City {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    @Override
+    public int compareTo(City o) {
+        return this.getName().compareTo(o.getName());
     }
 }

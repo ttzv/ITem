@@ -2,11 +2,13 @@ package com.ttzv.item.utility;
 
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -101,6 +103,16 @@ public class Utility {
         LocalDate localDate = LocalDate.parse(date, formatter);
         LocalTime localTime = LocalTime.parse(date, formatter);
         return localDate.toString() + " " + localTime;
+    }
+
+    public static Date parseDate (String date) {
+        SimpleDateFormat parser = new SimpleDateFormat("yyyyMMddHHmmss");
+        try {
+            return parser.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //todo: remove

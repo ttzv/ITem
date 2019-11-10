@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Key;
 import java.util.*;
 
 /*System.err.println("Key \"" + s + "\" already exists in mappings list \n" +
@@ -14,7 +13,7 @@ import java.util.*;
                             Arrays.asList(mappings) + "\n" +
                             "Duplicate found in list of mappings:\n" +
                             list);*/
-public class KeyMapper<T> {
+public class KeyMapper {
 
     //default keys
     public static final int OBJECTKEY = 0;
@@ -29,10 +28,11 @@ public class KeyMapper<T> {
 
     private ObjectMapper objectMapper;
 
-    private T mapperGroup;
+    private Class <? extends DynamicEntityCompatible> objClass;
 
-    public KeyMapper(Path jsonPath){
+    public KeyMapper(Path jsonPath, Class<? extends DynamicEntityCompatible> objClass){
         this.jsonPath = jsonPath;
+        this.objClass = objClass;
         objectMapper = new ObjectMapper();
         if(!Files.exists(jsonPath)){
             try {
@@ -45,8 +45,8 @@ public class KeyMapper<T> {
         }
     }
 
-    public KeyMapper(String jsonPath){
-        this(Paths.get(jsonPath));
+    public KeyMapper(String jsonPath, Class<? extends DynamicEntityCompatible> objClass){
+        this(Paths.get(jsonPath), objClass);
     }
 
     public boolean addMapping(String group, List<String> mappings) throws IOException {
@@ -79,7 +79,7 @@ public class KeyMapper<T> {
     }
 
     public boolean addMapping(List<String> mappings) throws IOException {
-        return this.addMapping(mapperGroup.getClass().getSimpleName(), mappings);
+        return this.addMapping(objClass.getSimpleName(), mappings);
     }
 
     public List<String> getMapping (String group, String key) {
@@ -96,7 +96,7 @@ public class KeyMapper<T> {
     }
 
     public List<String> getMapping (String key) {
-        return this.getMapping(mapperGroup.getClass().getSimpleName(), key);
+        return this.getMapping(objClass.getSimpleName(), key);
     }
 
     public void updateMapping(String group, String existingkey, int indexToUpdate, String newKey) throws IOException {
@@ -108,7 +108,7 @@ public class KeyMapper<T> {
     }
 
     public void updateMapping (String existingkey, int indexToUpdate, String newKey) throws IOException {
-        this.updateMapping(mapperGroup.getClass().getSimpleName(), existingkey, indexToUpdate, newKey);
+        this.updateMapping(objClass.getSimpleName(), existingkey, indexToUpdate, newKey);
     }
 
     public List<String> getAllMappingsOf(String group, int keyType){
@@ -124,7 +124,7 @@ public class KeyMapper<T> {
     }
 
     public List<String> getAllMappingsOf(int keyType){
-        return this.getAllMappingsOf(mapperGroup.getClass().getSimpleName(), keyType);
+        return this.getAllMappingsOf(objClass.getSimpleName(), keyType);
     }
 
     public String getCorrespondingMapping(String group, String key, int keyType){
@@ -133,7 +133,7 @@ public class KeyMapper<T> {
     }
 
     public String getCorrespondingMapping(String key, int keyType){
-        return this.getCorrespondingMapping(mapperGroup.getClass().getSimpleName(), key, keyType);
+        return this.getCorrespondingMapping(objClass.getSimpleName(), key, keyType);
     }
 
     public int getKeyTypeofMapping(String group, String key){
@@ -141,7 +141,7 @@ public class KeyMapper<T> {
     }
 
     public int getKeyTypeofMapping(String key){
-        return this.getKeyTypeofMapping(mapperGroup.getClass().getSimpleName(), key);
+        return this.getKeyTypeofMapping(objClass.getSimpleName(), key);
     }
 
     private boolean isDuplicate(List<List<String>> list, List<String> s){
@@ -210,8 +210,6 @@ public class KeyMapper<T> {
         System.out.println(keyMapper.getAllMappingsOf("User", 2));*/
 
     }
-
-
 
 }
 

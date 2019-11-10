@@ -8,7 +8,7 @@ import java.util.List;
 public interface EntityDAO<T> {
 
     public List<T> getAllEntities() throws SQLException, IOException, NamingException;
-    public T getEntity(String id) throws SQLException, IOException;
+    public T getEntity(String id) throws SQLException, IOException, NamingException;
     public boolean updateEntity(T entity) throws SQLException, IOException;
     public boolean deleteEntity(T entity) throws SQLException, IOException;
 

@@ -10,11 +10,11 @@ import java.util.List;
 public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<City> {
 
     private final String TABLE_CITY = "city";
-    private KeyMapper<City> keyMapper;
+    private KeyMapper keyMapper;
 
     public CityDaoDatabaseImpl() throws SQLException {
         super();
-        keyMapper = new KeyMapper<>(KeyMapper.KEY_MAP_JSON_PATH);
+        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
 
     @Override
     public boolean updateEntity(City entity) throws SQLException {
-        DynamicEntity uEntity = entity.getCityEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
+        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
         String criteriumOfUpdating = keyMapper.getMapping(CityData.name.toString()).get(KeyMapper.DBKEY) + "='" + entity.getName() + "'";
         String sql = updateSql(TABLE_CITY, uEntity.getList("'"), criteriumOfUpdating);
 

@@ -7,6 +7,7 @@ import com.ttzv.item.utility.Utility;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //Connection closes after every query or statement
@@ -24,10 +25,24 @@ public abstract class DatabaseHandler {
         }
         //
 
-        JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector(Cfg.getInstance().retrieveProp(Cfg.DB_DRIVER),
+        jdbcDriverSelector = new JdbcDriverSelector(Cfg.getInstance().retrieveProp(Cfg.DB_DRIVER),
                 Cfg.getInstance().retrieveProp(Cfg.DB_URL),
                 Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN),
                 Crypt.newCrypt("dCr").read());
+    }
+
+    public boolean tablesReady(String tableName) throws SQLException {
+        Connection connection = jdbcDriverSelector.createConnection();
+        DatabaseMetaData dbmd = connection.getMetaData();
+        ResultSet rs = dbmd.getTables(null, null, "%", null);
+        List<String> tables = new ArrayList<>();
+        while (rs.next()){
+            tables.add(rs.getString(3));
+        }
+        rs.close();
+        connection.close();
+        return tables.contains(tableName);
+
     }
 
     public boolean executeUpdate(String sql) throws SQLException {
@@ -78,7 +93,7 @@ public abstract class DatabaseHandler {
     /**
      * Generates UPDATE SQL statement on specific record in database, can update multiple cells simultaneously if multiple columns are passed to entityPairs parameter
      */
-    public String updateSql (String table, List<String> entityPairs, String criterium) {
+    public String updateSql (String table, List<String> entityPairs, String criterium) { //todo move to utility class
         String statement = "";
         if(!table.isEmpty() && !criterium.isEmpty() && entityPairs.size()>0){
             statement = "UPDATE " + table + " SET " ;
@@ -116,5 +131,36 @@ public abstract class DatabaseHandler {
         }
         connection.close();
         return columnsList;
+    }
+
+    /**
+     * Convenience method used for building PostgreSQL INSERT statement
+     * @param table - name of table where data will be inserted
+     * @param columns - list of column names where data will be inserted
+     * @param values - list of values for insertion, must be in order with columns
+     * @return build PostgreSQL INSERT statement ready for query
+     */
+    public String insertSql (String table, List<String> columns, List<String> values ){ //todo move to utility class
+        String insertStatement = "INSERT INTO " + table + " ";
+        StringBuilder sb = new StringBuilder(insertStatement);
+        //building column data
+        sb.append("(");
+        for (String s : columns){
+            sb.append(s.toString());
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.append(") ");
+        sb.append("VALUES ");
+
+        sb.append("(");
+        for (String s : values){
+            sb.append(s.toString());
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.append(")");
+
+        return sb.toString();
     }
 }
