@@ -16,13 +16,13 @@ module com.ttzv.itmg {
 
     opens com.ttzv.item to javafx.fxml;
     opens com.ttzv.item.ui.mainAppWindow to javafx.fxml;
-    opens com.ttzv.item.ui.mainAppWindow.popups to javafx.fxml;
+   // opens com.ttzv.item.ui.mainAppWindow.popups to javafx.fxml;
     opens com.ttzv.item.ui.crmWindow to javafx.fxml;
     opens com.ttzv.item.ui.dbToolsWindow to javafx.fxml;
     opens com.ttzv.item.ui.mailerWindow to javafx.fxml;
     opens com.ttzv.item.ui.gSuiteWindow to javafx.fxml;
     opens com.ttzv.item.ui.settingsWindow to javafx.fxml;
-    opens com.ttzv.item.ui.signWindow to javafx.fxml;
+   // opens com.ttzv.item.ui.signWindow to javafx.fxml;
 
     exports com.ttzv.item;
     exports com.ttzv.item.uiUtils;

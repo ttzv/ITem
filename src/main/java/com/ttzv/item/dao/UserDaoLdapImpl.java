@@ -24,7 +24,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
     public UserDaoLdapImpl() throws NamingException {
         this.searchBase = "ou=Pracownicy,dc=atal,dc=local";
         this.searchFilter = "(&(objectClass=user))";
-        this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "samAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", "whenChanged"};
+        this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "sAMAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", "whenChanged"};
         this.searchControlsScope = SearchControls.SUBTREE_SCOPE;
         this.ldapParser = LDAPParser.getLdapParser();
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);

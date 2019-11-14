@@ -26,10 +26,13 @@ public class DynamicEntity {
      * @param vals list of values to process
      */
     public DynamicEntity process(List<String> vals){
-        for (String val :
-                vals) {
+        for (String val : vals) {
             String [] splitted = val.split(separator);
-            add(splitted[0], splitted[1]);
+            if(splitted.length == 2) {
+                add(splitted[0], splitted[1]);
+            } else {
+                add(splitted[0], "null");
+            }
         }
         return this;
     }

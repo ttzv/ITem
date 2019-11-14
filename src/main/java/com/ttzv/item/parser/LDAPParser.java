@@ -89,7 +89,6 @@ public class LDAPParser
     private void initializeLdapContext() throws NamingException{
 
         Properties ldapEnv = new Properties();
-        ldapEnv.store();
         ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory"); //always the same
         ldapEnv.put(Context.PROVIDER_URL,  "ldap://" + ldap_URL + ":" + ldap_port);
         ldapEnv.put("java.naming.ldap.attributes.binary", "objectGUID");

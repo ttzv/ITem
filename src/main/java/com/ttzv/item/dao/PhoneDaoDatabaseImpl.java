@@ -15,6 +15,22 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
     public PhoneDaoDatabaseImpl() throws SQLException {
         super();
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, Phone.class);
+        if(!tablesReady(TABLE_PHONE)){
+            createTables();
+        }
+    }
+
+    @Override
+    public void createTables() throws SQLException {
+        String sql = "CREATE TABLE " + TABLE_PHONE + " (" +
+                "id SERIAL PRIMARY KEY," +
+                PhoneData.ownerid.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey(keyMapper) + ")," +
+                PhoneData.imei.getDbKey(keyMapper) + " VARCHAR," +
+                PhoneData.model.getDbKey(keyMapper) + " VARCHAR," +
+                PhoneData.number.getDbKey(keyMapper) + " VARCHAR," +
+                PhoneData.pin.getDbKey(keyMapper) + " VARCHAR," +
+                PhoneData.puk.getDbKey(keyMapper) + " VARCHAR )";
+        executeUpdate(sql);
     }
 
     @Override
@@ -54,7 +70,10 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
     }
 
     @Override
-    public boolean deleteEntity(Phone entity) {
+    public boolean deleteEntity(Phone entity) throws SQLException {
+        String query = "DELETE FROM " + TABLE_PHONE +
+                " WHERE " + TABLE_PHONE + "." + PhoneData.ownerid.getDbKey(keyMapper) + "='" + entity.getOwnerid() + "'";
+        executeQuery(query);
         return false;
     }
 

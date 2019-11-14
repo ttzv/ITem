@@ -1,6 +1,6 @@
 package com.ttzv.item.activeDirectory;
 
-import com.ttzv.item.db.UserDaoDatabaseImpl;
+import com.ttzv.item.dao.UserDaoDatabaseImpl;
 import com.ttzv.item.db.PgStatement;
 
 import java.sql.SQLException;

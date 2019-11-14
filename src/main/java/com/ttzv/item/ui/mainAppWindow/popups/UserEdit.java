@@ -3,7 +3,6 @@ package com.ttzv.item.ui.mainAppWindow.popups;
 import com.ttzv.item.activeDirectory.DbCell;
 import com.ttzv.item.entity.User;
 import com.ttzv.item.entity.UserHolder;
-import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.db.PgStatement;
 import com.ttzv.item.ui.mainAppWindow.MainWindow;
 import com.ttzv.item.uiUtils.DatabaseBoundTextField;

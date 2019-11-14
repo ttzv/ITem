@@ -21,10 +21,14 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
     private String mail;
     private String whenCreated;
     private String distinguishedName;
+    private String city;
     private String whenChanged;
 
-    public User(DynamicEntity userEntity) {
+    public User(DynamicEntity userEntity)
+    {
         this.userEntity = userEntity;
+        this.city = Utility.extractCityFromDn(userEntity.getValue(UserData.distinguishedName.toString()));
+        userEntity.setValue(UserData.city.toString(), this.city);
     }
 
     @Override
@@ -105,14 +109,6 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
         this.userEntity.setValue(UserData.distinguishedName.toString(), distinguishedName);
     }
 
-    public String getPersonalPhoneNumber() {
-        return userEntity.getValue(UserData.userphone.toString());
-    }
-
-    public void setPersonalPhoneNumber(String personalPhoneNumber) {
-        this.userEntity.setValue(UserData.userphone.toString(), personalPhoneNumber);
-    }
-
     public String getNotes() {
         return "NOT SET";
     }
@@ -132,26 +128,6 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
 
     public void setSamAccountName(String samAccountName) {
         this.userEntity.setValue(UserData.samaccountname.toString(), samAccountName);
-    }
-
-    public String getPosition() {
-        return userEntity.getValue(UserData.position.toString());
-    }
-
-    public String getLandlineNumber() {
-        return userEntity.getValue(UserData.userlandline.toString());
-    }
-
-    public String getInitMailPass() {
-        return userEntity.getValue(UserData.initmailpass.toString());
-    }
-
-    public String getCityPhone() {
-        return userEntity.getValue(UserData.cityPhone.toString());
-    }
-
-    public String getCityFax() {
-        return userEntity.getValue(UserData.cityfax.toString());
     }
 
     @Override

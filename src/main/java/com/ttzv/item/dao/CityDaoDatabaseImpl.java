@@ -15,6 +15,20 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     public CityDaoDatabaseImpl() throws SQLException {
         super();
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class);
+        if(!tablesReady(TABLE_CITY)){
+            createTables();
+        }
+    }
+
+    @Override
+    public void createTables() throws SQLException {
+        String sql = "CREATE TABLE " + TABLE_CITY + " (" +
+                "id SERIAL PRIMARY KEY," +
+                CityData.name.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.city + ")," +
+                CityData.landLineNumber.getDbKey(keyMapper) + " VARCHAR," +
+                CityData.faxNumber.getDbKey(keyMapper) + " VARCHAR," +
+                CityData.postalCode.getDbKey(keyMapper) + " VARCHAR)";
+        executeUpdate(sql);
     }
 
     @Override
@@ -54,7 +68,10 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     }
 
     @Override
-    public boolean deleteEntity(City entity) {
-        return false;
-    } //todo: implement
+    public boolean deleteEntity(City entity) throws SQLException {
+        String query = "DELETE FROM " + TABLE_CITY +
+                " WHERE " + TABLE_CITY + "." + CityData.name.getDbKey(keyMapper) + "='" + entity.getName() + "'";
+        executeQuery(query);
+        return true;
+    }
 }

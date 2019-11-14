@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*System.err.println("Key \"" + s + "\" already exists in mappings list \n" +
                             "given list was:\n" +
@@ -66,8 +67,9 @@ public class KeyMapper {
         if(mappingsList.size() == 0){
             mappingsList.add(new ArrayList<>(mappings));
         } else {
-            if (isDuplicate(mappingsList, mappings)) {
-                System.err.println("One of keys in provided mappings:\n" +
+            String duplicate = checkDuplicate(mappingsList, mappings);
+            if (!duplicate.isEmpty()) {
+                System.err.println("Key: \"" + duplicate + "\" from provided mappings:\n" +
                         mappings + "\n" +
                         "already exists in mappings list in group \"" + group + "\"");
             } else {
@@ -82,11 +84,15 @@ public class KeyMapper {
         return this.addMapping(objClass.getSimpleName(), mappings);
     }
 
-    public List<String> getMapping (String group, String key) {
+    public boolean addMapping(String... mappings) throws IOException {
+        return addMapping(Arrays.asList(mappings));
+    }
+
+    private List<String> getMapping (String group, String key) {
         List<List<String>> mappingsList;
         mappingsList = getMappingGroup(group);
-        for (List<String> list:
-             mappingsList) {
+        assert mappingsList != null;
+        for (List<String> list : mappingsList) {
             if (list.contains(key)) {
                 return list;
             }
@@ -115,8 +121,8 @@ public class KeyMapper {
         List<String> list = new ArrayList<>();
         List<List<String>> mappings = null;
         mappings = getMappingGroup(group);
-        for (List<String> ilist :
-                mappings) {
+        assert mappings != null;
+        for (List<String> ilist : mappings) {
             if(keyType < ilist.size())
                 list.add(ilist.get(keyType));
         }
@@ -129,6 +135,7 @@ public class KeyMapper {
 
     public String getCorrespondingMapping(String group, String key, int keyType){
         String cMapping = getMapping(group, key).get(keyType);
+        if(cMapping.isEmpty()) System.err.println("");
         return cMapping;
     }
 
@@ -136,26 +143,23 @@ public class KeyMapper {
         return this.getCorrespondingMapping(objClass.getSimpleName(), key, keyType);
     }
 
-    public int getKeyTypeofMapping(String group, String key){
+    public int getKeyTypeOfMapping(String group, String key){
         return getMapping(group, key).indexOf(key);
     }
 
-    public int getKeyTypeofMapping(String key){
-        return this.getKeyTypeofMapping(objClass.getSimpleName(), key);
+    public int getKeyTypeOfMapping(String key){
+        return this.getKeyTypeOfMapping(objClass.getSimpleName(), key);
     }
 
-    private boolean isDuplicate(List<List<String>> list, List<String> s){
-        for (String string:
-                s) {
-            for (List<String> ilist:
-                    list) {
-                boolean contains = ilist.contains(string) || string.isBlank();
-                if(contains){
-                    return true;
-                }
+    private String checkDuplicate(List<List<String>> list, List<String> s){
+         List<String> flatList = list.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        System.out.println(flatList);
+        for (String st : s) {
+            if(flatList.contains(st) && !st.isEmpty()) {
+                return st;
             }
         }
-        return false;
+        return "";
     }
 
 
@@ -172,12 +176,12 @@ public class KeyMapper {
         return null;
     }
 
-    private Map getMappingFromObjectIfJsonNotExist() throws IOException {
+    private Map<String, List<List<String>>> getMappingFromObjectIfJsonNotExist() throws IOException {
         try {
            this.mappingGroups = objectMapper.readValue(jsonPath.toFile(), Map.class);
         } catch (IOException e) {
             if(Files.size(jsonPath) == 0){
-                this.mappingGroups = new HashMap();
+                this.mappingGroups = new HashMap<>();
             } else {
                 e.printStackTrace();
                 return null;
@@ -189,26 +193,36 @@ public class KeyMapper {
 
 
     public static void main(String[] args) throws IOException {
-       /* KeyMapper keyMapper = new KeyMapper(Paths.get("mappings.json"));
-        keyMapper.addMapping("User","a", "B");
-        keyMapper.addMapping("Phone", "c", "d");
-        keyMapper.addMapping("User","e", "f");
-        System.out.println(keyMapper.getMapping("User","B"));
-        System.out.println(keyMapper.getMapping("Phone","c"));
-        keyMapper.addMapping("Phone", "g", "h");
-        keyMapper.addMapping("Phone", "i", "j");
-        keyMapper.addMapping("User", "1", "2", "3");
-        System.out.println(keyMapper.getMapping("User","g"));
-        System.out.println(keyMapper.getMapping("Phone","j"));
-        keyMapper.updateMapping("User", "a", 0,"H");
-        System.out.println(keyMapper.getMapping("User", "B"));
-        System.out.println(keyMapper.getMapping("User", "2"));
-        System.out.println(keyMapper.getAllMappingsOf("User", KeyMapper.LDAPKEY));
-        System.out.println(keyMapper.getAllMappingsOf("User", KeyMapper.DBKEY));
-        System.out.println(keyMapper.getAllMappingsOf("Phone", KeyMapper.LDAPKEY));
-        System.out.println(keyMapper.getAllMappingsOf("Phone", KeyMapper.DBKEY));
-        System.out.println(keyMapper.getAllMappingsOf("User", 2));*/
 
+        KeyMapper userMaps = new KeyMapper(KEY_MAP_JSON_PATH, User.class);
+            userMaps.addMapping(UserData.objectGUID.toString(), "objectGUID", "guid");
+            userMaps.addMapping(UserData.samaccountname.toString(), "sAMAccountName", "sam");
+            userMaps.addMapping(UserData.givenname.toString(), "givenName", "firstName");
+            userMaps.addMapping(UserData.sn.toString(), "sn", "lastName");
+            userMaps.addMapping(UserData.displayname.toString(), "displayName", "fullName");
+            userMaps.addMapping(UserData.distinguishedName.toString(), "distinguishedName", "distinguishedName");
+            userMaps.addMapping(UserData.city.toString(), "", "cityName");
+            userMaps.addMapping(UserData.whenCreated.toString(), "whenCreated", "created");
+            userMaps.addMapping(UserData.whenChanged.toString(), "whenChanged", "changed");
+            userMaps.addMapping(UserData.mail.toString(), "mail", "mailAddress");
+            userMaps.addMapping(UserData.useraccountcontrol.toString(), "userAccountControl", "uac");
+        KeyMapper userDetailMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, UserDetail.class);
+            userDetailMaps.addMapping(UserDetailData.guid.toString(), "", "guid");
+            userDetailMaps.addMapping(UserDetailData.position.toString(), "", "position");
+            userDetailMaps.addMapping(UserDetailData.initMailPass.toString(), "", "initMailPass");
+            userDetailMaps.addMapping(UserDetailData.notes.toString(), "", "notes");
+        KeyMapper cityMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class);
+            cityMaps.addMapping(CityData.name.toString(), "", "Name");
+            cityMaps.addMapping(CityData.landLineNumber.toString(), "", "number_landline");
+            cityMaps.addMapping(CityData.faxNumber.toString(), "", "number_fax");
+            cityMaps.addMapping(CityData.postalCode.toString(), "", "postalcode");
+        KeyMapper phoneMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, Phone.class);
+            phoneMaps.addMapping(PhoneData.ownerid.toString(), "", "owner_guid");
+            phoneMaps.addMapping(PhoneData.number.toString(), "", "number");
+            phoneMaps.addMapping(PhoneData.model.toString(), "", "model");
+            phoneMaps.addMapping(PhoneData.imei.toString(), "", "imei");
+            phoneMaps.addMapping(PhoneData.pin.toString(), "", "PIN");
+            phoneMaps.addMapping(PhoneData.puk.toString(), "", "PUK");
     }
 
 }

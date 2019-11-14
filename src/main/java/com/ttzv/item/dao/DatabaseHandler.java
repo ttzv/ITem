@@ -31,6 +31,8 @@ public abstract class DatabaseHandler {
                 Crypt.newCrypt("dCr").read());
     }
 
+    public abstract void createTables() throws SQLException;
+
     public boolean tablesReady(String tableName) throws SQLException {
         Connection connection = jdbcDriverSelector.createConnection();
         DatabaseMetaData dbmd = connection.getMetaData();
@@ -46,6 +48,7 @@ public abstract class DatabaseHandler {
     }
 
     public boolean executeUpdate(String sql) throws SQLException {
+        System.out.println(sql);
         Connection connection = jdbcDriverSelector.createConnection();
         if (connection != null) {
             Statement statement = null;
@@ -63,6 +66,7 @@ public abstract class DatabaseHandler {
     }
 
     public List<List<String>> executeQuery(String query) throws SQLException {
+        System.out.println(query);
         Connection connection = jdbcDriverSelector.createConnection();
         ResultSet resultSet = null;
         Statement statement = null;

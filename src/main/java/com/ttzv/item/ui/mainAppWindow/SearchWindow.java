@@ -3,7 +3,6 @@ package com.ttzv.item.ui.mainAppWindow;
 import com.ttzv.item.entity.User;
 import com.ttzv.item.entity.UserData;
 import com.ttzv.item.entity.UserHolder;
-import com.ttzv.item.db.UserDaoDatabaseImpl;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -81,21 +80,7 @@ public class SearchWindow extends AnchorPane {
                 }
             }
         });
-/*
-        this.listwvResults.setOnMouseClicked((MouseEvent event) -> {
-            if(event.getClickCount() == 2){
-                User selectedUser = this.listwvResults.getSelectionModel().getSelectedItem();
-                if(selectedUser != null){
-                    UserHolder.clear();
-                    UserHolder.addUser(selectedUser);
-                    if(!mainWindow.isInfoBarAssetsVisible()){
-                        mainWindow.infoBarAssetsVisible(true);
-                    }
-                   mainWindow.changeUser();
-                }
-            }
-        });
-*/
+
     }
 
     public void show() {

@@ -5,20 +5,20 @@ import java.util.List;
 
 public class UserHolder {
 
-    private static List<User> newUsers;
+    private List<User> newUsers;
 
-    private static User currentUser;
-    private static int currentIndex;
+    private User currentUser;
+    private int currentIndex;
 
-    public static User getCurrentUser() {
+    public  User getCurrentUser() {
         return newUsers.get(getCurrentIndex());
     }
 
-    public static void setCurrentUser(User bcurrentUser) {
+    public  void setCurrentUser(User bcurrentUser) {
         newUsers.set(getCurrentIndex(), bcurrentUser);
     }
 
-    public static void addUser (User u){
+    public  void addUser (User u){
         if(newUsers == null){
             newUsers = new ArrayList<>();
             currentIndex = 0;
@@ -26,13 +26,13 @@ public class UserHolder {
         newUsers.add(u);
     }
 
-    public static void clear(){
+    public  void clear(){
         if(newUsers != null) {
             newUsers.clear();
         }
     }
 
-    public static User next(){
+    public  User next(){
         if(currentIndex >= newUsers.size() - 1)
             currentIndex = 0;
         else currentIndex ++;
@@ -40,7 +40,7 @@ public class UserHolder {
         return newUsers.get(currentIndex);
     }
 
-    public static User previous(){
+    public  User previous(){
         if(currentIndex <= 0){
             currentIndex = newUsers.size()-1;
         } else currentIndex--;
@@ -48,7 +48,7 @@ public class UserHolder {
         return newUsers.get(currentIndex);
     }
 
-    public static int getCurrentIndex() {
+    public  int getCurrentIndex() {
         if(currentIndex >= newUsers.size()) {
             currentIndex = 0;
             return 0;
@@ -57,7 +57,7 @@ public class UserHolder {
         }
     }
 
-    public static int getMaxCount(){
+    public  int getMaxCount(){
         return newUsers.size();
     }
 
