@@ -3,6 +3,8 @@ package com.ttzv.item.dao;
 import com.ttzv.item.entity.*;
 import com.ttzv.item.utility.Utility;
 
+import javax.naming.NamingException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     public void createTables() throws SQLException {
         String sql = "CREATE TABLE " + TABLE_CITY + " (" +
                 "id SERIAL PRIMARY KEY," +
-                CityData.name.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.city + ")," +
+                CityData.name.getDbKey(keyMapper) + " VARCHAR UNIQUE, " +
                 CityData.landLineNumber.getDbKey(keyMapper) + " VARCHAR," +
                 CityData.faxNumber.getDbKey(keyMapper) + " VARCHAR," +
                 CityData.postalCode.getDbKey(keyMapper) + " VARCHAR)";
@@ -70,8 +72,13 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     @Override
     public boolean deleteEntity(City entity) throws SQLException {
         String query = "DELETE FROM " + TABLE_CITY +
-                " WHERE " + TABLE_CITY + "." + CityData.name.getDbKey(keyMapper) + "='" + entity.getName() + "'";
+                " WHERE " + TABLE_CITY + "." + CityData.name.getDbKey() + "='" + entity.getName() + "'";
         executeQuery(query);
         return true;
+    }
+
+    @Override
+    public int[] syncDataSourceWith(EntityDAO<City> entityDAO) throws SQLException, NamingException, IOException {
+        return new int[0];
     }
 }

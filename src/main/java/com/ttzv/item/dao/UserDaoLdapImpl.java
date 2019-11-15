@@ -8,6 +8,8 @@ import com.ttzv.item.parser.LDAPParser;
 
 import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +29,19 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
         this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "sAMAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", "whenChanged"};
         this.searchControlsScope = SearchControls.SUBTREE_SCOPE;
         this.ldapParser = LDAPParser.getLdapParser();
+        ldapParser.closeContext();//redundancy with method getResults() to check connection when creating dao.
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
     }
 
     public List<List<String>> getResults() throws NamingException {
-        this.ldapParser.queryLdap(LDAPParser.builder()
+            this.ldapParser = LDAPParser.getLdapParser();
+            this.ldapParser.queryLdap(LDAPParser.builder()
                 .setSearchBase(searchBase)
                 .setSearchFilter(searchFilter)
                 .setSearchAttributes(searchAttributes)
                 .setSearchControlsScope(searchControlsScope)
                 .validate());
+            ldapParser.closeContext();
         return this.ldapParser.getResults();
 
     }
@@ -68,6 +73,11 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
     @Override
     public boolean deleteEntity(User entity) {
         return false;
+    }
+
+    @Override
+    public int[] syncDataSourceWith(EntityDAO<User> entityDAO) throws SQLException, NamingException, IOException {
+        return new int[0];
     }
 
 

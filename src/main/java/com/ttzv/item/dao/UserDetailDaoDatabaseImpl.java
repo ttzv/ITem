@@ -15,7 +15,7 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
 
     public UserDetailDaoDatabaseImpl() throws SQLException {
         super();
-        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
+        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, UserDetail.class);
         if(!tablesReady(TABLE_USER_DETAILS)){
             createTables();
         }
@@ -25,7 +25,7 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
     public void createTables() throws SQLException {
         String sql = "CREATE TABLE " + TABLE_USER_DETAILS + " ( " +
                 "id SERIAL PRIMARY KEY," +
-                UserDetailData.guid.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey(keyMapper)+ ")," +
+                UserDetailData.guid.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey()+ ")," +
                 UserDetailData.position.getDbKey(keyMapper) + " VARCHAR," +
                 UserDetailData.initMailPass.getDbKey(keyMapper) + " VARCHAR," +
                 UserDetailData.notes.getDbKey(keyMapper) + " VARCHAR )";
@@ -64,5 +64,10 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
     @Override
     public boolean deleteEntity(UserDetail entity) throws SQLException, IOException {
         return false;
+    }
+
+    @Override
+    public int[] syncDataSourceWith(EntityDAO<UserDetail> entityDAO) throws SQLException, NamingException, IOException {
+        return new int[0];
     }
 }

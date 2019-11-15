@@ -3,6 +3,8 @@ package com.ttzv.item.dao;
 import com.ttzv.item.entity.*;
 import com.ttzv.item.utility.Utility;
 
+import javax.naming.NamingException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
     public void createTables() throws SQLException {
         String sql = "CREATE TABLE " + TABLE_PHONE + " (" +
                 "id SERIAL PRIMARY KEY," +
-                PhoneData.ownerid.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey(keyMapper) + ")," +
+                PhoneData.ownerid.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey() + ")," +
                 PhoneData.imei.getDbKey(keyMapper) + " VARCHAR," +
                 PhoneData.model.getDbKey(keyMapper) + " VARCHAR," +
                 PhoneData.number.getDbKey(keyMapper) + " VARCHAR," +
@@ -75,6 +77,11 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
                 " WHERE " + TABLE_PHONE + "." + PhoneData.ownerid.getDbKey(keyMapper) + "='" + entity.getOwnerid() + "'";
         executeQuery(query);
         return false;
+    }
+
+    @Override
+    public int[] syncDataSourceWith(EntityDAO<Phone> entityDAO) throws SQLException, NamingException, IOException {
+        return new int[0];
     }
 
 }

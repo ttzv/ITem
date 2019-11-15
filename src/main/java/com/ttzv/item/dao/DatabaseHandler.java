@@ -143,28 +143,31 @@ public abstract class DatabaseHandler {
      * @param columns - list of column names where data will be inserted
      * @param values - list of values for insertion, must be in order with columns
      * @return build PostgreSQL INSERT statement ready for query
-     */
-    public String insertSql (String table, List<String> columns, List<String> values ){ //todo move to utility class
+     */ //todo: optimize sql - generate columns once with multiple value lists
+    public String insertSql (String table, List<String> columns, List<List<String>> values ){ //todo move to utility class
         String insertStatement = "INSERT INTO " + table + " ";
         StringBuilder sb = new StringBuilder(insertStatement);
         //building column data
         sb.append("(");
         for (String s : columns){
-            sb.append(s.toString());
+            sb.append(s);
             sb.append(",");
         }
         sb.deleteCharAt(sb.length()-1);
         sb.append(") ");
-        sb.append("VALUES ");
-
-        sb.append("(");
-        for (String s : values){
-            sb.append(s.toString());
-            sb.append(",");
+        sb.append("\nVALUES ");
+        for (List<String> nestedList : values) {
+            sb.append("(");
+            for (String s : nestedList) {
+                sb.append("'").append(s).append("'");
+                sb.append(",");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            sb.append("),\n");
         }
-        sb.deleteCharAt(sb.length()-1);
-        sb.append(")");
-
+        sb.deleteCharAt(sb.length() - 1);
+        sb.deleteCharAt(sb.length() - 1); //todo this is temporary right? who am i kidding..
+        sb.append(";");
         return sb.toString();
     }
 }
