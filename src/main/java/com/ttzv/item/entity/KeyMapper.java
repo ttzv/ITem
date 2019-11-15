@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
                             list);*/
 public class KeyMapper {
 
-    //default keys
+    //default keys todo: put these in Map<Integer,String>
     public static final int OBJECTKEY = 0;
     public static final int LDAPKEY = 1;
     public static final int DBKEY = 2;
@@ -134,9 +134,13 @@ public class KeyMapper {
     }
 
     public String getCorrespondingMapping(String group, String key, int keyType){
-        String cMapping = getMapping(group, key).get(keyType);
-        if(cMapping.isEmpty()) System.err.println("");
-        return cMapping;
+        List<String> cMapList = getMapping(group, key);
+        if (cMapList == null) return null;
+        else {
+            String cMapping = cMapList.get(keyType);
+            if (cMapping.isEmpty()) System.err.println("");
+            return cMapping;
+        }
     }
 
     public String getCorrespondingMapping(String key, int keyType){
@@ -152,8 +156,7 @@ public class KeyMapper {
     }
 
     private String checkDuplicate(List<List<String>> list, List<String> s){
-         List<String> flatList = list.stream().flatMap(Collection::stream).collect(Collectors.toList());
-        System.out.println(flatList);
+        List<String> flatList = list.stream().flatMap(Collection::stream).collect(Collectors.toList());
         for (String st : s) {
             if(flatList.contains(st) && !st.isEmpty()) {
                 return st;
@@ -193,26 +196,25 @@ public class KeyMapper {
 
 
     public static void main(String[] args) throws IOException {
-
-        KeyMapper userMaps = new KeyMapper(KEY_MAP_JSON_PATH, User.class);
+        KeyMapper userMaps = new KeyMapper(KEY_MAP_JSON_PATH, User.class); //todo db mappings to lowercase (Postgres requires double quotes for case-sensitive names and double quotes are no-no)
             userMaps.addMapping(UserData.objectGUID.toString(), "objectGUID", "guid");
             userMaps.addMapping(UserData.samaccountname.toString(), "sAMAccountName", "sam");
-            userMaps.addMapping(UserData.givenname.toString(), "givenName", "firstName");
-            userMaps.addMapping(UserData.sn.toString(), "sn", "lastName");
-            userMaps.addMapping(UserData.displayname.toString(), "displayName", "fullName");
-            userMaps.addMapping(UserData.distinguishedName.toString(), "distinguishedName", "distinguishedName");
-            userMaps.addMapping(UserData.city.toString(), "", "cityName");
+            userMaps.addMapping(UserData.givenname.toString(), "givenName", "firstname");
+            userMaps.addMapping(UserData.sn.toString(), "sn", "lastname");
+            userMaps.addMapping(UserData.displayname.toString(), "displayName", "fullname");
+            userMaps.addMapping(UserData.distinguishedName.toString(), "distinguishedName", "distinguishedname");
+            userMaps.addMapping(UserData.city.toString(), "", "cityname");
             userMaps.addMapping(UserData.whenCreated.toString(), "whenCreated", "created");
             userMaps.addMapping(UserData.whenChanged.toString(), "whenChanged", "changed");
-            userMaps.addMapping(UserData.mail.toString(), "mail", "mailAddress");
+            userMaps.addMapping(UserData.mail.toString(), "mail", "mailaddress");
             userMaps.addMapping(UserData.useraccountcontrol.toString(), "userAccountControl", "uac");
         KeyMapper userDetailMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, UserDetail.class);
             userDetailMaps.addMapping(UserDetailData.guid.toString(), "", "guid");
             userDetailMaps.addMapping(UserDetailData.position.toString(), "", "position");
-            userDetailMaps.addMapping(UserDetailData.initMailPass.toString(), "", "initMailPass");
+            userDetailMaps.addMapping(UserDetailData.initMailPass.toString(), "", "initmailpass");
             userDetailMaps.addMapping(UserDetailData.notes.toString(), "", "notes");
         KeyMapper cityMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class);
-            cityMaps.addMapping(CityData.name.toString(), "", "Name");
+            cityMaps.addMapping(CityData.name.toString(), "", "name");
             cityMaps.addMapping(CityData.landLineNumber.toString(), "", "number_landline");
             cityMaps.addMapping(CityData.faxNumber.toString(), "", "number_fax");
             cityMaps.addMapping(CityData.postalCode.toString(), "", "postalcode");
@@ -221,8 +223,10 @@ public class KeyMapper {
             phoneMaps.addMapping(PhoneData.number.toString(), "", "number");
             phoneMaps.addMapping(PhoneData.model.toString(), "", "model");
             phoneMaps.addMapping(PhoneData.imei.toString(), "", "imei");
-            phoneMaps.addMapping(PhoneData.pin.toString(), "", "PIN");
-            phoneMaps.addMapping(PhoneData.puk.toString(), "", "PUK");
+            phoneMaps.addMapping(PhoneData.pin.toString(), "", "pin");
+            phoneMaps.addMapping(PhoneData.puk.toString(), "", "puk");
+
+            userMaps.getMapping("mailaddress");
     }
 
 }

@@ -2,8 +2,8 @@ package com.ttzv.item.entity;
 
 import com.ttzv.item.utility.Utility;
 
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Basic User "bean" class used for various operations in this application. Supports creating User from objects implementing DynamicEntity interface.
@@ -11,7 +11,6 @@ import java.util.Objects;
 public class User implements DynamicEntityCompatible, Comparable<User>{
 
     private DynamicEntity userEntity;
-
     private String guid;
     private String samaccountname;
     private String givenname;
@@ -28,7 +27,14 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
     {
         this.userEntity = userEntity;
         this.city = Utility.extractCityFromDn(userEntity.getValue(UserData.distinguishedName.toString()));
-        userEntity.setValue(UserData.city.toString(), this.city);
+        if(!userEntity.getKeys().contains(UserData.city.toString())) {
+            userEntity.add(UserData.city.toString(), this.city);
+        }
+    }
+
+    @Override
+    public String getUniqueIdentifier() {
+        return getGUID();
     }
 
     @Override
@@ -81,16 +87,8 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
         return userEntity.getValue(UserData.whenCreated.toString());
     }
 
-    public void setWhenCreated(String whenCreated) {
-        this.userEntity.setValue(UserData.whenCreated.toString(), whenCreated);
-    }
-
     public String getWhenChanged() {
         return userEntity.getValue(UserData.whenChanged.toString());
-    }
-
-    public void setWhenChanged(String whenChanged) {
-        this.userEntity.setValue(UserData.whenChanged.toString(), whenChanged);
     }
 
     public String getDistinguishedName() {
@@ -98,11 +96,11 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
     }
 
     public String getCity() {
-        return userEntity.getValue(Utility.extractCityFromDn(UserData.distinguishedName.toString()));
+        return this.city;
     }
 
     public void setCity(String city) {
-        this.userEntity.setValue(UserData.distinguishedName.toString(), city);
+        this.userEntity.setValue(UserData.city.toString(), city);
     }
 
     public void setDistinguishedName(String distinguishedName) {
@@ -119,7 +117,7 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
     }
 
     public String getGUID() {
-        return Utility.formatObjectGUID(userEntity.getValue(UserData.objectGUID.toString()));
+        return userEntity.getValue(UserData.objectGUID.toString());
     }
 
     public String getSamAccountName() {
@@ -151,5 +149,39 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
     @Override
     public int hashCode() {
         return Objects.hash(userEntity.getValue(UserData.objectGUID.toString()));
+    }
+
+    @Override
+    public String toString() {
+        return userEntity.getList().toString();
+    }
+
+    public Set<String> getUpdatedKeys(User user){
+        Set<String> keys = null;
+        if(this.equals(user)){
+            keys = new HashSet<>();
+            for (String key : this.getEntity().getKeys()) {
+                String thisValue = this.getEntity().getValue(key);
+                String comparedValue = user.getEntity().getValue(key);
+                if (!thisValue.equals(comparedValue)){
+                    keys.add(key);
+                }
+            }
+        }
+        return keys;
+    }
+
+    public boolean hasDifferentVals(User user){
+        //checking every value if user is the same, returns true on first different value
+        if(this.equals(user)){
+            List<String> thisList = this.getEntity().getList();
+            List<String> userList = user.getEntity().getList();
+            if(thisList.equals(userList)){
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 }

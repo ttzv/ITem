@@ -32,11 +32,22 @@ public enum UserData implements Mappable{
     }
 
     @Override
-    public String getDbKey(KeyMapper keyMapper){
+    public String getDbKey() {
+        return getDbKey(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class));
+    }
+
+    @Override
+    public String getDbKey(KeyMapper keyMapper) {
         return keyMapper.getCorrespondingMapping(this.toString(), KeyMapper.DBKEY);
     }
+
     @Override
-    public String getLdapKey(KeyMapper keyMapper){
+    public String getLdapKey() {
+        return getDbKey(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class));
+    }
+
+    @Override
+    public String getLdapKey(KeyMapper keyMapper) {
         return keyMapper.getCorrespondingMapping(this.toString(), KeyMapper.LDAPKEY);
     }
 }

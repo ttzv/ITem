@@ -14,8 +14,23 @@ public enum CityData implements Mappable{
     }
 
     @Override
+    public String toString() {
+        return udname;
+    }
+
+    @Override
+    public String getDbKey() {
+        return getDbKey(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class));
+    }
+
+    @Override
     public String getDbKey(KeyMapper keyMapper) {
         return keyMapper.getCorrespondingMapping(this.toString(), KeyMapper.DBKEY);
+    }
+
+    @Override
+    public String getLdapKey() {
+        return getDbKey(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class));
     }
 
     @Override

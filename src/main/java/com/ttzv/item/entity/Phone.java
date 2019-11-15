@@ -17,6 +17,11 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     @Override
+    public String getUniqueIdentifier() {
+        return getOwnerid();
+    }
+
+    @Override
     public DynamicEntity getEntity() {
         return phoneEntity;
     }
@@ -26,7 +31,7 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setOwnerid(String ownerid) {
-        this.ownerid = ownerid;
+        this.phoneEntity.setValue(PhoneData.ownerid.toString(), ownerid);
     }
 
     public String getNumber() {
@@ -34,7 +39,7 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setNumber(String number) {
-        this.number = number;
+        this.phoneEntity.setValue(PhoneData.number.toString(), number);
     }
 
     public String getModel() {
@@ -42,7 +47,7 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setModel(String model) {
-        this.model = model;
+        this.phoneEntity.setValue(PhoneData.model.toString(), model);
     }
 
     public String getImei() {
@@ -50,7 +55,7 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setImei(String imei) {
-        this.imei = imei;
+        this.phoneEntity.setValue(PhoneData.imei.toString(), imei);
     }
 
     public String getPin() {
@@ -58,7 +63,7 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setPin(String pin) {
-        this.pin = pin;
+        this.phoneEntity.setValue(PhoneData.pin.toString(), pin);
     }
 
     public String getPuk() {
@@ -66,7 +71,7 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setPuk(String puk) {
-        this.puk = puk;
+        this.phoneEntity.setValue(PhoneData.puk.toString(), puk);
     }
 
     @Override

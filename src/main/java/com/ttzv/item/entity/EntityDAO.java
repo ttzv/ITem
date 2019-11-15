@@ -11,5 +11,6 @@ public interface EntityDAO<T> {
     public T getEntity(String id) throws SQLException, IOException, NamingException;
     public boolean updateEntity(T entity) throws SQLException, IOException;
     public boolean deleteEntity(T entity) throws SQLException, IOException;
+    public int[] syncDataSourceWith(EntityDAO<T> entityDAO) throws SQLException, NamingException, IOException;
 
 }

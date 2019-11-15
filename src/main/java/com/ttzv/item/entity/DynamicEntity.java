@@ -43,9 +43,11 @@ public class DynamicEntity {
      */
     public DynamicEntity replaceKeys(KeyMapper mapper, int keyType){
         Map<String, String> replacedMap = new HashMap<>();
-        for (String key : entityMap.keySet()) {
-            String newKey = mapper.getMapping(key).get(keyType);
-            replacedMap.put(newKey, entityMap.get(key));
+        for (String key : entityMap.keySet()) { //todo: optimize if keys are the same
+            String newKey = mapper.getCorrespondingMapping(key, keyType);
+            if(newKey != null) {
+                replacedMap.put(newKey, entityMap.get(key));
+            }
         }
         this.entityMap = replacedMap;
         return this;
@@ -72,7 +74,7 @@ public class DynamicEntity {
         if(entityMap.containsKey(key)) {
             return entityMap.getOrDefault(key, null);
         } else {
-            System.err.println("Key " + key + "not found as valid key");
+            System.err.println("Key " + key + " not found as valid key");
             return null;
         }
     }
@@ -101,6 +103,8 @@ public class DynamicEntity {
      */
     public boolean add(String key, String value){
         if(entityMap.containsKey(key)){
+            System.err.println("Cannot add value: \"" + value + "\" because Key: \"" + key + "\" is already assigned to a value: \"" + this.getValue(key) + "\"\n" +
+                    "use setValue() instead.");
             return false;
         } else {
             entityMap.put(key, value);
@@ -127,7 +131,9 @@ public class DynamicEntity {
      * @return List constructed from entityMap.
      */
     public List<String> getList (String valWrap){
-        return this.entityMap.keySet().stream().map(k -> k + separator + valWrap + entityMap.get(k) + valWrap).collect(Collectors.toList());
+        List<String> returnedlist = this.entityMap.keySet().stream().map(k -> k + separator + valWrap + entityMap.get(k) + valWrap).collect(Collectors.toList());
+        Collections.sort(returnedlist);
+        return returnedlist;
     }
 
     /**
