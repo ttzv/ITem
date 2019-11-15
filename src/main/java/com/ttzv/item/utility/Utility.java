@@ -58,7 +58,6 @@ public class Utility {
     }
 
     public static String formatObjectGUID(Object guid){
-
         return convertToDashedString( (byte[]) guid);
     }
 
