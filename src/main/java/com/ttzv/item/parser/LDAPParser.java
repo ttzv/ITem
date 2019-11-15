@@ -3,6 +3,7 @@ package com.ttzv.item.parser;
 import com.ttzv.item.entity.User;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
+import com.ttzv.item.utility.Utility;
 import javafx.print.Printer;
 
 import javax.naming.Context;
@@ -114,7 +115,7 @@ public class LDAPParser
     /**
      * Method used to retrieve information from LDAP with given Query. Because LDAP query consists of many different parameters
      * this method requires QueryBuilder object - a convenience set of methods that should ease building a query and searching through LDAP
-     * At the end of building Query call validate() method to check if all required parameters were set and
+     * At the end of building Query call validate() method to check if all required parameters were set.
      * @param queryBuilder LDAPParser.QueryBuilder object used to build LDAP query - entry method is LDAPParser.QueryBuilder.builder()
      * @return Count of results retrieved from LDAP
      */
@@ -132,7 +133,10 @@ public class LDAPParser
                         .map(s -> {
                             //each defined attribute is retrieved and collected in list with corresponding attribute identifier, null attributes are changed to empty strings
                                     try {
-                                        return (returnedAttrs.get(s) == null) ? (s + LDAP_SEPARATOR + "") : (s + LDAP_SEPARATOR + returnedAttrs.get(s).get().toString());
+                                        if (returnedAttrs.get(s) == null) return s + LDAP_SEPARATOR + "";
+                                        else if (s.equals("objectGUID"))
+                                            return s + LDAP_SEPARATOR + Utility.formatObjectGUID(returnedAttrs.get(s).get());
+                                        else return s + LDAP_SEPARATOR + returnedAttrs.get(s).get().toString();
                                     } catch (NamingException e) {
                                         e.printStackTrace();
                                     }
@@ -142,7 +146,6 @@ public class LDAPParser
                         .collect(Collectors.toList());
                 results.add(returnedAttributeList);
             }
-            ldapContext.close();
             return totalResults;
         } else {
             System.err.println("Query not validated or missing query parameters - check QueryBuilder.validate() method");
@@ -150,7 +153,7 @@ public class LDAPParser
         }
     }
 
-    public void close() throws NamingException {
+    public void closeContext() throws NamingException {
         this.ldapContext.close();
     }
 
