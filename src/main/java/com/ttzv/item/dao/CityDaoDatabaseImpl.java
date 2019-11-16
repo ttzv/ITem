@@ -7,7 +7,9 @@ import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<City> {
 
@@ -65,8 +67,11 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
         DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
         String criteriumOfUpdating = keyMapper.getMapping(CityData.name.toString()).get(KeyMapper.DBKEY) + "='" + entity.getName() + "'";
         String sql = updateSql(TABLE_CITY, uEntity.getList("'"), criteriumOfUpdating);
-
-        return executeUpdate(sql);
+        if(!executeUpdate(sql)){
+            System.out.println("Nothing updated, inserting");
+            insert(entity);
+        }
+        return false;
     }
 
     @Override
@@ -80,5 +85,16 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     @Override
     public int[] syncDataSourceWith(EntityDAO<City> entityDAO) throws SQLException, NamingException, IOException {
         return new int[0];
+    }
+
+    private void insert(City city) throws SQLException {
+        List<String> dbKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
+        List<String> values = dbKeys.stream()
+                .map(
+                        k->city.getEntity()
+                                .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
+                .collect(Collectors.toList());
+        String sql = insertSql(TABLE_CITY, keyMapper.getAllMappingsOf(KeyMapper.DBKEY), Collections.singletonList(values));
+        executeUpdate(sql);
     }
 }

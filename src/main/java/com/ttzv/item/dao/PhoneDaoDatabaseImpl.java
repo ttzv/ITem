@@ -7,7 +7,9 @@ import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Phone> {
 
@@ -67,8 +69,11 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
         DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
         String criteriumOfUpdating = keyMapper.getMapping(PhoneData.ownerid.toString()).get(KeyMapper.DBKEY) + "='" + entity.getOwnerid() + "'";
         String sql = updateSql(TABLE_PHONE, uEntity.getList("'"), criteriumOfUpdating);
-
-        return executeUpdate(sql);
+        if(!executeUpdate(sql)){
+            System.out.println("Nothing updated, inserting");
+            insert(entity);
+        }
+        return false;
     }
 
     @Override
@@ -82,6 +87,18 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
     @Override
     public int[] syncDataSourceWith(EntityDAO<Phone> entityDAO) throws SQLException, NamingException, IOException {
         return new int[0];
+    }
+
+    //todo: maybe move to superclass?
+    private void insert(Phone phone) throws SQLException {
+        List<String> dbKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
+        List<String> values = dbKeys.stream()
+                .map(
+                        k->phone.getEntity()
+                                .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
+                .collect(Collectors.toList());
+        String sql = insertSql(TABLE_PHONE, keyMapper.getAllMappingsOf(KeyMapper.DBKEY), Collections.singletonList(values));
+        executeUpdate(sql);
     }
 
 }

@@ -12,7 +12,7 @@ public class MainTemp {
 
     public static void main(String[] args) throws NamingException, IOException, SQLException {
         Cfg.getInstance().init(null);
-        //EntityDAO<User> userDao = new UserDaoLdapImpl();
+        /*//EntityDAO<User> userDao = new UserDaoLdapImpl();
         //userDao.getAllEntities();
         EntityDAO<User> entityDAOuserdb = new UserDaoDatabaseImpl();
         EntityDAO<UserDetail> entityDAOuserdetdb = new UserDetailDaoDatabaseImpl();
@@ -37,7 +37,24 @@ public class MainTemp {
         user.setGivenName("Random");
         System.out.println(user);
         entityDAOuserdb.updateEntity(user);
-        System.out.println(entityDAOuserdb.getEntity("1f75cf91-f7ea-4cea-bf12-b202d0d13806"));
+        System.out.println(entityDAOuserdb.getEntity("1f75cf91-f7ea-4cea-bf12-b202d0d13806"));*/
+
+        EntityDAO<User> userDbEntityDAO = new UserDaoDatabaseImpl();
+        EntityDAO<UserDetail> entityDAOuserdetdb = new UserDetailDaoDatabaseImpl();
+        EntityDAO<Phone> entityDAOphonedb = new PhoneDaoDatabaseImpl();
+        EntityDAO<City> entityDAOcitydb = new CityDaoDatabaseImpl();
+        UserComboWrapper comboWrapper = new UserComboWrapper(
+                entityDAOcitydb.getAllEntities(),
+                entityDAOphonedb.getAllEntities(),
+                entityDAOuserdetdb.getAllEntities()
+                );
+        City testcity = comboWrapper.getCityOf(userDbEntityDAO.getEntity("2c664e79-9362-4196-8796-d9a4805f6691"));
+        System.out.println(testcity);
+        /*testcity.setName("Warszawa");
+        testcity.setPostalCode("111111");
+        testcity.setLandLineNumber("2222222");
+        testcity.setFaxNumber("123123123");
+        entityDAOcitydb.updateEntity(testcity);*/
     }
 
 }

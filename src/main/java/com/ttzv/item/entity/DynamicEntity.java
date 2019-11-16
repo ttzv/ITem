@@ -114,7 +114,7 @@ public class DynamicEntity {
 
     /**
      * Set value under given key to a new value
-     * Stringhis method can only change values paired with existing keys. It cannot add new key-value pairs.
+     * This method can only change values paired with existing keys. It cannot add new key-value pairs.
      * @param key key to look for
      * @param value value to set
      * @return true if value was correctly replaced or false when key doesn't exist
@@ -137,7 +137,7 @@ public class DynamicEntity {
     }
 
     /**
-     * Constrycts a List same as getList(String valWrap) but without wrapper.
+     * Constructs a List same as getList(String valWrap) but without wrapping character.
      * @return List where Values are not wrapped in anything
      */
     public List<String> getList (){

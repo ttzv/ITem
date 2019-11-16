@@ -1,12 +1,15 @@
 package com.ttzv.item.dao;
 
 import com.ttzv.item.entity.*;
+import com.ttzv.item.utility.Utility;
 
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<UserDetail> {
     private final String TABLE_USER_DETAILS = "user_details";
@@ -53,21 +56,51 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
 
     @Override
     public UserDetail getEntity(String id) throws SQLException, IOException, NamingException {
-        return null;
+        String mappedKey = keyMapper.getCorrespondingMapping(UserDetailData.guid.toString(), KeyMapper.DBKEY);
+        String query = "SELECT * FROM " + TABLE_USER_DETAILS +
+                " WHERE " + TABLE_USER_DETAILS + "." + mappedKey + "='" + id + "'";
+        List<String> result = Utility.unNestList(executeQuery(query));
+        assert result != null;
+        return new UserDetail(DynamicEntity.newDynamicEntity()
+                .process(result)
+                .replaceKeys(keyMapper, KeyMapper.OBJECTKEY));
     }
 
     @Override
     public boolean updateEntity(UserDetail entity) throws SQLException, IOException {
+        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
+        String criteriumOfUpdating = keyMapper.getCorrespondingMapping(UserDetailData.guid.toString(), KeyMapper.DBKEY) + "='" + entity.getGuid() + "'";
+        String sql = updateSql(TABLE_USER_DETAILS, uEntity.getList("'"), criteriumOfUpdating);
+        if(!executeUpdate(sql)){
+            System.out.println("Nothing updated, inserting");
+            insert(entity);
+        }
         return false;
     }
 
     @Override
     public boolean deleteEntity(UserDetail entity) throws SQLException, IOException {
+        String query = "DELETE FROM " + TABLE_USER_DETAILS+
+                " WHERE " + TABLE_USER_DETAILS + "." + UserDetailData.guid.getDbKey(keyMapper) + "='" + entity.getGuid() + "'";
+        executeQuery(query);
         return false;
     }
 
     @Override
     public int[] syncDataSourceWith(EntityDAO<UserDetail> entityDAO) throws SQLException, NamingException, IOException {
         return new int[0];
+    }
+
+    private void insert (UserDetail userDetail) throws SQLException {
+        List<String> dbUniqueKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
+        List<String> values = dbUniqueKeys.stream()
+                .map(
+                        k -> userDetail.getEntity()
+                                .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
+                .collect(Collectors.toList()
+                );
+        System.out.println(dbUniqueKeys + "\n" + values);
+        String sql = insertSql(TABLE_USER_DETAILS, dbUniqueKeys, Collections.singletonList(values));
+        executeUpdate(sql);
     }
 }

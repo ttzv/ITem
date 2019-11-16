@@ -2,6 +2,7 @@ package com.ttzv.item.entity;
 
 public class Phone implements DynamicEntityCompatible, Comparable<Phone>
 {
+    private DynamicEntity phoneEntity;
 
     private String ownerid; //guid
     private String number;
@@ -10,7 +11,20 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     private String pin;
     private String puk;
 
-    private DynamicEntity phoneEntity;
+    public Phone(String ownerid) {
+        this.phoneEntity = new DynamicEntity();
+        this.setOwnerid(ownerid);
+    }
+
+    public Phone(String ownerid, String number, String model, String imei, String pin, String puk) {
+        this.phoneEntity = new DynamicEntity();
+        this.setOwnerid(ownerid);
+        this.setNumber(number);
+        this.setModel(model);
+        this.setImei(imei);
+        this.setPin(pin);
+        this.setPuk(puk);
+    }
 
     public Phone(DynamicEntity phoneEntity) {
         this.phoneEntity = phoneEntity;
@@ -31,7 +45,9 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setOwnerid(String ownerid) {
-        this.phoneEntity.setValue(PhoneData.ownerid.toString(), ownerid);
+        if(!this.phoneEntity.setValue(PhoneData.ownerid.toString(), ownerid)){
+            this.phoneEntity.add(PhoneData.ownerid.toString(), ownerid);
+        }
     }
 
     public String getNumber() {
@@ -39,7 +55,9 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setNumber(String number) {
-        this.phoneEntity.setValue(PhoneData.number.toString(), number);
+        if(!this.phoneEntity.setValue(PhoneData.number.toString(), number)){
+            this.phoneEntity.add(PhoneData.number.toString(), number);
+        }
     }
 
     public String getModel() {
@@ -47,7 +65,9 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setModel(String model) {
-        this.phoneEntity.setValue(PhoneData.model.toString(), model);
+        if(!this.phoneEntity.setValue(PhoneData.model.toString(), model)){
+            this.phoneEntity.add(PhoneData.model.toString(), model);
+        }
     }
 
     public String getImei() {
@@ -55,7 +75,9 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setImei(String imei) {
-        this.phoneEntity.setValue(PhoneData.imei.toString(), imei);
+        if(!this.phoneEntity.setValue(PhoneData.imei.toString(), imei)){
+            this.phoneEntity.add(PhoneData.imei.toString(), imei);
+        }
     }
 
     public String getPin() {
@@ -63,7 +85,9 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setPin(String pin) {
-        this.phoneEntity.setValue(PhoneData.pin.toString(), pin);
+        if(!this.phoneEntity.setValue(PhoneData.pin.toString(), pin)){
+            this.phoneEntity.add(PhoneData.pin.toString(), pin);
+        }
     }
 
     public String getPuk() {
@@ -71,11 +95,18 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
     }
 
     public void setPuk(String puk) {
-        this.phoneEntity.setValue(PhoneData.puk.toString(), puk);
+        if(!this.phoneEntity.setValue(PhoneData.puk.toString(), puk)){
+            this.phoneEntity.add(PhoneData.puk.toString(), puk);
+        }
     }
 
     @Override
     public int compareTo(Phone o) {
         return this.getNumber().compareTo(o.getNumber());
+    }
+
+    @Override
+    public String toString() {
+        return this.phoneEntity.getList().toString();
     }
 }

@@ -7,7 +7,6 @@ import com.ttzv.item.utility.Utility;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 //Connection closes after every query or statement
@@ -48,13 +47,14 @@ public abstract class DatabaseHandler {
     }
 
     public boolean executeUpdate(String sql) throws SQLException {
+        int rowsUpdated = 0;
         System.out.println(sql);
         Connection connection = jdbcDriverSelector.createConnection();
         if (connection != null) {
             Statement statement = null;
             try {
                 statement = connection.createStatement();
-                statement.executeUpdate(sql);
+                rowsUpdated = statement.executeUpdate(sql);
                 statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -62,7 +62,7 @@ public abstract class DatabaseHandler {
             }
             connection.close();
         }
-        return true;
+        return rowsUpdated > 0;
     }
 
     public List<List<String>> executeQuery(String query) throws SQLException {
@@ -136,6 +136,7 @@ public abstract class DatabaseHandler {
         connection.close();
         return columnsList;
     }
+
 
     /**
      * Convenience method used for building PostgreSQL INSERT statement

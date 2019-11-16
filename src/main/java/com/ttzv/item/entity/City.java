@@ -9,6 +9,33 @@ public class City implements DynamicEntityCompatible, Comparable<City>{
 
     private DynamicEntity cityEntity;
 
+    /**
+     * Default constructor for entities created by-hand during application runtime.
+     * Use setters to add new pairs to it's underlying DynamicEntity
+     * @param name unique identifier, must not be null so it's enforced in constructor.
+     */
+    public City(String name){
+        this.cityEntity = new DynamicEntity();
+        this.setName(name);
+    }
+
+    /**
+     * Constructor for Entities created by-hand during application runtime.
+     * Allows to set all entity values at once during creation.
+     */
+    public City(String name, String landLineNumber, String faxNumber, String postalCode) {
+        this.cityEntity = new DynamicEntity();
+        this.setName(name);
+        this.setLandLineNumber(landLineNumber);
+        this.setFaxNumber(faxNumber);
+        this.setPostalCode(postalCode);
+    }
+
+    /**
+     * Constructor for Entities created automatically.
+     * Not recommended to use this for by-hand creation
+     * @param cityEntity DynamicEntity object created when pulling information from datasource.
+     */
     public City(DynamicEntity cityEntity) {
         this.cityEntity = cityEntity;
     }
@@ -28,7 +55,9 @@ public class City implements DynamicEntityCompatible, Comparable<City>{
     }
 
     public void setName(String name) {
-        this.cityEntity.setValue(CityData.name.toString(), name);
+        if(!this.cityEntity.setValue(CityData.name.toString(), name)){
+            this.cityEntity.add(CityData.name.toString(), name);
+        }
     }
 
     public String getLandLineNumber() {
@@ -36,7 +65,9 @@ public class City implements DynamicEntityCompatible, Comparable<City>{
     }
 
     public void setLandLineNumber(String landLineNumber) {
-        this.cityEntity.setValue(CityData.landLineNumber.toString(), landLineNumber);
+        if(!this.cityEntity.setValue(CityData.landLineNumber.toString(), landLineNumber)){
+            this.cityEntity.add(CityData.landLineNumber.toString(), landLineNumber);
+        }
     }
 
     public String getFaxNumber() {
@@ -44,7 +75,9 @@ public class City implements DynamicEntityCompatible, Comparable<City>{
     }
 
     public void setFaxNumber(String faxNumber) {
-        this.cityEntity.setValue(CityData.faxNumber.toString(), faxNumber);
+        if(!this.cityEntity.setValue(CityData.faxNumber.toString(), faxNumber)){
+            this.cityEntity.add(CityData.faxNumber.toString(), faxNumber);
+        }
     }
 
     public String getPostalCode() {
@@ -52,7 +85,9 @@ public class City implements DynamicEntityCompatible, Comparable<City>{
     }
 
     public void setPostalCode(String postalCode) {
-        this.cityEntity.setValue(CityData.postalCode.toString(), postalCode);
+        if(!this.cityEntity.setValue(CityData.postalCode.toString(), postalCode)){
+            this.cityEntity.add(CityData.postalCode.toString(), postalCode);
+        }
     }
 
     @Override
@@ -60,5 +95,8 @@ public class City implements DynamicEntityCompatible, Comparable<City>{
         return this.getName().compareTo(o.getName());
     }
 
-
+    @Override
+    public String toString() {
+        return this.cityEntity.getList().toString();
+    }
 }

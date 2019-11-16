@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class User implements DynamicEntityCompatible, Comparable<User>{
 
     private DynamicEntity userEntity;
+
     private String guid;
     private String samaccountname;
     private String givenname;
@@ -105,15 +106,6 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
 
     public void setDistinguishedName(String distinguishedName) {
         this.userEntity.setValue(UserData.distinguishedName.toString(), distinguishedName);
-    }
-
-    public String getNotes() {
-        return "NOT SET";
-    }
-
-    //todo: implement
-    public void setNotes(String notes) {
-        this.userEntity.setValue("notes", notes);
     }
 
     public String getGUID() {

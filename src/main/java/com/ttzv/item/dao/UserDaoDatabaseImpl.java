@@ -130,16 +130,15 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     private void insert (User user) throws SQLException {
-        List<String> ldapUniqueKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
-        List<String> values = ldapUniqueKeys.stream()
+        List<String> dbUniqueKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
+        List<String> values = dbUniqueKeys.stream()
                 .map(
                         k -> user.getEntity()
-                                .getValue(
-                                        keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
+                                .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
                 .collect(Collectors.toList()
                 );
-        System.out.println(ldapUniqueKeys + "\n" + values);
-        String sql = insertSql(TABLE_USERS, ldapUniqueKeys, Collections.singletonList(values));
+        System.out.println(dbUniqueKeys + "\n" + values);
+        String sql = insertSql(TABLE_USERS, dbUniqueKeys, Collections.singletonList(values));
         executeUpdate(sql);
     }
 
@@ -150,8 +149,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
             multiValues.add(ldapUniqueKeys.stream()
                     .map(
                             k -> u.getEntity()
-                                    .getValue(
-                                            keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
+                                    .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
                     .collect(Collectors.toList())
             );
         }
