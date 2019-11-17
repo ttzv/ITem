@@ -85,4 +85,10 @@ public class UserComboWrapper {
         this.userDetailEntityDAO = userDetailEntityDAO;
     }
 
+    public void refresh() throws SQLException, IOException, NamingException {
+        this.details = (Map<String, UserDetail>) convertToMap(this.userDetailEntityDAO.getAllEntities());
+        this.cities = (Map<String, City>) convertToMap(cityEntityDAO.getAllEntities());
+        this.phones = (Map<String, Phone>) convertToMap(phoneEntityDAO.getAllEntities());
+    }
+
 }
