@@ -1,5 +1,6 @@
 package com.ttzv.item.ui.mainAppWindow.popups;
 
+import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.entity.City;
 import com.ttzv.item.entity.EntityDAO;
 import com.ttzv.item.entity.User;
@@ -23,9 +24,13 @@ public class CityEdit extends AnchorPane {
 
     private Stage stage;
     private UiObjectsWrapper uiObjectsWrapper;
+    private UserHolder userHolder;
+    private UserComboWrapper userComboWrapper;
 
-    public CityEdit(UiObjectsWrapper uiObjectsWrapper, EntityDAO cityDao) {
+    public CityEdit(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
         this.uiObjectsWrapper = uiObjectsWrapper;
+        this.userHolder = userHolder;
+        this.userComboWrapper = userComboWrapper;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/cityedit.fxml"));
             fxmlLoader.setController(this);
@@ -46,8 +51,8 @@ public class CityEdit extends AnchorPane {
     }
 
     public void showAt(double x, double y) {
-        this.labelCityName.setText(UserHolder.getCurrentUser().getCity());
-        preloadInfo(UserHolder.getCurrentUser());
+        this.labelCityName.setText(userHolder.getCurrentUser().getCity());
+        preloadInfo(userComboWrapper.getCityOf(userHolder.getCurrentUser()));
         stage.setX(x);
         stage.setY(y);
         stage.show();
@@ -70,7 +75,7 @@ public class CityEdit extends AnchorPane {
 
     @FXML //USED IN FXML
     void btnSaveAndClose(ActionEvent event) throws SQLException {
-        updateDatabase(UserHolder.getCurrentUser());
+        updateDatabase(userHolder.getCurrentUser());
         stage.close();
     }
 
@@ -95,10 +100,10 @@ public class CityEdit extends AnchorPane {
 
         //System.out.println(queryPhone + "\n" + queryFax);
 
-        userDaoDatabaseImpl.customStatement(queryPhone, queryFax);
+        /*userDaoDatabaseImpl.customStatement(queryPhone, queryFax);*/
 
-        User currentUser = UserHolder.getCurrentUser();
-        UserHolder.setCurrentUser(userDaoDatabaseImpl.reloadUser(currentUser));
+        User currentUser = userHolder.getCurrentUser();
+        //userHolder.setCurrentUser(userDaoDatabaseImpl.reloadUser(currentUser));
         MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
         mainWindow.changeUser();
     }

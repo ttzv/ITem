@@ -1,7 +1,6 @@
 package com.ttzv.item.ui.mailerWindow;
 
 import com.ttzv.item.entity.UserHolder;
-import com.ttzv.item.db.PgStatement;
 import com.ttzv.item.file.MailMsgParser;
 import com.ttzv.item.pass.PasswordGenerator;
 import com.ttzv.item.pass.WordListPasswordGenerator;
@@ -131,8 +130,6 @@ public class MailerWindow extends AnchorPane {
     }
 
     private void savePass() throws SQLException {
-        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
-        userDaoDatabaseImpl.customStatement( PgStatement.update("users", "initmailpass", PgStatement.apostrophied(this.txtPass.getText()), "userguid=" + PgStatement.apostrophied(UserHolder.getCurrentUser().getGUID())) );
     }
 
     @FXML
@@ -223,7 +220,7 @@ public class MailerWindow extends AnchorPane {
     }
 
 
-    public MailerWindow(UiObjectsWrapper uiObjectsWrapper) {
+    public MailerWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder) {
         this.mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
         uiObjectsWrapper.registerObject(uiObjectsWrapper.MailerWindow, this);
 

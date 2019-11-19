@@ -19,7 +19,7 @@ public class UiObjectsWrapper {
     }
 
     public Object retrieveObject(Integer hash){
-        if(map.keySet().contains(hash)){
+        if(map.containsKey(hash)){
             return map.get(hash);
         }
         return null;

@@ -1,15 +1,12 @@
 package com.ttzv.item.ui.mainAppWindow;
 
-import com.ttzv.item.parser.LDAPParser;
-import com.ttzv.item.entity.UserHolder;
+import com.ttzv.item.dao.UserComboWrapper;
+import com.ttzv.item.entity.*;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.ui.crmWindow.CrmWindow;
-import com.ttzv.item.ui.gSuiteWindow.GSuiteWindow;
 import com.ttzv.item.ui.mailerWindow.MailerWindow;
 import com.ttzv.item.ui.mainAppWindow.popups.CityEdit;
 import com.ttzv.item.ui.mainAppWindow.popups.UserEdit;
 import com.ttzv.item.ui.sceneControl.ScenePicker;
-import com.ttzv.item.ui.settingsWindow.SettingsWindow;
 import com.ttzv.item.ui.signWindow.SignWindow;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
@@ -47,54 +44,56 @@ public class MainWindow extends AnchorPane {
     private SearchWindow searchWindow;
     private boolean infoBarAssetsVisible;
     private UiObjectsWrapper uiObjectsWrapper;
+    private UserHolder userHolder;private UserComboWrapper userComboWrapper;
+
 
 
     @FXML
     private HBox hBoxUserInfo;
-    @FXML
-    private Label labelUsername;
-    @FXML
-    private Label labelCity;
-    @FXML
-    private ImageView imgPrev;
-    @FXML
-    private ImageView imgNext;
-    @FXML
-    private HBox hBoxQty;
-    @FXML
-    private Label labelCurrentCnt;
-    @FXML
-    private Label labelMaxCnt;
-    @FXML
-    public Button tabTest;
-    @FXML
-    public TabPane tabPane;
-    @FXML
-    public Pane infoPane;
-    @FXML
-    public Button scene1;
-    @FXML
-    public Button scene2;
-    @FXML
-    public Button scene3;
-    @FXML
-    public Button scene4;
-    @FXML
-    public AnchorPane contentPane;
-    @FXML
-    public StatusBar statusBar;
+
     @FXML
     private ImageView imgUserEdit;
+
+    @FXML
+    private Label labelUsername;
+
     @FXML
     private ImageView imgCityEdit;
 
+    @FXML
+    private Label labelCity;
+
+    @FXML
+    private Button scene1;
+
+    @FXML
+    private Button scene2;
+
+    @FXML
+    private Button scene5;
+
+    @FXML
+    private Button scene3;
+
+    @FXML
+    private Button scene4;
+
+    @FXML
+    private AnchorPane contentPane;
+
+    @FXML
+    private StatusBar statusBar;
 
 
-    public MainWindow(UiObjectsWrapper uiObjectsWrapper) {
-
+    public MainWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
         this.uiObjectsWrapper = uiObjectsWrapper;
+        this.userHolder = userHolder;
+        this.userComboWrapper = userComboWrapper;
+
         uiObjectsWrapper.registerObject(uiObjectsWrapper.MainWindow, this);
-        fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));
+        this.fxmlLoader = fxmlLoader;
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
@@ -102,7 +101,6 @@ public class MainWindow extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public MainWindow getMainWindow(){
@@ -115,17 +113,14 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void initialize() {
-        scenePicker = new ScenePicker();
-        scenePicker.addAll(new MailerWindow(uiObjectsWrapper), new SignWindow(), new CrmWindow(), new GSuiteWindow(), new SettingsWindow(uiObjectsWrapper));
         labelCity.setText("");
         labelUsername.setText("");
-        infoBarAssetsVisible(false);
 
-        userEditPop = new UserEdit(uiObjectsWrapper);
-        cityEditPop = new CityEdit(uiObjectsWrapper);
-        searchWindow = new SearchWindow(uiObjectsWrapper);
+        userEditPop = null;//new UserEdit(uiObjectsWrapper);
+        cityEditPop = null;//new CityEdit(uiObjectsWrapper);
+        searchWindow = new SearchWindow(uiObjectsWrapper, userHolder);
 
-        loadOnStart();
+        //loadOnStart();
     }
 
 
@@ -210,28 +205,18 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     void loadNewUsers() throws NamingException, SQLException {
-
         int userQtyToLoad = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.DB_USER_QTY));
-        LDAPParser ldapParser = new LDAPParser();
-        ldapParser.loadCfgCredentials();
-        ldapParser.initializeLdapContext();
-
-        userDaoDatabaseImpl.updateUsersTable();
-
-        userDaoDatabaseImpl.getNewUsers(userQtyToLoad);
-
-        changeUser();
     }
 
     @FXML
     void imgBtnNextUser(MouseEvent event) {
-        UserHolder.next();
+        //UserHolder.next();
         changeUser();
     }
 
     @FXML
     void imgBtnPrevUser(MouseEvent event) {
-        UserHolder.previous();
+        //UserHolder.previous();
         changeUser();
     }
 
@@ -247,12 +232,12 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     void imgCityEditAction(MouseEvent event) {
-        cityEditPop.showAt(event.getScreenX(), event.getScreenY());
+        //cityEditPop.showAt(event.getScreenX(), event.getScreenY());
     }
 
     @FXML
     void imgUserEditAction(MouseEvent event) {
-        userEditPop.showAt(event.getScreenX(), event.getScreenY());
+        //userEditPop.showAt(event.getScreenX(), event.getScreenY());
     }
 
     @FXML
@@ -265,38 +250,32 @@ public class MainWindow extends AnchorPane {
     }
 
 
-    protected void infoBarAssetsVisible(boolean b) {
-        infoBarAssetsVisible = b;
-        this.hBoxQty.setVisible(b);
-        this.hBoxUserInfo.setVisible(b);
-        this.imgNext.setVisible(b);
-        this.imgPrev.setVisible(b);
-    }
 
     public boolean isInfoBarAssetsVisible() {
         return infoBarAssetsVisible;
     }
 
     public void changeUser() {
-        this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
-        this.labelCity.setText(UserHolder.getCurrentUser().getCity());
-        this.labelCurrentCnt.setText(Integer.toString(UserHolder.getCurrentIndex() + 1));
-        this.labelMaxCnt.setText(Integer.toString(UserHolder.getMaxCount()));
+        this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
+        this.labelCity.setText(userHolder.getCurrentUser().getCity());
 
-        infoBarAssetsVisible(true);
 
         MailerWindow mw = (MailerWindow) scenePicker.getScene(0);
-        mw.setUserName(UserHolder.getCurrentUser().getDisplayName());
+        mw.setUserName(userHolder.getCurrentUser().getDisplayName());
 
         SignWindow sw = (SignWindow) scenePicker.getScene(1);
-        sw.setTxtfName(UserHolder.getCurrentUser().getDisplayName());
-        sw.setTxtfCity(UserHolder.getCurrentUser().getCity());
-        sw.setTxtfCityPhone(UserHolder.getCurrentUser().getCityPhone());
-        sw.setTxtfCityFax(UserHolder.getCurrentUser().getCityFax());
-        sw.setTxtfPos(UserHolder.getCurrentUser().getPosition());
-        sw.setTxtfPhone(UserHolder.getCurrentUser().getPersonalPhoneNumber());
-        sw.setTxtfMPhone(UserHolder.getCurrentUser().getPersonalPhoneNumber());
-        String cType = UserHolder.getCurrentUser().getCityType();
+        User user = userHolder.getCurrentUser();
+        City city = userComboWrapper.getCityOf(user);
+        Phone phone = userComboWrapper.getPhoneOf(user);
+        UserDetail userDetail = userComboWrapper.getDetailOf(user);
+        sw.setTxtfName(user.getDisplayName());
+        sw.setTxtfCity(userHolder.getCurrentUser().getCity());
+        sw.setTxtfCityPhone(city.getLandLineNumber());
+        sw.setTxtfCityFax(city.getFaxNumber());
+        sw.setTxtfPos(userDetail.getPosition());
+        sw.setTxtfPhone(userDetail.getLandLineNumber());
+        sw.setTxtfMPhone(phone.getNumber());
+        String cType = city.getType();
         if (cType.equals("Filia")) {
             sw.selectComboxVal(1);
         } else if (cType.equals("Centrala")) {
@@ -320,12 +299,12 @@ public class MainWindow extends AnchorPane {
         this.labelCity.setText(labelCity);
     }
 
-    public void setLabelCurrentCnt(String labelCurrentCnt) {
-        this.labelCurrentCnt.setText(labelCurrentCnt);
-    }
 
-    public void setLabelMaxCnt(String labelMaxCnt) {
-        this.labelMaxCnt.setText(labelMaxCnt);
+
+
+    public void addSubScenes(Pane... scenes){
+        scenePicker = new ScenePicker();
+        scenePicker.addAll(scenes);
     }
 
 }

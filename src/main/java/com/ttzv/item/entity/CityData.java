@@ -5,7 +5,8 @@ public enum CityData implements Mappable{
     name("name"),
     landLineNumber("landLineNumber"),
     faxNumber("faxNumber"),
-    postalCode("postalCode");
+    postalCode("postalCode"),
+    type("Type");
 
     String udname;
 

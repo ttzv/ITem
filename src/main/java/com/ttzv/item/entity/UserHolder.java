@@ -1,5 +1,7 @@
 package com.ttzv.item.entity;
 
+import com.ttzv.item.dao.UserComboWrapper;
+
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,6 +13,7 @@ public class UserHolder {
 
     private EntityDAO<User> userEntityDAO;
     private List<User> userList;
+    private UserComboWrapper userComboWrapper;
 
 
     private List<User> newUsers;

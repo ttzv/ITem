@@ -1,6 +1,7 @@
 package com.ttzv.item.ui.mainAppWindow.popups;
 
 import com.ttzv.item.activeDirectory.DbCell;
+import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.entity.User;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.db.PgStatement;
@@ -20,11 +21,15 @@ import java.sql.SQLException;
 
 public class UserEdit extends AnchorPane {
 
-    private Stage stage;
+   /* private Stage stage;
     private UiObjectsWrapper uiObjectsWrapper;
+    private UserHolder userHolder;
+    private UserComboWrapper userComboWrapper;
 
-    public UserEdit(UiObjectsWrapper uiObjectsWrapper) {
+    public UserEdit(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
         this.uiObjectsWrapper = uiObjectsWrapper;
+        this.userHolder = userHolder;
+        this.userComboWrapper = userComboWrapper;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/useredit.fxml"));
             fxmlLoader.setController(this);
@@ -33,20 +38,20 @@ public class UserEdit extends AnchorPane {
             stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue){
+            if (!newValue) {
                 stage.close();
             }
         });
 
     }
 
-    public void showAt(double x, double y){
-        this.labelUsername.setText(UserHolder.getCurrentUser().getDisplayName());
-        preloadInfo(UserHolder.getCurrentUser());
+    public void showAt(double x, double y) {
+        this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
+        preloadInfo(userHolder.getCurrentUser());
 
         stage.setX(x);
         stage.setY(y);
@@ -54,7 +59,7 @@ public class UserEdit extends AnchorPane {
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         this.txtUserMPhone.setText("");
         this.txtUserPhone.setText("");
         this.txtUserPos.setText("");
@@ -87,20 +92,20 @@ public class UserEdit extends AnchorPane {
 
     @FXML
     void btnSaveAndClose(ActionEvent event) throws SQLException {
-        updateDatabase(UserHolder.getCurrentUser());
+        updateDatabase(userHolder.getCurrentUser());
         stage.close();
     }
 
-    private void preloadInfo(User user){
-        this.txtUserPos.setText(user.getPosition());
+    private void preloadInfo(User user) {
+        *//*this.txtUserPos.setText(user.getPosition());
         this.txtUserPhone.setText(user.getLandlineNumber());
         this.txtUserMPhone.setText(user.getPersonalPhoneNumber());
         this.txtfUserEmailAddress.setText(user.getMail());
-        this.txtfUserEmailInitPass.setText(user.getInitMailPass());
+        this.txtfUserEmailInitPass.setText(user.getInitMailPass());*//*
     }
 
     private void updateDatabase(User user) throws SQLException {
-        String table = "users";
+       *//* String table = "users";
 
         UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
 
@@ -121,33 +126,33 @@ public class UserEdit extends AnchorPane {
 
 
         String position = this.txtUserPos.getText();
-        if(!position.equals(UserHolder.getCurrentUser().getPosition())) {
+        if(!position.equals(userHolder.getCurrentUser().getPosition())) {
            this.txtUserPos.getDbCell().update(position);
         }
 
         String phone = this.txtUserPhone.getText();
-        if(!phone.equals(UserHolder.getCurrentUser().getLandlineNumber())) {
+        if(!phone.equals(userHolder.getCurrentUser().getLandlineNumber())) {
             this.txtUserPhone.getDbCell().update(phone);
         }
 
         String mPhone = this.txtUserMPhone.getText();
-        if(!mPhone.equals(UserHolder.getCurrentUser().getPersonalPhoneNumber())) {
+        if(!mPhone.equals(userHolder.getCurrentUser().getPersonalPhoneNumber())) {
             this.txtUserMPhone.getDbCell().update(mPhone);
         }
 
         String email = this.txtfUserEmailAddress.getText();
-        if(!email.equals(UserHolder.getCurrentUser().getMail())) {
+        if(!email.equals(userHolder.getCurrentUser().getMail())) {
             this.txtfUserEmailAddress.getDbCell().update(email);
         }
 
         String emailPass = this.txtfUserEmailInitPass.getText();
-        if(!emailPass.equals(UserHolder.getCurrentUser().getInitMailPass())) {
+        if(!emailPass.equals(userHolder.getCurrentUser().getInitMailPass())) {
             this.txtfUserEmailInitPass.getDbCell().update(emailPass);
         }
 
-        User currentUser = UserHolder.getCurrentUser();
-        UserHolder.setCurrentUser(userDaoDatabaseImpl.reloadUser(currentUser));
+        User currentUser = userHolder.getCurrentUser();
+        userHolder.setCurrentUser(userDaoDatabaseImpl.reloadUser(currentUser));
         MainWindow mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
         mainWindow.changeUser();
-    }
+    }*/
 }

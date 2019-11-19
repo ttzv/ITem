@@ -30,8 +30,11 @@ import java.nio.file.Paths;
 public class SignWindow extends AnchorPane {
 
     private SignatureParser signatureParser;
+    private UserHolder userHolder;
 
-    public SignWindow() {
+    public SignWindow(UserHolder userHolder) {
+        this.userHolder = userHolder;
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/signwdw.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -160,7 +163,7 @@ public class SignWindow extends AnchorPane {
     private void openTargetDir() throws IOException {
         String cfgTargetPath = Cfg.getInstance().retrieveProp(Cfg.SIGN_TARGETPATH);
         if(!cfgTargetPath.isEmpty()) {
-            Path path = Paths.get(cfgTargetPath, UserHolder.getCurrentUser().getDisplayName());
+            Path path = Paths.get(cfgTargetPath, userHolder.getCurrentUser().getDisplayName());
             if(Files.exists(path)) {
                 Desktop desktop = Desktop.getDesktop();
                 desktop.open(new File(path.toUri()));
@@ -170,11 +173,11 @@ public class SignWindow extends AnchorPane {
 
     @FXML
     void btnSaveHtmlFileAction(ActionEvent event) throws IOException {
-        if (UserHolder.getCurrentUser() != null){
+        if (userHolder.getCurrentUser() != null){
             Saver saver = new Saver(signatureParser.getOutputString());
             System.out.println(signatureParser.getOutputString());
             saver.setExtension(saver.HTM);
-            saver.setFileName(UserHolder.getCurrentUser().getSamAccountName());
+            saver.setFileName(userHolder.getCurrentUser().getSamAccountName());
 
             String cfgTargetPath = Cfg.getInstance().retrieveProp(Cfg.SIGN_TARGETPATH);
             File targetPath;
@@ -188,7 +191,7 @@ public class SignWindow extends AnchorPane {
             } else {
                 targetPath = new File(cfgTargetPath);
             }
-            Path finalSavePath = targetPath.toPath().resolve(UserHolder.getCurrentUser().getDisplayName());
+            Path finalSavePath = targetPath.toPath().resolve(userHolder.getCurrentUser().getDisplayName());
             if(!Files.exists(finalSavePath)){
                 Files.createDirectory(finalSavePath);
             }

@@ -33,7 +33,7 @@ public class DbCell {
 
     public void clearCell() throws SQLException {
         String valToSetIn = column  + "=" + "DEFAULT";
-        userDaoDatabaseImpl.update(table, criterium, valToSetIn );
+        //userDaoDatabaseImpl.update(table, criterium, valToSetIn );
     }
 
     public void update(String value) throws SQLException {
@@ -41,7 +41,7 @@ public class DbCell {
              clearCell();
         } else {
             String valToSetIn = column + "=" + PgStatement.apostrophied(value);
-            userDaoDatabaseImpl.update(table, criterium, valToSetIn);
+            //userDaoDatabaseImpl.update(table, criterium, valToSetIn);
         }
     }
 

@@ -4,4 +4,5 @@ public interface DynamicEntityCompatible {
 
     DynamicEntity getEntity ();
     String getUniqueIdentifier();
+
 }

@@ -3,6 +3,7 @@ package com.ttzv.item.entity;
 public class City implements DynamicEntityCompatible, Comparable<City>{
 
     private String name;
+    private String type;
     private String landLineNumber;
     private String faxNumber;
     private String postalCode;
@@ -57,6 +58,16 @@ public class City implements DynamicEntityCompatible, Comparable<City>{
     public void setName(String name) {
         if(!this.cityEntity.setValue(CityData.name.toString(), name)){
             this.cityEntity.add(CityData.name.toString(), name);
+        }
+    }
+
+    public String getType() {
+        return this.cityEntity.getValue(CityData.type.toString());
+    }
+
+    public void setType(String type) {
+        if(!this.cityEntity.setValue(CityData.type.toString(), type)){
+            this.cityEntity.add(CityData.type.toString(), type);
         }
     }
 

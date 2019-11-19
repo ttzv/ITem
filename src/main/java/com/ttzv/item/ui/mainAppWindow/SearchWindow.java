@@ -27,13 +27,14 @@ import java.util.List;
 
 public class SearchWindow extends AnchorPane {
 
+
     private FXMLLoader fxmlLoader;
     private Stage stage;
     private MainWindow mainWindow;
     private UiObjectsWrapper uiObjectsWrapper;
     List<User> foundUsers;
 
-    public SearchWindow(UiObjectsWrapper uiObjectsWrapper) {
+    public SearchWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/searchwdw.fxml"));
             fxmlLoader.setController(this);
@@ -63,7 +64,7 @@ public class SearchWindow extends AnchorPane {
 
 
     private void selectionHandler(){
-        this.resultsList.setOnMouseClicked((MouseEvent event) -> {
+        /*this.resultsList.setOnMouseClicked((MouseEvent event) -> {
             if(event.getClickCount() == 2){
                 int selectedIndex = this.resultsList.getSelectionModel().getSelectedIndex();
                 String selectedUserGUID = this.resultsList.getSelectionModel().getSelectedItem().get(0).toString();
@@ -80,7 +81,7 @@ public class SearchWindow extends AnchorPane {
                 }
             }
         });
-
+*/
     }
 
     public void show() {
@@ -107,18 +108,18 @@ public class SearchWindow extends AnchorPane {
 
     @FXML
     void btnPerformAction(ActionEvent event) throws SQLException {
-        UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
+        /*UserDaoDatabaseImpl userDaoDatabaseImpl = new UserDaoDatabaseImpl();
 
         foundUsers = userDaoDatabaseImpl.globalSearch(this.txtfSearch.getText(), 0);
         buildTableView(foundUsers);
 
         this.labResultCount.setText( Integer.toString(foundUsers.size()) );
-
+*/
     }
 
     public void buildTableView(List<User> foundData){
 
-        this.resultsList.getColumns().clear();
+        /*this.resultsList.getColumns().clear();
 
         String[] columns = User.columns;
 
@@ -151,7 +152,7 @@ public class SearchWindow extends AnchorPane {
 
 
         this.resultsList.setItems(data);
-
+*/
     }
 
 

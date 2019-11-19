@@ -1,6 +1,7 @@
 package com.ttzv.item.ui.settingsWindow;
 
 import com.ttzv.item.dao.JdbcDriverSelector;
+import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.parser.LDAPParser;
 import com.ttzv.item.dao.JdbcDriverSelector;
 import com.ttzv.item.properties.Cfg;
@@ -143,7 +144,7 @@ public class SettingsWindow extends AnchorPane {
 
 
 
-    public SettingsWindow(UiObjectsWrapper uiObjectsWrapper) {
+    public SettingsWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder) {
         this.uiObjectsWrapper = uiObjectsWrapper;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/settingsWindow.fxml"));
@@ -539,12 +540,13 @@ public class SettingsWindow extends AnchorPane {
         Task isValid = new Task() {
             @Override
             protected Object call() throws Exception {
-                LDAPParser ldapParser = new LDAPParser();
+              /*  LDAPParser ldapParser = new LDAPParser();
                 ldapParser.setLdap_URL(fieldLdapUrl.getText());
                 ldapParser.setLdap_port(fieldLdapPort.getText());
                 ldapParser.setAd_adminUser(fieldLdapAcc.getText());
                 ldapParser.setAd_adminPass(PHolder.ldap);
                 ldapParser.initializeLdapContext();
+                */
                 return null;
             }
         };

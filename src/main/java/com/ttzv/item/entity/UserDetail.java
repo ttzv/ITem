@@ -8,6 +8,7 @@ public class UserDetail implements DynamicEntityCompatible{
 
     private String guid;
     private String position;
+    private String landLineNumber;
     private String initMailPass;
     private String notes;
 
@@ -54,6 +55,16 @@ public class UserDetail implements DynamicEntityCompatible{
     public void setPosition(String position) {
         if(!this.userDetailEntity.setValue(UserDetailData.position.toString(), position)){
             this.userDetailEntity.add(UserDetailData.position.toString(), position);
+        }
+    }
+
+    public String getLandLineNumber() {
+        return this.userDetailEntity.getValue(UserDetailData.landLineNumber.toString());
+    }
+
+    public void setLandLineNumber(String landLineNumber) {
+        if(!this.userDetailEntity.setValue(UserDetailData.landLineNumber.toString(), landLineNumber)){
+            this.userDetailEntity.add(UserDetailData.landLineNumber.toString(), landLineNumber);
         }
     }
 

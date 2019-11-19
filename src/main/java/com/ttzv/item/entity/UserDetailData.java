@@ -6,7 +6,7 @@ public enum UserDetailData implements Mappable {
     guid("Guid"),
     position("Position"),
     initMailPass("InitialMailPassword"),
-    notes("Notes");
+    notes("Notes"), landLineNumber("LandLineNumber");
 
     String name;
 

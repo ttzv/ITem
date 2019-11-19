@@ -1,13 +1,14 @@
-package com.ttzv.item.ui.crmWindow;
+package com.ttzv.item.ui.placeholderWindow;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class CrmWindow extends AnchorPane {
-    public CrmWindow() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/crmwdw.fxml"));
+public class placeholder extends AnchorPane {
+
+    public placeholder() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gswdw.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
