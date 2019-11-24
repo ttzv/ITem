@@ -20,6 +20,7 @@ public class KeyMapper {
     public static final int OBJECTKEY = 0;
     public static final int LDAPKEY = 1;
     public static final int DBKEY = 2;
+    public static final int FXKEY = 3;
     public static final String KEY_MAP_JSON_PATH = "mappings.json";
 
     private Path jsonPath;
@@ -196,18 +197,18 @@ public class KeyMapper {
 
 
     public static void main(String[] args) throws IOException {
-        KeyMapper userMaps = new KeyMapper(KEY_MAP_JSON_PATH, User.class); //todo db mappings to lowercase (Postgres requires double quotes for case-sensitive names and double quotes are no-no)
-            userMaps.addMapping(UserData.objectGUID.toString(), "objectGUID", "guid");
-            userMaps.addMapping(UserData.samaccountname.toString(), "sAMAccountName", "sam");
-            userMaps.addMapping(UserData.givenname.toString(), "givenName", "firstname");
-            userMaps.addMapping(UserData.sn.toString(), "sn", "lastname");
-            userMaps.addMapping(UserData.displayname.toString(), "displayName", "fullname");
-            userMaps.addMapping(UserData.distinguishedName.toString(), "distinguishedName", "distinguishedname");
-            userMaps.addMapping(UserData.city.toString(), "", "cityname");
-            userMaps.addMapping(UserData.whenCreated.toString(), "whenCreated", "created");
-            userMaps.addMapping(UserData.whenChanged.toString(), "whenChanged", "changed");
-            userMaps.addMapping(UserData.mail.toString(), "mail", "mailaddress");
-            userMaps.addMapping(UserData.useraccountcontrol.toString(), "userAccountControl", "uac");
+        KeyMapper userMaps = new KeyMapper(KEY_MAP_JSON_PATH, User.class);
+            userMaps.addMapping(UserData.objectGUID.toString(), "objectGUID", "guid", "");
+            userMaps.addMapping(UserData.samaccountname.toString(), "sAMAccountName", "sam", "Login");
+            userMaps.addMapping(UserData.givenname.toString(), "givenName", "firstname", "Imię");
+            userMaps.addMapping(UserData.sn.toString(), "sn", "lastname", "Nazwisko");
+            userMaps.addMapping(UserData.displayname.toString(), "displayName", "fullname", "");
+            userMaps.addMapping(UserData.distinguishedName.toString(), "distinguishedName", "distinguishedname", "");
+            userMaps.addMapping(UserData.city.toString(), "", "cityname", "Miasto");
+            userMaps.addMapping(UserData.whenCreated.toString(), "whenCreated", "created", "Data utworzenia");
+            userMaps.addMapping(UserData.whenChanged.toString(), "whenChanged", "changed", "");
+            userMaps.addMapping(UserData.mail.toString(), "mail", "mailaddress", "Adres mail");
+            userMaps.addMapping(UserData.useraccountcontrol.toString(), "userAccountControl", "uac", "Status Konta");
         KeyMapper userDetailMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, UserDetail.class);
             userDetailMaps.addMapping(UserDetailData.guid.toString(), "", "guid");
             userDetailMaps.addMapping(UserDetailData.position.toString(), "", "position");

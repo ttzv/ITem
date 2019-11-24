@@ -39,14 +39,18 @@ public class DynamicEntity {
 
     /**
      * Use this method to replace entity keys to provide compatibility with other objects.
+     * If a mapping does not have a valid assigned keyType the resulting map will not have this mapping included.
      * @param mapper - KeyMapper to use in this operation
      */
-    public DynamicEntity replaceKeys(KeyMapper mapper, int keyType){
+    public DynamicEntity replaceKeys(KeyMapper mapper, int keyType) {
         Map<String, String> replacedMap = new HashMap<>();
         for (String key : entityMap.keySet()) { //todo: optimize if keys are the same
             String newKey = mapper.getCorrespondingMapping(key, keyType);
-            if(newKey != null) {
+            if(!newKey.isEmpty()) {
                 replacedMap.put(newKey, entityMap.get(key));
+            } else {
+                System.err.println("Cannot replace key " + key + " with keyType: " + keyType + "\n" +
+                        "because it is empty.");
             }
         }
         this.entityMap = replacedMap;

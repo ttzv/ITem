@@ -2,13 +2,14 @@ package com.ttzv.item.entity;
 
 import com.ttzv.item.utility.Utility;
 
+import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Basic User "bean" class used for various operations in this application. Supports creating User from objects implementing DynamicEntity interface.
  */
-public class User implements DynamicEntityCompatible, Comparable<User>{
+public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCompatible{
 
     private DynamicEntity userEntity;
 
@@ -31,6 +32,8 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
         if(!userEntity.getKeys().contains(UserData.city.toString())) {
             userEntity.add(UserData.city.toString(), this.city);
         }
+        this.whenCreated = Utility.formatLdapDate(userEntity.getValue(UserData.whenCreated.toString()));
+        userEntity.setValue(UserData.whenCreated.toString(), this.whenCreated);
     }
 
     @Override
@@ -122,8 +125,8 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
 
     @Override
     public int compareTo(User o) {
-        Date userCreationDate = Utility.parseDate(this.getWhenCreated());
-        Date comparedUserCreationDate = Utility.parseDate(o.getWhenCreated());
+        Date userCreationDate = Utility.parseDate(this.getWhenCreated(), Utility.globalDateFormat());
+        Date comparedUserCreationDate = Utility.parseDate(o.getWhenCreated(), Utility.globalDateFormat());
         if(userCreationDate != null && comparedUserCreationDate != null)
             return userCreationDate.compareTo(comparedUserCreationDate);
         else
@@ -175,5 +178,29 @@ public class User implements DynamicEntityCompatible, Comparable<User>{
             }
         }
         return false;
+    }
+
+    @Override
+    public Map getFXMap() {
+        return userEntity.getMap();
+    }
+
+    @Override
+    public Map<String, String> getFXNameToIdPairs() {
+        Map<String, String> map = new HashMap<>();
+        //map.put(UserData.objectGUID.toString(), "");
+        //map.put(UserData.samaccountname.toString(), "Login");
+        map.put(UserData.givenname.toString(), "Imię");
+        map.put(UserData.sn.toString(), "Nazwisko");
+        map.put(UserData.displayname.toString(), "");
+        map.put(UserData.distinguishedName.toString(), "");
+        map.put(UserData.city.toString(), "Miasto");
+        map.put(UserData.whenCreated.toString(), "Data utworzenia");
+        map.put(UserData.whenChanged.toString(), "");
+        //map.put(UserData.mail.toString(), "Email");
+        //map.put(UserData.useraccountcontrol.toString(), "Status konta");
+        return map;
+
+
     }
 }
