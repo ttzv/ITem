@@ -8,6 +8,7 @@ import com.ttzv.item.ui.mainAppWindow.popups.CityEdit;
 import com.ttzv.item.ui.mainAppWindow.popups.UserEdit;
 import com.ttzv.item.ui.sceneControl.ScenePicker;
 import com.ttzv.item.ui.signWindow.SignWindow;
+import com.ttzv.item.uiUtils.TableViewCreator;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,21 +18,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ttzv.uiUtils.ActionableTextField;
+import ttzv.uiUtils.SideBar;
 import ttzv.uiUtils.StatusBar;
 
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class MainWindow extends AnchorPane {
 
@@ -44,24 +46,9 @@ public class MainWindow extends AnchorPane {
     private SearchWindow searchWindow;
     private boolean infoBarAssetsVisible;
     private UiObjectsWrapper uiObjectsWrapper;
-    private UserHolder userHolder;private UserComboWrapper userComboWrapper;
+    private UserHolder userHolder;
+    private UserComboWrapper userComboWrapper;
 
-
-
-    @FXML
-    private HBox hBoxUserInfo;
-
-    @FXML
-    private ImageView imgUserEdit;
-
-    @FXML
-    private Label labelUsername;
-
-    @FXML
-    private ImageView imgCityEdit;
-
-    @FXML
-    private Label labelCity;
 
     @FXML
     private Button scene1;
@@ -70,19 +57,40 @@ public class MainWindow extends AnchorPane {
     private Button scene2;
 
     @FXML
-    private Button scene5;
-
-    @FXML
     private Button scene3;
 
     @FXML
     private Button scene4;
 
     @FXML
+    private Button scene5;
+
+    @FXML
+    private Label labelUsername;
+
+    @FXML
+    private Label labelCity;
+
+    @FXML
+    private TableView<Map> primaryUserTableView;
+
+    @FXML
+    private TableView<Map> msgQTableView;
+
+    @FXML
     private AnchorPane contentPane;
 
     @FXML
     private StatusBar statusBar;
+
+    @FXML
+    private SideBar sidebartest;
+
+    @FXML
+    private Button sidebartogglebtn;
+
+    @FXML
+    private ActionableTextField actionabletest1;
 
 
     public MainWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
@@ -103,7 +111,7 @@ public class MainWindow extends AnchorPane {
         }
     }
 
-    public MainWindow getMainWindow(){
+    public MainWindow getMainWindow() {
         return this;
     }
 
@@ -120,7 +128,19 @@ public class MainWindow extends AnchorPane {
         cityEditPop = null;//new CityEdit(uiObjectsWrapper);
         searchWindow = new SearchWindow(uiObjectsWrapper, userHolder);
 
-        //loadOnStart();
+        TableViewCreator tableViewCreator = new TableViewCreator(primaryUserTableView);
+        tableViewCreator.createFromMap(TableViewCreator.builder()
+                .addColumns(userHolder.getNewest(1).get(0))
+                .addRows(userHolder.getAllUsers())
+        );
+
+        sidebartest.setToggler(sidebartogglebtn);
+        sidebartest.setPrefWidth(0.0);
+        sidebartest.childrenVisible(false);
+        sidebartest.applyAnchors(0.0);
+
+        actionabletest1.hideButtons();
+
     }
 
 
@@ -227,7 +247,7 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     void findAction(ActionEvent event) {
-            searchWindow.show();
+        searchWindow.show();
     }
 
     @FXML
@@ -248,7 +268,6 @@ public class MainWindow extends AnchorPane {
         clipboard.setContent(clipboardContent);
         statusBar.setVanishingText("Skopiowano do schowka");
     }
-
 
 
     public boolean isInfoBarAssetsVisible() {
@@ -300,11 +319,75 @@ public class MainWindow extends AnchorPane {
     }
 
 
-
-
-    public void addSubScenes(Pane... scenes){
+    public void addSubScenes(Pane... scenes) {
         scenePicker = new ScenePicker();
         scenePicker.addAll(scenes);
     }
 
+
+
+    @FXML
+    void sidebartoggle(ActionEvent event) {
+
+        sidebartest.animatePane();
+
+
+
+
+        /*final double startWidth = 0.0;
+        final double targetWidth = 250.0;
+        final Animation hideSidebar = new Transition() {
+            {
+                setCycleDuration(Duration.millis(1000));
+            }
+            protected void interpolate(double frac) {
+                final double curWidth = targetWidth * (1.0 - frac);
+                sidebar.setPrefWidth(curWidth);
+                System.out.println(curWidth);
+            }
+        };
+        hideSidebar.onFinishedProperty().set(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                sidebar.setVisible(false);
+                sidebartogglebtn.setText("Show");
+            }
+        });
+
+        final Animation showSidebar = new Transition() {
+            {
+                setCycleDuration(Duration.millis(1000));
+            }
+
+            protected void interpolate(double frac) {
+                final double curWidth = targetWidth * frac;
+                sidebar.setPrefWidth(curWidth);
+                System.out.println(curWidth);
+            }
+        };
+        showSidebar.onFinishedProperty().set(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                sidebartogglebtn.setText("Hide");
+                for (Node n:sidebar.getChildren()) {
+                    n.setManaged(true);
+                    n.setVisible(true);
+                }
+            }
+        });
+
+        if (showSidebar.statusProperty().get() == Animation.Status.STOPPED && hideSidebar.statusProperty().get() == Animation.Status.STOPPED) {
+            if (sidebar.isVisible()) {
+                hideSidebar.play();
+                for (Node n:sidebar.getChildren()) {
+                    n.setManaged(false);
+                    n.setVisible(false);
+                }
+            } else {
+                showSidebar.play();
+                sidebar.setVisible(true);
+            }
+        }
+            */
+    }
 }
