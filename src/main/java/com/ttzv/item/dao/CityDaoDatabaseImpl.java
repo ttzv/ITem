@@ -39,8 +39,7 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     public List<City> getAllEntities() throws SQLException {
         String query = "SELECT * FROM " + TABLE_CITY;
         List<City> cityList = new ArrayList<>();
-        for (List<String> list :
-                executeQuery(query)) {
+        for (List<String> list : executeQuery(query)) {
             cityList.add(new City(DynamicEntity.newDynamicEntity()
                     .process(list)
                     .replaceKeys(

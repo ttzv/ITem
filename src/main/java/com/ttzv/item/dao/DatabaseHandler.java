@@ -80,7 +80,9 @@ public abstract class DatabaseHandler {
                 while (resultSet.next()){
                     innerlist = new ArrayList<>();
                     for (int i = 1; i <= rsmd.getColumnCount() ; i++) {
-                        innerlist.add(rsmd.getColumnLabel(i) + Utility.DEFAULT_ENTITY_SEPARATOR + resultSet.getString(i));
+                        String colLabel = rsmd.getColumnLabel(i);
+                        if(!colLabel.equals("id")) //Do not pull primary key to results list todo: move to configuration file
+                            innerlist.add(colLabel + Utility.DEFAULT_ENTITY_SEPARATOR + resultSet.getString(i));
                     }
                     resultList.add(innerlist);
                 }
