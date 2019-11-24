@@ -46,7 +46,8 @@ public class Main extends Application {
         //CityEdit cityEdit = new CityEdit(uiObjectsWrapper);
 
         MainWindow mw = new MainWindow(uiObjectsWrapper, userHolder, userComboWrapper);
-        mw.addSubScenes(mailerWindow, signWindow, settingsWindow);
+        mw.addSubScenes(mailerWindow, signWindow, settingsWindow); //todo: loadOnStart requires scene in Initialize, decouple somehow?
+
         Parent root = mw.getFxmlLoader().getRoot();
         primaryStage.setTitle(Cfg.getInstance().retrieveProp(Cfg.APP_NAME));
         primaryStage.setScene(new Scene(root));

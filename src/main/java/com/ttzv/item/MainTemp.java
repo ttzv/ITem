@@ -48,13 +48,22 @@ public class MainTemp {
                 entityDAOphonedb.getAllEntities(),
                 entityDAOuserdetdb.getAllEntities()
                 );
-        City testcity = comboWrapper.getCityOf(userDbEntityDAO.getEntity("2c664e79-9362-4196-8796-d9a4805f6691"));
-        System.out.println(testcity);
+        //City testcity = comboWrapper.getCityOf(userDbEntityDAO.getEntity("2c664e79-9362-4196-8796-d9a4805f6691"));
+        //System.out.println(testcity);
         /*testcity.setName("Warszawa");
         testcity.setPostalCode("111111");
         testcity.setLandLineNumber("2222222");
         testcity.setFaxNumber("123123123");
         entityDAOcitydb.updateEntity(testcity);*/
+
+        UserHolder userHolder = new UserHolder(userDbEntityDAO);
+
+        User user = userHolder.getNewest(1).get(0);
+
+        System.out.println(user.getEntity().getMap());
+        user.getEntity().replaceKeys(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class), KeyMapper.FXKEY);
+        System.out.println(user.getEntity().getMap());
+
     }
 
 }

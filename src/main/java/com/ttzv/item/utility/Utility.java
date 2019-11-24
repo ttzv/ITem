@@ -97,17 +97,22 @@ public class Utility {
         }
     }
 
-    public static String ldapStringToDate(String date) throws ParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        LocalTime localTime = LocalTime.parse(date, formatter);
-        return localDate.toString() + " " + localTime;
+    public static SimpleDateFormat ldapDateFormat() {
+        return new SimpleDateFormat("yyyyMMddHHmmss");
     }
 
-    public static Date parseDate (String date) {
-        SimpleDateFormat parser = new SimpleDateFormat("yyyyMMddHHmmss");
+    public static SimpleDateFormat globalDateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
+
+    public static String formatLdapDate(String date) {
+        Date d = parseDate(date, ldapDateFormat());
+        return globalDateFormat().format(d);
+    }
+
+    public static Date parseDate (String date, SimpleDateFormat simpleDateFormat) {
         try {
-            return parser.parse(date);
+            return simpleDateFormat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;

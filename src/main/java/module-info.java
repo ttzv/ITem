@@ -23,6 +23,7 @@ module com.ttzv.itmg {
     opens com.ttzv.item.ui.signWindow to javafx.fxml;
 
     exports com.ttzv.item;
+    exports com.ttzv.item.entity;
     exports com.ttzv.item.uiUtils;
 
 }

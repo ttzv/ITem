@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Point3D?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.effect.Blend?>
-<?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import ttzv.uiUtils.ActionableTextField?>
+<?import ttzv.uiUtils.SideBar?>
 <?import ttzv.uiUtils.StatusBar?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1024.0" prefHeight="861.0" prefWidth="1200.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-      <VBox prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="800.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <MenuBar>
               <menus>
                 <Menu mnemonicParsing="false" text="Plik">
                   <items>
                         <MenuItem mnemonicParsing="false" onAction="#findAction" text="Wyszukaj" />
+                        <MenuItem mnemonicParsing="false" text="Ustawienia" />
                     <MenuItem mnemonicParsing="false" onAction="#exitAction" text="Wyjdź" />
                   </items>
                 </Menu>
@@ -43,107 +49,315 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <AnchorPane style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES">
+            <HBox fillHeight="false" maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" style="-fx-background-color: cyan;" VBox.vgrow="NEVER">
                <children>
-                  <HBox fx:id="hBoxUserInfo" alignment="CENTER_RIGHT" layoutY="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="824.0" spacing="350.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0">
-                     <children>
-                        <HBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <ImageView fx:id="imgUserEdit" fitHeight="19.0" fitWidth="22.0" onMouseClicked="#imgUserEditAction" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/pencil.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <effect>
-                                    <ColorAdjust brightness="1.0" />
-                                 </effect>
-                              </ImageView>
-                              <Label fx:id="labelUsername" alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 25; -fx-font-style: italic; -fx-font-weight: bold;" text="USERNAME" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <ImageView fx:id="imgCityEdit" fitHeight="17.0" fitWidth="23.0" onMouseClicked="#imgCityEditAction" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/pencil.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <effect>
-                                    <ColorAdjust brightness="1.0" />
-                                 </effect>
-                              </ImageView>
-                              <Label fx:id="labelCity" style="-fx-text-fill: #e8e9ea; -fx-font-size: 18; -fx-font-weight: bolder;" text="CITY" />
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets right="50.0" />
-                     </padding>
-                  </HBox>
-               </children>
-               <effect>
-                  <InnerShadow />
-               </effect>
-            </AnchorPane>
-            <HBox prefHeight="560.0" prefWidth="973.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: silver;" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Button fx:id="scene1" mnemonicParsing="false" onAction="#goScn1" prefHeight="52.0" prefWidth="110.0" text="Mailing">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Button>
-                        <Button fx:id="scene2" mnemonicParsing="false" onAction="#goScn2" prefHeight="52.0" prefWidth="110.0" text="Stopki">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Button>
-                        <Button fx:id="scene5" mnemonicParsing="false" onAction="#goScn5" prefHeight="52.0" prefWidth="110.0" text="Ustawienia">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Button>
-                        <Button fx:id="scene3" mnemonicParsing="false" onAction="#goScn3" prefHeight="52.0" prefWidth="110.0" text="Telefony" visible="false">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Button>
-                        <Button fx:id="scene4" mnemonicParsing="false" onAction="#goScn4" prefHeight="52.0" prefWidth="110.0" text="Scene4" visible="false">
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Button>
-                     </children>
-                     <padding>
-                        <Insets top="15.0" />
-                     </padding>
-                     <effect>
-                        <Blend />
-                     </effect>
-                  </VBox>
-                  <AnchorPane fx:id="contentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" HBox.hgrow="ALWAYS">
-                     <children>
-                      <TitledPane expanded="false" layoutX="702.0" text="untitled 1">
-                           <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </TitledPane>
-                        <TitledPane alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="294.0" layoutY="218.0" rotate="55.7" snapToPixel="false" text="untitled 1" AnchorPane.topAnchor="218.0">
-                           <content>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0" rotate="42.3" />
-                           </content>
-                           <rotationAxis>
-                              <Point3D x="1.0" />
-                           </rotationAxis>
-                        </TitledPane>
-                     </children></AnchorPane>
+                  <Button fx:id="scene1" mnemonicParsing="false" onAction="#goScn1" prefHeight="50.0" prefWidth="80.0" text="Mail" />
+                  <Button fx:id="scene2" mnemonicParsing="false" onAction="#goScn2" prefHeight="50.0" prefWidth="80.0" text="Podpis" />
+                  <Button fx:id="scene3" mnemonicParsing="false" onAction="#goScn2" prefHeight="50.0" prefWidth="80.0" text="SMS" />
+                  <Button fx:id="scene4" mnemonicParsing="false" onAction="#goScn2" prefHeight="50.0" prefWidth="80.0" text="Schowek" />
+                  <Button fx:id="scene5" mnemonicParsing="false" onAction="#goScn5" prefHeight="50.0" prefWidth="80.0" text="Ustawienia" />
                </children>
             </HBox>
+            <StackPane VBox.vgrow="ALWAYS">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <VBox maxHeight="1.7976931348623157E308">
+                     <children>
+                        <AnchorPane style="-fx-background-color: gray;">
+                           <children>
+                              <HBox alignment="CENTER" layoutX="356.0" spacing="10.0" AnchorPane.leftAnchor="0.0">
+                                 <children>
+                                    <Label fx:id="labelUsername" alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 25; -fx-font-style: italic; -fx-font-weight: bold;" text="MainProperty" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="50.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="254.0" spacing="10.0" AnchorPane.leftAnchor="250.0">
+                                 <children>
+                                    <Label fx:id="labelCity" prefHeight="36.0" style="-fx-text-fill: #e8e9ea; -fx-font-size: 18; -fx-font-weight: bolder;" text="SubProperty" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="50.0" />
+                                 </padding>
+                              </HBox>
+                              <Button fx:id="sidebartogglebtn" layoutX="972.0" layoutY="6.0" mnemonicParsing="false" onAction="#sidebartoggle" prefHeight="25.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                           <children>
+                              <SplitPane dividerPositions="0.23577235772357724" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <items>
+                                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" SplitPane.resizableWithParent="false">
+                                       <children>
+                                          <TabPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <tabs>
+                                                <Tab closable="false" text="Użytkownicy">
+                                                   <content>
+                                                      <AnchorPane>
+                                                         <children>
+                                                            <TableView fx:id="primaryUserTableView" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                            <Button layoutX="14.0" layoutY="534.0" mnemonicParsing="false" text="Pobierz nowe" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+                                                            <Button layoutX="119.0" layoutY="534.0" mnemonicParsing="false" text="Wyczyść" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </content>
+                                                </Tab>
+                                                <Tab closable="false" text="Kolejka Wysyłania">
+                                                   <content>
+                                                      <AnchorPane>
+                                                         <children>
+                                                            <Button layoutX="107.0" layoutY="534.0" mnemonicParsing="false" text="Wyczyść" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
+                                                            <Button layoutX="36.0" layoutY="534.0" mnemonicParsing="false" text="Wyślij" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+                                                            <TableView fx:id="msgQTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </content>
+                                                </Tab>
+                                                <Tab closable="false" text="Szukaj" />
+                                                <Tab text="Tab1">
+                                                   <content>
+                                                      <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                                                   </content>
+                                                </Tab>
+                                                <Tab text="Tab1">
+                                                   <content>
+                                                      <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                                                   </content>
+                                                </Tab>
+                                                <Tab text="Tab1">
+                                                   <content>
+                                                      <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                                                   </content>
+                                                </Tab>
+                                             </tabs>
+                                          </TabPane>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane fx:id="contentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="728.0" prefWidth="533.0">
+                                       <children>
+                                          <Text layoutX="331.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ContentPane" />
+                                       </children>
+                                    </AnchorPane>
+                                 </items>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                              </SplitPane>
+                              <SideBar fx:id="sidebartest" maxWidth="1.7976931348623157E308" prefHeight="730.0" targetWidth="300.0">
+                                 <children>
+                                    <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="728.0" prefWidth="299.0">
+                                       <children>
+                                          <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="245.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <content>
+                                                <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="260.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="45.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="155.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login" GridPane.rowIndex="2" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Imię" GridPane.rowIndex="3" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwisko" GridPane.rowIndex="4" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mail" GridPane.rowIndex="6" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Miasto" GridPane.rowIndex="7" />
+                                                      <ActionableTextField fx:id="actionabletest1" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest11" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest12" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest13" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest14" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa wyświetl." GridPane.rowIndex="5" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Miasto" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+                                                      <ActionableTextField fx:id="actionabletest121" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Użytkownik" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                                                      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="11" />
+                                                      <ActionableTextField fx:id="actionabletest141" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest142" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest1421" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest1422" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stanowisko" GridPane.rowIndex="8" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wstępne hasło" GridPane.rowIndex="9" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa" GridPane.rowIndex="12" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Telefon" GridPane.rowIndex="14" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fax" GridPane.rowIndex="15" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Typ" GridPane.rowIndex="13" />
+                                                      <ActionableTextField fx:id="actionabletest1411" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest1423" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="17" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Telefon" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="16" />
+                                                      <ActionableTextField fx:id="actionabletest14231" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="18">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Numer" GridPane.rowIndex="18" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Model" GridPane.rowIndex="19" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IMEI" GridPane.rowIndex="20" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PIN" GridPane.rowIndex="21" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PUK" GridPane.rowIndex="22" />
+                                                      <ActionableTextField fx:id="actionabletest142311" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="19">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest1423111" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="20">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest14231111" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="21">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="actionabletest142311111" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="22">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                          </ScrollPane>
+                                          <Button layoutX="104.0" layoutY="210.0" mnemonicParsing="false" text="Zapisz zmiany" AnchorPane.bottomAnchor="20.0" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </SideBar>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
             <StatusBar fx:id="statusBar" maxWidth="1.7976931348623157E308" minHeight="20.0" prefHeight="20.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" VBox.vgrow="NEVER" />
          </children>
       </VBox>
