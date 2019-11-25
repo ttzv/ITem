@@ -31,6 +31,16 @@ public class UserHolder {
         return userList;
     }
 
+    public User getUser(String id){
+        User fUser = null;
+        for (User u : userList) {
+            if(u.getGUID().equals(id)){
+                fUser = u;
+            }
+        }
+        return fUser;
+    }
+
     public List<User> getNewest(int numberOfUsers){
         return getAllUsers().subList(0, numberOfUsers);
     }
@@ -40,11 +50,11 @@ public class UserHolder {
     }
 
     public  User getCurrentUser() {
-        return newUsers.get(getCurrentIndex());
+        return this.currentUser;
     }
 
     public  void setCurrentUser(User bcurrentUser) {
-        newUsers.set(getCurrentIndex(), bcurrentUser);
+        this.currentUser = bcurrentUser;
     }
 
     public  void addUser (User u){

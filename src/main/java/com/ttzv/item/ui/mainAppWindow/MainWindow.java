@@ -72,6 +72,9 @@ public class MainWindow extends AnchorPane {
     private Label labelCity;
 
     @FXML
+    private Button sidebartogglebtn;
+
+    @FXML
     private TableView<Map> primaryUserTableView;
 
     @FXML
@@ -81,16 +84,64 @@ public class MainWindow extends AnchorPane {
     private AnchorPane contentPane;
 
     @FXML
-    private StatusBar statusBar;
-
-    @FXML
     private SideBar sidebartest;
 
     @FXML
-    private Button sidebartogglebtn;
+    private ActionableTextField txtfActLogin;
 
     @FXML
-    private ActionableTextField actionabletest1;
+    private ActionableTextField txtfActName;
+
+    @FXML
+    private ActionableTextField txtfActSn;
+
+    @FXML
+    private ActionableTextField txtfActMail;
+
+    @FXML
+    private ActionableTextField txtfActCity;
+
+    @FXML
+    private ActionableTextField txtfActDispN;
+
+    @FXML
+    private ActionableTextField txtfActCtName;
+
+    @FXML
+    private ActionableTextField txtfActCtPhone;
+
+    @FXML
+    private ActionableTextField txtfActPos;
+
+    @FXML
+    private ActionableTextField txtfActInitpass;
+
+    @FXML
+    private ActionableTextField txtfActCtType;
+
+    @FXML
+    private ActionableTextField txtfActCtFax;
+
+    @FXML
+    private ActionableTextField txtfActPhNumber;
+
+    @FXML
+    private ActionableTextField txtfActPhModel;
+
+    @FXML
+    private ActionableTextField txtfActPhImei;
+
+    @FXML
+    private ActionableTextField txtfActPhPin;
+
+    @FXML
+    private ActionableTextField txtfActPhPuk;
+
+    @FXML
+    private Button saveUserProperties;
+
+    @FXML
+    private StatusBar statusBar;
 
 
     public MainWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
@@ -134,12 +185,16 @@ public class MainWindow extends AnchorPane {
                 .addRows(userHolder.getAllUsers())
         );
 
+        addPrimarytableViewDoubleClickHandler();
+
         sidebartest.setToggler(sidebartogglebtn);
         sidebartest.setPrefWidth(0.0);
         sidebartest.childrenVisible(false);
         sidebartest.applyAnchors(0.0);
 
-        actionabletest1.hideButtons();
+        hideTxtfActControls();
+        userHolder.setCurrentUser(getFirst());
+        updateMainWindowAssets();
 
     }
 
@@ -224,6 +279,11 @@ public class MainWindow extends AnchorPane {
     }*/
 
     @FXML
+    void performSaveUserProperties(){
+        this.txtfActLogin.setText("TESTTTTTT");
+    }
+
+    @FXML
     void loadNewUsers() throws NamingException, SQLException {
         int userQtyToLoad = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.DB_USER_QTY));
     }
@@ -270,14 +330,9 @@ public class MainWindow extends AnchorPane {
     }
 
 
-    public boolean isInfoBarAssetsVisible() {
-        return infoBarAssetsVisible;
-    }
-
     public void changeUser() {
         this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
         this.labelCity.setText(userHolder.getCurrentUser().getCity());
-
 
         MailerWindow mw = (MailerWindow) scenePicker.getScene(0);
         mw.setUserName(userHolder.getCurrentUser().getDisplayName());
@@ -291,7 +346,7 @@ public class MainWindow extends AnchorPane {
         sw.setTxtfCity(userHolder.getCurrentUser().getCity());
         sw.setTxtfCityPhone(city.getLandLineNumber());
         sw.setTxtfCityFax(city.getFaxNumber());
-        sw.setTxtfPos(userDetail.getPosition());
+       // sw.setTxtfPos(userDetail.getPosition());
         sw.setTxtfPhone(userDetail.getLandLineNumber());
         sw.setTxtfMPhone(phone.getNumber());
         String cType = city.getType();
@@ -301,8 +356,6 @@ public class MainWindow extends AnchorPane {
             sw.selectComboxVal(0);
         }
         sw.reload();
-
-        //System.out.println("performing change");
     }
 
 
@@ -324,70 +377,82 @@ public class MainWindow extends AnchorPane {
         scenePicker.addAll(scenes);
     }
 
-
-
     @FXML
     void sidebartoggle(ActionEvent event) {
-
         sidebartest.animatePane();
-
-
-
-
-        /*final double startWidth = 0.0;
-        final double targetWidth = 250.0;
-        final Animation hideSidebar = new Transition() {
-            {
-                setCycleDuration(Duration.millis(1000));
-            }
-            protected void interpolate(double frac) {
-                final double curWidth = targetWidth * (1.0 - frac);
-                sidebar.setPrefWidth(curWidth);
-                System.out.println(curWidth);
-            }
-        };
-        hideSidebar.onFinishedProperty().set(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                sidebar.setVisible(false);
-                sidebartogglebtn.setText("Show");
-            }
-        });
-
-        final Animation showSidebar = new Transition() {
-            {
-                setCycleDuration(Duration.millis(1000));
-            }
-
-            protected void interpolate(double frac) {
-                final double curWidth = targetWidth * frac;
-                sidebar.setPrefWidth(curWidth);
-                System.out.println(curWidth);
-            }
-        };
-        showSidebar.onFinishedProperty().set(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                sidebartogglebtn.setText("Hide");
-                for (Node n:sidebar.getChildren()) {
-                    n.setManaged(true);
-                    n.setVisible(true);
-                }
-            }
-        });
-
-        if (showSidebar.statusProperty().get() == Animation.Status.STOPPED && hideSidebar.statusProperty().get() == Animation.Status.STOPPED) {
-            if (sidebar.isVisible()) {
-                hideSidebar.play();
-                for (Node n:sidebar.getChildren()) {
-                    n.setManaged(false);
-                    n.setVisible(false);
-                }
-            } else {
-                showSidebar.play();
-                sidebar.setVisible(true);
-            }
-        }
-            */
     }
+
+    private void addPrimarytableViewDoubleClickHandler(){
+        this.primaryUserTableView.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.getClickCount() == 2){
+                String id = primaryUserTableView.getSelectionModel()
+                        .getSelectedItem()
+                        .get(UserData.objectGUID.toString()).toString();
+                userHolder.setCurrentUser(userHolder.getUser(id));
+                System.out.println("Current user: " + userHolder.getCurrentUser());
+                updateMainWindowAssets();
+            }
+        });
+    }
+
+    private User getFirst(){
+        userHolder.setCurrentUser(userHolder.getUser(
+                this.primaryUserTableView.getItems()
+                        .get(0)
+                        .get(UserData.objectGUID.toString()).toString()));
+        return userHolder.getCurrentUser();
+    }
+
+    private void updateMainWindowAssets(){
+        setTxtfActValues();
+        changeUser();
+    }
+
+    private void hideTxtfActControls(){
+        txtfActLogin.hideButtons();
+        txtfActName.hideButtons();
+        txtfActSn.hideButtons();
+        txtfActMail.hideButtons();
+        txtfActCity.hideButtons();
+        txtfActDispN.hideButtons();
+        txtfActCtName.hideButtons();
+        txtfActCtPhone.hideButtons();
+        txtfActPos.hideButtons();
+        txtfActInitpass.hideButtons();
+        txtfActCtType.hideButtons();
+        txtfActCtFax.hideButtons();
+        txtfActPhNumber.hideButtons();
+        txtfActPhModel.hideButtons();
+        txtfActPhImei.hideButtons();
+        txtfActPhPin.hideButtons();
+        txtfActPhPuk.hideButtons();
+    }
+
+    private void setTxtfActValues(){
+        System.out.println("HELLLLLOOOIMMHEREEEEEEEEE!!!!");
+        User user = userHolder.getCurrentUser();
+        //user and user detail
+        txtfActLogin.setText(user.getSamAccountName());
+        System.out.println("login: " + user.getSamAccountName());
+        System.out.println("txtf: " + txtfActLogin.getText());
+        txtfActName.setText(user.getGivenName());
+        txtfActSn.setText(user.getSn());
+        txtfActMail.setText(user.getMail());
+        txtfActCity.setText(user.getCity());
+        txtfActDispN.setText(user.getDisplayName());
+        txtfActPos.setText(userComboWrapper.getDetailOf(user).getPosition());
+        txtfActInitpass.setText(userComboWrapper.getDetailOf(user).getInitMailPass());
+        //city
+        txtfActCtName.setText(userComboWrapper.getCityOf(user).getName());
+        txtfActCtPhone.setText(userComboWrapper.getCityOf(user).getLandLineNumber());
+        txtfActCtType.setText(userComboWrapper.getCityOf(user).getType());
+        txtfActCtFax.setText(userComboWrapper.getCityOf(user).getFaxNumber());
+        //phone
+        txtfActPhNumber.setText(userComboWrapper.getPhoneOf(user).getNumber());
+        txtfActPhModel.setText(userComboWrapper.getPhoneOf(user).getModel());
+        txtfActPhImei.setText(userComboWrapper.getPhoneOf(user).getImei());
+        txtfActPhPin.setText(userComboWrapper.getPhoneOf(user).getPin());
+        txtfActPhPuk.setText(userComboWrapper.getPhoneOf(user).getPuk());
+    }
+
 }

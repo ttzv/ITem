@@ -89,6 +89,7 @@ public class TableViewCreator {
             TableColumn<Map, String> tableColumn = new TableColumn<>(name);
             tableColumn.setCellValueFactory(new MapValueFactory<>(key));
             tableColumn.setCellFactory(cellFactoryForMap());
+            tableColumn.setId(key);
             this.listOfColumns.add(tableColumn);
         }
 

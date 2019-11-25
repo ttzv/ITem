@@ -48,7 +48,7 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
 
     //standard getters and setters to allow compatibility with rest of the app.
     public String getGivenName() {
-        return userEntity.getValue(UserData.sn.toString());
+        return userEntity.getValue(UserData.givenname.toString());
     }
 
     public void setGivenName(String givenName) {
@@ -188,17 +188,17 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
     @Override
     public Map<String, String> getFXNameToIdPairs() {
         Map<String, String> map = new HashMap<>();
-        //map.put(UserData.objectGUID.toString(), "");
-        //map.put(UserData.samaccountname.toString(), "Login");
+        map.put(UserData.objectGUID.toString(), UserData.objectGUID.toString());
+        map.put(UserData.samaccountname.toString(), "Login");
         map.put(UserData.givenname.toString(), "Imię");
         map.put(UserData.sn.toString(), "Nazwisko");
-        map.put(UserData.displayname.toString(), "");
+        map.put(UserData.displayname.toString(), "Nazwa");
         map.put(UserData.distinguishedName.toString(), "");
         map.put(UserData.city.toString(), "Miasto");
         map.put(UserData.whenCreated.toString(), "Data utworzenia");
         map.put(UserData.whenChanged.toString(), "");
-        //map.put(UserData.mail.toString(), "Email");
-        //map.put(UserData.useraccountcontrol.toString(), "Status konta");
+        map.put(UserData.mail.toString(), "Email");
+        map.put(UserData.useraccountcontrol.toString(), "Status konta");
         return map;
 
 
