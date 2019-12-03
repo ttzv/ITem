@@ -1,5 +1,7 @@
 package com.ttzv.item.entity;
 
+import java.util.Objects;
+
 public class Phone implements DynamicEntityCompatible, Comparable<Phone>
 {
     private DynamicEntity phoneEntity;
@@ -98,6 +100,19 @@ public class Phone implements DynamicEntityCompatible, Comparable<Phone>
         if(!this.phoneEntity.setValue(PhoneData.puk.toString(), puk)){
             this.phoneEntity.add(PhoneData.puk.toString(), puk);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Phone phone = (Phone) o;
+        return Objects.equals(phoneEntity.getList(), phone.phoneEntity.getList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(phoneEntity);
     }
 
     @Override

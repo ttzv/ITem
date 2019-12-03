@@ -1,5 +1,7 @@
 package com.ttzv.item.entity;
 
+import java.util.Objects;
+
 public class City implements DynamicEntityCompatible, Comparable<City>{
 
     private String name;
@@ -99,6 +101,19 @@ public class City implements DynamicEntityCompatible, Comparable<City>{
         if(!this.cityEntity.setValue(CityData.postalCode.toString(), postalCode)){
             this.cityEntity.add(CityData.postalCode.toString(), postalCode);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        City city = (City) o;
+        return Objects.equals(cityEntity.getList(), city.cityEntity.getList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cityEntity);
     }
 
     @Override

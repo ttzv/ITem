@@ -216,6 +216,7 @@ public class KeyMapper {
             userDetailMaps.addMapping(UserDetailData.notes.toString(), "", "notes");
         KeyMapper cityMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class);
             cityMaps.addMapping(CityData.name.toString(), "", "name");
+            cityMaps.addMapping(CityData.type.toString(), "", "type");
             cityMaps.addMapping(CityData.landLineNumber.toString(), "", "number_landline");
             cityMaps.addMapping(CityData.faxNumber.toString(), "", "number_fax");
             cityMaps.addMapping(CityData.postalCode.toString(), "", "postalcode");

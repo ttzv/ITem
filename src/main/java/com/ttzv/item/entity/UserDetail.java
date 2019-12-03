@@ -1,5 +1,7 @@
 package com.ttzv.item.entity;
 
+import java.util.Objects;
+
 public class UserDetail implements DynamicEntityCompatible{
 
     private DynamicEntity userDetailEntity;
@@ -91,5 +93,18 @@ public class UserDetail implements DynamicEntityCompatible{
     @Override
     public String toString() {
         return this.userDetailEntity.getList().toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDetail that = (UserDetail) o;
+        return Objects.equals(userDetailEntity.getList(), that.userDetailEntity.getList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userDetailEntity);
     }
 }

@@ -45,9 +45,6 @@ public class UserHolder {
         return getAllUsers().subList(0, numberOfUsers);
     }
 
-    public void refresh () throws SQLException, IOException, NamingException {
-        this.userList = userEntityDAO.getAllEntities();
-    }
 
     public  User getCurrentUser() {
         return this.currentUser;
@@ -98,6 +95,11 @@ public class UserHolder {
 
     public  int getMaxCount(){
         return newUsers.size();
+    }
+
+    public UserHolder refresh() throws SQLException, IOException, NamingException {
+        this.userList = this.userEntityDAO.getAllEntities();
+        return this;
     }
 
 

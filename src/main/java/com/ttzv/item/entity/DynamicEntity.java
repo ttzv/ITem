@@ -21,6 +21,10 @@ public class DynamicEntity {
         entityMap = new HashMap<>();
     }
 
+    public DynamicEntity(Map<String, String> entityMap){
+        this.entityMap = entityMap;
+    }
+
     /**
      * Process List of key-value data separated by Separator and generate a Map of these values
      * @param vals list of values to process
@@ -53,8 +57,20 @@ public class DynamicEntity {
                         "because it is empty.");
             }
         }
-        this.entityMap = replacedMap;
-        return this;
+        //this.entityMap = replacedMap;
+        return new DynamicEntity(replacedMap);
+    }
+
+    /**
+     * Removes k-v pair from DynamicEntity map
+     * @param key key that should be
+     * @return
+     */
+
+    public DynamicEntity excludeKey(String key){
+        Map<String, String> tempMap = new HashMap<>(this.entityMap);
+        tempMap.remove(key);
+        return new DynamicEntity(tempMap);
     }
 
     /**
@@ -72,15 +88,16 @@ public class DynamicEntity {
     /**
      * Return one of values of this entity by identifying it with a key
      * @param key identifier to search by
-     * @return value stored under given key
+     * @return value stored under given key or String "null" if no value was found
      */
     public String getValue(String key) {
+        String val = "";
         if(entityMap.containsKey(key)) {
-            return entityMap.getOrDefault(key, null);
+            val = entityMap.getOrDefault(key, null);
         } else {
             System.err.println("Key " + key + " not found as valid key");
-            return null;
         }
+        return val;
     }
 
     /**
