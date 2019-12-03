@@ -26,6 +26,7 @@ public class ScenePicker {
                 this.scenes.add(p);
             }
         }
+        System.out.println();
     }
 
     public void add (Pane pane){
@@ -34,6 +35,7 @@ public class ScenePicker {
 
     public Pane getScene(int index){
         this.activeScene = index;
+        System.out.println(this.scenes);
         return this.scenes.get(index);
     }
 

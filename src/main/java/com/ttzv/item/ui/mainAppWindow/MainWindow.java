@@ -117,6 +117,9 @@ public class MainWindow extends AnchorPane {
     private ActionableTextField txtfActInitpass;
 
     @FXML
+    private ActionableTextField txtfActUsrLandLine;
+
+    @FXML
     private ActionableTextField txtfActCtType;
 
     @FXML
@@ -194,7 +197,7 @@ public class MainWindow extends AnchorPane {
 
         hideTxtfActControls();
         userHolder.setCurrentUser(getFirst());
-        updateMainWindowAssets();
+        //updateMainWindowAssets();
 
     }
 
@@ -240,7 +243,7 @@ public class MainWindow extends AnchorPane {
         this.scenePicker.setActiveScene(index);
     }
 
-    private void loadOnStart() {
+    public void loadOnStart() {
         int active = scenePicker.getActiveScene();
         if (active >= 0) {
             selectScene(active);
@@ -279,8 +282,29 @@ public class MainWindow extends AnchorPane {
     }*/
 
     @FXML
-    void performSaveUserProperties(){
-        this.txtfActLogin.setText("TESTTTTTT");
+    void performSaveUserProperties() throws IOException, SQLException {
+        User user = userHolder.getCurrentUser();
+        UserDetail userDetail = userComboWrapper.getDetailOf(user);
+        City city = userComboWrapper.getCityOf(user);
+        Phone phone = userComboWrapper.getPhoneOf(user);
+        //userdetail
+        userDetail.setPosition(txtfActPos.getText());
+        userDetail.setInitMailPass(txtfActInitpass.getText());
+        //city
+        city.setName(txtfActCtName.getText());
+        city.setType(txtfActCtType.getText());
+        city.setLandLineNumber(txtfActCtPhone.getText());
+        city.setFaxNumber(txtfActCtFax.getText());
+        //phone
+        phone.setNumber(txtfActPhNumber.getText());
+        phone.setModel(txtfActPhModel.getText());
+        phone.setImei(txtfActPhImei.getText());
+        phone.setPin(txtfActPhPin.getText());
+        phone.setPin(txtfActPhPin.getText());
+
+        userComboWrapper.updateUserDetail(userDetail);
+        userComboWrapper.updateCity(city);
+        userComboWrapper.updatePhone(phone);
     }
 
     @FXML
@@ -329,8 +353,27 @@ public class MainWindow extends AnchorPane {
         statusBar.setVanishingText("Skopiowano do schowka");
     }
 
+    @FXML
+    void btnClearUserList(ActionEvent event) {
+        primaryUserTableView.getItems().clear();
+    }
+
+    @FXML
+    void btnRefreshUserList(ActionEvent event) throws SQLException, IOException, NamingException {
+        TableViewCreator tableViewCreator = new TableViewCreator(primaryUserTableView);
+        tableViewCreator.createFromMap(TableViewCreator.builder()
+                .addColumns(userHolder.getNewest(1).get(0))
+                .addRows(userHolder.refresh().getAllUsers())
+        );
+    }
+
 
     public void changeUser() {
+        User user = userHolder.getCurrentUser();
+        City city = userComboWrapper.getCityOf(user);
+        Phone phone = userComboWrapper.getPhoneOf(user);
+        UserDetail userDetail = userComboWrapper.getDetailOf(user);
+
         this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
         this.labelCity.setText(userHolder.getCurrentUser().getCity());
 
@@ -338,23 +381,29 @@ public class MainWindow extends AnchorPane {
         mw.setUserName(userHolder.getCurrentUser().getDisplayName());
 
         SignWindow sw = (SignWindow) scenePicker.getScene(1);
-        User user = userHolder.getCurrentUser();
-        City city = userComboWrapper.getCityOf(user);
-        Phone phone = userComboWrapper.getPhoneOf(user);
-        UserDetail userDetail = userComboWrapper.getDetailOf(user);
         sw.setTxtfName(user.getDisplayName());
-        sw.setTxtfCity(userHolder.getCurrentUser().getCity());
-        sw.setTxtfCityPhone(city.getLandLineNumber());
-        sw.setTxtfCityFax(city.getFaxNumber());
-       // sw.setTxtfPos(userDetail.getPosition());
-        sw.setTxtfPhone(userDetail.getLandLineNumber());
-        sw.setTxtfMPhone(phone.getNumber());
-        String cType = city.getType();
-        if (cType.equals("Filia")) {
-            sw.selectComboxVal(1);
-        } else if (cType.equals("Centrala")) {
-            sw.selectComboxVal(0);
+
+        if(city != null) {
+            sw.setTxtfCity(city.getName());
+            sw.setTxtfCityPhone(city.getLandLineNumber());
+            sw.setTxtfCityFax(city.getFaxNumber());
+            String cType = city.getType();
+            if (cType.equals("Filia")) {
+                sw.selectComboxVal(1);
+            } else if (cType.equals("Centrala")) {
+                sw.selectComboxVal(0);
+            }
         }
+
+        if(userDetail != null) {
+            sw.setTxtfPos(userDetail.getPosition());
+            sw.setTxtfPhone(userDetail.getLandLineNumber());
+        }
+
+        if(phone != null) {
+            sw.setTxtfMPhone(phone.getNumber());
+        }
+
         sw.reload();
     }
 
@@ -403,7 +452,7 @@ public class MainWindow extends AnchorPane {
         return userHolder.getCurrentUser();
     }
 
-    private void updateMainWindowAssets(){
+    public void updateMainWindowAssets(){
         setTxtfActValues();
         changeUser();
     }
@@ -429,8 +478,10 @@ public class MainWindow extends AnchorPane {
     }
 
     private void setTxtfActValues(){
-        System.out.println("HELLLLLOOOIMMHEREEEEEEEEE!!!!");
         User user = userHolder.getCurrentUser();
+        UserDetail userDetail = userComboWrapper.getDetailOf(user);
+        City city = userComboWrapper.getCityOf(user);
+        Phone phone = userComboWrapper.getPhoneOf(user);
         //user and user detail
         txtfActLogin.setText(user.getSamAccountName());
         System.out.println("login: " + user.getSamAccountName());
@@ -440,19 +491,26 @@ public class MainWindow extends AnchorPane {
         txtfActMail.setText(user.getMail());
         txtfActCity.setText(user.getCity());
         txtfActDispN.setText(user.getDisplayName());
-        txtfActPos.setText(userComboWrapper.getDetailOf(user).getPosition());
-        txtfActInitpass.setText(userComboWrapper.getDetailOf(user).getInitMailPass());
+        if(userDetail != null) {
+            System.out.println(userDetail.toString());
+            txtfActPos.setText(userDetail.getPosition());
+            txtfActInitpass.setText(userDetail.getInitMailPass());
+        }
         //city
-        txtfActCtName.setText(userComboWrapper.getCityOf(user).getName());
-        txtfActCtPhone.setText(userComboWrapper.getCityOf(user).getLandLineNumber());
-        txtfActCtType.setText(userComboWrapper.getCityOf(user).getType());
-        txtfActCtFax.setText(userComboWrapper.getCityOf(user).getFaxNumber());
+        if(city != null) {
+            txtfActCtName.setText(city.getName());
+            txtfActCtPhone.setText(city.getLandLineNumber());
+            txtfActCtType.setText(city.getType());
+            txtfActCtFax.setText(city.getFaxNumber());
+        }
         //phone
-        txtfActPhNumber.setText(userComboWrapper.getPhoneOf(user).getNumber());
-        txtfActPhModel.setText(userComboWrapper.getPhoneOf(user).getModel());
-        txtfActPhImei.setText(userComboWrapper.getPhoneOf(user).getImei());
-        txtfActPhPin.setText(userComboWrapper.getPhoneOf(user).getPin());
-        txtfActPhPuk.setText(userComboWrapper.getPhoneOf(user).getPuk());
+        if(phone != null) {
+            txtfActPhNumber.setText(phone.getNumber());
+            txtfActPhModel.setText(phone.getModel());
+            txtfActPhImei.setText(phone.getImei());
+            txtfActPhPin.setText(phone.getPin());
+            txtfActPhPuk.setText(phone.getPuk());
+        }
     }
 
 }

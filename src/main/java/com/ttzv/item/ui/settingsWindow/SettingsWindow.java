@@ -1,6 +1,7 @@
 package com.ttzv.item.ui.settingsWindow;
 
 import com.ttzv.item.dao.JdbcDriverSelector;
+import com.ttzv.item.dao.UserDaoLdapImpl;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.parser.LDAPParser;
 import com.ttzv.item.dao.JdbcDriverSelector;
@@ -24,6 +25,7 @@ import ttzv.uiUtils.TitledBorder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.sql.SQLException;
 
 public class SettingsWindow extends AnchorPane {
 
@@ -540,13 +542,7 @@ public class SettingsWindow extends AnchorPane {
         Task isValid = new Task() {
             @Override
             protected Object call() throws Exception {
-              /*  LDAPParser ldapParser = new LDAPParser();
-                ldapParser.setLdap_URL(fieldLdapUrl.getText());
-                ldapParser.setLdap_port(fieldLdapPort.getText());
-                ldapParser.setAd_adminUser(fieldLdapAcc.getText());
-                ldapParser.setAd_adminPass(PHolder.ldap);
-                ldapParser.initializeLdapContext();
-                */
+                UserDaoLdapImpl userDaoLdap = new UserDaoLdapImpl();
                 return null;
             }
         };
@@ -575,7 +571,7 @@ public class SettingsWindow extends AnchorPane {
             @Override
             protected Object call() throws Exception {
                 JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector(
-                        cBoxDbDriverList.getSelectionModel().getSelectedItem().toString(),
+                        "POSTGRES",
                         fieldDbUrl.getText(),
                         fieldDbLogin.getText(),
                         fieldDbPass.getText().toCharArray()
