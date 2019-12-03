@@ -20,6 +20,7 @@ public class TableViewCreator {
     private TableView<Map> tableView;
     private Map<String, List<TableColumn>> columnGroups;
     private KeyMapper keyMapper;
+    private TableViewBuilder tableViewBuilder;
 
     public TableViewCreator(TableView<Map> tableView) {
         this.tableView = tableView;
@@ -104,6 +105,7 @@ public class TableViewCreator {
             list.forEach(fxMapCompatible -> this.listOfMaps.add(fxMapCompatible.getFXMap()));
             return this;
         }
+
 
        private Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap (){
            return new Callback<TableColumn<Map, String>, TableCell<Map, String>>() {
