@@ -66,7 +66,7 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
 
     @Override
     public boolean updateEntity(Phone entity) throws SQLException {
-        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
+        DynamicEntity uEntity = entity.getEntity().excludeKey(PhoneData.ownerid.toString()).replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
         String criteriumOfUpdating = keyMapper.getMapping(PhoneData.ownerid.toString()).get(KeyMapper.DBKEY) + "='" + entity.getOwnerid() + "'";
         String sql = updateSql(TABLE_PHONE, uEntity.getList("'"), criteriumOfUpdating);
         if(!executeUpdate(sql)){
@@ -94,8 +94,8 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
         List<String> dbKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
         List<String> values = dbKeys.stream()
                 .map(
-                        k->phone.getEntity()
-                                .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
+                        k->phone.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY)
+                                .getValue(k))
                 .collect(Collectors.toList());
         String sql = insertSql(TABLE_PHONE, keyMapper.getAllMappingsOf(KeyMapper.DBKEY), Collections.singletonList(values));
         executeUpdate(sql);

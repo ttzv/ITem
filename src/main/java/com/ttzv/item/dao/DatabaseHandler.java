@@ -46,9 +46,25 @@ public abstract class DatabaseHandler {
 
     }
 
+    public boolean tableReady(String tableName) throws SQLException { //todo: unfinished
+        String query = "SELECT\n" +
+                "   *\n" +
+                "FROM\n" +
+                "   pg_catalog.pg_tables\n" +
+                "WHERE\n" +
+                "   schemaname != 'pg_catalog'\n" +
+                "AND schemaname != 'information_schema';";
+        String tableNameKey = "tablename";
+        List<List<String>> resultsList = executeQuery(query);
+        for (List<String> result : resultsList) {
+            System.out.println(result.get(1));
+        }
+        return false;
+    }
+
     public boolean executeUpdate(String sql) throws SQLException {
         int rowsUpdated = 0;
-        System.out.println(sql);
+        System.out.println("UPDATE: " + sql);
         Connection connection = jdbcDriverSelector.createConnection();
         if (connection != null) {
             Statement statement = null;
@@ -66,7 +82,7 @@ public abstract class DatabaseHandler {
     }
 
     public List<List<String>> executeQuery(String query) throws SQLException {
-        System.out.println(query);
+        System.out.println("QUERY: " + query);
         Connection connection = jdbcDriverSelector.createConnection();
         ResultSet resultSet = null;
         Statement statement = null;

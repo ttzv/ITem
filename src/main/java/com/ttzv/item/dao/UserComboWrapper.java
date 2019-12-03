@@ -35,13 +35,25 @@ public class UserComboWrapper {
     }
 
     public City getCityOf(User user){
-        return this.cities.get(user.getCity());
+        City city = this.cities.get(user.getCity());
+        if(city != null)
+            return city;
+        else
+            return new City(user.getCity());
     }
     public Phone getPhoneOf(User user){
-        return this.phones.get(user.getGUID());
+        Phone phone = this.phones.get(user.getGUID());
+        if(phone != null)
+            return phone;
+        else
+            return new Phone(user.getGUID());
     }
     public UserDetail getDetailOf(User user){
-        return this.details.get(user.getGUID());
+        UserDetail userDetail = this.details.get(user.getGUID());
+        if(userDetail != null)
+            return userDetail;
+        else
+            return new UserDetail(user.getGUID());
     }
 
     private Map<String, ? extends DynamicEntityCompatible> convertToMap(List<? extends DynamicEntityCompatible> decList){

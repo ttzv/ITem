@@ -9,6 +9,7 @@ import com.ttzv.item.parser.LDAPParser;
 import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
     private int searchControlsScope;
     private KeyMapper keyMapper;
 
-    public UserDaoLdapImpl() throws NamingException {
+    public UserDaoLdapImpl() throws NamingException, UnknownHostException {
         this.searchBase = "ou=Pracownicy,dc=atal,dc=local";
         this.searchFilter = "(&(objectClass=user))";
         this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "sAMAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", "whenChanged"};
@@ -33,7 +34,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
     }
 
-    public List<List<String>> getResults() throws NamingException {
+    public List<List<String>> getResults() throws NamingException, UnknownHostException {
             this.ldapParser = LDAPParser.getLdapParser();
             this.ldapParser.queryLdap(LDAPParser.builder()
                 .setSearchBase(searchBase)
@@ -47,7 +48,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
     }
 
     @Override
-    public List<User> getAllEntities() throws NamingException {
+    public List<User> getAllEntities() throws NamingException, UnknownHostException {
         List<User> allUsers = new ArrayList<>();
         for (List<String> list :
                 getResults()) {

@@ -68,7 +68,7 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
 
     @Override
     public boolean updateEntity(UserDetail entity) throws SQLException, IOException {
-        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
+        DynamicEntity uEntity = entity.getEntity().excludeKey(UserDetailData.guid.toString()).replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
         String criteriumOfUpdating = keyMapper.getCorrespondingMapping(UserDetailData.guid.toString(), KeyMapper.DBKEY) + "='" + entity.getGuid() + "'";
         String sql = updateSql(TABLE_USER_DETAILS, uEntity.getList("'"), criteriumOfUpdating);
         if(!executeUpdate(sql)){
@@ -80,7 +80,7 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
 
     @Override
     public boolean deleteEntity(UserDetail entity) throws SQLException, IOException {
-        String query = "DELETE FROM " + TABLE_USER_DETAILS+
+        String query = "DELETE FROM " + TABLE_USER_DETAILS +
                 " WHERE " + TABLE_USER_DETAILS + "." + UserDetailData.guid.getDbKey(keyMapper) + "='" + entity.getGuid() + "'";
         executeQuery(query);
         return false;
@@ -95,11 +95,9 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
         List<String> dbUniqueKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
         List<String> values = dbUniqueKeys.stream()
                 .map(
-                        k -> userDetail.getEntity()
-                                .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
-                .collect(Collectors.toList()
-                );
-        System.out.println(dbUniqueKeys + "\n" + values);
+                        k -> userDetail.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY)
+                                .getValue(k))
+                .collect(Collectors.toList());
         String sql = insertSql(TABLE_USER_DETAILS, dbUniqueKeys, Collections.singletonList(values));
         executeUpdate(sql);
     }

@@ -29,6 +29,7 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
         String sql = "CREATE TABLE " + TABLE_CITY + " (" +
                 "id SERIAL PRIMARY KEY," +
                 CityData.name.getDbKey(keyMapper) + " VARCHAR UNIQUE, " +
+                CityData.type.getDbKey(keyMapper) + " VARCHAR," +
                 CityData.landLineNumber.getDbKey(keyMapper) + " VARCHAR," +
                 CityData.faxNumber.getDbKey(keyMapper) + " VARCHAR," +
                 CityData.postalCode.getDbKey(keyMapper) + " VARCHAR)";
@@ -90,8 +91,8 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
         List<String> dbKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
         List<String> values = dbKeys.stream()
                 .map(
-                        k->city.getEntity()
-                                .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
+                        k->city.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY)
+                                .getValue(k))
                 .collect(Collectors.toList());
         String sql = insertSql(TABLE_CITY, keyMapper.getAllMappingsOf(KeyMapper.DBKEY), Collections.singletonList(values));
         executeUpdate(sql);
