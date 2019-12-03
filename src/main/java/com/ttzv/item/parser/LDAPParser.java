@@ -4,12 +4,12 @@ import com.ttzv.item.entity.User;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.utility.Utility;
-import javafx.print.Printer;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +87,7 @@ public class LDAPParser
         return new QueryBuilder();
     }
 
-    private void initializeLdapContext() throws NamingException{
+    private void initializeLdapContext() throws NamingException, UnknownHostException {
 
         Properties ldapEnv = new Properties();
         ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory"); //always the same
@@ -105,7 +105,7 @@ public class LDAPParser
      * Get preconfigured LdapParser. Configuration is retrieved from .properties file and can be freely modified (preferably by some UI)
      * @return new LdapParser configured by .properties file and ready to use.
      */
-    public static LDAPParser getLdapParser() throws NamingException {
+    public static LDAPParser getLdapParser() throws NamingException, UnknownHostException {
         LDAPParser ldapParser = new LDAPParser();
         ldapParser.loadCfgCredentials();
         ldapParser.initializeLdapContext();
