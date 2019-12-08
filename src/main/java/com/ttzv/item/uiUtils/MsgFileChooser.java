@@ -1,4 +1,4 @@
-package com.ttzv.item.ui.mailerWindow;
+package com.ttzv.item.uiUtils;
 
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.utility.Utility;

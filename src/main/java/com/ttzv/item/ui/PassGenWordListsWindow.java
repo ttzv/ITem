@@ -1,4 +1,4 @@
-package com.ttzv.item.ui.settingsWindow;
+package com.ttzv.item.ui;
 
 public class PassGenWordListsWindow {
 }

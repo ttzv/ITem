@@ -1,4 +1,4 @@
-package com.ttzv.item.ui.sceneControl;
+package com.ttzv.item.uiUtils;
 
 import com.ttzv.item.properties.Cfg;
 import javafx.scene.layout.Pane;

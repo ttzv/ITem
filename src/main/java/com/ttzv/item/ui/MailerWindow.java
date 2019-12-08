@@ -1,4 +1,4 @@
-package com.ttzv.item.ui.mailerWindow;
+package com.ttzv.item.ui;
 
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.file.MailMsgParser;
@@ -7,7 +7,8 @@ import com.ttzv.item.pass.WordListPasswordGenerator;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
-import com.ttzv.item.ui.mainAppWindow.MainWindow;
+import com.ttzv.item.uiUtils.TabBuilder;
+import com.ttzv.item.uiUtils.ViewTab;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import com.ttzv.item.utility.Utility;
 import javafx.event.ActionEvent;

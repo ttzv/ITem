@@ -47,7 +47,6 @@ public class SignatureParser implements FileParser {
         hiddenRows = new HashSet<>();
     }
 
-
     /**
      * Set desired text in chosen line
      * @param text text to set

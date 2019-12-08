@@ -1,12 +1,10 @@
-package com.ttzv.item.ui.mainAppWindow;
+package com.ttzv.item.ui;
 
 import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.dao.UserDaoLdapImpl;
 import com.ttzv.item.entity.*;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.ui.mailerWindow.MailerWindow;
-import com.ttzv.item.ui.sceneControl.ScenePicker;
-import com.ttzv.item.ui.signWindow.SignWindow;
+import com.ttzv.item.uiUtils.ScenePicker;
 import com.ttzv.item.uiUtils.TableViewCreator;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;

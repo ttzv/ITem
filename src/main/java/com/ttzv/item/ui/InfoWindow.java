@@ -2,7 +2,7 @@
  * Sample Skeleton for 'infoWindow.fxml' Controller Class
  */
 
-package com.ttzv.item.ui.mainAppWindow;
+package com.ttzv.item.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

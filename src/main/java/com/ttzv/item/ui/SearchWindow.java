@@ -1,26 +1,19 @@
-package com.ttzv.item.ui.mainAppWindow;
+package com.ttzv.item.ui;
 
 import com.ttzv.item.entity.User;
-import com.ttzv.item.entity.UserData;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 
 import java.sql.SQLException;
 import java.util.List;

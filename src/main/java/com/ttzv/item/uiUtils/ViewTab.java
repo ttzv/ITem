@@ -1,4 +1,4 @@
-package com.ttzv.item.ui.mailerWindow;
+package com.ttzv.item.uiUtils;
 
 import com.ttzv.item.file.MailMsgParser;
 import javafx.scene.control.Tab;

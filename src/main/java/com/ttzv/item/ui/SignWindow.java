@@ -1,4 +1,4 @@
-package com.ttzv.item.ui.signWindow;
+package com.ttzv.item.ui;
 
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.file.Loader;

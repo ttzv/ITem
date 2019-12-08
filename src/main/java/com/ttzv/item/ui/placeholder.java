@@ -1,4 +1,4 @@
-package com.ttzv.item.ui.placeholderWindow;
+package com.ttzv.item.ui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;

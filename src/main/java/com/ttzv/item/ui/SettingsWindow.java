@@ -1,15 +1,12 @@
-package com.ttzv.item.ui.settingsWindow;
+package com.ttzv.item.ui;
 
 import com.ttzv.item.dao.JdbcDriverSelector;
 import com.ttzv.item.dao.UserDaoLdapImpl;
 import com.ttzv.item.entity.UserHolder;
-import com.ttzv.item.parser.LDAPParser;
-import com.ttzv.item.dao.JdbcDriverSelector;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
-import com.ttzv.item.ui.mailerWindow.MailerWindow;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -25,7 +22,6 @@ import ttzv.uiUtils.TitledBorder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.sql.SQLException;
 
 public class SettingsWindow extends AnchorPane {
 

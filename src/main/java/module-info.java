@@ -14,11 +14,7 @@ module com.ttzv.item {
     requires ttzv.propsicl;
 
     opens com.ttzv.item to javafx.fxml;
-    opens com.ttzv.item.ui.mainAppWindow to javafx.fxml;
-    opens com.ttzv.item.ui.mailerWindow to javafx.fxml;
-    opens com.ttzv.item.ui.placeholderWindow to javafx.fxml;
-    opens com.ttzv.item.ui.settingsWindow to javafx.fxml;
-    opens com.ttzv.item.ui.signWindow to javafx.fxml;
+    opens com.ttzv.item.ui to javafx.fxml;
 
     exports com.ttzv.item;
     exports com.ttzv.item.entity;
