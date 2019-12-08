@@ -16,6 +16,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -78,10 +79,6 @@ public class SignWindow extends AnchorPane {
                 reload();
             }
         }
-
-
-
-
     }
 
     @FXML
@@ -149,10 +146,12 @@ public class SignWindow extends AnchorPane {
 
     @FXML
     private void btnCopyHTMLAction() {
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent clipboardContent = new ClipboardContent();
-        clipboardContent.putString(signatureParser.getOutputString());
-        clipboard.setContent(clipboardContent);
+        if(signatureParser != null) {
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent clipboardContent = new ClipboardContent();
+            clipboardContent.putString(signatureParser.getOutputString());
+            clipboard.setContent(clipboardContent);
+        }
     }
 
     @FXML
@@ -173,7 +172,7 @@ public class SignWindow extends AnchorPane {
 
     @FXML
     void btnSaveHtmlFileAction(ActionEvent event) throws IOException {
-        if (userHolder.getCurrentUser() != null){
+        if (userHolder.getCurrentUser() != null && signatureParser != null){
             Saver saver = new Saver(signatureParser.getOutputString());
             System.out.println(signatureParser.getOutputString());
             saver.setExtension(saver.HTM);
@@ -246,7 +245,7 @@ public class SignWindow extends AnchorPane {
         this.comBoxCityType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             String cType = comBoxCityType.getSelectionModel().getSelectedItem();
             String city = txtfCity.getText();
-            if (!cType.isEmpty() && !city.isEmpty()){
+            if (!cType.isEmpty() && !city.isEmpty() && signatureParser != null){
                 signatureParser.setCity(cType + " " + city);
                 reload();
             }
@@ -255,7 +254,8 @@ public class SignWindow extends AnchorPane {
 
     private void textFieldEventBind(TextField textField, int bindTo){
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            signatureParser.setLine(textField.getText(), bindTo);
+            if(signatureParser != null)
+                signatureParser.setLine(textField.getText(), bindTo);
             reload();
         });
     }
@@ -263,7 +263,7 @@ public class SignWindow extends AnchorPane {
     private void txtfCityEvent(){
         this.txtfCity.textProperty().addListener((observable, oldValue, newValue) -> {
             String cType = comBoxCityType.getSelectionModel().getSelectedItem();
-            if(!cType.isEmpty()) {
+            if(!cType.isEmpty() && signatureParser != null) {
                 signatureParser.setCity(cType + " " + txtfCity.getText());
                 reload();
             }
@@ -271,7 +271,10 @@ public class SignWindow extends AnchorPane {
     }
 
     public void reload(){
-        webViewSignature.getEngine().loadContent(signatureParser.getOutputString());
+        String outputString = "";
+        if(signatureParser != null)
+            outputString = signatureParser.getOutputString();
+        webViewSignature.getEngine().loadContent(outputString);
     }
 
     public void setTxtfName(String txtfName) {
@@ -335,24 +338,30 @@ public class SignWindow extends AnchorPane {
     }
 
     private void hidePhone(boolean hide){
-        if(hide){
-            signatureParser.hideRows(6, 7, 8);
-        } else {
-            signatureParser.showRows(6, 7, 8);
+        if(signatureParser != null) {
+            if (hide) {
+                signatureParser.hideRows(6, 7, 8);
+            } else {
+                signatureParser.showRows(6, 7, 8);
+            }
         }
     }
     private void hideMPhone(boolean hide){
-        if(hide){
-            signatureParser.hideRows(9, 10, 11);
-        } else {
-            signatureParser.showRows(9, 10, 11);
+        if(signatureParser != null) {
+            if (hide) {
+                signatureParser.hideRows(9, 10, 11);
+            } else {
+                signatureParser.showRows(9, 10, 11);
+            }
         }
     }
     private void hideFax(boolean hide){
-        if(hide){
-            signatureParser.hideRows(19, 18);
-        } else {
-            signatureParser.showRows(19, 18);
+        if (signatureParser != null) {
+            if (hide) {
+                signatureParser.hideRows(19, 18);
+            } else {
+                signatureParser.showRows(19, 18);
+            }
         }
     }
 }

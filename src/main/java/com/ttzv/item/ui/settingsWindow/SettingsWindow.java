@@ -161,7 +161,7 @@ public class SettingsWindow extends AnchorPane {
     }
 
     @FXML
-    public void initialize(){
+    public void initialize() throws IOException, GeneralSecurityException {
 
         //mail
         this.fieldHost.setText(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
