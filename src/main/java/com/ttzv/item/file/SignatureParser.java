@@ -32,7 +32,6 @@ public class SignatureParser implements FileParser {
 
     private HashSet<Integer> hiddenRows;
 
-
     public SignatureParser (StringBuilder stringBuilder){
         splitSign = new ArrayList<String>(Arrays.asList(stringBuilder.toString().split("\\r?\\n")));
         defaults = new ArrayList<>(splitSign);
@@ -47,6 +46,7 @@ public class SignatureParser implements FileParser {
 
         hiddenRows = new HashSet<>();
     }
+
 
     /**
      * Set desired text in chosen line

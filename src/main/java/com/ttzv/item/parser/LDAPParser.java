@@ -9,7 +9,9 @@ import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
+import java.io.IOException;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +28,7 @@ public class LDAPParser
     private List<User> usersDataList;
     private int totalResults;
     private List<List<String>> results;
-    public static final String LDAP_SEPARATOR = ":";
+    public static final String LDAP_SEPARATOR = Utility.DEFAULT_ENTITY_SEPARATOR;
 
     public List<User> getUsersDataList() {
         if(!usersDataList.isEmpty()) {
@@ -36,7 +38,7 @@ public class LDAPParser
         }
     }
 
-    private void loadCfgCredentials() {
+    private void loadCfgCredentials() throws IOException, GeneralSecurityException {
         this.setLdap_URL(Cfg.getInstance().retrieveProp(Cfg.LDAP_URL));
         this.setLdap_port(Cfg.getInstance().retrieveProp(Cfg.LDAP_PORT));
         this.setAd_adminUser(Cfg.getInstance().retrieveProp(Cfg.LDAP_ACC));
@@ -105,7 +107,7 @@ public class LDAPParser
      * Get preconfigured LdapParser. Configuration is retrieved from .properties file and can be freely modified (preferably by some UI)
      * @return new LdapParser configured by .properties file and ready to use.
      */
-    public static LDAPParser getLdapParser() throws NamingException, UnknownHostException {
+    public static LDAPParser getLdapParser() throws NamingException, IOException, GeneralSecurityException {
         LDAPParser ldapParser = new LDAPParser();
         ldapParser.loadCfgCredentials();
         ldapParser.initializeLdapContext();
