@@ -13,9 +13,8 @@ public class Bootstrap {
 
     public static void main(String[] args) throws IOException {
 
-        Config.getInstance().init(null);
-        Config.getInstance().setProperty(Config.CONFIG_URL, "");
-        Config.getInstance().saveFile();
+        BootConfig.getInstance().init(null);
+        BootConfig.getInstance().saveFile();
 
 
 
@@ -25,7 +24,7 @@ public class Bootstrap {
 
         Configuration config = null;
 
-        try (InputStream in = new URL(Config.getInstance().retrieveProp(Config.CONFIG_URL)).openStream()) {
+        try (InputStream in = new URL(BootConfig.getInstance().retrieveProp(BootConfig.CONFIG_URL)).openStream()) {
             config = Configuration.read(new InputStreamReader(in));
 
             //saving xml for offline mode

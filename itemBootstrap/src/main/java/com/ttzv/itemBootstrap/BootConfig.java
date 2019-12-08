@@ -2,7 +2,7 @@ package com.ttzv.itemBootstrap;
 
 import ttzv.propsicl.Propsicl;
 
-public class Config extends Propsicl {
+public class BootConfig extends Propsicl {
 
     public static final String CONFIG_URL = "configURL";
 
@@ -11,11 +11,11 @@ public class Config extends Propsicl {
         defPropSet(CONFIG_URL, "ftp://192.168.1.113/item/config/config.xml");
     }
 
-    public static Config getInstance(){
+    public static BootConfig getInstance(){
         return CfgHolder.INSTANCE;
     }
 
     private static class CfgHolder{
-        private static final Config INSTANCE = new Config();
+        private static final BootConfig INSTANCE = new BootConfig();
     }
 }
