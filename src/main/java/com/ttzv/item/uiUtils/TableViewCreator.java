@@ -20,7 +20,6 @@ public class TableViewCreator {
     private TableView<Map> tableView;
     private Map<String, List<TableColumn>> columnGroups;
     private KeyMapper keyMapper;
-    private TableViewBuilder tableViewBuilder;
 
     public TableViewCreator(TableView<Map> tableView) {
         this.tableView = tableView;
@@ -67,6 +66,9 @@ public class TableViewCreator {
         }
 
         public TableViewBuilder addColumns(FXMapCompatible fxMapCompatible){
+            if(fxMapCompatible == null){
+                return this;
+            }
             for (Map.Entry<String,String> entry :
                     fxMapCompatible.getFXNameToIdPairs().entrySet()) {
                 if(!entry.getValue().isEmpty()) {
@@ -102,6 +104,9 @@ public class TableViewCreator {
         }
 
         public TableViewBuilder addRows(List<? extends FXMapCompatible> list){
+            if(list.size() <=0 ){
+                return this;
+            }
             list.forEach(fxMapCompatible -> this.listOfMaps.add(fxMapCompatible.getFXMap()));
             return this;
         }
