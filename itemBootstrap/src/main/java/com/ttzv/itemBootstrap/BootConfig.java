@@ -8,7 +8,7 @@ public class Config extends Propsicl {
 
     @Override
     public void defaultPropsVals() {
-        defPropSet(CONFIG_URL, "ftp://localhost/item/config/config.xml");
+        defPropSet(CONFIG_URL, "ftp://192.168.1.113/item/config/config.xml");
     }
 
     public static Config getInstance(){
