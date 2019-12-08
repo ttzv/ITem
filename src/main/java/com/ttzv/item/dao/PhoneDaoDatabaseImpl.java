@@ -5,6 +5,7 @@ import com.ttzv.item.utility.Utility;
 
 import javax.naming.NamingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
     private final String TABLE_PHONE = "phones";
     private KeyMapper keyMapper;
 
-    public PhoneDaoDatabaseImpl() throws SQLException {
+    public PhoneDaoDatabaseImpl() throws SQLException, IOException, GeneralSecurityException {
         super();
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, Phone.class);
         if(!tablesReady(TABLE_PHONE)){

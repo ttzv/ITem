@@ -5,6 +5,7 @@ import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.utility.Utility;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public abstract class DatabaseHandler {
 
     private JdbcDriverSelector jdbcDriverSelector;
 
-    public DatabaseHandler() throws SQLException {
+    public DatabaseHandler() throws SQLException, IOException, GeneralSecurityException {
         //temporary //todo: decouple
         Cfg.getInstance().setProperty(Cfg.DB_DRIVER, "POSTGRES");
         try {
@@ -98,7 +99,11 @@ public abstract class DatabaseHandler {
                     for (int i = 1; i <= rsmd.getColumnCount() ; i++) {
                         String colLabel = rsmd.getColumnLabel(i);
                         if(!colLabel.equals("id")) //Do not pull primary key to results list todo: move to configuration file
-                            innerlist.add(colLabel + Utility.DEFAULT_ENTITY_SEPARATOR + resultSet.getString(i));
+                        {
+                            String val = resultSet.getString(i);
+                            if(val == null) val = "";
+                            innerlist.add(colLabel + Utility.DEFAULT_ENTITY_SEPARATOR + val);
+                        }
                     }
                     resultList.add(innerlist);
                 }

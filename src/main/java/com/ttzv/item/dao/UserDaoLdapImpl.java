@@ -10,6 +10,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +25,17 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
     private int searchControlsScope;
     private KeyMapper keyMapper;
 
-    public UserDaoLdapImpl() throws NamingException, UnknownHostException {
+    public UserDaoLdapImpl() throws NamingException, IOException, GeneralSecurityException {
         this.searchBase = "ou=Pracownicy,dc=atal,dc=local";
         this.searchFilter = "(&(objectClass=user))";
-        this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "sAMAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", "whenChanged"};
+        this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "sAMAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", /*"whenChanged"*/};
         this.searchControlsScope = SearchControls.SUBTREE_SCOPE;
         this.ldapParser = LDAPParser.getLdapParser();
         ldapParser.closeContext();//redundancy with method getResults() to check connection when creating dao.
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
     }
 
-    public List<List<String>> getResults() throws NamingException, UnknownHostException {
+    public List<List<String>> getResults() throws NamingException, IOException, GeneralSecurityException {
             this.ldapParser = LDAPParser.getLdapParser();
             this.ldapParser.queryLdap(LDAPParser.builder()
                 .setSearchBase(searchBase)
@@ -48,7 +49,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
     }
 
     @Override
-    public List<User> getAllEntities() throws NamingException, UnknownHostException {
+    public List<User> getAllEntities() throws NamingException, IOException, GeneralSecurityException {
         List<User> allUsers = new ArrayList<>();
         for (List<String> list :
                 getResults()) {

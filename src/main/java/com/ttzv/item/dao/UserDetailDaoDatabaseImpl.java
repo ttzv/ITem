@@ -5,6 +5,7 @@ import com.ttzv.item.utility.Utility;
 
 import javax.naming.NamingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
 
     private KeyMapper keyMapper;
 
-    public UserDetailDaoDatabaseImpl() throws SQLException {
+    public UserDetailDaoDatabaseImpl() throws SQLException, IOException, GeneralSecurityException {
         super();
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, UserDetail.class);
         if(!tablesReady(TABLE_USER_DETAILS)){
@@ -31,6 +32,7 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
                 UserDetailData.guid.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey()+ ")," +
                 UserDetailData.position.getDbKey(keyMapper) + " VARCHAR," +
                 UserDetailData.initMailPass.getDbKey(keyMapper) + " VARCHAR," +
+                UserDetailData.landLineNumber.getDbKey(keyMapper) + " VARCHAR," +
                 UserDetailData.notes.getDbKey(keyMapper) + " VARCHAR )";
         executeUpdate(sql);
     }

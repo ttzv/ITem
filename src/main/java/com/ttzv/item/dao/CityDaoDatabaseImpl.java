@@ -5,6 +5,7 @@ import com.ttzv.item.utility.Utility;
 
 import javax.naming.NamingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
     private final String TABLE_CITY = "city";
     private KeyMapper keyMapper;
 
-    public CityDaoDatabaseImpl() throws SQLException {
+    public CityDaoDatabaseImpl() throws SQLException, IOException, GeneralSecurityException {
         super();
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class);
         if(!tablesReady(TABLE_CITY)){

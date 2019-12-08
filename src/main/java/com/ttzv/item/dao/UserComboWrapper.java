@@ -4,7 +4,9 @@ import com.ttzv.item.entity.*;
 
 import javax.naming.NamingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,20 +23,33 @@ public class UserComboWrapper {
     private EntityDAO<Phone> phoneEntityDAO;
     private EntityDAO<UserDetail> userDetailEntityDAO;
 
-    public UserComboWrapper(EntityDAO<City> cityEntityDAO, EntityDAO<Phone> phoneEntityDAO, EntityDAO<UserDetail> userDetailEntityDAO) throws SQLException, IOException, NamingException {
-        this(cityEntityDAO.getAllEntities(), phoneEntityDAO.getAllEntities(), userDetailEntityDAO.getAllEntities());
-        this.cityEntityDAO = cityEntityDAO;
-        this.phoneEntityDAO = phoneEntityDAO;
-        this.userDetailEntityDAO = userDetailEntityDAO;
-    }
+    public UserComboWrapper(EntityDAO<City> cityEntityDAO, EntityDAO<Phone> phoneEntityDAO, EntityDAO<UserDetail> userDetailEntityDAO) throws SQLException, IOException, NamingException, GeneralSecurityException {
+        List<City> cities = new ArrayList<>();
+        List<Phone> phones = new ArrayList<>();
+        List<UserDetail> details = new ArrayList<>();
 
-    public UserComboWrapper(List<City> cities, List<Phone> phones, List<UserDetail> details) {
+        if (cityEntityDAO != null) {
+            this.cityEntityDAO = cityEntityDAO;
+            cities = cityEntityDAO.getAllEntities();
+        }
+        if (phoneEntityDAO != null) {
+            this.phoneEntityDAO = phoneEntityDAO;
+            phones = phoneEntityDAO.getAllEntities();
+        }
+        if (userDetailEntityDAO != null){
+            this.userDetailEntityDAO = userDetailEntityDAO;
+            details = userDetailEntityDAO.getAllEntities();
+        }
+
         this.cities = (Map<String, City>) convertToMap(cities);
         this.phones = (Map<String, Phone>) convertToMap(phones);
         this.details = (Map<String, UserDetail>) convertToMap(details);
     }
 
     public City getCityOf(User user){
+        if(this.cities.size() <= 0){
+            return null;
+        }
         City city = this.cities.get(user.getCity());
         if(city != null)
             return city;
@@ -42,6 +57,9 @@ public class UserComboWrapper {
             return new City(user.getCity());
     }
     public Phone getPhoneOf(User user){
+        if(this.phones.size() <= 0){
+            return null;
+        }
         Phone phone = this.phones.get(user.getGUID());
         if(phone != null)
             return phone;
@@ -49,6 +67,9 @@ public class UserComboWrapper {
             return new Phone(user.getGUID());
     }
     public UserDetail getDetailOf(User user){
+        if(this.details.size() <= 0){
+            return null;
+        }
         UserDetail userDetail = this.details.get(user.getGUID());
         if(userDetail != null)
             return userDetail;
@@ -97,7 +118,7 @@ public class UserComboWrapper {
         this.userDetailEntityDAO = userDetailEntityDAO;
     }
 
-    public void refresh() throws SQLException, IOException, NamingException {
+    public void refresh() throws SQLException, IOException, NamingException, GeneralSecurityException {
         this.details = (Map<String, UserDetail>) convertToMap(this.userDetailEntityDAO.getAllEntities());
         this.cities = (Map<String, City>) convertToMap(cityEntityDAO.getAllEntities());
         this.phones = (Map<String, Phone>) convertToMap(phoneEntityDAO.getAllEntities());

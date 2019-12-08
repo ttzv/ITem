@@ -5,6 +5,7 @@ import com.ttzv.item.utility.Utility;
 
 import javax.naming.NamingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,11 +14,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<User> {
-    //User object is constructed from two tables, first represents data retrieved from LDAP, second is for addidional data about User updated in application
+    //User object is constructed from two tables, first represents data retrieved from LDAP, second is for additional data about User updated in application
     protected final static String TABLE_USERS = "users";
     private KeyMapper keyMapper;
 
-    public UserDaoDatabaseImpl() throws SQLException {
+    public UserDaoDatabaseImpl() throws SQLException, IOException, GeneralSecurityException {
         super();
         keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
         if(!tablesReady(TABLE_USERS)){
@@ -37,7 +38,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
                 UserData.distinguishedName.getDbKey(keyMapper) + " VARCHAR," + "\n" +
                 UserData.city.getDbKey(keyMapper) + " VARCHAR," + "\n" +
                 UserData.whenCreated.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.whenChanged.getDbKey(keyMapper) + " VARCHAR," + "\n" +
+                //UserData.whenChanged.getDbKey(keyMapper) + " VARCHAR," + "\n" +
                 UserData.mail.getDbKey(keyMapper) + " VARCHAR," + "\n" +
                 UserData.useraccountcontrol.getDbKey(keyMapper) + " VARCHAR );";
         executeUpdate(sql);
@@ -84,7 +85,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
         String criteriumOfUpdating = keyMapper.getMapping(UserData.objectGUID.toString()).get(KeyMapper.DBKEY) + "='" + entity.getGUID() + "';";
         String sql = updateSql(TABLE_USERS, uEntity.getList("'"), criteriumOfUpdating);
         executeUpdate(sql);
-        return true; //todo
+        return true;
     }
 
     @Override
@@ -96,7 +97,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     @Override
-    public int[] syncDataSourceWith(EntityDAO<User> source) throws SQLException, IOException, NamingException {
+    public int[] syncDataSourceWith(EntityDAO<User> source) throws SQLException, IOException, NamingException, GeneralSecurityException {
         List<User> currentList = this.getAllEntities();
         List<User> newerList = source.getAllEntities();
         //All unique elements in ldap
@@ -121,7 +122,8 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
             User newerUser = iteratorNewerList.next();
             User currUser = iteratorCurrentList.next();
             if(newerUser.hasDifferentVals(currUser)){
-                updateEntity(newerUser);
+                System.out.println(newerUser + "\n" + currUser);
+                //updateEntity(newerUser);
                 updateCount++;
             }
         }
