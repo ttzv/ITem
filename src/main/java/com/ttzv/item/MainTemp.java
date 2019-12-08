@@ -6,39 +6,17 @@ import com.ttzv.item.properties.Cfg;
 
 import javax.naming.NamingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 
 public class MainTemp {
 
-    public static void main(String[] args) throws NamingException, IOException, SQLException {
+    public static void main(String[] args) throws NamingException, IOException, SQLException, GeneralSecurityException {
         Cfg.getInstance().init(null);
 
         EntityDAO<City> ecity = new CityDaoDatabaseImpl();
-        /*EntityDAO<User> euser = new UserDaoDatabaseImpl();
-        euser.getAllEntities();
-
-        System.out.println(ecity.getAllEntities());
-        System.out.println(euser.getAllEntities());*/
-
-        City ctest = ecity.getAllEntities().get(0);
-
-        System.out.println(ctest);
-
-        ctest.setType("TESTOWA");
-        ctest.setLandLineNumber("654654654");
-
-        System.out.println(ctest);
-        ecity.updateEntity(ctest);
-
-        /*
-        City city = new City("test4");
-
-        city.setType("test");
-
-        ecity.updateEntity(city);
-        */
-
-
+        EntityDAO<User> euser = new UserDaoDatabaseImpl();
+        User u = euser.getAllEntities().get(0);
+        System.out.println(u);
     }
-
 }
