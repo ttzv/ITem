@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class Utility {
 
 
-    public static String DEFAULT_ENTITY_SEPARATOR = ":";
+    public static String DEFAULT_ENTITY_SEPARATOR = "=:";
 
     public static String restrictedSymbols = "%_/\\=-+?*";
 
@@ -140,6 +140,28 @@ public class Utility {
                 return "c008";
             default:
                 return "ERVAL";
+        }
+    }
+
+    /**
+     * Replaces word given in parameter to Polish equivalent
+     * @param word word that should be replaced
+     * @return Polonized word, with polish symbols
+     */ //todo: move words database to external storage if there will ever be need for more words
+    public static String polonize(String word){
+        switch (word){
+            case "Krakow":
+                return "Kraków";
+            case "Wroclaw":
+                return "Wrocław";
+            case "Lodz":
+                return "Łódź";
+            case "Gdansk":
+                return "Gdańsk";
+            case "Poznan":
+                return "Poznań";
+            default:
+                return word;
         }
     }
 
