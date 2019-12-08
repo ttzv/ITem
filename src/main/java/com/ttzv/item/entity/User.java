@@ -28,12 +28,14 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
     public User(DynamicEntity userEntity)
     {
         this.userEntity = userEntity;
-        this.city = Utility.extractCityFromDn(userEntity.getValue(UserData.distinguishedName.toString()));
+        this.city = Utility.polonize(Utility.extractCityFromDn(userEntity.getValue(UserData.distinguishedName.toString())));
         if(!userEntity.getKeys().contains(UserData.city.toString())) {
-            userEntity.add(UserData.city.toString(), this.city);
+            userEntity.add(Utility.polonize(UserData.city.toString()), this.city);
         }
-        this.whenCreated = Utility.formatLdapDate(userEntity.getValue(UserData.whenCreated.toString()));
-        userEntity.setValue(UserData.whenCreated.toString(), this.whenCreated);
+        if(userEntity.getValue(UserData.whenCreated.toString()).contains("0Z")) {
+            this.whenCreated = Utility.formatLdapDate(userEntity.getValue(UserData.whenCreated.toString()));
+            userEntity.setValue(UserData.whenCreated.toString(), this.whenCreated);
+        }
     }
 
     @Override
@@ -91,9 +93,9 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
         return userEntity.getValue(UserData.whenCreated.toString());
     }
 
-    public String getWhenChanged() {
+   /* public String getWhenChanged() {
         return userEntity.getValue(UserData.whenChanged.toString());
-    }
+    }*/
 
     public String getDistinguishedName() {
         return userEntity.getValue(UserData.distinguishedName.toString());
@@ -196,7 +198,7 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
         map.put(UserData.distinguishedName.toString(), "");
         map.put(UserData.city.toString(), "Miasto");
         map.put(UserData.whenCreated.toString(), "Data utworzenia");
-        map.put(UserData.whenChanged.toString(), "");
+        //map.put(UserData.whenChanged.toString(), "");
         map.put(UserData.mail.toString(), "Email");
         map.put(UserData.useraccountcontrol.toString(), "Status konta");
         return map;

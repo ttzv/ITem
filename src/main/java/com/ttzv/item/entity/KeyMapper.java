@@ -206,13 +206,14 @@ public class KeyMapper {
             userMaps.addMapping(UserData.distinguishedName.toString(), "distinguishedName", "distinguishedname", "");
             userMaps.addMapping(UserData.city.toString(), "", "cityname", "Miasto");
             userMaps.addMapping(UserData.whenCreated.toString(), "whenCreated", "created", "Data utworzenia");
-            userMaps.addMapping(UserData.whenChanged.toString(), "whenChanged", "changed", "");
+            //userMaps.addMapping(UserData.whenChanged.toString(), "whenChanged", "changed", "");
             userMaps.addMapping(UserData.mail.toString(), "mail", "mailaddress", "Adres mail");
             userMaps.addMapping(UserData.useraccountcontrol.toString(), "userAccountControl", "uac", "Status Konta");
         KeyMapper userDetailMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, UserDetail.class);
             userDetailMaps.addMapping(UserDetailData.guid.toString(), "", "guid");
             userDetailMaps.addMapping(UserDetailData.position.toString(), "", "position");
             userDetailMaps.addMapping(UserDetailData.initMailPass.toString(), "", "initmailpass");
+            userDetailMaps.addMapping(UserDetailData.landLineNumber.toString(), "", "landline_number");
             userDetailMaps.addMapping(UserDetailData.notes.toString(), "", "notes");
         KeyMapper cityMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, City.class);
             cityMaps.addMapping(CityData.name.toString(), "", "name");

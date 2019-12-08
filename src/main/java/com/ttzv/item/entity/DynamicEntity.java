@@ -35,7 +35,8 @@ public class DynamicEntity {
             if(splitted.length == 2) {
                 add(splitted[0], splitted[1]);
             } else {
-                add(splitted[0], "null");
+                add(splitted[0], "");
+                System.err.println("Split entity array length is not equal to 2, value: " + val);
             }
         }
         return this;
@@ -50,6 +51,7 @@ public class DynamicEntity {
         Map<String, String> replacedMap = new HashMap<>();
         for (String key : entityMap.keySet()) { //todo: optimize if keys are the same
             String newKey = mapper.getCorrespondingMapping(key, keyType);
+            if (newKey == null) newKey="";
             if(!newKey.isEmpty()) {
                 replacedMap.put(newKey, entityMap.get(key));
             } else {
@@ -88,12 +90,12 @@ public class DynamicEntity {
     /**
      * Return one of values of this entity by identifying it with a key
      * @param key identifier to search by
-     * @return value stored under given key or String "null" if no value was found
+     * @return value stored under given key or String empty string if no value was found
      */
     public String getValue(String key) {
         String val = "";
         if(entityMap.containsKey(key)) {
-            val = entityMap.getOrDefault(key, null);
+            val = entityMap.getOrDefault(key, "");
         } else {
             System.err.println("Key " + key + " not found as valid key");
         }

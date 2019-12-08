@@ -4,6 +4,7 @@ import com.ttzv.item.dao.UserComboWrapper;
 
 import javax.naming.NamingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,17 +14,19 @@ public class UserHolder {
 
     private EntityDAO<User> userEntityDAO;
     private List<User> userList;
-    private UserComboWrapper userComboWrapper;
-
-
     private List<User> newUsers;
 
     private User currentUser;
     private int currentIndex;
 
-    public UserHolder(EntityDAO<User> userEntityDAO) throws SQLException, IOException, NamingException {
-        this.userEntityDAO = userEntityDAO;
-        this.userList = userEntityDAO.getAllEntities();
+    public UserHolder(EntityDAO<User> userEntityDAO) throws SQLException, IOException, NamingException, GeneralSecurityException {
+        List<User> users = new ArrayList<>();
+        if(userEntityDAO != null) {
+            this.userEntityDAO = userEntityDAO;
+            this.userList = userEntityDAO.getAllEntities();
+        } else {
+            this.userList = users;
+        }
     }
 
     public List<User> getAllUsers() {
@@ -42,6 +45,11 @@ public class UserHolder {
     }
 
     public List<User> getNewest(int numberOfUsers){
+        List<User> newUserList = getAllUsers();
+        if(newUserList.size() <= 0){
+            return null;
+        }
+
         return getAllUsers().subList(0, numberOfUsers);
     }
 
@@ -97,7 +105,15 @@ public class UserHolder {
         return newUsers.size();
     }
 
-    public UserHolder refresh() throws SQLException, IOException, NamingException {
+    public User getFirst(){
+        if(this.userList == null || this.userList.size() <= 0){
+            return null;
+        }
+        return this.userList.get(userList.size() - 1);
+    }
+
+    public UserHolder syncAndRefresh(EntityDAO<User> daoToSyncWith) throws SQLException, IOException, NamingException, GeneralSecurityException {
+        userEntityDAO.syncDataSourceWith(daoToSyncWith);
         this.userList = this.userEntityDAO.getAllEntities();
         return this;
     }
