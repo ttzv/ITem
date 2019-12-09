@@ -4,10 +4,7 @@ package com.ttzv.item;
 import com.ttzv.item.dao.*;
 import com.ttzv.item.entity.*;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.ui.MailerWindow;
-import com.ttzv.item.ui.MainWindow;
-import com.ttzv.item.ui.SettingsWindow;
-import com.ttzv.item.ui.SignWindow;
+import com.ttzv.item.ui.*;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -93,8 +90,8 @@ public class Main extends Application {
         MailerWindow mailerWindow = new MailerWindow(uiObjectsWrapper, userHolder);
         SignWindow signWindow = new SignWindow(userHolder);
         SettingsWindow settingsWindow = new SettingsWindow(uiObjectsWrapper, userHolder);
-        Pane smsScene = new Pane();//todo
-        Pane clipboardScene = null;//todo
+        SmsScn smsScene = new SmsScn();
+        Pane clipboardScene = new Pane();//todo
 
 
         MainWindow mw = new MainWindow(uiObjectsWrapper, userHolder, userComboWrapper);
