@@ -40,8 +40,8 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Plik">
                   <items>
-                        <MenuItem mnemonicParsing="false" onAction="#findAction" text="Wyszukaj" />
-                        <MenuItem mnemonicParsing="false" text="Ustawienia" />
+                        <MenuItem mnemonicParsing="false" text="Wyszukaj" visible="false" />
+                        <MenuItem mnemonicParsing="false" text="Ustawienia" visible="false" />
                     <MenuItem mnemonicParsing="false" onAction="#exitAction" text="Wyjdź" />
                   </items>
                 </Menu>
@@ -49,7 +49,7 @@
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#showMailSett" text="E-Mail" />
                         <MenuItem mnemonicParsing="false" onAction="#pathToClipboard" text="Ścieżka podpisu Outlook" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <SeparatorMenuItem mnemonicParsing="false" visible="false" />
                   </items>
                 </Menu>
               </menus>

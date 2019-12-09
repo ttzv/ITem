@@ -37,7 +37,6 @@ public class MainWindow extends AnchorPane {
     private ScenePicker scenePicker;
 
     private FXMLLoader fxmlLoader;
-    private SearchWindow searchWindow;
     private boolean infoBarAssetsVisible;
     private UiObjectsWrapper uiObjectsWrapper;
     private UserHolder userHolder;
@@ -180,8 +179,6 @@ public class MainWindow extends AnchorPane {
     public void initialize() {
         labelCity.setText("");
         labelUsername.setText("");
-
-        searchWindow = new SearchWindow(uiObjectsWrapper, userHolder);
 
         User userHolderFirst = userHolder.getFirst();
         if(userHolderFirst != null) {
@@ -347,11 +344,6 @@ public class MainWindow extends AnchorPane {
     @FXML
     void exitAction(ActionEvent event) {
         Platform.exit();
-    }
-
-    @FXML
-    void findAction(ActionEvent event) {
-        searchWindow.show();
     }
 
     @FXML

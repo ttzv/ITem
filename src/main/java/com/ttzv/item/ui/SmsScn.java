@@ -5,10 +5,10 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class placeholder extends AnchorPane {
+public class SmsScn extends AnchorPane {
 
-    public placeholder() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gswdw.fxml"));
+    public SmsScn() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/smsscn.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
