@@ -69,6 +69,7 @@ public class Main extends Application {
 
         UserHolder userHolder = null;
         try {
+            //userHolder stores only User data (immutable, atleast at the moment)
             userHolder = new UserHolder(entityDAOuserdb);
         } catch (SQLException | IOException | NamingException | GeneralSecurityException e) {
             e.printStackTrace();
@@ -78,6 +79,7 @@ public class Main extends Application {
 
         UserComboWrapper userComboWrapper = null;
         try {
+            //userComboWrapper stores all supporting data for User entity
             userComboWrapper = new UserComboWrapper(entityDAOcitydb, entityDAOphonedb, entityDAOuserdetdb);
         } catch (SQLException | IOException | NamingException | GeneralSecurityException e) {
             e.printStackTrace();
@@ -87,7 +89,7 @@ public class Main extends Application {
 
 
         UiObjectsWrapper uiObjectsWrapper = new UiObjectsWrapper();
-        MailerWindow mailerWindow = new MailerWindow(uiObjectsWrapper, userHolder);
+        MailerWindow mailerWindow = new MailerWindow(uiObjectsWrapper, userHolder, userComboWrapper);
         SignWindow signWindow = new SignWindow(userHolder);
         SettingsWindow settingsWindow = new SettingsWindow(uiObjectsWrapper, userHolder);
         SmsScn smsScene = new SmsScn();

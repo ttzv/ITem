@@ -1,5 +1,6 @@
 package com.ttzv.item.ui;
 
+import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.file.MailMsgParser;
 import com.ttzv.item.pass.PasswordGenerator;
@@ -30,6 +31,8 @@ public class MailerWindow extends AnchorPane {
     private TabBuilder tabBuilder;
     private Sender sender;
     private final MainWindow mainWindow;
+    private UserHolder userHolder;
+    private UserComboWrapper userComboWrapper;
 
     @FXML
     public Label lab1;
@@ -131,6 +134,7 @@ public class MailerWindow extends AnchorPane {
     }
 
     private void savePass() throws SQLException {
+        this.userComboWrapper.getDetailOf(userHolder.getCurrentUser()).setInitMailPass(this.txtPass.getText());
     }
 
     @FXML
@@ -221,9 +225,12 @@ public class MailerWindow extends AnchorPane {
     }
 
 
-    public MailerWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder) {
+    public MailerWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
         this.mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
+        this.userHolder = userHolder;
+        this.userComboWrapper = userComboWrapper;
         uiObjectsWrapper.registerObject(uiObjectsWrapper.MailerWindow, this);
+
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mailerWindow.fxml"));
         fxmlLoader.setRoot(this);
