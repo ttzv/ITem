@@ -6,10 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -177,6 +174,14 @@ public class Utility {
             return null;
         }
 
+    }
+
+    public static boolean mapContainsSubString(String text, Map<String, String> map){
+        return map.entrySet()
+                .stream().anyMatch(entry -> entry.getValue()
+                        .toLowerCase()
+                        .contains(text.trim()
+                                .toLowerCase()));
     }
 
    /* public static String ldapStringToDate(String date) throws ParseException {

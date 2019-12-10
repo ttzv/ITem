@@ -3,6 +3,7 @@ package com.ttzv.item.uiUtils;
 import com.ttzv.item.entity.FXMapCompatible;
 import com.ttzv.item.entity.KeyMapper;
 import com.ttzv.item.entity.User;
+import com.ttzv.item.utility.Utility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
@@ -13,13 +14,19 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TableViewCreator {
 
     private TableView<Map> tableView;
     private Map<String, List<TableColumn>> columnGroups;
     private KeyMapper keyMapper;
+    private TableViewBuilder builder;
+    private ObservableList<Map> alldata;
+    private boolean restoredUnfiltered;
 
     public TableViewCreator(TableView<Map> tableView) {
         this.tableView = tableView;
@@ -29,20 +36,39 @@ public class TableViewCreator {
     public void createFromMap(TableViewBuilder builder){
 
         //populate observablelist with maps
-        ObservableList<Map> alldata = FXCollections.observableArrayList(builder.listOfMaps);
+
+        alldata = FXCollections.observableArrayList(builder.listOfMaps);
         //set tableview contents
         tableView.setItems(alldata);
         tableView.getColumns().setAll(builder.getListOfColumns());
+
+    }
+
+    /**
+     * Filter TableView contents based on text
+     * @param filter searched text
+     */
+    public void filter(String filter){
+        if(filter.trim().length() >= 3) {
+            restoredUnfiltered = false;
+            tableView.setItems(alldata.filtered(map -> Utility.mapContainsSubString(filter, map)));
+        } else if (!restoredUnfiltered){
+            tableView.setItems(alldata);
+            restoredUnfiltered = true;
+        }
     }
 
 
-    public static TableViewBuilder builder(){
-        return new TableViewBuilder();
+    public TableViewBuilder builder(){
+        if (this.builder == null) {
+            this.builder = new TableViewBuilder();
+        }
+        return this.builder;
     }
 
-
-
-
+    public void refresh(){
+        createFromMap(this.builder);
+    }
 
    public static class TableViewBuilder{
 
@@ -104,13 +130,12 @@ public class TableViewCreator {
         }
 
         public TableViewBuilder addRows(List<? extends FXMapCompatible> list){
-            if(list.size() <=0 ){
+            if(list.size() <= 0 ){
                 return this;
             }
             list.forEach(fxMapCompatible -> this.listOfMaps.add(fxMapCompatible.getFXMap()));
             return this;
         }
-
 
        private Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap (){
            return new Callback<TableColumn<Map, String>, TableCell<Map, String>>() {
@@ -137,8 +162,6 @@ public class TableViewCreator {
        public List<Map> getListOfMaps() {
            return listOfMaps;
        }
-
-
 
    }
 

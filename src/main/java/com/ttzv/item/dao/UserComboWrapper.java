@@ -53,9 +53,13 @@ public class UserComboWrapper {
         City city = this.cities.get(user.getCity());
         if(city != null)
             return city;
-        else
-            return new City(user.getCity());
+        else {
+            City cityNew = new City(user.getCity());
+            this.cities.put(cityNew.getUniqueIdentifier(), cityNew);
+            return cityNew;
+        }
     }
+
     public Phone getPhoneOf(User user){
         if(this.phones.size() <= 0){
             return null;
@@ -63,9 +67,13 @@ public class UserComboWrapper {
         Phone phone = this.phones.get(user.getGUID());
         if(phone != null)
             return phone;
-        else
-            return new Phone(user.getGUID());
+        else {
+            Phone phoneNew = new Phone(user.getGUID());
+            this.phones.put(phoneNew.getUniqueIdentifier(), phoneNew);
+            return phoneNew;
+        }
     }
+
     public UserDetail getDetailOf(User user){
         if(this.details.size() <= 0){
             return null;
@@ -73,8 +81,11 @@ public class UserComboWrapper {
         UserDetail userDetail = this.details.get(user.getGUID());
         if(userDetail != null)
             return userDetail;
-        else
-            return new UserDetail(user.getGUID());
+        else {
+            UserDetail userDetailNew = new UserDetail(user.getGUID());
+            this.details.put(userDetailNew.getUniqueIdentifier(), userDetailNew);
+            return userDetailNew;
+        }
     }
 
     private Map<String, ? extends DynamicEntityCompatible> convertToMap(List<? extends DynamicEntityCompatible> decList){

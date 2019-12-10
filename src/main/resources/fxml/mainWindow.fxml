@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -138,7 +137,7 @@
                                                             <Button layoutX="119.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnClearUserList" text="Wyczyść" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
                                                             <ProgressIndicator fx:id="prgList" layoutX="224.0" layoutY="660.0" prefHeight="25.0" prefWidth="33.0" visible="false" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="224.0" />
                                                             <TextField fx:id="txtfSearchUsers" layoutX="8.0" layoutY="14.0" />
-                                                            <ComboBox fx:id="cBoxSearchInColumn" layoutX="163.0" layoutY="14.0" prefHeight="25.0" prefWidth="126.0" />
+                                                            <Button layoutX="189.0" layoutY="14.0" mnemonicParsing="false" onAction="#testactbtn" text="Button" />
                                                          </children>
                                                       </AnchorPane>
                                                    </content>

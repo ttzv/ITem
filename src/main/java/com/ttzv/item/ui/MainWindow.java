@@ -41,6 +41,7 @@ public class MainWindow extends AnchorPane {
     private UiObjectsWrapper uiObjectsWrapper;
     private UserHolder userHolder;
     private UserComboWrapper userComboWrapper;
+    private TableViewCreator tableViewCreator;
 
 
     @FXML
@@ -145,8 +146,6 @@ public class MainWindow extends AnchorPane {
     @FXML
     private TextField txtfSearchUsers;
 
-    @FXML
-    private ComboBox<?> cBoxSearchInColumn;
 
 
     public MainWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
@@ -185,8 +184,8 @@ public class MainWindow extends AnchorPane {
             userHolder.setCurrentUser(userHolderFirst);
         }
 
-        TableViewCreator tableViewCreator = new TableViewCreator(primaryUserTableView);
-        tableViewCreator.createFromMap(TableViewCreator.builder()
+        tableViewCreator = new TableViewCreator(primaryUserTableView);
+        tableViewCreator.createFromMap(tableViewCreator.builder()
                 .addColumns(userHolder.getCurrentUser())
                 .addRows(userHolder.getAllUsers())
         );
@@ -203,6 +202,8 @@ public class MainWindow extends AnchorPane {
         //updateMainWindowAssets();
 
         addTxtfActListeners();
+
+        addSearchFieldAction();
 
     }
 
@@ -266,25 +267,6 @@ public class MainWindow extends AnchorPane {
         stage.setScene(new Scene(root));
         stage.show();
     }
-
-    /*@FXML
-        //not used currently
-    void loadNewestUser(ActionEvent event) throws NamingException, SQLException {
-        LDAPParser ldapParser = new LDAPParser();
-        ldapParser.loadCfgCredentials();
-        ldapParser.initializeLdapContext();
-
-        DbCon dbCon = new DbCon(ldapParser);
-        dbCon.loadCfgCredentials();
-        dbCon.setDbPass(PHolder.db);
-        dbCon.initConnection();
-
-        dbCon.updateUsersTable();
-
-        UserHolder.setCurrentUser(dbCon.getNewestUser());
-
-        changeUser();
-    }*/
 
     @FXML
     void performSaveUserProperties() throws IOException, SQLException {
@@ -387,8 +369,8 @@ public class MainWindow extends AnchorPane {
         sync.setOnSucceeded(workerStateEvent -> {
             this.prgList.setVisible(false);
             Platform.runLater(() -> {
-                TableViewCreator tableViewCreator = new TableViewCreator(primaryUserTableView);
-                tableViewCreator.createFromMap(TableViewCreator.builder()
+                tableViewCreator = new TableViewCreator(primaryUserTableView);
+                tableViewCreator.createFromMap(tableViewCreator.builder()
                         .addColumns(userHolder.getNewest(1).get(0))
                         .addRows(userHolder.getAllUsers()));
             });
@@ -402,6 +384,11 @@ public class MainWindow extends AnchorPane {
         new Thread(sync).start();
     }
 
+    private void addSearchFieldAction(){
+        this.txtfSearchUsers.textProperty().addListener((observableValue, oldValue, newValue) ->  {
+                tableViewCreator.filter(newValue);
+        });
+    }
 
     public void changeUser() {
         User user = userHolder.getCurrentUser();
