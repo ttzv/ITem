@@ -8,7 +8,7 @@ public class BootConfig extends Propsicl {
 
     @Override
     public void defaultPropsVals() {
-        defPropSet(CONFIG_URL, "ftp://192.168.1.113/item/config/config.xml");
+        defPropSet(CONFIG_URL, "ftp://10.0.1.117/item/config/config.xml");
     }
 
     public static BootConfig getInstance(){

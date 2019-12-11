@@ -25,7 +25,16 @@ public class ConfigHandler {
     public static void main(String[] args) throws IOException {
         Update4jCfg.getInstance().init(null);
 
+        //override URI here
+        String URI_Override = "ftp://192.168.1.113/item/";
+        Update4jCfg.getInstance().setProperty(Update4jCfg.UPDATE4J_BASE_URI, URI_Override);
+        Update4jCfg.getInstance().saveFile();
+
         boolean configPathExists = Files.exists(Paths.get(CONFIG_PATH).getParent());
+        String BASE_URI = Update4jCfg.getInstance().retrieveProp(Update4jCfg.UPDATE4J_BASE_URI);
+        String BASE_PATH = Update4jCfg.getInstance().retrieveProp(Update4jCfg.UPDATE4J_BASE_PATH);
+        System.out.println(Paths.get(DEPLOY_FILES).getParent().resolve("cfg"));
+        System.out.println(Paths.get(BASE_PATH).getParent().resolve("cfg"));
 
         if(args != null && args.length > 0) {
             switch (args[0]) {
@@ -33,11 +42,22 @@ public class ConfigHandler {
                     Path configPath = Paths.get(CONFIG_PATH);
                     System.out.println(configPath.toString());
                     Configuration config = Configuration.builder()
-                            .baseUri(Update4jCfg.getInstance().retrieveProp(Update4jCfg.UPDATE4J_BASE_URI))
-                            .basePath(Update4jCfg.getInstance().retrieveProp(Update4jCfg.UPDATE4J_BASE_PATH))
+                            .baseUri(BASE_URI)
+                            .basePath(BASE_PATH)
                             .files(FileMetadata.streamDirectory(DEPLOY_FILES)
                                     .peek(f -> f.modulepath())
+                                    .peek(f -> f.uri("files"))
                                     .peek(f -> f.osFromFilename()))
+                            .files(FileMetadata.streamDirectory(Paths.get(DEPLOY_FILES).getParent().resolve("cfg"))
+                                    .peek(f -> f.modulepath(false))
+                                    .peek(f -> f.uri("cfg"))
+                                    .peek(f -> f.path(Paths.get(BASE_PATH).getParent().resolve("cfg").resolve(f.getSource().getFileName())))
+                            )
+                            .files(FileMetadata.streamDirectory(Paths.get(DEPLOY_FILES).getParent().resolve("templates"))
+                                    .peek(f -> f.modulepath(false))
+                                    .peek(f -> f.uri(f.getSource().subpath(2, f.getSource().getNameCount()-1).toString()))
+                                    .peek(f-> f.path(Paths.get(BASE_PATH).getParent().resolve(f.getSource().subpath(2, f.getSource().getNameCount()))))
+                            )
                             .property("default.launcher.main.class", "com.ttzv.item.Main")
                             .build();
                     if (!configPathExists) {

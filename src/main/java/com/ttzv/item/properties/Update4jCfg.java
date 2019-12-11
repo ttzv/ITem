@@ -8,7 +8,7 @@ public class Update4jCfg extends Propsicl {
 
     @Override
     public void defaultPropsVals() {
-        defPropSet(UPDATE4J_BASE_URI, "ftp://192.168.1.113/item/files/");
+        defPropSet(UPDATE4J_BASE_URI, "ftp://10.0.1.117/item/files/");
         defPropSet(UPDATE4J_BASE_PATH,"${user.dir}/business/");
     }
 
