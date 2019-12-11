@@ -93,7 +93,7 @@ public class Main extends Application {
         SignWindow signWindow = new SignWindow(userHolder);
         SettingsWindow settingsWindow = new SettingsWindow(uiObjectsWrapper, userHolder);
         SmsScn smsScene = new SmsScn();
-        Pane clipboardScene = new Pane();//todo
+        SmartClipboarsdScn clipboardScene = new SmartClipboarsdScn();
 
 
         MainWindow mw = new MainWindow(uiObjectsWrapper, userHolder, userComboWrapper);
