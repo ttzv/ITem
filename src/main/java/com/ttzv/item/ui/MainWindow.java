@@ -462,7 +462,6 @@ public class MainWindow extends AnchorPane {
                         .getSelectedItem()
                         .get(UserData.objectGUID.toString()).toString();
                 userHolder.setCurrentUser(userHolder.getUser(id));
-                System.out.println("Current user: " + userHolder.getCurrentUser());
                 updateMainWindowAssets();
             }
         });
@@ -523,8 +522,6 @@ public class MainWindow extends AnchorPane {
         //user and user detail
         if(user != null){
             txtfActLogin.setText(user.getSamAccountName());
-            System.out.println("login: " + user.getSamAccountName());
-            System.out.println("txtf: " + txtfActLogin.getText());
             txtfActName.setText(user.getGivenName());
             txtfActSn.setText(user.getSn());
             txtfActMail.setText(user.getMail());
@@ -532,7 +529,6 @@ public class MainWindow extends AnchorPane {
             txtfActDispN.setText(user.getDisplayName());
         }
         if(userDetail != null) {
-            System.out.println(userDetail.toString());
             txtfActPos.setText(userDetail.getPosition());
             txtfActInitpass.setText(userDetail.getInitMailPass());
         }
