@@ -1403,7 +1403,7 @@ strip
 whereas
 wish
 combine
-command
+commandItem
 dig
 divide
 equivalent

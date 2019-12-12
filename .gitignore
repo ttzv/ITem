@@ -14,7 +14,7 @@ deprecated
 *.ipr
 *.iws
 coverage-error.log
-target/
+target*/
 *.iss
 Output/
 Flags.txt

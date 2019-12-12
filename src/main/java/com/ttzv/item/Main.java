@@ -10,7 +10,6 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import javax.naming.NamingException;
@@ -27,12 +26,14 @@ public class Main extends Application {
         EntityDAO<UserDetail> entityDAOuserdetdb = null;
         EntityDAO<Phone> entityDAOphonedb = null;
         EntityDAO<City> entityDAOcitydb = null;
+        EntityDAO<CommandItem> entityDAOcmddb = null;
 
         try {
             entityDAOuserdb = new UserDaoDatabaseImpl();
             entityDAOuserdetdb = new UserDetailDaoDatabaseImpl();
             entityDAOphonedb = new PhoneDaoDatabaseImpl();
             entityDAOcitydb = new CityDaoDatabaseImpl();
+            entityDAOcmddb = new CommandBoxDatabaseImpl();
         } catch (SQLException | IOException | GeneralSecurityException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.WARNING,"Błąd połączenia ze źródłem danych \n" +
@@ -93,12 +94,19 @@ public class Main extends Application {
         SignWindow signWindow = new SignWindow(userHolder);
         SettingsWindow settingsWindow = new SettingsWindow(uiObjectsWrapper, userHolder);
         SmsScn smsScene = new SmsScn();
-        SmartClipboarsdScn clipboardScene = new SmartClipboarsdScn();
+
+        CommandBoxScn commandBoxScn = null;
+        try {
+            commandBoxScn = new CommandBoxScn(entityDAOcmddb);
+        } catch (SQLException | NamingException | GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, e.toString());
+        }
 
 
         MainWindow mw = new MainWindow(uiObjectsWrapper, userHolder, userComboWrapper);
 
-        mw.addSubScenes(mailerWindow, signWindow, smsScene, clipboardScene, settingsWindow);
+        mw.addSubScenes(mailerWindow, signWindow, smsScene, commandBoxScn, settingsWindow);
 
         Parent root = mw.getFxmlLoader().getRoot();
         primaryStage.setTitle(Cfg.getInstance().retrieveProp(Cfg.APP_NAME));
