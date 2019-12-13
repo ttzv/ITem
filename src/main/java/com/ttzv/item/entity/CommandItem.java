@@ -1,24 +1,25 @@
 package com.ttzv.item.entity;
-import java.util.Set;
 
 public class CommandItem implements DynamicEntityCompatible {
 
     private String commandTitle;
     private String commandContents;
     private String tags;
+    private String uid;
 
     private DynamicEntity commantItemEntity;
 
-    public CommandItem(String commandTitle) {
+    public CommandItem(String uid) {
         this.commantItemEntity = new DynamicEntity();
-        this.setCommandTitle(commandTitle);
+        this.setUid(uid);
     }
 
-    public CommandItem(String commandTitle, String commandContents, String tags) {
+    public CommandItem(String uid, String commandTitle, String commandContents, String tags) {
         this.commantItemEntity = new DynamicEntity();
         this.setCommandTitle(commandTitle);
         this.setCommandContents(commandContents);
         this.setTags(tags);
+        this.setUid(uid);
     }
 
     public CommandItem(DynamicEntity commantItemEntity) {
@@ -52,6 +53,16 @@ public class CommandItem implements DynamicEntityCompatible {
     public void setTags(String tags) {
         if(!this.commantItemEntity.setValue(CommandItemData.tags.toString(), tags)){
             this.commantItemEntity.add(CommandItemData.tags.toString(), tags);
+        }
+    }
+
+    public String getUid() {
+        return this.commantItemEntity.getValue(CommandItemData.uid.toString());
+    }
+
+    public void setUid(String uid) {
+        if(!this.commantItemEntity.setValue(CommandItemData.uid.toString(), uid)){
+            this.commantItemEntity.add(CommandItemData.uid.toString(), uid);
         }
     }
 

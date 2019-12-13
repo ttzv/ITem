@@ -4,7 +4,8 @@ public enum CommandItemData implements Mappable{
 
     title("title"),
     content("content"),
-    tags("tags");
+    tags("tags"),
+    uid("uid");
 
     String name;
 
