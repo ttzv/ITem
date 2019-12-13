@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
@@ -26,25 +27,22 @@
                            <graphic>
                               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../img/Add_old.png" />
+                                    <Image url="@../img/Add_old20x20.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
-                           <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/refresh_new.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
+                        <Button mnemonicParsing="false" onAction="#refresh" prefHeight="30.0" prefWidth="30.0" stylesheets="@../style/btn_main.css">
+                           <styleClass>
+                              <String fx:value="rect_button" />
+                              <String fx:value="btn_commscn_refresh" />
+                           </styleClass>
                         </Button>
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
-            <ScrollPane fitToHeight="true" fitToWidth="true">
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true">
                <content>
                   <VBox fx:id="commandList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" />
                </content>
