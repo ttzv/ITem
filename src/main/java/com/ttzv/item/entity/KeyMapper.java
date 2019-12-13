@@ -21,7 +21,7 @@ public class KeyMapper {
     public static final int LDAPKEY = 1;
     public static final int DBKEY = 2;
     public static final int FXKEY = 3;
-    public static final String KEY_MAP_JSON_PATH = "mappings.json";
+    public static final String KEY_MAP_JSON_PATH = "cfg/mappings.json";
 
     private Path jsonPath;
 
