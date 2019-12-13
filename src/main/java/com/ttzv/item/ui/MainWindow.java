@@ -296,7 +296,7 @@ public class MainWindow extends AnchorPane {
             phone.setModel(txtfActPhModel.getText());
             phone.setImei(txtfActPhImei.getText());
             phone.setPin(txtfActPhPin.getText());
-            phone.setPin(txtfActPhPin.getText());
+            phone.setPuk(txtfActPhPuk.getText());
 
             userComboWrapper.updatePhone(phone);
         }
