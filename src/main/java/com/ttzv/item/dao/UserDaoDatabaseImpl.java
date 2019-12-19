@@ -123,7 +123,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
             User currUser = iteratorCurrentList.next();
             if(newerUser.hasDifferentVals(currUser)){
                 System.out.println(newerUser + "\n" + currUser);
-                //updateEntity(newerUser);
+                updateEntity(newerUser);
                 updateCount++;
             }
         }

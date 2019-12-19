@@ -44,7 +44,6 @@ public class CommandBoxDatabaseImpl extends DatabaseHandler implements EntityDAO
             commandList.add(new CommandItem(DynamicEntity.newDynamicEntity()
                     .process(list))
             );
-            System.out.println(list);
         }
         return commandList;
     }

@@ -32,7 +32,7 @@ public class ScenePicker {
         this.scenes.add(pane);
     }
 
-    public Pane getScene(int index){
+    public Pane pickScene(int index){
         this.activeScene = index;
         return this.scenes.get(index);
     }
@@ -51,4 +51,7 @@ public class ScenePicker {
         }
     }
 
+    public List<Pane> getScenes() {
+        return scenes;
+    }
 }
