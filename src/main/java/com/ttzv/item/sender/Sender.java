@@ -88,7 +88,7 @@ public class Sender {
             msg.setFrom(senderAddress);
             msg.setRecipients(Message.RecipientType.TO,
                     receiverAddress);
-            msg.setSubject(msgSubject);
+            msg.setSubject(msgSubject, "utf-8");
             msg.setSentDate(new Date());
             transport = session.getTransport("smtp");
             msg.saveChanges();

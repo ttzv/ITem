@@ -6,6 +6,7 @@ module com.ttzv.item {
     requires java.sql;
     requires javafx.web;
     requires java.desktop;
+    requires jdk.charsets;
     requires jakarta.mail;
     requires org.update4j;
     requires ttzv.uiUtils;
