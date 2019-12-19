@@ -43,6 +43,8 @@ import ttzv.propsicl.Propsicl;
      //textfields regex
      public static String LTF_NAME_ONLY = "ltfNameOnly";
      public static String LTF_RESTRICT_SYMBOLS = "ltfRestrictSymbols";
+     //theme
+     public static String THEME = "theme";
 
 
 

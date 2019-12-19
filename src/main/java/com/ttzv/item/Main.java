@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.naming.NamingException;
 import java.io.IOException;
@@ -88,36 +89,35 @@ public class Main extends Application {
                     e);
         }
 
+        CommandBox commandBox = null;
+
+        try {
+            commandBox = new CommandBox(entityDAOcmddb);
+        } catch (SQLException | NamingException | GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.WARNING,"Błąd połączenia z bazą danych \n" +
+                    e);
+        }
 
         UiObjectsWrapper uiObjectsWrapper = new UiObjectsWrapper();
         MailerWindow mailerWindow = new MailerWindow(uiObjectsWrapper, userHolder, userComboWrapper);
         SignWindow signWindow = new SignWindow(userHolder);
         SettingsWindow settingsWindow = new SettingsWindow(uiObjectsWrapper, userHolder);
         SmsScn smsScene = new SmsScn();
+        CommandBoxScn commandBoxScn = new CommandBoxScn(commandBox);
 
-        CommandBoxScn commandBoxScn = null;
-        try {
-            commandBoxScn = new CommandBoxScn(entityDAOcmddb);
-        } catch (SQLException | NamingException | GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, e.toString());
-        }
-
-
-        MainWindow mw = new MainWindow(uiObjectsWrapper, userHolder, userComboWrapper);
-
+        MainWindow mw = new MainWindow(uiObjectsWrapper, userHolder, userComboWrapper, primaryStage);
         mw.addSubScenes(mailerWindow, signWindow, smsScene, commandBoxScn, settingsWindow);
 
         Parent root = mw.getFxmlLoader().getRoot();
         primaryStage.setTitle(Cfg.getInstance().retrieveProp(Cfg.APP_NAME));
         primaryStage.setScene(new Scene(root));
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> System.exit(0));
 
         mw.updateMainWindowAssets();
         mw.loadOnStart();
-
-
 
 
     }
@@ -126,22 +126,6 @@ public class Main extends Application {
         launch(args);
 
     }
-
-
-    /*@Override
-    public void init() throws Exception {
-        super.init();
-        Parameters parameters = getParameters();
-        System.out.println("ParamsPassed: ");
-        System.out.println(parameters.getNamed());
-        String cfgDir = parameters.getNamed().get("cacheDir");
-        try {
-            Cfg.getInstance().init(cfgDir);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }*/
 
     private void initCfg() {
         try {
@@ -152,7 +136,7 @@ public class Main extends Application {
         }
     }
 
-    private void showAlert(Alert.AlertType alertType, String text){
+    private void showAlert(Alert.AlertType alertType, String text) {
         Alert alert = new Alert(alertType);
         alert.setContentText(text);
         alert.showAndWait();

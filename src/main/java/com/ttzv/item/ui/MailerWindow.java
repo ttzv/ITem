@@ -1,6 +1,7 @@
 package com.ttzv.item.ui;
 
 import com.ttzv.item.dao.UserComboWrapper;
+import com.ttzv.item.entity.UserDetail;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.file.MailMsgParser;
 import com.ttzv.item.pass.PasswordGenerator;
@@ -15,6 +16,7 @@ import com.ttzv.item.utility.Utility;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -121,7 +123,7 @@ public class MailerWindow extends AnchorPane {
         if(tabBuilder.getSelectedTab().getName().toLowerCase().contains("powitanie") && savePass.equals("true")) {
             try {
                 savePass();
-            } catch (SQLException e) {
+            } catch (SQLException | IOException e) {
                 e.printStackTrace();
             }
             statusText = statusText.concat(", zapisano hasło w bazie");
@@ -129,12 +131,14 @@ public class MailerWindow extends AnchorPane {
 
 
 
-        mainWindow.setStatusBarText(statusText);
+        //mainWindow.setStatusBarText(statusText);
 
     }
 
-    private void savePass() throws SQLException {
-        this.userComboWrapper.getDetailOf(userHolder.getCurrentUser()).setInitMailPass(this.txtPass.getText());
+    private void savePass() throws SQLException, IOException {
+        UserDetail userDetail = this.userComboWrapper.getDetailOf(userHolder.getCurrentUser());
+        userDetail.setInitMailPass(this.txtPass.getText());
+        userComboWrapper.updateUserDetail(userDetail);
     }
 
     @FXML
@@ -221,7 +225,6 @@ public class MailerWindow extends AnchorPane {
         } else {
             this.txtLog.setRegexFilter(Cfg.getInstance().retrieveProp(Cfg.LTF_RESTRICT_SYMBOLS));
         }
-
     }
 
 

@@ -23,11 +23,11 @@
                      <children>
                         <VBox prefHeight="200.0" prefWidth="200.0" spacing="5.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Odbiorca" />
+                              <Label text="Odbiorca" />
                               <TextField editable="false" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nr. odbiorcy" />
+                              <Label text="Nr. odbiorcy" />
                               <TextField />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zmienna" />
+                              <Label text="Zmienna" />
                               <TextField />
                               <ComboBox prefWidth="150.0" promptText="Wybierz szablon" />
                               <Button mnemonicParsing="false" text="Do kolejki" />

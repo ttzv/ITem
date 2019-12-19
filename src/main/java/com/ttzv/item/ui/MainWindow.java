@@ -34,6 +34,10 @@ import java.util.Map;
 
 public class MainWindow extends AnchorPane {
 
+    //scene position offset variables to allow dragging
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     private ScenePicker scenePicker;
 
     private FXMLLoader fxmlLoader;
@@ -41,8 +45,14 @@ public class MainWindow extends AnchorPane {
     private UiObjectsWrapper uiObjectsWrapper;
     private UserHolder userHolder;
     private UserComboWrapper userComboWrapper;
+    private Stage primaryStage;
     private TableViewCreator tableViewCreator;
 
+    @FXML
+    private CheckMenuItem mnuItemThemeSelectModena;
+
+    @FXML
+    private CheckMenuItem mnuItemThemeSelectDarkModena;
 
     @FXML
     private Button scene1;
@@ -146,12 +156,16 @@ public class MainWindow extends AnchorPane {
     @FXML
     private TextField txtfSearchUsers;
 
+    @FXML
+    private AnchorPane barDraggable;
 
 
-    public MainWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
+
+    public MainWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper, Stage primaryStage) {
         this.uiObjectsWrapper = uiObjectsWrapper;
         this.userHolder = userHolder;
         this.userComboWrapper = userComboWrapper;
+        this.primaryStage = primaryStage;
 
         uiObjectsWrapper.registerObject(uiObjectsWrapper.MainWindow, this);
 
@@ -164,6 +178,8 @@ public class MainWindow extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
     public MainWindow getMainWindow() {
@@ -199,15 +215,25 @@ public class MainWindow extends AnchorPane {
 
         hideTxtfActControls();
 
-        //updateMainWindowAssets();
-
         addTxtfActListeners();
 
         addSearchFieldAction();
 
+        loadTheme();
+
+        //make scene draggable by holding onto menuBar
+        barDraggable.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        barDraggable.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
+        });
+
     }
 
-
+    @FXML
     public void goScn1(ActionEvent actionEvent) {
         selectScene(0);
         //statusBar.setVanishingText("Mailing - wysyłanie szablonów wiadomości z danymi dostępowymi");
@@ -239,7 +265,7 @@ public class MainWindow extends AnchorPane {
 
     private void selectScene(int index) {
 
-        Pane paneToSet = scenePicker.getScene(index);
+        Pane paneToSet = scenePicker.pickScene(index);
         this.contentPane.getChildren().setAll(paneToSet);
         AnchorPane.setRightAnchor(paneToSet, 0.);
         AnchorPane.setLeftAnchor(paneToSet, 0.);
@@ -254,6 +280,24 @@ public class MainWindow extends AnchorPane {
         if (active >= 0) {
             selectScene(active);
         }
+    }
+
+    @FXML
+    void btnRibbonCloseAction(MouseEvent event) {
+        Platform.exit();
+    }
+
+    @FXML
+    void btnRibbonMaximizeAction(MouseEvent event) {
+        if(primaryStage.isMaximized())
+            primaryStage.setMaximized(false);
+        else
+            primaryStage.setMaximized(true);
+    }
+
+    @FXML
+    void btnRibbonMinimizeAction(MouseEvent event) {
+        primaryStage.setIconified(true);
     }
 
     @FXML
@@ -384,6 +428,7 @@ public class MainWindow extends AnchorPane {
         new Thread(sync).start();
     }
 
+
     private void addSearchFieldAction(){
         this.txtfSearchUsers.textProperty().addListener((observableValue, oldValue, newValue) ->  {
                 tableViewCreator.filter(newValue);
@@ -396,9 +441,9 @@ public class MainWindow extends AnchorPane {
         Phone phone = userComboWrapper.getPhoneOf(user);
         UserDetail userDetail = userComboWrapper.getDetailOf(user);
 
-        MailerWindow mw = (MailerWindow) scenePicker.getScene(0);
+        MailerWindow mw = (MailerWindow) scenePicker.getScenes().get(0);
 
-        SignWindow sw = (SignWindow) scenePicker.getScene(1);
+        SignWindow sw = (SignWindow) scenePicker.getScenes().get(1);
 
         if (user != null) {
             this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
@@ -454,6 +499,31 @@ public class MainWindow extends AnchorPane {
     void sidebartoggle(ActionEvent event) {
         sidebartest.animatePane();
     }
+
+    @FXML
+    void mnuItemThemeSelectDarkModenaAction(ActionEvent event) throws IOException {
+        if(this.mnuItemThemeSelectModena.isSelected()){
+            this.mnuItemThemeSelectModena.setSelected(false);
+        }
+        Parent root = fxmlLoader.getRoot();
+        root.getStylesheets().add(getClass().getResource("/style/dark-modena2.css").toExternalForm());
+        this.mnuItemThemeSelectDarkModena.setSelected(true);
+        Cfg.getInstance().setProperty(Cfg.THEME, this.mnuItemThemeSelectDarkModena.getText());
+        Cfg.getInstance().saveFile();
+    }
+
+    @FXML
+    void mnuItemThemeSelectModenaAction(ActionEvent event) throws IOException {
+        if(this.mnuItemThemeSelectDarkModena.isSelected()){
+            this.mnuItemThemeSelectDarkModena.setSelected(false);
+        }
+        Parent root = fxmlLoader.getRoot();
+        root.getStylesheets().remove(getClass().getResource("/style/dark-modena2.css").toExternalForm());
+        this.mnuItemThemeSelectModena.setSelected(true);
+        Cfg.getInstance().setProperty(Cfg.THEME, this.mnuItemThemeSelectModena.getText());
+        Cfg.getInstance().saveFile();
+    }
+
 
     private void addPrimarytableViewDoubleClickHandler(){
         this.primaryUserTableView.setOnMouseClicked(mouseEvent -> {
@@ -549,4 +619,14 @@ public class MainWindow extends AnchorPane {
         }
     }
 
+    private void loadTheme(){ //todo: refactor
+        String theme = Cfg.getInstance().retrieveProp(Cfg.THEME);
+        String modena = "Modena";
+        String darkModena = "Dark Modena";
+        if(theme.equals(darkModena)){
+            Parent root = fxmlLoader.getRoot();
+            root.getStylesheets().add(getClass().getResource("/style/dark-modena2.css").toExternalForm());
+            this.mnuItemThemeSelectDarkModena.setSelected(true);
+        }
+    }
 }

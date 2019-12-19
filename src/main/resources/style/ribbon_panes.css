@@ -1,0 +1,6 @@
+.pane_minmax:hover{
+	-fx-background-color: #0096c9;
+}
+.pane_close:hover{
+	-fx-background-color: #ff0008;
+}

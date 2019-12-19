@@ -1,11 +1,10 @@
 package com.ttzv.item.ui;
 
+import com.ttzv.item.entity.CommandBox;
 import com.ttzv.item.entity.CommandItem;
-import com.ttzv.item.entity.EntityDAO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableListBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,8 +20,8 @@ import javax.naming.NamingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class CommandBoxScn extends AnchorPane {
 
@@ -37,10 +36,12 @@ public class CommandBoxScn extends AnchorPane {
 
     @FXML
     void addAction(ActionEvent event) {
-        boolean lastAddedNodeTitleIsEmpty = commandNodelist.get(commandNodelist.size() - 1).getTitle().isEmpty();
+        boolean lastAddedNodeTitleIsEmpty = commandNodelist.size() != 0 && commandNodelist.get(commandNodelist.size() - 1).getTitle().isEmpty();
         if (!lastAddedNodeTitleIsEmpty) {
             CommandNode commandNode = new CommandNode();
-            commandNode.setUid(getNextUid());
+            String nextUid = String.valueOf(commandBox.getNextUid());
+            if(nextUid == null) nextUid = "-1";
+            commandNode.setUid(nextUid);
             commandNodelist.add(commandNode);
             addDeleteBtnAction(commandNode);
             addUpdateBtnAction(commandNode);
@@ -51,10 +52,9 @@ public class CommandBoxScn extends AnchorPane {
         }
     }
 
-
     @FXML
     public void initialize(){
-        for (CommandItem c : commandItemList) {
+        for (CommandItem c : commandBox.getAll()) {
             addCommandNode(c);
         }
         refreshList();
@@ -64,28 +64,22 @@ public class CommandBoxScn extends AnchorPane {
     @FXML
     void refresh(ActionEvent event) {
         try {
-            commandItemList = entityDAOcmddb.getAllEntities();
+            commandBox.reload();
         } catch (SQLException | IOException | NamingException | GeneralSecurityException e) {
             e.printStackTrace();
         }
         commandNodelist.clear();
-        for (CommandItem c : commandItemList) {
+        for (CommandItem c : commandBox.getAll()) {
             addCommandNode(c);
         }
         refreshList();
     }
 
-    private EntityDAO<CommandItem> entityDAOcmddb;
-    private List<CommandItem> commandItemList;
-    private List<Integer> commandItemUidList;
+    private CommandBox commandBox;
     private ObservableList<CommandNode> commandNodelist;
 
-
-
-    public CommandBoxScn(EntityDAO<CommandItem> entityDAOcmddb) throws SQLException, NamingException, GeneralSecurityException, IOException {
-        this.entityDAOcmddb = entityDAOcmddb;
-        commandItemList = entityDAOcmddb.getAllEntities();
-        commandItemUidList = commandItemList.stream().map(c -> Integer.parseInt(c.getUid())).collect(Collectors.toList());
+    public CommandBoxScn(CommandBox commandBox){
+        this.commandBox = commandBox;
         commandNodelist = FXCollections.observableList(new ArrayList<>());
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/commandboxscn.fxml"));
@@ -98,11 +92,12 @@ public class CommandBoxScn extends AnchorPane {
         }
     }
 
+
     private void refreshList(){
         commandList.getChildren().setAll(commandNodelist);
     }
 
-    private void deleteitem(String uid){
+    private void deleteitem(String uid) throws IOException, SQLException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Potwierdzenie usunięcia");
         alert.setHeaderText("Czy na pewno chcesz usunąć ten element?");
@@ -111,13 +106,7 @@ public class CommandBoxScn extends AnchorPane {
 
         if(result.get() == ButtonType.OK) {
             CommandItem commandItem = new CommandItem(uid);
-            if(commandItemUidList.contains(Integer.parseInt(commandItem.getUid()))) {
-                try {
-                    entityDAOcmddb.deleteEntity(commandItem);
-                } catch (SQLException | IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            commandBox.remove(commandItem);
             commandNodelist.removeIf(p -> p.getUid().equals(uid));
             refreshList();
         }
@@ -132,20 +121,22 @@ public class CommandBoxScn extends AnchorPane {
     private void addDeleteBtnAction(CommandNode commandNode){
         commandNode.getBtnDelete().setOnAction(e -> {
             String uid = commandNode.getUid();
-            deleteitem(uid);
+            try {
+                deleteitem(uid);
+            } catch (IOException | SQLException ex) {
+                ex.printStackTrace();
+            }
         });
     }
 
     private void addUpdateBtnAction(CommandNode commandNode){
         commandNode.getBtnUpdate().setOnAction(e -> {
             CommandItem commandItem = new CommandItem(commandNode.getUid(), commandNode.getTitle().trim(), commandNode.getContent().trim(), commandNode.getTagsFieldText().trim());
-                try {
-                    this.entityDAOcmddb.updateEntity(commandItem);
-                } catch (SQLException | IOException ex) {
-                    ex.printStackTrace();
-                }
-                commandItemList.add(commandItem);
-                commandItemUidList.add(Integer.parseInt(commandItem.getUid()));
+            try {
+                commandBox.update(commandItem);
+            } catch (SQLException | IOException ex) {
+                ex.printStackTrace();
+            }
         });
     }
 
@@ -158,17 +149,11 @@ public class CommandBoxScn extends AnchorPane {
         addDeleteBtnAction(commandNode);
         addUpdateBtnAction(commandNode);
         this.commandNodelist.add(commandNode);
-        this.commandItemUidList.add(Integer.parseInt(commandItem.getUid()));
     }
 
     private void scrollToBottom(){
         Platform.runLater(() -> this.scrollPane.setVvalue(1.0));
 
-    }
-
-    private String getNextUid(){
-        Collections.sort(commandItemUidList);
-        return String.valueOf(commandItemUidList.get(commandItemUidList.size()-1) + 1);
     }
 
 }

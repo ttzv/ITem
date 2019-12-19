@@ -174,7 +174,6 @@ public class SignWindow extends AnchorPane {
     void btnSaveHtmlFileAction(ActionEvent event) throws IOException {
         if (userHolder.getCurrentUser() != null && signatureParser != null){
             Saver saver = new Saver(signatureParser.getOutputString());
-            System.out.println(signatureParser.getOutputString());
             saver.setExtension(saver.HTM);
             saver.setFileName(userHolder.getCurrentUser().getSamAccountName());
 
