@@ -18,17 +18,11 @@ public class ConfigHandler {
     private static final String ARG_NEW = "--new";
     private static final String ARG_SYNC = "--sync";
 
-
     private static final String CONFIG_PATH = "target/deploy/config/config.xml";
     private static final String DEPLOY_FILES = "target/deploy/files/";
 
     public static void main(String[] args) throws IOException {
         Update4jCfg.getInstance().init(null);
-
-        //override URI here
-        String URI_Override = "ftp://192.168.1.113/item/";
-        Update4jCfg.getInstance().setProperty(Update4jCfg.UPDATE4J_BASE_URI, URI_Override);
-        Update4jCfg.getInstance().saveFile();
 
         boolean configPathExists = Files.exists(Paths.get(CONFIG_PATH).getParent());
         String BASE_URI = Update4jCfg.getInstance().retrieveProp(Update4jCfg.UPDATE4J_BASE_URI);
@@ -46,16 +40,16 @@ public class ConfigHandler {
                             .basePath(BASE_PATH)
                             .files(FileMetadata.streamDirectory(DEPLOY_FILES)
                                     .peek(f -> f.modulepath())
-                                    .peek(f -> f.uri("files"))
+                                    .peek(f -> f.uri("files/" + f.getSource().getFileName()))
                                     .peek(f -> f.osFromFilename()))
                             .files(FileMetadata.streamDirectory(Paths.get(DEPLOY_FILES).getParent().resolve("cfg"))
                                     .peek(f -> f.modulepath(false))
-                                    .peek(f -> f.uri("cfg"))
+                                    .peek(f -> f.uri("cfg/" + f.getSource().getFileName()))
                                     .peek(f -> f.path(Paths.get(BASE_PATH).getParent().resolve("cfg").resolve(f.getSource().getFileName())))
                             )
                             .files(FileMetadata.streamDirectory(Paths.get(DEPLOY_FILES).getParent().resolve("templates"))
                                     .peek(f -> f.modulepath(false))
-                                    .peek(f -> f.uri(f.getSource().subpath(2, f.getSource().getNameCount()-1).toString()))
+                                    .peek(f -> f.uri(f.getSource().subpath(2, f.getSource().getNameCount()-1).toString() + "/" + f.getSource().getFileName()))
                                     .peek(f-> f.path(Paths.get(BASE_PATH).getParent().resolve(f.getSource().subpath(2, f.getSource().getNameCount()))))
                             )
                             .property("default.launcher.main.class", "com.ttzv.item.Main")
