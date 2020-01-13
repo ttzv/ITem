@@ -40,7 +40,7 @@ public class KeyMapper {
             try {
                 if(jsonPath.getParent() != null)
                 Files.createDirectories(jsonPath.getParent());
-                Files.createFile(jsonPath.getFileName());
+                Files.createFile(jsonPath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -206,7 +206,6 @@ public class KeyMapper {
             userMaps.addMapping(UserData.distinguishedName.toString(), "distinguishedName", "distinguishedname", "");
             userMaps.addMapping(UserData.city.toString(), "", "cityname", "Miasto");
             userMaps.addMapping(UserData.whenCreated.toString(), "whenCreated", "created", "Data utworzenia");
-            //userMaps.addMapping(UserData.whenChanged.toString(), "whenChanged", "changed", "");
             userMaps.addMapping(UserData.mail.toString(), "mail", "mailaddress", "Adres mail");
             userMaps.addMapping(UserData.useraccountcontrol.toString(), "userAccountControl", "uac", "Status Konta");
         KeyMapper userDetailMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, UserDetail.class);
@@ -228,6 +227,11 @@ public class KeyMapper {
             phoneMaps.addMapping(PhoneData.imei.toString(), "", "imei");
             phoneMaps.addMapping(PhoneData.pin.toString(), "", "pin");
             phoneMaps.addMapping(PhoneData.puk.toString(), "", "puk");
+        KeyMapper commandMaps = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, CommandItem.class);
+            commandMaps.addMapping(CommandItemData.uid.toString(),"","uid");
+            commandMaps.addMapping(CommandItemData.title.toString(),"","title");
+            commandMaps.addMapping(CommandItemData.content.toString(),"","content");
+            commandMaps.addMapping(CommandItemData.tags.toString(),"","tags");
 
             userMaps.getMapping("mailaddress");
     }
