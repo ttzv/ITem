@@ -109,6 +109,7 @@ public class UserHolder {
         if(this.userList == null || this.userList.size() <= 0){
             return null;
         }
+        Collections.sort(userList);
         return this.userList.get(userList.size() - 1);
     }
 

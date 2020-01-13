@@ -36,7 +36,7 @@ public class DynamicEntity {
                 add(splitted[0], splitted[1]);
             } else {
                 add(splitted[0], "");
-                System.err.println("Split entity array length is not equal to 2, value: " + val);
+                //System.err.println("Split entity array length is not equal to 2, value: " + val);
             }
         }
         return this;
