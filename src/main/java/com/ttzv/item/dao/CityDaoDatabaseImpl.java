@@ -6,6 +6,7 @@ import com.ttzv.item.utility.Utility;
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<City> {
 
     private final String TABLE_CITY = "city";
+    private String uniqueID;
     private KeyMapper keyMapper;
 
     public CityDaoDatabaseImpl() throws SQLException, IOException, GeneralSecurityException {
@@ -23,18 +25,20 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
         if(!tablesReady(TABLE_CITY)){
             createTables();
         }
+        this.uniqueID = CityData.name.getDbKey();
     }
 
     @Override
     public void createTables() throws SQLException {
-        String sql = "CREATE TABLE " + TABLE_CITY + " (" +
-                "id SERIAL PRIMARY KEY," +
+        String sql = "CREATE TABLE " + TABLE_CITY +
+                " (id SERIAL PRIMARY KEY," +
                 CityData.name.getDbKey(keyMapper) + " VARCHAR UNIQUE, " +
                 CityData.type.getDbKey(keyMapper) + " VARCHAR," +
                 CityData.landLineNumber.getDbKey(keyMapper) + " VARCHAR," +
                 CityData.faxNumber.getDbKey(keyMapper) + " VARCHAR," +
                 CityData.postalCode.getDbKey(keyMapper) + " VARCHAR)";
-        executeUpdate(sql);
+        PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        executeUpdate(preparedStatement);
     }
 
     @Override
@@ -65,21 +69,20 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
 
     @Override
     public boolean updateEntity(City entity) throws SQLException {
-        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
-        String criteriumOfUpdating = keyMapper.getMapping(CityData.name.toString()).get(KeyMapper.DBKEY) + "='" + entity.getName() + "'";
-        String sql = updateSql(TABLE_CITY, uEntity.getList("'"), criteriumOfUpdating);
-        if(!executeUpdate(sql)){
+        DynamicEntity rEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY);
+        if(!update(TABLE_CITY, keyMapper, rEntity, uniqueID)){
             System.out.println("Nothing updated, inserting");
-            insert(entity);
+            insert(TABLE_CITY, keyMapper, rEntity);
         }
         return false;
     }
 
     @Override
     public boolean deleteEntity(City entity) throws SQLException {
-        String query = "DELETE FROM " + TABLE_CITY +
+        String sql = "DELETE FROM " + TABLE_CITY +
                 " WHERE " + TABLE_CITY + "." + CityData.name.getDbKey() + "='" + entity.getName() + "'";
-        executeQuery(query);
+        PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        executeUpdate(preparedStatement);
         return true;
     }
 
@@ -88,14 +91,6 @@ public class CityDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Ci
         return new int[0];
     }
 
-    private void insert(City city) throws SQLException {
-        List<String> dbKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
-        List<String> values = dbKeys.stream()
-                .map(
-                        k->city.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY)
-                                .getValue(k))
-                .collect(Collectors.toList());
-        String sql = insertSql(TABLE_CITY, keyMapper.getAllMappingsOf(KeyMapper.DBKEY), Collections.singletonList(values));
-        executeUpdate(sql);
-    }
+
+
 }

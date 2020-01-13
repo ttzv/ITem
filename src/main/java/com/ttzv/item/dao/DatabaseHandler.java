@@ -1,5 +1,8 @@
 package com.ttzv.item.dao;
 
+import com.ttzv.item.entity.CityData;
+import com.ttzv.item.entity.DynamicEntity;
+import com.ttzv.item.entity.KeyMapper;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.utility.Utility;
@@ -32,8 +35,12 @@ public abstract class DatabaseHandler {
 
     public abstract void createTables() throws SQLException;
 
+    public Connection getConnection() throws SQLException {
+        return jdbcDriverSelector.createConnection();
+    }
+
     public boolean tablesReady(String tableName) throws SQLException {
-        Connection connection = jdbcDriverSelector.createConnection();
+        Connection connection = getConnection();
         DatabaseMetaData dbmd = connection.getMetaData();
         ResultSet rs = dbmd.getTables(null, null, "%", null);
         List<String> tables = new ArrayList<>();
@@ -62,28 +69,16 @@ public abstract class DatabaseHandler {
         return false;
     }
 
-    public boolean executeUpdate(String sql) throws SQLException {
-        int rowsUpdated = 0;
-        System.out.println("UPDATE: " + sql);
-        Connection connection = jdbcDriverSelector.createConnection();
-        if (connection != null) {
-            Statement statement = null;
-            try {
-                statement = connection.createStatement();
-                rowsUpdated = statement.executeUpdate(sql);
-                statement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
-            }
-            connection.close();
-        }
-        return rowsUpdated > 0;
+    public boolean executeUpdate(PreparedStatement preparedStatement) throws SQLException {
+        System.out.println("UPDATE: " + preparedStatement.toString());
+        int changedRows = preparedStatement.executeUpdate();
+        preparedStatement.close();
+        return changedRows > 0;
     }
 
     public List<List<String>> executeQuery(String query) throws SQLException {
         System.out.println("QUERY: " + query);
-        Connection connection = jdbcDriverSelector.createConnection();
+        Connection connection = getConnection();
         ResultSet resultSet = null;
         Statement statement = null;
         List<List<String>> resultList = new ArrayList<>();
@@ -117,32 +112,14 @@ public abstract class DatabaseHandler {
 
 
     /**
-     * Generates UPDATE SQL statement on specific record in database, can update multiple cells simultaneously if multiple columns are passed to entityPairs parameter
+     * Generates UPDATE SQL statement on specific record in database, can update multiple cells simultaneously if multiple columns are passed to list parameter
      */
-    public String updateSql (String table, List<String> entityPairs, String criterium) { //todo move to utility class
-        String statement = "";
-        if(!table.isEmpty() && !criterium.isEmpty() && entityPairs.size()>0){
-            statement = "UPDATE " + table + " SET " ;
-            int cnt = 0;
-            while (cnt < entityPairs.size()){
-                statement = statement.concat(entityPairs.get(cnt));
-                if(entityPairs.size()>1 && cnt != entityPairs.size()-1) {
-                    statement = statement.concat(",");
-                } else {
-                    statement = statement.concat(" ");
-                }
-                cnt++;
-            }
-            statement = statement.concat("WHERE " + criterium);
-        } else {
-            System.err.println("DbCon: One or more values are empty");
-        }
-        //System.out.println(statement);
-        return statement;
+    public String listToString(List<String> list) { //todo move to utility class
+        return list.toString().replaceAll("\\[|\\]","");
     }
 
     public List<String> getTableColumns(String table) throws SQLException {
-        Connection connection = jdbcDriverSelector.createConnection();
+        Connection connection = getConnection();
         List<String> columnsList = new ArrayList<>();
         String sql = "SELECT * FROM " + table + " LIMIT 1";
         try {
@@ -159,15 +136,34 @@ public abstract class DatabaseHandler {
         return columnsList;
     }
 
+    boolean update (String table, KeyMapper keyMapper, DynamicEntity entity, String uniqueID) throws SQLException {
+        String sql = "UPDATE " + table + " SET ";
+        StringBuilder statement = new StringBuilder(sql);
+        List<String> dbKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
+        for (String dbKey : dbKeys) {
+            statement.append(dbKey).append("=?,");
+        }
+        //remove last comma from string
+        statement.deleteCharAt(statement.length() - 1);
+        statement.append(" WHERE ").append(uniqueID).append("=?;");
+        PreparedStatement preparedStatement = getConnection().prepareStatement(statement.toString());
+        int currentIndex = 1;
+        for (String dbKey : dbKeys) {
+            preparedStatement.setString(currentIndex, entity.getValue(dbKey));
+            currentIndex++;
+        }
+        preparedStatement.setString(currentIndex, entity.getValue(uniqueID));
+        return executeUpdate(preparedStatement);
+    }
+
 
     /**
-     * Convenience method used for building PostgreSQL INSERT statement
+     * Convenience method used for building parametrized PostgreSQL INSERT statement
      * @param table - name of table where data will be inserted
      * @param columns - list of column names where data will be inserted
-     * @param values - list of values for insertion, must be in order with columns
      * @return build PostgreSQL INSERT statement ready for query
      */ //todo: optimize sql - generate columns once with multiple value lists
-    public String insertSql (String table, List<String> columns, List<List<String>> values ){ //todo move to utility class
+    String insertSql(String table, List<String> columns){ //todo move to utility class
         String insertStatement = "INSERT INTO " + table + " ";
         StringBuilder sb = new StringBuilder(insertStatement);
         //building column data
@@ -178,19 +174,26 @@ public abstract class DatabaseHandler {
         }
         sb.deleteCharAt(sb.length()-1);
         sb.append(") ");
-        sb.append("\nVALUES ");
-        for (List<String> nestedList : values) {
-            sb.append("(");
-            for (String s : nestedList) {
-                sb.append("'").append(s).append("'");
-                sb.append(",");
+        sb.append("\nVALUES (");
+        for (int i = 0; i < columns.size(); i++) {
+            sb.append("?");
+            sb.append(",");
             }
-            sb.deleteCharAt(sb.length() - 1);
-            sb.append("),\n");
-        }
         sb.deleteCharAt(sb.length() - 1);
-        sb.deleteCharAt(sb.length() - 1); //todo this is temporary right? who am i kidding..
-        sb.append(";");
+        sb.append(");\n");
         return sb.toString();
+    }
+
+    protected void insert(String table, KeyMapper keyMapper, DynamicEntity entity) throws SQLException {
+        List<String> dbKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
+        String sql = insertSql(table, keyMapper.getAllMappingsOf(KeyMapper.DBKEY));
+        PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        int currentIndex = 1;
+        for (String dbKey : dbKeys) {
+            System.out.println("value fo key: "+entity.getValue(dbKey));
+            preparedStatement.setString(currentIndex, entity.getValue(dbKey));
+            currentIndex++;
+        }
+        executeUpdate(preparedStatement);
     }
 }

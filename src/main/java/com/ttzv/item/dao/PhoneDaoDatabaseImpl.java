@@ -6,6 +6,7 @@ import com.ttzv.item.utility.Utility;
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Phone> {
 
     private final String TABLE_PHONE = "phones";
+    private String uniqueID;
     private KeyMapper keyMapper;
 
     public PhoneDaoDatabaseImpl() throws SQLException, IOException, GeneralSecurityException {
@@ -23,19 +25,21 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
         if(!tablesReady(TABLE_PHONE)){
             createTables();
         }
+        uniqueID = PhoneData.ownerid.getDbKey();
     }
 
     @Override
     public void createTables() throws SQLException {
         String sql = "CREATE TABLE " + TABLE_PHONE + " (" +
                 "id SERIAL PRIMARY KEY," +
-                PhoneData.ownerid.getDbKey(keyMapper) + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey() + ")," +
-                PhoneData.imei.getDbKey(keyMapper) + " VARCHAR," +
-                PhoneData.model.getDbKey(keyMapper) + " VARCHAR," +
-                PhoneData.number.getDbKey(keyMapper) + " VARCHAR," +
-                PhoneData.pin.getDbKey(keyMapper) + " VARCHAR," +
-                PhoneData.puk.getDbKey(keyMapper) + " VARCHAR )";
-        executeUpdate(sql);
+                PhoneData.ownerid.getDbKey() + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey() + ")," +
+                PhoneData.imei.getDbKey() + " VARCHAR," +
+                PhoneData.model.getDbKey() + " VARCHAR," +
+                PhoneData.number.getDbKey() + " VARCHAR," +
+                PhoneData.pin.getDbKey() + " VARCHAR," +
+                PhoneData.puk.getDbKey() + " VARCHAR )";
+        PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        executeUpdate(preparedStatement);
     }
 
     @Override
@@ -68,38 +72,25 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
     @Override
     public boolean updateEntity(Phone entity) throws SQLException {
         DynamicEntity uEntity = entity.getEntity().excludeKey(PhoneData.ownerid.toString()).replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
-        String criteriumOfUpdating = keyMapper.getMapping(PhoneData.ownerid.toString()).get(KeyMapper.DBKEY) + "='" + entity.getOwnerid() + "'";
-        String sql = updateSql(TABLE_PHONE, uEntity.getList("'"), criteriumOfUpdating);
-        if(!executeUpdate(sql)){
+        if(!update(TABLE_PHONE, keyMapper, uEntity, uniqueID)){
             System.out.println("Nothing updated, inserting");
-            insert(entity);
+            insert(TABLE_PHONE, keyMapper, uEntity);
         }
         return false;
     }
 
     @Override
     public boolean deleteEntity(Phone entity) throws SQLException {
-        String query = "DELETE FROM " + TABLE_PHONE +
+        String sql = "DELETE FROM " + TABLE_PHONE +
                 " WHERE " + TABLE_PHONE + "." + PhoneData.ownerid.getDbKey(keyMapper) + "='" + entity.getOwnerid() + "'";
-        executeQuery(query);
+        PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        executeUpdate(preparedStatement);
         return false;
     }
 
     @Override
     public int[] syncDataSourceWith(EntityDAO<Phone> entityDAO) throws SQLException, NamingException, IOException {
         return new int[0];
-    }
-
-    //todo: maybe move to superclass?
-    private void insert(Phone phone) throws SQLException {
-        List<String> dbKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
-        List<String> values = dbKeys.stream()
-                .map(
-                        k->phone.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY)
-                                .getValue(k))
-                .collect(Collectors.toList());
-        String sql = insertSql(TABLE_PHONE, keyMapper.getAllMappingsOf(KeyMapper.DBKEY), Collections.singletonList(values));
-        executeUpdate(sql);
     }
 
 }

@@ -6,6 +6,7 @@ import com.ttzv.item.utility.Utility;
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     //User object is constructed from two tables, first represents data retrieved from LDAP, second is for additional data about User updated in application
     protected final static String TABLE_USERS = "users";
     private KeyMapper keyMapper;
+    private String uniqueID;
 
     public UserDaoDatabaseImpl() throws SQLException, IOException, GeneralSecurityException {
         super();
@@ -24,24 +26,25 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
         if(!tablesReady(TABLE_USERS)){
             createTables();
         }
+        uniqueID = UserData.objectGUID.getDbKey();
     }
 
     @Override
     public void createTables() throws SQLException {
         String sql = "CREATE TABLE " + TABLE_USERS + " (" +
                 "id SERIAL PRIMARY KEY," +
-                UserData.objectGUID.getDbKey(keyMapper) + " VARCHAR UNIQUE," + "\n" +
-                UserData.samaccountname.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.givenname.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.sn.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.displayname.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.distinguishedName.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.city.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.whenCreated.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                //UserData.whenChanged.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.mail.getDbKey(keyMapper) + " VARCHAR," + "\n" +
-                UserData.useraccountcontrol.getDbKey(keyMapper) + " VARCHAR );";
-        executeUpdate(sql);
+                UserData.objectGUID.getDbKey() + " VARCHAR UNIQUE," + "\n" +
+                UserData.samaccountname.getDbKey() + " VARCHAR," + "\n" +
+                UserData.givenname.getDbKey() + " VARCHAR," + "\n" +
+                UserData.sn.getDbKey() + " VARCHAR," + "\n" +
+                UserData.displayname.getDbKey() + " VARCHAR," + "\n" +
+                UserData.distinguishedName.getDbKey() + " VARCHAR," + "\n" +
+                UserData.city.getDbKey() + " VARCHAR," + "\n" +
+                UserData.whenCreated.getDbKey() + " VARCHAR," + "\n" +
+                UserData.mail.getDbKey() + " VARCHAR," + "\n" +
+                UserData.useraccountcontrol.getDbKey() + " VARCHAR );";
+        PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        executeUpdate(preparedStatement);
     }
 
     @Override
@@ -78,13 +81,11 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
 
     @Override
     public boolean updateEntity(User entity) throws SQLException {
-        DynamicEntity uEntity = entity.getEntity()
-                .replaceKeys(
-                        keyMapper, KeyMapper.DBKEY
-                ).setSeparator("=");
-        String criteriumOfUpdating = keyMapper.getMapping(UserData.objectGUID.toString()).get(KeyMapper.DBKEY) + "='" + entity.getGUID() + "';";
-        String sql = updateSql(TABLE_USERS, uEntity.getList("'"), criteriumOfUpdating);
-        executeUpdate(sql);
+        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY);
+        if(!update(TABLE_USERS, keyMapper, uEntity, uniqueID)){
+            System.out.println("Nothing updated, inserting");
+            insert(TABLE_USERS, keyMapper, uEntity);
+        }
         return true;
     }
 
@@ -92,7 +93,8 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     public boolean deleteEntity(User entity) throws SQLException {
         String sql = "DELETE FROM " + TABLE_USERS +
                 " WHERE " + TABLE_USERS + "." + UserData.objectGUID.getDbKey() + "='" + entity.getGUID() + "'";
-        executeUpdate(sql);
+        PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        executeUpdate(preparedStatement);
         return true;
     }
 
@@ -104,7 +106,9 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
         List<User> uniqueLdap = new ArrayList<>(newerList);
         uniqueLdap.removeAll(currentList);
         if(uniqueLdap.size() > 0) {
-            insert(uniqueLdap);
+            for (User u : uniqueLdap) {
+                updateEntity(u);
+            }
         }
         //All unique elements in db (not in ldap so needs to be deleted)
         List<User> uniqueDb = new ArrayList<>(newerList);
@@ -130,34 +134,5 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
 
         return new int[]{uniqueLdap.size(), uniqueDb.size(), updateCount};
     }
-
-    private void insert (User user) throws SQLException {
-        List<String> dbUniqueKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
-        List<String> values = dbUniqueKeys.stream()
-                .map(
-                        k -> user.getEntity()
-                                .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
-                .collect(Collectors.toList()
-                );
-        System.out.println(dbUniqueKeys + "\n" + values);
-        String sql = insertSql(TABLE_USERS, dbUniqueKeys, Collections.singletonList(values));
-        executeUpdate(sql);
-    }
-
-    private void insert (List<User> users) throws SQLException {
-        List<String> ldapUniqueKeys = keyMapper.getAllMappingsOf(KeyMapper.DBKEY);
-        List<List<String>> multiValues = new ArrayList<>();
-        for (User u : users) {
-            multiValues.add(ldapUniqueKeys.stream()
-                    .map(
-                            k -> u.getEntity()
-                                    .getValue(keyMapper.getCorrespondingMapping(k, KeyMapper.OBJECTKEY)))
-                    .collect(Collectors.toList())
-            );
-        }
-        String sql = insertSql(TABLE_USERS, ldapUniqueKeys, multiValues);
-        executeUpdate(sql);
-    }
-
 
 }
