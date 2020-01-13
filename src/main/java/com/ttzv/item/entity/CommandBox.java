@@ -43,7 +43,7 @@ public class CommandBox {
         if(commandItemUidList != null && commandItemUidList.size() > 0) {
             return commandItemUidList.get(commandItemUidList.size() - 1) + 1;
         } else {
-            return null;
+            return 0;
         }
     }
 
