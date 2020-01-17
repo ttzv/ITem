@@ -1,6 +1,7 @@
 package com.ttzv.item.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +37,7 @@ public class KeyMapper {
         this.jsonPath = jsonPath;
         this.objClass = objClass;
         objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         if(!Files.exists(jsonPath)){
             try {
                 if(jsonPath.getParent() != null)
@@ -198,7 +200,7 @@ public class KeyMapper {
 
     public static void main(String[] args) throws IOException {
         KeyMapper userMaps = new KeyMapper(KEY_MAP_JSON_PATH, User.class);
-            userMaps.addMapping(UserData.objectGUID.toString(), "objectGUID", "guid", "");
+          userMaps.addMapping(UserData.objectGUID.toString(), "objectGUID", "guid", "");
             userMaps.addMapping(UserData.samaccountname.toString(), "sAMAccountName", "sam", "Login");
             userMaps.addMapping(UserData.givenname.toString(), "givenName", "firstname", "Imię");
             userMaps.addMapping(UserData.sn.toString(), "sn", "lastname", "Nazwisko");
@@ -233,7 +235,7 @@ public class KeyMapper {
             commandMaps.addMapping(CommandItemData.content.toString(),"","content");
             commandMaps.addMapping(CommandItemData.tags.toString(),"","tags");
 
-            userMaps.getMapping("mailaddress");
+        System.out.println(userMaps.getMapping("mailaddress"));
     }
 
 }

@@ -2,9 +2,7 @@ package com.ttzv.item.entity;
 
 import com.ttzv.item.utility.Utility;
 
-import java.text.ParseException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Basic User "bean" class used for various operations in this application. Supports creating User from objects implementing DynamicEntity interface.

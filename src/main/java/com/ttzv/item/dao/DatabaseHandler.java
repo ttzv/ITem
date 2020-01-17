@@ -1,6 +1,5 @@
 package com.ttzv.item.dao;
 
-import com.ttzv.item.entity.CityData;
 import com.ttzv.item.entity.DynamicEntity;
 import com.ttzv.item.entity.KeyMapper;
 import com.ttzv.item.properties.Cfg;
@@ -190,7 +189,6 @@ public abstract class DatabaseHandler {
         PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
         int currentIndex = 1;
         for (String dbKey : dbKeys) {
-            System.out.println("value fo key: "+entity.getValue(dbKey));
             preparedStatement.setString(currentIndex, entity.getValue(dbKey));
             currentIndex++;
         }

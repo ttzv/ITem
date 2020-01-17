@@ -1,6 +1,5 @@
 package com.ttzv.item.entity;
 
-import com.ttzv.item.entity.KeyMapper;
 import com.ttzv.item.utility.Utility;
 
 import java.util.*;
@@ -15,7 +14,7 @@ public class DynamicEntity {
 
     private String separator = Utility.DEFAULT_ENTITY_SEPARATOR;
     private Map<String, String> entityMap;
-    private KeyMapper keyMapper;
+
 
     public DynamicEntity(){
         entityMap = new HashMap<>();
@@ -102,6 +101,27 @@ public class DynamicEntity {
         return val;
     }
 
+ /*   *//**
+     * Returns one of values of this entity by identifying it with a key stored in KeyMapper mappings.
+     * @param key identifier to search by
+     * @return Value stored under given key or String empty string if no value was found
+     *//*
+    public String getValue(String key){
+        String val = "";
+        if (entityMap.containsKey(key)){
+            List<String> mappings = keyMapper.getMapping(key);
+            if(mappings != null){
+                for (String k : mappings) {
+                    val = entityMap.getOrDefault(k, "");
+                    if(!val.isEmpty()){
+                        return val;
+                    }
+                }
+            }
+        }
+        return val;
+    }*/
+
     /**
      * Return whole Map of this entity
      * @return Map of entity
@@ -143,6 +163,7 @@ public class DynamicEntity {
      * @return true if value was correctly replaced or false when key doesn't exist
      */
     public boolean setValue(String key, String value) {
+
         return (this.entityMap.replace(key, value) != null);
     }
 
