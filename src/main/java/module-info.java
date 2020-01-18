@@ -13,6 +13,7 @@ module com.ttzv.item {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires ttzv.propsicl; //todo: exclude from configHandler because it is already loaded in itemBootstrap
+    requires smsapi.lib;
 
     opens com.ttzv.item to javafx.fxml;
     opens com.ttzv.item.ui to javafx.fxml;

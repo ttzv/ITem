@@ -45,6 +45,9 @@ import ttzv.propsicl.Propsicl;
      public static String LTF_RESTRICT_SYMBOLS = "ltfRestrictSymbols";
      //theme
      public static String THEME = "theme";
+     //SMS
+     public static String SMSAPI_LOGIN = "smsApiLogin";
+     public static String SMSAPI_KEY = "smsApiKey";
 
 
 
