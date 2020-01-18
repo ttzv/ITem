@@ -20,6 +20,11 @@ public class SmsMessage implements ItemMessage {
     }
 
     @Override
+    public String getText() {
+        return null;
+    }
+
+    @Override
     public String getTopic() {
         return null;
     }
