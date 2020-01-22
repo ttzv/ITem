@@ -71,7 +71,7 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
 
     @Override
     public boolean updateEntity(Phone entity) throws SQLException {
-        DynamicEntity uEntity = entity.getEntity().excludeKey(PhoneData.ownerid.toString()).replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
+        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY).setSeparator("=");
         if(!update(TABLE_PHONE, keyMapper, uEntity, uniqueID)){
             System.out.println("Nothing updated, inserting");
             insert(TABLE_PHONE, keyMapper, uEntity);

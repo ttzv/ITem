@@ -74,7 +74,7 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
 
     @Override
     public boolean updateEntity(UserDetail entity) throws SQLException, IOException {
-        DynamicEntity uEntity = entity.getEntity().excludeKey(UserDetailData.guid.toString()).replaceKeys(keyMapper, KeyMapper.DBKEY);
+        DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY);
         if(!update(TABLE_USER_DETAILS, keyMapper, uEntity, uniqueID)){
             System.out.println("Nothing updated, inserting");
             insert(TABLE_USER_DETAILS, keyMapper, uEntity);
