@@ -41,7 +41,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Label layoutX="529.0" layoutY="14.0" text="Wyszukaj nazwę lub tag" AnchorPane.rightAnchor="200.0" />
+                  <Label layoutX="529.0" layoutY="14.0" text="%cmdbx_search" AnchorPane.rightAnchor="200.0" />
                </children>
             </AnchorPane>
             <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true">

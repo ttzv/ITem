@@ -21,7 +21,7 @@
    <children>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TitledBorder prefHeight="660.0" prefWidth="828.0" stylesheets="@../style/style_higherpadding.css" title="Stopka">
+            <TitledBorder prefHeight="660.0" prefWidth="828.0" stylesheets="@../style/style_higherpadding.css" title="%sign_signaturecontent">
                <children>
                   <WebView fx:id="webViewSignature" prefHeight="377.0" prefWidth="27.0">
                      <effect>
@@ -33,7 +33,7 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </TitledBorder>
-            <TitledBorder prefHeight="660.0" prefWidth="550.0" stylesheets="@../style/style_higherpadding.css" title="Dane">
+            <TitledBorder prefHeight="660.0" prefWidth="550.0" stylesheets="@../style/style_higherpadding.css" title="%sign_signaturedetails">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
@@ -54,15 +54,15 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Imię i nazwisko" />
+                              <Label text="%sign_fullname" />
                               <TextField fx:id="txtfName" prefHeight="25.0" prefWidth="142.0" GridPane.columnIndex="1" />
-                              <Label text="Stanowisko" GridPane.rowIndex="1" />
-                              <Label text="Nr tel." GridPane.rowIndex="2" />
-                              <Label text="Nr tel. (kom)" GridPane.rowIndex="3" />
-                              <Label text="Miasto" GridPane.rowIndex="5" />
+                              <Label text="%sign_position" GridPane.rowIndex="1" />
+                              <Label text="%sign_phonenumber1" GridPane.rowIndex="2" />
+                              <Label text="%sign_phonenumber2" GridPane.rowIndex="3" />
+                              <Label text="%sign_city" GridPane.rowIndex="5" />
                               <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
-                              <Label text="Nr tel." GridPane.rowIndex="6" />
-                              <Label text="Fax" GridPane.rowIndex="7" />
+                              <Label text="%sign_cityphone" GridPane.rowIndex="6" />
+                              <Label text="%sign_cityfax" GridPane.rowIndex="7" />
                               <TextField fx:id="txtfPos" prefHeight="25.0" prefWidth="142.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField fx:id="txtfCityPhone" prefHeight="25.0" prefWidth="142.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -109,10 +109,10 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" onAction="#load" text="Dodaj/Zmień" GridPane.rowIndex="1" />
-                              <Button mnemonicParsing="false" onAction="#btnSaveHtmlFileAction" prefHeight="25.0" prefWidth="86.0" text="Zapisz .htm" GridPane.rowIndex="2" />
-                              <Button mnemonicParsing="false" onAction="#btnCopyHTMLAction" text="Kopiuj HTML" GridPane.rowIndex="4" />
-                              <Button mnemonicParsing="false" onAction="#btnOpenHtmlDirAction" text="Otwórz..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" onAction="#load" text="%sign_loadtemplatefile" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" onAction="#btnSaveHtmlFileAction" prefHeight="25.0" prefWidth="86.0" text="%sign_savefile" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" onAction="#btnCopyHTMLAction" text="%sign_copyhtmlcode" GridPane.rowIndex="4" />
+                              <Button mnemonicParsing="false" onAction="#btnOpenHtmlDirAction" text="%sign_opendir" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                               <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" />
                            </children>

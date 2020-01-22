@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class MainWindow extends AnchorPane {
 
@@ -169,7 +170,8 @@ public class MainWindow extends AnchorPane {
 
         uiObjectsWrapper.registerObject(uiObjectsWrapper.MainWindow, this);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));
+        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"), langResourceBundle);
         this.fxmlLoader = fxmlLoader;
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -303,7 +305,8 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void showMailSett(ActionEvent actionEvent) throws IOException {
         //TODO: create utility method for quick initialization of new windows from fxml files, something like *showWindow(String file)*
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/infoWindow.fxml"));
+        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/infoWindow.fxml"),langResourceBundle);
         Parent root = loader.load();
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -351,35 +354,8 @@ public class MainWindow extends AnchorPane {
     }
 
     @FXML
-    void loadNewUsers() throws NamingException, SQLException {
-        int userQtyToLoad = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.DB_USER_QTY));
-    }
-
-    @FXML
-    void imgBtnNextUser(MouseEvent event) {
-        //UserHolder.next();
-        changeUser();
-    }
-
-    @FXML
-    void imgBtnPrevUser(MouseEvent event) {
-        //UserHolder.previous();
-        changeUser();
-    }
-
-    @FXML
     void exitAction(ActionEvent event) {
         Platform.exit();
-    }
-
-    @FXML
-    void imgCityEditAction(MouseEvent event) {
-        //cityEditPop.showAt(event.getScreenX(), event.getScreenY());
-    }
-
-    @FXML
-    void imgUserEditAction(MouseEvent event) {
-        //userEditPop.showAt(event.getScreenX(), event.getScreenY());
     }
 
     @FXML

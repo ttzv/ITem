@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
 public class SignWindow extends AnchorPane {
 
@@ -35,8 +36,8 @@ public class SignWindow extends AnchorPane {
 
     public SignWindow(UserHolder userHolder) {
         this.userHolder = userHolder;
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/signwdw.fxml"));
+        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/signwdw.fxml"), langResourceBundle);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {

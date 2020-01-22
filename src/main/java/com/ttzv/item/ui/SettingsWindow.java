@@ -22,6 +22,7 @@ import ttzv.uiUtils.TitledBorder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ResourceBundle;
 
 public class SettingsWindow extends AnchorPane {
 
@@ -104,9 +105,6 @@ public class SettingsWindow extends AnchorPane {
     private CheckBox cbxRememberDb;
 
     @FXML
-    private ComboBox<Integer> cBoxUserQty;
-
-    @FXML
     private CheckBox cBoxAutoMailSavePass;
 
     @FXML
@@ -144,8 +142,8 @@ public class SettingsWindow extends AnchorPane {
 
     public SettingsWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder) {
         this.uiObjectsWrapper = uiObjectsWrapper;
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/settingsWindow.fxml"));
+        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/settingsWindow.fxml"), langResourceBundle);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
@@ -230,16 +228,6 @@ public class SettingsWindow extends AnchorPane {
         this.containerDbSett.focusedProperty().addListener(observable -> {
             resetDbIndicators();
         });
-
-        this.cBoxUserQty.getItems().clear();
-        this.cBoxUserQty.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        String initProp = Cfg.getInstance().retrieveProp(Cfg.DB_USER_QTY);
-        int initIndex = 0;
-        if (!initProp.isEmpty()) {
-            initIndex = Integer.parseInt(initProp) - 1 ;
-        }
-        //System.out.println(initIndex);
-        this.cBoxUserQty.getSelectionModel().select(initIndex);
 
         String savePassSetting = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
         if(savePassSetting.equals("true")){
@@ -359,11 +347,6 @@ public class SettingsWindow extends AnchorPane {
         btnMiscPerformAction();
 
         Cfg.getInstance().saveFile();
-    }
-
-    @FXML
-    void userQtySelection(ActionEvent event) {
-        Cfg.getInstance().setProperty(Cfg.DB_USER_QTY,Integer.toString(cBoxUserQty.getSelectionModel().getSelectedItem()));
     }
 
     private void btnMailPerformAction(boolean noStore) throws IOException {

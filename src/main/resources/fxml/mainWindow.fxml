@@ -11,7 +11,6 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -40,16 +39,14 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="Plik">
+                <Menu mnemonicParsing="false" text="%menubar_file">
                   <items>
-                        <MenuItem mnemonicParsing="false" text="Wyszukaj" visible="false" />
-                        <MenuItem mnemonicParsing="false" text="Ustawienia" visible="false" />
-                    <MenuItem mnemonicParsing="false" onAction="#exitAction" text="Wyjdź" />
+                    <MenuItem mnemonicParsing="false" onAction="#exitAction" text="%menuitem_exit" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Widok">
+                  <Menu mnemonicParsing="false" text="%menubar_view">
                     <items>
-                        <Menu mnemonicParsing="false" text="Motyw">
+                        <Menu mnemonicParsing="false" text="%menuitem_theme">
                           <items>
                               <CheckMenuItem fx:id="mnuItemThemeSelectModena" mnemonicParsing="false" onAction="#mnuItemThemeSelectModenaAction" text="Modena" />
                               <CheckMenuItem fx:id="mnuItemThemeSelectDarkModena" mnemonicParsing="false" onAction="#mnuItemThemeSelectDarkModenaAction" text="Dark Modena" />
@@ -57,34 +54,33 @@
                         </Menu>
                     </items>
                   </Menu>
-                <Menu mnemonicParsing="false" text="Pomoc">
+                <Menu mnemonicParsing="false" text="%menubar_help">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#showMailSett" text="E-Mail" />
-                        <MenuItem mnemonicParsing="false" onAction="#pathToClipboard" text="Ścieżka podpisu Outlook" />
-                        <SeparatorMenuItem mnemonicParsing="false" visible="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#showMailSett" text="%menuitem_tagshelp" />
+                        <MenuItem mnemonicParsing="false" onAction="#pathToClipboard" text="%menuitem_outlookpath" />
                   </items>
                 </Menu>
               </menus>
             </MenuBar>
             <HBox fillHeight="false" maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" VBox.vgrow="NEVER">
                <children>
-                  <Button fx:id="scene1" mnemonicParsing="false" onAction="#goScn1" prefHeight="50.0" prefWidth="80.0" text="Mail">
+                  <Button fx:id="scene1" mnemonicParsing="false" onAction="#goScn1" prefHeight="50.0" prefWidth="80.0" text="%key.module_name_mail" textAlignment="CENTER" wrapText="true">
                      <effect>
                         <Blend mode="OVERLAY" />
                      </effect></Button>
-                  <Button fx:id="scene2" mnemonicParsing="false" onAction="#goScn2" prefHeight="50.0" prefWidth="80.0" text="Podpis">
+                  <Button fx:id="scene2" mnemonicParsing="false" onAction="#goScn2" prefHeight="50.0" prefWidth="80.0" text="%key.module_name_sign" textAlignment="CENTER" wrapText="true">
                      <effect>
                         <Blend mode="OVERLAY" />
                      </effect></Button>
-                  <Button fx:id="scene3" mnemonicParsing="false" onAction="#goScn3" prefHeight="50.0" prefWidth="80.0" text="SMS">
+                  <Button fx:id="scene3" mnemonicParsing="false" onAction="#goScn3" prefHeight="50.0" prefWidth="80.0" text="%key.module_name_sms" textAlignment="CENTER" wrapText="true">
                      <effect>
                         <Blend mode="OVERLAY" />
                      </effect></Button>
-                  <Button fx:id="scene4" mnemonicParsing="false" onAction="#goScn4" prefHeight="50.0" prefWidth="80.0" text="Schowek">
+                  <Button fx:id="scene4" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goScn4" prefHeight="50.0" prefWidth="80.0" text="%key.module_name_commandBox" textAlignment="CENTER" wrapText="true">
                      <effect>
                         <Blend mode="OVERLAY" />
                      </effect></Button>
-                  <Button fx:id="scene5" mnemonicParsing="false" onAction="#goScn5" prefHeight="50.0" prefWidth="80.0" text="Ustawienia">
+                  <Button fx:id="scene5" mnemonicParsing="false" onAction="#goScn5" prefHeight="50.0" prefWidth="80.0" text="%key.module_name_settings" textAlignment="CENTER" wrapText="true">
                      <effect>
                         <Blend mode="OVERLAY" />
                      </effect></Button>
@@ -147,25 +143,25 @@
                                        <children>
                                           <TabPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <tabs>
-                                                <Tab closable="false" text="Użytkownicy">
+                                                <Tab closable="false" text="%tab_users">
                                                    <content>
                                                       <AnchorPane>
                                                          <children>
                                                             <TableView fx:id="primaryUserTableView" layoutY="47.0" prefHeight="601.0" prefWidth="293.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0" />
-                                                            <Button layoutX="14.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnRefreshUserList" text="Synchronizuj" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
-                                                            <Button layoutX="119.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnClearUserList" text="Wyczyść" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
+                                                            <Button layoutX="14.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnRefreshUserList" text="%btn_userlist_sync" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+                                                            <Button layoutX="119.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnClearUserList" text="%btn_userlist_clear" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
                                                             <ProgressIndicator fx:id="prgList" layoutX="224.0" layoutY="660.0" prefHeight="25.0" prefWidth="33.0" visible="false" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="224.0" />
                                                             <TextField fx:id="txtfSearchUsers" layoutX="8.0" layoutY="14.0" />
                                                          </children>
                                                       </AnchorPane>
                                                    </content>
                                                 </Tab>
-                                                <Tab closable="false" text="Kolejka Wysyłania">
+                                                <Tab closable="false" disable="true" text="%tab_queue">
                                                    <content>
                                                       <AnchorPane>
                                                          <children>
-                                                            <Button layoutX="107.0" layoutY="534.0" mnemonicParsing="false" text="Wyczyść" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
-                                                            <Button layoutX="36.0" layoutY="534.0" mnemonicParsing="false" text="Wyślij" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+                                                            <Button layoutX="107.0" layoutY="534.0" mnemonicParsing="false" text="%tab_queue_clear" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
+                                                            <Button layoutX="36.0" layoutY="534.0" mnemonicParsing="false" text="%tab_queue_send" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
                                                             <TableView fx:id="msgQTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
@@ -223,11 +219,11 @@
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
-                                                      <Label text="Login" GridPane.rowIndex="2" />
-                                                      <Label text="Imię" GridPane.rowIndex="3" />
-                                                      <Label text="Nazwisko" GridPane.rowIndex="4" />
-                                                      <Label text="Mail" GridPane.rowIndex="6" />
-                                                      <Label text="Miasto" GridPane.rowIndex="7" />
+                                                      <Label text="%grid_login" GridPane.rowIndex="2" />
+                                                      <Label text="%grid_firstname" GridPane.rowIndex="3" />
+                                                      <Label text="%grid_lastname" GridPane.rowIndex="4" />
+                                                      <Label text="%grid_mail" GridPane.rowIndex="6" />
+                                                      <Label text="%grid_city" GridPane.rowIndex="7" />
                                                       <ActionableTextField fx:id="txtfActLogin" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                          <button2Image>
                                                             <Image url="@../img/done.png" />
@@ -300,9 +296,9 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <Label text="Nazwa wyświetl." GridPane.rowIndex="5" />
-                                                      <Label text="Miasto" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-                                                      <Label text="Użytkownik" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                      <Label text="%grid_displayname" GridPane.rowIndex="5" />
+                                                      <Label text="%grid_header_city" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+                                                      <Label text="%grid_header_user" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                                       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                                                       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="12" />
                                                       <ActionableTextField fx:id="txtfActCtName" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="13">
@@ -337,14 +333,14 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <Label text="Stanowisko" GridPane.rowIndex="8" />
-                                                      <Label text="Wstępne hasło" GridPane.rowIndex="9" />
-                                                      <Label text="Nazwa" GridPane.rowIndex="13" />
-                                                      <Label text="Telefon" GridPane.rowIndex="15" />
-                                                      <Label text="Fax" GridPane.rowIndex="16" />
-                                                      <Label text="Typ" GridPane.rowIndex="14" />
+                                                      <Label text="%grid_position" GridPane.rowIndex="8" />
+                                                      <Label text="%grid_initmailpass" GridPane.rowIndex="9" />
+                                                      <Label text="%grid_name" GridPane.rowIndex="13" />
+                                                      <Label text="%grid_phonenumber" GridPane.rowIndex="15" />
+                                                      <Label text="%grid_faxnumber" GridPane.rowIndex="16" />
+                                                      <Label text="%grid_type" GridPane.rowIndex="14" />
                                                       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="18" />
-                                                      <Label text="Telefon" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="17" />
+                                                      <Label text="%grid_header_phone" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="17" />
                                                       <ActionableTextField fx:id="txtfActPhNumber" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="19">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
@@ -361,11 +357,11 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <Label text="Numer" GridPane.rowIndex="19" />
-                                                      <Label text="Model" GridPane.rowIndex="20" />
-                                                      <Label text="IMEI" GridPane.rowIndex="21" />
-                                                      <Label text="PIN" GridPane.rowIndex="22" />
-                                                      <Label text="PUK" GridPane.rowIndex="23" />
+                                                      <Label text="%grid_number" GridPane.rowIndex="19" />
+                                                      <Label text="%grid_model" GridPane.rowIndex="20" />
+                                                      <Label text="%grid_imei" GridPane.rowIndex="21" />
+                                                      <Label text="%grid_pin" GridPane.rowIndex="22" />
+                                                      <Label text="%grid_puk" GridPane.rowIndex="23" />
                                                       <ActionableTextField fx:id="txtfActPhImei" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="21">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
@@ -390,7 +386,7 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <Label text="Telefon stacj." GridPane.rowIndex="10" />
+                                                      <Label text="%grid_landline" GridPane.rowIndex="10" />
                                                    </children>
                                                 </GridPane>
                                              </content>
@@ -398,7 +394,7 @@
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </padding>
                                           </ScrollPane>
-                                          <Button fx:id="saveUserProperties" layoutX="104.0" layoutY="210.0" mnemonicParsing="false" onAction="#performSaveUserProperties" text="Zapisz zmiany" AnchorPane.bottomAnchor="20.0" />
+                                          <Button fx:id="saveUserProperties" layoutX="104.0" layoutY="210.0" mnemonicParsing="false" onAction="#performSaveUserProperties" text="%btn_grid_save" AnchorPane.bottomAnchor="20.0" />
                                        </children>
                                     </AnchorPane>
                                  </children>

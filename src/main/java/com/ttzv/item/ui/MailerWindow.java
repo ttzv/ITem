@@ -27,6 +27,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
 public class MailerWindow extends AnchorPane {
 
@@ -234,8 +235,8 @@ public class MailerWindow extends AnchorPane {
         this.userComboWrapper = userComboWrapper;
         uiObjectsWrapper.registerObject(uiObjectsWrapper.MailerWindow, this);
 
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mailerWindow.fxml"));
+        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mailerWindow.fxml"), langResourceBundle);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {

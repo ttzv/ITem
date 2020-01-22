@@ -22,6 +22,7 @@ import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class CommandBoxScn extends AnchorPane {
 
@@ -81,8 +82,8 @@ public class CommandBoxScn extends AnchorPane {
     public CommandBoxScn(CommandBox commandBox){
         this.commandBox = commandBox;
         commandNodelist = FXCollections.observableList(new ArrayList<>());
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/commandboxscn.fxml"));
+        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/commandboxscn.fxml"), langResourceBundle);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
