@@ -47,7 +47,9 @@ import ttzv.propsicl.Propsicl;
      public static String THEME = "theme";
      //SMS
      public static String SMSAPI_LOGIN = "smsApiLogin";
+     public static String SMSAPI_SENDER = "smsApiSenderName";
      public static String SMSAPI_KEY = "smsApiKey";
+
 
 
 

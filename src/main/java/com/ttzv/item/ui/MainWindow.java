@@ -250,6 +250,10 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void goScn3(ActionEvent actionEvent) {
         selectScene(2);
+        SmsScn smsScn = (SmsScn) scenePicker.getScenes().get(2);
+        smsScn.refreshAccountInfo();
+        smsScn.updateSender();
+
         //statusBar.setVanishingText("Selected Scene 3");
     }
 
@@ -450,6 +454,9 @@ public class MainWindow extends AnchorPane {
         }
 
         sw.reload();
+
+        SmsScn smsScn = (SmsScn) scenePicker.getScenes().get(2);
+        smsScn.updateUserLabels(userHolder);
     }
 
 

@@ -1,6 +1,7 @@
 package com.ttzv.item.sms;
 
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.sender.SmsMessage;
 import pl.smsapi.BasicAuthClient;
 import pl.smsapi.Client;
@@ -15,6 +16,7 @@ import pl.smsapi.exception.ClientException;
 import pl.smsapi.exception.SmsapiException;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 public class SmsApiClient {
 
@@ -23,17 +25,39 @@ public class SmsApiClient {
     public SmsApiClient(String login, String passwordhash) throws ClientException {
         BasicAuthClient client = new BasicAuthClient(login, passwordhash);
         this.client = client;
+        try {
+            getPoints(client);
+        } catch (SmsapiException e) {
+            e.printStackTrace();
+            this.client = null;
+        }
+    }
+
+    //todo: limit creation of new client objects by checking if login or password has changed, if not use old valid client.
+    public SmsApiClient() throws IOException, GeneralSecurityException, ClientException {
+        this(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN),new String(new Crypt("sCr").read()));
     }
 
     public Client getClient(String login, String passwordhash) throws ClientException {
-        return new BasicAuthClient(login, passwordhash);
+        BasicAuthClient client = new BasicAuthClient(login, passwordhash);
+        try {
+            getPoints(client);
+        } catch (SmsapiException e) {
+            e.printStackTrace();
+            client = null;
+        }
+        return client;
     }
 
     public Client getClient(){
         return client;
     }
 
-    public double getPoints() throws SmsapiException {
+    public Double getPoints() throws SmsapiException {
+        return getPoints(this.client);
+    }
+
+    public double getPoints(Client client) throws SmsapiException {
         UserFactory user = new UserFactory(client);
         UserGetPoints points = user.actionGetPoints();
         PointsResponse pointsResponse = points.execute();
@@ -41,30 +65,29 @@ public class SmsApiClient {
     }
 
     public void sendSMS(SmsMessage smsMessage) throws SmsapiException {
+        this.sendSMS(smsMessage, this.client);
+    }
+
+    public void sendSMS(SmsMessage smsMessage, Client client) throws SmsapiException {
         SmsFactory sms = new SmsFactory(client);
         SMSSend smsSend = sms.actionSend()
+                .setSender(smsMessage.getSender())
                 .setText(smsMessage.getText())
-                .setTo(smsMessage.getReceiverAddress());
+                .setTo(smsMessage.getRecipientAddress());
         StatusResponse response = smsSend.execute();
         for (MessageResponse status : response.getList()) {
             System.out.println(status.getNumber() + " " + status.getStatus());
         }
     }
-
-
-    public static void main(String[] args) throws SmsapiException, IOException {
+    public static void main(String[] args) throws SmsapiException, IOException, GeneralSecurityException {
         Cfg.getInstance().init(null);
+        String smsLogin = Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN);
+        String smsPass = new String(new Crypt("sCr").read());
 
-        SmsApiClient smsApiClient = new SmsApiClient(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN), Cfg.getInstance().retrieveProp(Cfg.SMSAPI_KEY));
+        System.out.println(smsLogin + " | " + smsPass);
 
-        Client client = smsApiClient.getClient();
-
-        UserFactory user = new UserFactory(client);
-        UserGetPoints points = user.actionGetPoints();
-
-        PointsResponse pointsResponse = points.execute();
-
-        System.out.println("Points left: " + pointsResponse.getPoints());
+        SmsApiClient smsApiClient = new SmsApiClient(smsLogin, smsPass);
+        smsApiClient.getPoints();
 
 
 /*

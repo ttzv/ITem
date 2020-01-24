@@ -7,6 +7,7 @@ import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
+import com.ttzv.item.sms.SmsApiClient;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -29,6 +30,7 @@ public class SettingsWindow extends AnchorPane {
     private Crypt cMail;
     private Crypt cLdap;
     private Crypt cDb;
+    private Crypt cSms;
     private UiObjectsWrapper uiObjectsWrapper;
 
 
@@ -48,10 +50,10 @@ public class SettingsWindow extends AnchorPane {
     private TextField fieldLogin;
 
     @FXML
-    private CheckBox cbxRemember;
+    private PasswordField fieldPass;
 
     @FXML
-    private PasswordField fieldPass;
+    private CheckBox cbxRemember;
 
     @FXML
     private ProgressIndicator prgMail;
@@ -60,16 +62,40 @@ public class SettingsWindow extends AnchorPane {
     private ImageView okImgMail;
 
     @FXML
-    private TitledBorder containerLdapSett;
+    private TitledBorder containerDbSett1;
 
     @FXML
-    private TextField fieldLdapAcc;
+    private TextField txtf_smsLogin;
+
+    @FXML
+    private TextField txtf_smsSenderName;
+
+    @FXML
+    private PasswordField pwdf_smsPassword;
+
+    @FXML
+    private ImageView okImgSms;
+
+    @FXML
+    private ProgressIndicator prgSms;
+
+    @FXML
+    private CheckBox checkBox_rememberSmsPass;
+
+    @FXML
+    private ComboBox<?> cBoxDbDriverList1;
+
+    @FXML
+    private TitledBorder containerLdapSett;
 
     @FXML
     private TextField fieldLdapUrl;
 
     @FXML
     private TextField fieldLdapPort;
+
+    @FXML
+    private TextField fieldLdapAcc;
 
     @FXML
     private PasswordField fieldLdapPass;
@@ -87,10 +113,10 @@ public class SettingsWindow extends AnchorPane {
     private TitledBorder containerDbSett;
 
     @FXML
-    private TextField fieldDbLogin;
+    private TextField fieldDbUrl;
 
     @FXML
-    private TextField fieldDbUrl;
+    private TextField fieldDbLogin;
 
     @FXML
     private PasswordField fieldDbPass;
@@ -103,6 +129,9 @@ public class SettingsWindow extends AnchorPane {
 
     @FXML
     private CheckBox cbxRememberDb;
+
+    @FXML
+    private ComboBox<?> cBoxDbDriverList;
 
     @FXML
     private CheckBox cBoxAutoMailSavePass;
@@ -133,9 +162,6 @@ public class SettingsWindow extends AnchorPane {
 
     @FXML
     private Button btnDefaultPassPattern;
-
-    @FXML
-    private ComboBox<?> cBoxDbDriverList;
 
 
 
@@ -215,19 +241,10 @@ public class SettingsWindow extends AnchorPane {
             this.cbxRememberDb.setSelected(false);
         }
 
-        this.okImgDb.setVisible(false);
-        this.okImgLdap.setVisible(false);
-        this.okImgMail.setVisible(false);
-
-        this.containerMailSett.focusedProperty().addListener(observable -> {
-            resetMailIndicators();
-        });
-        this.containerLdapSett.focusedProperty().addListener(observable -> {
-            resetLdapIndicators();
-        });
-        this.containerDbSett.focusedProperty().addListener(observable -> {
-            resetDbIndicators();
-        });
+        resetMailIndicators();
+        resetLdapIndicators();
+        resetDbIndicators();
+        resetSmsIndicators();
 
         String savePassSetting = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
         if(savePassSetting.equals("true")){
@@ -253,7 +270,7 @@ public class SettingsWindow extends AnchorPane {
         this.txtfUserRegex.setText(Cfg.getInstance().retrieveProp(Cfg.USER_REGEX));
         this.txtfLoginRegex.setText(Cfg.getInstance().retrieveProp(Cfg.LOGIN_REGEX));
 
-        //password generator ui
+        //password generator settings
 
         final ToggleGroup toggleGroup = new ToggleGroup();
         rbPassRandom.setToggleGroup(toggleGroup);
@@ -299,22 +316,16 @@ public class SettingsWindow extends AnchorPane {
             }
         });
 
+        //sms
+        this.txtf_smsLogin.setText(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN));
+        this.txtf_smsSenderName.setText(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_SENDER));
 
-
-
-
-        //TODO: make ui for DB and LDAP connection, part below is temporary solution, no ui for this yet
-        /*DbCon dbCon = null;
-        try {
-            dbCon = new DbCon();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        this.cSms = new Crypt("sCr");
+        if(this.cSms.exists()){
+            this.pwdf_smsPassword.setText(new String(cSms.read()));
         }
-        try {
-            dbCon.ldapToDb();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
+        String remSmsSettings = Cfg.getInstance().retrieveProp("SettSaveSmsCbx");
+        this.checkBox_rememberSmsPass.setSelected(remSmsSettings.equals("true"));
 
     }
 
@@ -340,14 +351,23 @@ public class SettingsWindow extends AnchorPane {
     }
 
     @FXML
+    void btnA_saveSmsSett(ActionEvent event) throws IOException {
+        btnSmsPerformAction(false);
+        Cfg.getInstance().saveFile();
+    }
+
+    @FXML
     public void btnSaveAllSettingsEvent() throws IOException {
         btnDbPerformAction(true);
         btnLdapPerformAction(true);
         btnMailPerformAction(true);
+        btnSmsPerformAction(true);
         btnMiscPerformAction();
 
         Cfg.getInstance().saveFile();
     }
+
+
 
     private void btnMailPerformAction(boolean noStore) throws IOException {
         Cfg cfg = Cfg.getInstance();
@@ -480,6 +500,30 @@ public class SettingsWindow extends AnchorPane {
 
     }
 
+    private void btnSmsPerformAction(boolean noStore) throws IOException {
+        Cfg cfg = Cfg.getInstance();
+
+        cfg.setProperty(Cfg.SMSAPI_LOGIN, this.txtf_smsLogin.getText());
+        cfg.setProperty(Cfg.SMSAPI_SENDER, this.txtf_smsSenderName.getText());
+        if(this.checkBox_rememberSmsPass.isSelected()) {
+            try {
+                cSms.safeStore(this.pwdf_smsPassword.getText());
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+            cfg.setProperty("SettSaveSmsCbx", "true");
+        } else {
+            cfg.setProperty("SettSaveSmsCbx", "false");
+            cSms.erase();
+        }
+
+        if(!noStore) {
+            cfg.saveFile();
+        }
+
+        testSmsCredentials();
+    }
+
     private void testMailCredentials(){
 
     Task isValid = new Task<Boolean>(){
@@ -521,8 +565,8 @@ public class SettingsWindow extends AnchorPane {
         Task isValid = new Task() {
             @Override
             protected Object call() throws Exception {
-                UserDaoLdapImpl userDaoLdap = new UserDaoLdapImpl();
-                return null;
+            UserDaoLdapImpl userDaoLdap = new UserDaoLdapImpl();
+            return null;
             }
         };
 
@@ -578,6 +622,34 @@ public class SettingsWindow extends AnchorPane {
         new Thread(isValid).start();
     }
 
+    private void testSmsCredentials(){
+        Task isValid = new Task() {
+            @Override
+            protected Boolean call() throws Exception {
+                SmsApiClient smsApiClient = new SmsApiClient(txtf_smsLogin.getText(), pwdf_smsPassword.getText());
+                smsApiClient.getPoints();
+                return Boolean.TRUE;
+            }
+        };
+
+        isValid.setOnRunning(event -> {
+            this.prgSms.setVisible(true);
+            this.prgSms.setProgress(-1);
+        });
+        isValid.setOnSucceeded(event -> {
+            this.prgSms.setVisible(false);
+            showTemporaryImg(this.okImgSms);
+        });
+        isValid.setOnFailed(event -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(isValid.getException().toString());
+            alert.showAndWait();
+            resetSmsIndicators();
+        });
+
+        new Thread(isValid).start();
+    }
+
     private void resetMailIndicators(){
         this.prgMail.setVisible(false);
         this.okImgMail.setVisible(false);
@@ -586,22 +658,25 @@ public class SettingsWindow extends AnchorPane {
     private void resetLdapIndicators(){
         this.prgLdap.setVisible(false);
         this.okImgLdap.setVisible(false);
-            }
+    }
 
     private void resetDbIndicators(){
         this.prgDb.setVisible(false);
         this.okImgDb.setVisible(false);
     }
 
+    private void resetSmsIndicators(){
+        this.prgSms.setVisible(false);
+        this.okImgSms.setVisible(false);
+    }
+
     private void showTemporaryImg(Node node){
         Task task = new Task() {
             @Override
             protected Object call() throws Exception {
-                //System.out.println("visible");
                 Platform.runLater(() -> node.setVisible(true));
                 Thread.sleep(1750);
                 Platform.runLater(() -> node.setVisible(false));
-                //System.out.println("reset");
                 return null;
             }
         };
