@@ -19,26 +19,29 @@ public class Utility {
 
     public static String fileSeparator = System.getProperty("file.separator");
 
-    public static String reformatUserInput(String input){
-        if(input.contains("-")){
-            input = input.substring(0, input.indexOf("-"));
-        }
+    public static String replaceAccents(String text){
         String[] polArrFind = {"ą", "ć", "ę", "ż", "ń", "ó", "ł", "ź", "ś"};//, "Ą", "Ę", "Ć", "Ż", "Ł", "Ś", "Ź"};
         String[] replArr = {"a", "c", "e", "z", "n", "o", "l", "z", "s"};//, "A", "E", "C", "Z", "L", "S", "Z"};
 
         ArrayList<String> polList = new ArrayList<>(Arrays.asList(polArrFind));
         ArrayList<String> npolList = new ArrayList<>(Arrays.asList(replArr));
 
-        String reformatted = input.trim().replace(" ", ".").toLowerCase();
-       // System.out.println(reformatted);
-
         for(String c : polArrFind){
-            if(reformatted.contains(c)){
-                reformatted = reformatted.replace(c, npolList.get(polList.indexOf(c)));
-                //System.out.println("replaced: " + c + " with " + npolList.get(polList.indexOf(c)) + " word is: " + reformatted);
+            if(text.contains(c)){
+                text = text.replace(c, npolList.get(polList.indexOf(c)));
             }
         }
-        return reformatted;
+
+        return text;
+    }
+
+    public static String reformatUserInput(String input){
+        if(input.contains("-")){
+            input = input.substring(0, input.indexOf("-"));
+        }
+        String reformatted = input.trim().replace(" ", ".").toLowerCase();
+
+        return replaceAccents(reformatted);
     }
 
     public static ArrayList<String> stringToArray(String string){

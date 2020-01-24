@@ -37,7 +37,7 @@ public class Main extends Application {
             entityDAOcmddb = new CommandBoxDatabaseImpl();
         } catch (SQLException | IOException | GeneralSecurityException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.WARNING,"Błąd połączenia ze źródłem danych \n" +
+            WarningDialog.showAlert(Alert.AlertType.WARNING,"Błąd połączenia ze źródłem danych \n" +
                     e);
         }
 
@@ -58,7 +58,7 @@ public class Main extends Application {
                     entityDAOuserdb.syncDataSourceWith(entityDAOuserLdap);
             } catch (SQLException | NamingException | IOException | GeneralSecurityException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.WARNING, "Błąd synchronizacji\n" +
+                WarningDialog.showAlert(Alert.AlertType.WARNING, "Błąd synchronizacji\n" +
                         e);
             }
         } else {
@@ -75,7 +75,7 @@ public class Main extends Application {
             userHolder = new UserHolder(entityDAOuserdb);
         } catch (SQLException | IOException | NamingException | GeneralSecurityException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.WARNING,"Błąd połączenia z bazą danych \n" +
+            WarningDialog.showAlert(Alert.AlertType.WARNING,"Błąd połączenia z bazą danych \n" +
                     e);
         }
 
@@ -85,7 +85,7 @@ public class Main extends Application {
             userComboWrapper = new UserComboWrapper(entityDAOcitydb, entityDAOphonedb, entityDAOuserdetdb);
         } catch (SQLException | IOException | NamingException | GeneralSecurityException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.WARNING,"Błąd połączenia z bazą danych \n" +
+            WarningDialog.showAlert(Alert.AlertType.WARNING,"Błąd połączenia z bazą danych \n" +
                     e);
         }
 
@@ -95,7 +95,7 @@ public class Main extends Application {
             commandBox = new CommandBox(entityDAOcmddb);
         } catch (SQLException | NamingException | GeneralSecurityException | IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.WARNING,"Błąd połączenia z bazą danych \n" +
+            WarningDialog.showAlert(Alert.AlertType.WARNING,"Błąd połączenia z bazą danych \n" +
                     e);
         }
 
@@ -103,7 +103,7 @@ public class Main extends Application {
         MailerWindow mailerWindow = new MailerWindow(uiObjectsWrapper, userHolder, userComboWrapper);
         SignWindow signWindow = new SignWindow(userHolder);
         SettingsWindow settingsWindow = new SettingsWindow(uiObjectsWrapper, userHolder);
-        SmsScn smsScene = new SmsScn();
+        SmsScn smsScene = new SmsScn(userHolder, userComboWrapper);
         CommandBoxScn commandBoxScn = new CommandBoxScn(commandBox);
 
         MainWindow mw = new MainWindow(uiObjectsWrapper, userHolder, userComboWrapper, primaryStage);
@@ -136,11 +136,7 @@ public class Main extends Application {
         }
     }
 
-    private void showAlert(Alert.AlertType alertType, String text) {
-        Alert alert = new Alert(alertType);
-        alert.setContentText(text);
-        alert.showAndWait();
-    }
+
 
 }
 
