@@ -110,7 +110,7 @@ public class UserHolder {
             return null;
         }
         Collections.sort(userList);
-        return this.userList.get(userList.size() - 1);
+        return this.userList.get(0);
     }
 
     public UserHolder syncAndRefresh(EntityDAO<User> daoToSyncWith) throws SQLException, IOException, NamingException, GeneralSecurityException {
