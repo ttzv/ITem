@@ -121,7 +121,7 @@ public class MailerWindow extends AnchorPane {
         String statusText = "Wysłano do " + this.sender.getReceiverAddress();
 
         String savePass = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
-        if(tabBuilder.getSelectedTab().getName().toLowerCase().contains("powitanie") && savePass.equals("true")) {
+        if(!this.txtPass.getText().isBlank() && tabBuilder.getSelectedTab().getName().toLowerCase().contains("powitanie") && savePass.equals("true")) {
             try {
                 savePass();
             } catch (SQLException | IOException e) {
@@ -160,7 +160,12 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     public void labTabLoadEvent(){
-        tabBuilder.promptForChooser();
+        try {
+            tabBuilder.promptForChooser();
+        } catch (IOException e) {
+            e.printStackTrace();
+            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+        }
         tabBuilder.build();
         this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
 
@@ -172,8 +177,14 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     void btnAddTabs(ActionEvent event) {
-        tabBuilder.promptForChooser();
+        try {
+            tabBuilder.promptForChooser();
+        } catch (IOException e) {
+            e.printStackTrace();
+            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+        }
         //tabBuilder.build();
+        this.tabPane.getTabs().clear();
         this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
         promptLabelEnabler();
     }
@@ -181,7 +192,17 @@ public class MailerWindow extends AnchorPane {
 
     @FXML
     void btnDelTab(ActionEvent event) {
-        this.tabPane.getTabs().remove(this.tabBuilder.getSelectedTab());
+        ViewTab viewTab = this.tabBuilder.getSelectedTab();
+        try {
+            this.tabBuilder.getMsgFileChooser().removePath(viewTab.getPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+        }
+
+        this.tabBuilder.getViewTabList().remove(viewTab);
+        this.tabPane.getTabs().remove(viewTab);
+
     }
 
     @FXML
