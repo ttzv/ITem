@@ -15,7 +15,7 @@ public class ScenePicker {
 
     public ScenePicker() {
 
-        activeScene = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.ActiveWindow));
+        activeScene = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.ACTIVE_WINDOW));
 
         this.scenes = new ArrayList<>();
     }
@@ -43,7 +43,7 @@ public class ScenePicker {
 
     public void setActiveScene(int as){
         this.activeScene = as;
-            Cfg.getInstance().setProperty(Cfg.ActiveWindow, String.valueOf(activeScene));
+            Cfg.getInstance().setProperty(Cfg.ACTIVE_WINDOW, String.valueOf(activeScene));
         try {
             Cfg.getInstance().saveFile();
         } catch (IOException e) {

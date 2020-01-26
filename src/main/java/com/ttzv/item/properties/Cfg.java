@@ -9,9 +9,9 @@ import ttzv.propsicl.Propsicl;
     //Property keys below
      public static String APP_NAME = "appName";
      //window
-     public static String ActiveWindow = "ActiveWindow";
-     public static String MsgParentPath = "MsgParentPath";
-     public static String MsgList = "MsgList";
+     public static String ACTIVE_WINDOW = "ActiveWindow";
+     public static String MSG_LIST = "MsgTemplateList";
+     public static String SMS_LIST = "SmsTemplateList";
      //mail
      public static String SMTP_HOST = "smtpHost";
      public static String SMTP_PORT = "smtpStartTLS";
@@ -57,7 +57,7 @@ import ttzv.propsicl.Propsicl;
      @Override
      public void defaultPropsVals() {
          defPropSet(APP_NAME, "ITem");
-         defPropSet(ActiveWindow, String.valueOf(0));
+         defPropSet(ACTIVE_WINDOW, String.valueOf(0));
          defPropSet(SMTP_HOST, "smtp.gmail.com");
          defPropSet(SMTP_PORT,"587");
          defPropSet(SMTP_TLS, "true");

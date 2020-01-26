@@ -19,9 +19,9 @@
 
 <fx:root prefHeight="660.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TitledBorder prefHeight="660.0" prefWidth="828.0" stylesheets="@../style/style_higherpadding.css" title="%sign_signaturecontent">
+            <TitledBorder stylesheets="@../style/style_higherpadding.css" title="%sign_signaturecontent" HBox.hgrow="ALWAYS">
                <children>
                   <WebView fx:id="webViewSignature" prefHeight="377.0" prefWidth="27.0">
                      <effect>
@@ -33,15 +33,15 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </TitledBorder>
-            <TitledBorder prefHeight="660.0" prefWidth="550.0" stylesheets="@../style/style_higherpadding.css" title="%sign_signaturedetails">
+            <TitledBorder prefHeight="660.0" prefWidth="313.0" stylesheets="@../style/style_higherpadding.css" title="%sign_signaturedetails" HBox.hgrow="NEVER">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                  <VBox fillWidth="false" spacing="10.0">
                      <children>
-                        <GridPane prefHeight="273.0" prefWidth="274.0">
+                        <GridPane>
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.0" minWidth="10.0" prefWidth="171.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.0" minWidth="0.0" prefWidth="8.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="10.0" prefWidth="143.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="207.0" minWidth="10.0" prefWidth="173.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.0" minWidth="0.0" prefWidth="0.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -66,31 +66,31 @@
                               <Label text="%sign_cityfax" GridPane.rowIndex="7" />
                               <TextField fx:id="txtfPos" prefHeight="25.0" prefWidth="142.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField fx:id="txtfCityPhone" prefHeight="25.0" prefWidth="142.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                              <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <children>
                                     <ComboBox fx:id="comBoxCityType" prefHeight="25.0" prefWidth="152.0" />
                                     <TextField fx:id="txtfCity" prefHeight="25.0" prefWidth="142.0" />
                                  </children>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <children>
                                     <TextField fx:id="txtfPhone" prefHeight="25.0" prefWidth="142.0" />
                                     <ToggleButton fx:id="btnDeletePhone" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="-" />
                                  </children>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <children>
                                     <TextField fx:id="txtfMPhone" prefHeight="25.0" prefWidth="142.0" />
                                     <ToggleButton fx:id="btnDeleteMPhone" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="-" />
                                  </children>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <HBox alignment="BOTTOM_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <children>
                                     <TextField fx:id="txtfCityFax" prefHeight="25.0" prefWidth="142.0" />
                                     <ToggleButton fx:id="btnDeleteFax" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="-" />
                                  </children>
                               </HBox>
-                              <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" />
+                              <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="8" />
                            </children>
                            <padding>
                               <Insets right="10.0" />
@@ -108,8 +108,6 @@
                               <Button mnemonicParsing="false" onAction="#btnCopyHTMLAction" text="%sign_copyhtmlcode" />
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER_LEFT" spacing="20.0" />
-                        <HBox alignment="CENTER_LEFT" spacing="20.0" />
                      </children>
                   </VBox>
                </children>

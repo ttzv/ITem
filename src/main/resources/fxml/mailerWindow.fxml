@@ -21,13 +21,13 @@
 
 <fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TitledBorder maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="580.0" stylesheets="@../style/style_titledborder.css" title="%mail_content">
+            <TitledBorder maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="580.0" stylesheets="@../style/style_titledborder.css" title="%mail_content" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="605.0">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0">
                      <children>
-                        <HBox prefHeight="50.0" prefWidth="529.0">
+                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="529.0">
                            <children>
                               <TitledBorder stylesheets="@../style/style_titledborder.css" title="%mail_topic">
                                  <children>
@@ -110,7 +110,7 @@
                               <LimitableTextField fx:id="txtUser" GridPane.columnIndex="1" />
                               <LimitableTextField fx:id="txtLog" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField fx:id="txtPass" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <HBox spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <HBox spacing="15.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#btnPassGenerate" text="%mail_generatepass" />
                                     <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#btnCopyAction" prefHeight="25.0" prefWidth="25.0" stylesheets="@../style/btn_main.css" text="Button">
