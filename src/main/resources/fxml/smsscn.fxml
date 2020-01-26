@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import ttzv.uiUtils.TitledBorder?>
 
@@ -31,7 +32,14 @@
                               <TextField fx:id="textfield_smsRecipientNumber" />
                               <Label text="%sms_variable" />
                               <TextField fx:id="textfield_smsVariable" />
-                              <ComboBox fx:id="cbox_template" disable="true" prefWidth="150.0" promptText="%sms_choosetemplate" />
+                              <ComboBox fx:id="cbox_template" promptText="%sms_choosetemplate" />
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#btnA_addTemplates" text="%sms_addtemplate" />
+                                    <Button mnemonicParsing="false" onAction="#btnA_clearTemplates" text="%sms_cleartemplates" />
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
                               <Button mnemonicParsing="false" onAction="#btn_removeAccents" text="%sms_removeaccents" />
                               <Button disable="true" mnemonicParsing="false" onAction="#btnA_addToQue" text="%sms_addtoque" />
                               <Button mnemonicParsing="false" onAction="#btnA_Send" text="%sms_send" />
