@@ -2,10 +2,14 @@ package com.ttzv.item.ui;
 
 import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.entity.UserHolder;
+import com.ttzv.item.file.Loader;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.sender.SmsMessage;
 import com.ttzv.item.sms.SmsApiClient;
+import com.ttzv.item.uiUtils.FileNodeWrapper;
+import com.ttzv.item.uiUtils.MsgFileChooser;
 import com.ttzv.item.utility.Utility;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +18,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import pl.smsapi.exception.SmsapiException;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.ResourceBundle;
 import java.util.logging.LoggingMXBean;
@@ -35,6 +41,8 @@ public class SmsScn extends AnchorPane {
     private Integer currentChars = 0;
     private Integer remChars = MESSAGE_CHAR_LIMIT;
     private Integer msgNo = 0;
+    private MsgFileChooser msgFileChooser;
+    private Loader loader;
 
     public SmsScn(UserHolder userHolder, UserComboWrapper userComboWrapper) {
         ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
@@ -47,10 +55,10 @@ public class SmsScn extends AnchorPane {
             e.printStackTrace();
         }
 
-        cfg = Cfg.getInstance();
         this.userHolder = userHolder;
         this.userCombowrapper = userComboWrapper;
         this.pattern = Pattern.compile(ACCENTED_CHARS, Pattern.MULTILINE);
+        this.loader = new Loader();
     }
 
     void refreshAccountInfo(){
@@ -122,11 +130,25 @@ public class SmsScn extends AnchorPane {
         });
     }
 
-    private void buildComboBox(){
-        this.cbox_template.getItems().add("Dodaj...");
+    private void loadTemplateHandler(){
         this.cbox_template.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
-            //todo finish
+            loader.load(t1.getPath());
+            this.textarea_smscontent.setText(loader.readContent().toString());
         });
+    }
+
+    private void buildComboBox(){
+        cbox_template.getItems().clear();
+        if(!msgFileChooser.getFilesPathList().isEmpty())
+        for (Path p :
+                msgFileChooser.getFilesPathList()) {
+            cbox_template.getItems().add(new FileNodeWrapper(p, p.getFileName().toString()));
+        }
+    }
+
+    private void clearComboBox(){
+        cbox_template.getItems().clear();
+        msgFileChooser.clearList();
     }
 
     @FXML
@@ -142,7 +164,7 @@ public class SmsScn extends AnchorPane {
     private TextField textfield_smsVariable;
 
     @FXML
-    private ComboBox<String> cbox_template;
+    private ComboBox<FileNodeWrapper> cbox_template;
 
     @FXML
     private Label label_points;
@@ -161,9 +183,13 @@ public class SmsScn extends AnchorPane {
 
     @FXML
     public void initialize(){
+        cfg = Cfg.getInstance();
+        this.msgFileChooser = new MsgFileChooser(Cfg.SMS_LIST);
         refreshAccountInfo();
         addTextAreaListener();
         updateSender();
+        buildComboBox();
+        loadTemplateHandler();
     }
 
     @FXML
@@ -196,6 +222,23 @@ public class SmsScn extends AnchorPane {
     @FXML
     void btn_removeAccents(ActionEvent event) {
         this.textarea_smscontent.setText(Utility.replaceAccents(textarea_smscontent.getText()));
+    }
+
+    @FXML
+    void btnA_addTemplates(ActionEvent event) {
+        try {
+            msgFileChooser.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+        }
+
+        buildComboBox();
+    }
+
+    @FXML
+    void btnA_clearTemplates(ActionEvent event) {
+        clearComboBox();
     }
 
 }
