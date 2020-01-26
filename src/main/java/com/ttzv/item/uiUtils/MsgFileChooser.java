@@ -6,116 +6,91 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MsgFileChooser {
 
     private FileChooser fileChooser;
-    private List<File> msgs;
+    private List<Path> filesPathList;
+    private String listNameProperty;
 
-    public MsgFileChooser() {
+    public MsgFileChooser(String listName) {
         this.fileChooser = new FileChooser();
-        this.msgs = new ArrayList<>();
+        this.listNameProperty = listName;
 
         //set initial dir if property exists
-        String initProp = Cfg.getInstance().retrieveProp(Cfg.MsgParentPath);
-        if(!initProp.isEmpty()) {
-            File initDir = new File(initProp);
-            if (initDir.exists()) {
-                this.fileChooser.setInitialDirectory(initDir);
+        String initProp = Cfg.getInstance().retrieveProp(listNameProperty);
+        if(!initProp.isEmpty() && !initProp.equals("[]")) {
+            filesPathList = Utility.stringToArray(initProp).stream().map(s -> Paths.get(s)).collect(Collectors.toList());
+            Path initDir = filesPathList.get(filesPathList.size() - 1).getParent(); //takes latest element in list
+            if (Files.exists(initDir)) {
+                this.fileChooser.setInitialDirectory(initDir.toFile());
             }
+        } else {
+            filesPathList = new ArrayList<>();
         }
     }
 
-    public void show(){
-        msgs = fileChooser.showOpenMultipleDialog(null);
-        if(msgs != null) {
-            //saveParentPath();
-            saveMsgList();
-        } else
-            msgs = new ArrayList<>(0);
-    }
-
-    public List<File> getMsgs() {
-        return msgs;
-    }
-
-    //this takes first element from the list and saves parent dir in properties
-    public void saveParentPath(){
-        if(this.msgs.size() > 0) {
-            String path = this.msgs.get(0).getParent();
-            Cfg.getInstance().setProperty(Cfg.MsgParentPath, path);
-            try {
-                Cfg.getInstance().saveFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void show() throws IOException {
+        List<File> filesList = fileChooser.showOpenMultipleDialog(null);
+        if(filesList != null) {
+            buildFileList(filesList);
         }
     }
 
-    //returns list of file names
+    public List<Path> getFilesPathList() {
+        return filesPathList;
+    }
+
+    public void clearList(){
+        this.filesPathList.clear();
+    }
+
+    public List<File> getFilesList(){
+        return filesPathList.stream().map(Path::toFile).collect(Collectors.toList());
+    }
+
+    public void removePath(Path p) throws IOException {
+        filesPathList.remove(p);
+        saveToProperties();
+    }
+
+    /**
+     * Method allowing to return all filenames stored in list
+     * @return filenames stored in list
+     */
     public List<String> getFileNames(){
-        List<String> msgNames = new ArrayList<>();
-        if(this.msgs.size() > 0) {
-            for (File f : msgs) {
-                msgNames.add(f.getName());
-            }
-        }
-        return msgNames;
+        if(this.filesPathList != null && !this.filesPathList.isEmpty())
+            return filesPathList.stream().map(f -> f.getFileName().toString()).collect(Collectors.toList());
+        return null;
     }
 
     /**
      * save list of files chosen in this directory, if directory stays the same new values are added to existing, if directory changes list is erased.
+     * @param filesList list list of files which paths should be stored
      */
-    public void saveMsgList() {
-        List<String> fileNames;
-        //if msglist property doesnt exist or is empty and parentPath from properties is the same as parentpath of loaded file
-        if ((Cfg.getInstance().retrieveProp(Cfg.MsgList) != null && !Cfg.getInstance().retrieveProp(Cfg.MsgList).isEmpty()) && Cfg.getInstance().retrieveProp(Cfg.MsgParentPath).equals(msgs.get(0).getParent()))
-        {
-            fileNames = Utility.stringToArray(Cfg.getInstance().retrieveProp(Cfg.MsgList));
-            for (String fn : getFileNames()){
-                if(!fileNames.contains(fn)){
-                    fileNames.add(fn);
-                }
+    private void buildFileList(List<File> filesList) throws IOException {
+        for (File f : filesList) {
+            Path p = f.toPath();
+            if(!filesPathList.contains(p)) {
+                filesPathList.add(f.toPath());
             }
-        } else {
-            fileNames = getFileNames();
         }
-            if (!fileNames.isEmpty()) {
-                Cfg.getInstance().setProperty(Cfg.MsgList, fileNames.toString());
-            }
-            saveParentPath();
-        }
-
-
-    /**
-     * If properties related to messages are present use this method to get List of files, only files that exists are placed in the list
-     * @return List of files or empty list if properties were not present
-     */
-        public List<File> getInitialFileList(){
-            //this works assuming all files are in the same directory, multiple diferent directories are not supported atm
-        List<File> msgFiles = new ArrayList<>();
-
-        String parentDir = Cfg.getInstance().retrieveProp(Cfg.MsgParentPath);
-        String msgListString = Cfg.getInstance().retrieveProp(Cfg.MsgList);
-
-        if(!parentDir.isEmpty() && !msgListString.isEmpty()){
-            Path parentPath = FileSystems.getDefault().getPath(parentDir);
-            ArrayList<String> msgList = Utility.stringToArray(msgListString);
-            for (String s : msgList) {
-                Path p = parentPath.resolve(FileSystems.getDefault().getPath(s));
-                if(Files.exists(p)){
-                    msgFiles.add(new File(p.toUri()));
-                }
-            }
-            return msgFiles;
-        }
-        return msgFiles;
+        this.fileChooser.setInitialDirectory(filesPathList.get(filesPathList.size() - 1).getParent().toFile());
+        saveToProperties();
     }
+
+    private void saveToProperties() throws IOException {
+        filesPathList.removeIf(p -> !Files.exists(p));
+        Cfg.getInstance().setProperty(listNameProperty, filesPathList.toString());
+        Cfg.getInstance().saveFile();
+    }
+
 
 
 }
