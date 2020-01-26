@@ -45,7 +45,7 @@ public class Utility {
     }
 
     public static ArrayList<String> stringToArray(String string){
-        return new ArrayList<>(Arrays.asList(string.substring(1, string.length() - 1).replaceAll("\\s", "").split(",")));
+        return new ArrayList<>(Arrays.asList(string.substring(1, string.length() - 1).replaceAll(",\\s", ",").split(",")));
     }
 
     public static String extractCityFromDn(String dn){
