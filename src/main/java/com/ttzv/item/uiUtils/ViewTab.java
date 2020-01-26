@@ -4,6 +4,7 @@ import com.ttzv.item.file.MailMsgParser;
 import javafx.scene.control.Tab;
 import javafx.scene.web.WebView;
 
+import java.nio.file.Path;
 import java.util.Objects;
 
 public class ViewTab extends Tab {
@@ -11,12 +12,13 @@ public class ViewTab extends Tab {
     private MailMsgParser parser;
     private WebView webView;
     private String name;
+    private Path path;
 
-    public ViewTab(String tabName, MailMsgParser parser){
+    public ViewTab(String tabName, MailMsgParser parser, Path path){
         webView = new WebView();
         this.name = tabName;
         this.parser = parser;
-
+        this.path = path;
         this.setText(name);
         this.setContent(webView);
         parser.parseFlaggedTopic();
@@ -55,5 +57,9 @@ public class ViewTab extends Tab {
 
     public String getName() {
         return name;
+    }
+
+    public Path getPath() {
+        return path;
     }
 }

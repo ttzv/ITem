@@ -2,8 +2,11 @@ package com.ttzv.item.uiUtils;
 
 import com.ttzv.item.file.Loader;
 import com.ttzv.item.file.MailMsgParser;
+import com.ttzv.item.properties.Cfg;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,33 +24,33 @@ public class TabBuilder {
 
         this.loader = new Loader();
 
-        this.msgFileChooser = new MsgFileChooser();
+        this.msgFileChooser = new MsgFileChooser(Cfg.MSG_LIST);
 
-        if(!msgFileChooser.getInitialFileList().isEmpty()){
+        if(!msgFileChooser.getFilesList().isEmpty()){
             this.preload = true;
         }
         viewTabList = new ArrayList<>();
     }
 
-    public void promptForChooser(){
+    public void promptForChooser() throws IOException {
         this.msgFileChooser.show();
-        builderLoop(msgFileChooser.getMsgs());
+        builderLoop(msgFileChooser.getFilesList());
     }
 
     public void build() {
-       builderLoop(msgFileChooser.getMsgs());
+       builderLoop(msgFileChooser.getFilesList());
     }
 
     public void preload(){
         if(preload){
-            builderLoop(msgFileChooser.getInitialFileList());
+            builderLoop(msgFileChooser.getFilesList());
         }
     }
 
     public void builderLoop(List<File> list){
         for (File f : list) {
             loader.load(f);
-            ViewTab viewTab = new ViewTab(f.getName(), new MailMsgParser(loader.readContent()));
+            ViewTab viewTab = new ViewTab(f.getName(), new MailMsgParser(loader.readContent()), Paths.get(f.getPath()));
             if(!viewTabList.contains(viewTab)){
                 viewTabList.add(viewTab);
             }
@@ -71,4 +74,7 @@ public class TabBuilder {
         return null;
     }
 
+    public MsgFileChooser getMsgFileChooser() {
+        return msgFileChooser;
+    }
 }
