@@ -4,6 +4,7 @@ package com.ttzv.item.file;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Loader {
@@ -15,6 +16,10 @@ public class Loader {
 
     public Loader(File file) {
         load(file);
+    }
+
+    public boolean load(Path path){
+        return this.load(path.toFile());
     }
 
     public boolean load(URL url) throws IOException {
