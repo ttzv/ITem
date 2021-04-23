@@ -32,7 +32,7 @@ public class UserDetailDaoDatabaseImpl extends DatabaseHandler implements Entity
     public void createTables() throws SQLException {
         String sql = "CREATE TABLE " + TABLE_USER_DETAILS + " ( " +
                 "id SERIAL PRIMARY KEY," +
-                UserDetailData.guid.getDbKey() + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey()+ ")," +
+                UserDetailData.guid.getDbKey() + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey()+ ") ON DELETE CASCADE," +
                 UserDetailData.position.getDbKey() + " VARCHAR," +
                 UserDetailData.initMailPass.getDbKey() + " VARCHAR," +
                 UserDetailData.landLineNumber.getDbKey() + " VARCHAR," +

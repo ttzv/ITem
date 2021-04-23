@@ -11,10 +11,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>13</java.version>
-        <javafx.version>13</javafx.version>
+        <java.version>16</java.version>
+        <javafx.version>16</javafx.version>
         <maven.compiler.release>11</maven.compiler.release>
-        <update4j.confighandler.class>com.ttzv.item.ConfigHandler</update4j.confighandler.class>
         <jackson.version>2.10.0</jackson.version>
     </properties>
 
@@ -77,19 +76,10 @@
             <version>${javafx.version}</version>
         </dependency>
 
-
-        <!-- This actually uses locally downloaded jar in custom maven repository that was patched to contain module-info.java required by jlink
-            Same goes for jakarta.activation, it'll stay like this until both libraries become modular-->
         <dependency>
-            <groupId>com.mylib</groupId>
-            <artifactId>jakartamail-patched</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mylib</groupId>
-            <artifactId>jakartaactivation-patched</artifactId>
-            <version>1.2.1</version>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
@@ -113,12 +103,6 @@
             <version>0.0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>ttzv.propsicl</groupId>
-            <artifactId>propsicl</artifactId>
-            <version>0.1</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -133,6 +117,19 @@
             <version>2.4</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
 
     </dependencies>
 
@@ -142,7 +139,7 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.3</version>
+                <version>0.0.5</version>
                 <configuration>
                     <release>${maven.compiler.release}</release>
                     <jlinkImageName>ITem_image</jlinkImageName>
@@ -192,44 +189,6 @@
                 <configuration>
                     <outputDirectory>${project.build.directory}/deploy/files/</outputDirectory>
                 </configuration>
-
-            </plugin>
-
-            <!--Maven exec plugin for quick building new config .xml or syncing existing ones
-            Usage:
-            mvn exec:java@sync to sync existing - created on package
-            mvn exec:java@new for new config-->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <id>new</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>${update4j.confighandler.class}</mainClass>
-                            <arguments>
-                                <argument>--new</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>sync</id>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>${update4j.confighandler.class}</mainClass>
-                            <arguments>
-                                <argument>--sync</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>

@@ -110,9 +110,7 @@ public abstract class DatabaseHandler {
     }
 
 
-    /**
-     * Generates UPDATE SQL statement on specific record in database, can update multiple cells simultaneously if multiple columns are passed to list parameter
-     */
+
     public String listToString(List<String> list) { //todo move to utility class
         return list.toString().replaceAll("\\[|\\]","");
     }
@@ -135,6 +133,9 @@ public abstract class DatabaseHandler {
         return columnsList;
     }
 
+    /**
+     * Generates UPDATE SQL statement on specific record in database, can update multiple cells simultaneously if multiple columns are passed to list parameter
+     */
     boolean update (String table, KeyMapper keyMapper, DynamicEntity entity, String uniqueID) throws SQLException {
         String sql = "UPDATE " + table + " SET ";
         StringBuilder statement = new StringBuilder(sql);

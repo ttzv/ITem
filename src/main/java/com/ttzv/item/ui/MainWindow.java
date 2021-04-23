@@ -425,11 +425,14 @@ public class MainWindow extends AnchorPane {
 
         SignWindow sw = (SignWindow) scenePicker.getScenes().get(1);
 
+        SmsScn smsScn = (SmsScn) scenePicker.getScenes().get(2);
+
         if (user != null) {
             this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
             this.labelCity.setText(userHolder.getCurrentUser().getCity());
             mw.setUserName(userHolder.getCurrentUser().getDisplayName());
             sw.setTxtfName(user.getDisplayName());
+            smsScn.updateUserLabels(userHolder);
         }
 
         if(city != null) {
@@ -455,8 +458,7 @@ public class MainWindow extends AnchorPane {
 
         sw.reload();
 
-        SmsScn smsScn = (SmsScn) scenePicker.getScenes().get(2);
-        smsScn.updateUserLabels(userHolder);
+
     }
 
 

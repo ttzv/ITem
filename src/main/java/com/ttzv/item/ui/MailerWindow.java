@@ -16,14 +16,12 @@ import com.ttzv.item.utility.Utility;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import ttzv.uiUtils.LimitableTextField;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -112,7 +110,7 @@ public class MailerWindow extends AnchorPane {
         sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
         try {
             sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

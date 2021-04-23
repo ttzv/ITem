@@ -32,7 +32,7 @@ public class PhoneDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<P
     public void createTables() throws SQLException {
         String sql = "CREATE TABLE " + TABLE_PHONE + " (" +
                 "id SERIAL PRIMARY KEY," +
-                PhoneData.ownerid.getDbKey() + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey() + ")," +
+                PhoneData.ownerid.getDbKey() + " VARCHAR UNIQUE REFERENCES " + UserDaoDatabaseImpl.TABLE_USERS + " (" + UserData.objectGUID.getDbKey() + ") ON DELETE CASCADE," +
                 PhoneData.imei.getDbKey() + " VARCHAR," +
                 PhoneData.model.getDbKey() + " VARCHAR," +
                 PhoneData.number.getDbKey() + " VARCHAR," +

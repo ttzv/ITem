@@ -1,5 +1,4 @@
 package com.ttzv.item.properties;
-import ttzv.propsicl.Propsicl;
 
 public class Update4jCfg extends Propsicl {
 

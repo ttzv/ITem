@@ -1,5 +1,4 @@
 package com.ttzv.item.properties;
-import ttzv.propsicl.Propsicl;
 
 //this is apparently Singleton pattern, Bill Pugh pattern was used
  public class Cfg extends Propsicl {
