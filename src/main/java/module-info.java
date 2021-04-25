@@ -23,5 +23,6 @@ module com.ttzv.item {
     exports com.ttzv.item;
     exports com.ttzv.item.entity;
     exports com.ttzv.item.uiUtils;
+    opens com.ttzv.item.ui.controller to javafx.fxml;
 
 }

@@ -1,4 +1,4 @@
-package com.ttzv.item.ui;
+package com.ttzv.item.ui.controller;
 
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.file.Loader;
@@ -16,7 +16,6 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -29,23 +28,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
-public class SignWindow extends AnchorPane {
+public class SignaturesController extends AnchorPane {
 
     private SignatureParser signatureParser;
     private UserHolder userHolder;
-
-    public SignWindow(UserHolder userHolder) {
-        this.userHolder = userHolder;
-        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/signwdw.fxml"), langResourceBundle);
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     public void initialize(){

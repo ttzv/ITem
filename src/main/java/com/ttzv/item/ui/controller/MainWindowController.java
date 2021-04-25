@@ -1,4 +1,4 @@
-package com.ttzv.item.ui;
+package com.ttzv.item.ui.controller;
 
 import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.dao.UserDaoLdapImpl;
@@ -33,7 +33,7 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class MainWindow extends AnchorPane {
+public class MainWindowController extends AnchorPane {
 
     //scene position offset variables to allow dragging
     private double xOffset = 0;
@@ -160,31 +160,7 @@ public class MainWindow extends AnchorPane {
     @FXML
     private AnchorPane barDraggable;
 
-
-
-    public MainWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper, Stage primaryStage) {
-        this.uiObjectsWrapper = uiObjectsWrapper;
-        this.userHolder = userHolder;
-        this.userComboWrapper = userComboWrapper;
-        this.primaryStage = primaryStage;
-
-        uiObjectsWrapper.registerObject(uiObjectsWrapper.MainWindow, this);
-
-        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"), langResourceBundle);
-        this.fxmlLoader = fxmlLoader;
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public MainWindow getMainWindow() {
+    public MainWindowController getMainWindow() {
         return this;
     }
 
@@ -250,9 +226,9 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void goScn3(ActionEvent actionEvent) {
         selectScene(2);
-        SmsScn smsScn = (SmsScn) scenePicker.getScenes().get(2);
-        smsScn.refreshAccountInfo();
-        smsScn.updateSender();
+        SmsController smsController = (SmsController) scenePicker.getScenes().get(2);
+        smsController.refreshAccountInfo();
+        smsController.updateSender();
 
         //statusBar.setVanishingText("Selected Scene 3");
     }
@@ -421,18 +397,18 @@ public class MainWindow extends AnchorPane {
         Phone phone = userComboWrapper.getPhoneOf(user);
         UserDetail userDetail = userComboWrapper.getDetailOf(user);
 
-        MailerWindow mw = (MailerWindow) scenePicker.getScenes().get(0);
+        MailerController mw = (MailerController) scenePicker.getScenes().get(0);
 
-        SignWindow sw = (SignWindow) scenePicker.getScenes().get(1);
+        SignaturesController sw = (SignaturesController) scenePicker.getScenes().get(1);
 
-        SmsScn smsScn = (SmsScn) scenePicker.getScenes().get(2);
+        SmsController smsController = (SmsController) scenePicker.getScenes().get(2);
 
         if (user != null) {
             this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
             this.labelCity.setText(userHolder.getCurrentUser().getCity());
             mw.setUserName(userHolder.getCurrentUser().getDisplayName());
             sw.setTxtfName(user.getDisplayName());
-            smsScn.updateUserLabels(userHolder);
+            smsController.updateUserLabels(userHolder);
         }
 
         if(city != null) {

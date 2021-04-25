@@ -3,8 +3,6 @@ package com.ttzv.item.properties;
 //this is apparently Singleton pattern, Bill Pugh pattern was used
  public class Cfg extends Propsicl {
 
-
-
     //Property keys below
      public static String APP_NAME = "appName";
      //window

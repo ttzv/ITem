@@ -1,4 +1,4 @@
-package com.ttzv.item.ui;
+package com.ttzv.item.ui.controller;
 
 import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.entity.UserHolder;
@@ -6,27 +6,24 @@ import com.ttzv.item.file.Loader;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.sender.SmsMessage;
 import com.ttzv.item.sms.SmsApiClient;
+import com.ttzv.item.ui.WarningDialog;
 import com.ttzv.item.uiUtils.FileNodeWrapper;
 import com.ttzv.item.uiUtils.MsgFileChooser;
 import com.ttzv.item.utility.Utility;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import pl.smsapi.exception.SmsapiException;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.ResourceBundle;
-import java.util.logging.LoggingMXBean;
 import java.util.regex.Pattern;
 
-public class SmsScn extends AnchorPane {
+public class SmsController extends AnchorPane {
 
     private final int ACCENTED_CHAR_PENALTY = 90;
     private final int MESSAGE_CHAR_LIMIT = 160;
@@ -34,7 +31,6 @@ public class SmsScn extends AnchorPane {
     private final int MAX_SMS_NO = 3;
     private final String ACCENTED_CHARS = "^.*[ą|ć|ę|ł|ń|ó|ś|ź|ż|Ą|Ć|Ę|Ł|Ń|Ó|Ś|Ź|Ż].*$";
 
-    private final UserComboWrapper userCombowrapper;
     private UserHolder userHolder;
     private Cfg cfg;
     private Pattern pattern;
@@ -43,23 +39,6 @@ public class SmsScn extends AnchorPane {
     private Integer msgNo = 0;
     private MsgFileChooser msgFileChooser;
     private Loader loader;
-
-    public SmsScn(UserHolder userHolder, UserComboWrapper userComboWrapper) {
-        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/smsscn.fxml"), langResourceBundle);
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        this.userHolder = userHolder;
-        this.userCombowrapper = userComboWrapper;
-        this.pattern = Pattern.compile(ACCENTED_CHARS, Pattern.MULTILINE);
-        this.loader = new Loader();
-    }
 
     void refreshAccountInfo(){
         SmsApiClient smsApiClient;
@@ -79,7 +58,7 @@ public class SmsScn extends AnchorPane {
 
     void updateUserLabels(UserHolder userHolder){
         setTextfield_smsRecipient(userHolder.getCurrentUser().getDisplayName());
-        setTextfield_smsRecipientNumber(userCombowrapper.getPhoneOf(userHolder.getCurrentUser()).getNumber());
+        //setTextfield_smsRecipientNumber(userCombowrapper.getPhoneOf(userHolder.getCurrentUser()).getNumber());
     }
 
     private void updateMsgLabels(){

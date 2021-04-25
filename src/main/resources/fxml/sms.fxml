@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import ttzv.uiUtils.TitledBorder?>
 
-<fx:root prefHeight="660.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="660.0" prefWidth="900.0" fx:controller="com.ttzv.item.ui.controller.SmsController" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane layoutX="327.0" layoutY="191.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <right>
@@ -87,4 +87,4 @@
          </center>
       </BorderPane>
    </children>
-</fx:root>
+</AnchorPane>

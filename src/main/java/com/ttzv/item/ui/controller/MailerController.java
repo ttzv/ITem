@@ -1,4 +1,4 @@
-package com.ttzv.item.ui;
+package com.ttzv.item.ui.controller;
 
 import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.entity.UserDetail;
@@ -9,6 +9,7 @@ import com.ttzv.item.pass.WordListPasswordGenerator;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
+import com.ttzv.item.ui.WarningDialog;
 import com.ttzv.item.uiUtils.TabBuilder;
 import com.ttzv.item.uiUtils.ViewTab;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
@@ -27,11 +28,10 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-public class MailerWindow extends AnchorPane {
+public class MailerController extends AnchorPane {
 
     private TabBuilder tabBuilder;
     private Sender sender;
-    private final MainWindow mainWindow;
     private UserHolder userHolder;
     private UserComboWrapper userComboWrapper;
 
@@ -244,24 +244,6 @@ public class MailerWindow extends AnchorPane {
             this.txtLog.setRegexFilter(loginRegex);
         } else {
             this.txtLog.setRegexFilter(Cfg.getInstance().retrieveProp(Cfg.LTF_RESTRICT_SYMBOLS));
-        }
-    }
-
-
-    public MailerWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder, UserComboWrapper userComboWrapper) {
-        this.mainWindow = (MainWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MainWindow);
-        this.userHolder = userHolder;
-        this.userComboWrapper = userComboWrapper;
-        uiObjectsWrapper.registerObject(uiObjectsWrapper.MailerWindow, this);
-
-        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mailerWindow.fxml"), langResourceBundle);
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

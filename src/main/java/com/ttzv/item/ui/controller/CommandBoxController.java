@@ -1,6 +1,5 @@
-package com.ttzv.item.ui;
+package com.ttzv.item.ui.controller;
 
-import com.ttzv.item.entity.CommandBox;
 import com.ttzv.item.entity.CommandItem;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class CommandBoxScn extends AnchorPane {
+public class CommandBoxController extends AnchorPane {
 
     @FXML
     private TextField searchField;
@@ -76,23 +75,8 @@ public class CommandBoxScn extends AnchorPane {
         refreshList();
     }
 
-    private CommandBox commandBox;
+    private com.ttzv.item.entity.CommandBox commandBox;
     private ObservableList<CommandNode> commandNodelist;
-
-    public CommandBoxScn(CommandBox commandBox){
-        this.commandBox = commandBox;
-        commandNodelist = FXCollections.observableList(new ArrayList<>());
-        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/commandboxscn.fxml"), langResourceBundle);
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private void refreshList(){
         commandList.getChildren().setAll(commandNodelist);

@@ -1,4 +1,4 @@
-package com.ttzv.item.ui;
+package com.ttzv.item.ui.controller;
 
 import com.ttzv.item.dao.JdbcDriverSelector;
 import com.ttzv.item.dao.UserDaoLdapImpl;
@@ -25,14 +25,13 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ResourceBundle;
 
-public class SettingsWindow extends AnchorPane {
+public class SettingsController extends AnchorPane {
 
     private Crypt cMail;
     private Crypt cLdap;
     private Crypt cDb;
     private Crypt cSms;
     private UiObjectsWrapper uiObjectsWrapper;
-
 
     @FXML
     private TitledBorder containerMailSett;
@@ -162,23 +161,6 @@ public class SettingsWindow extends AnchorPane {
 
     @FXML
     private Button btnDefaultPassPattern;
-
-
-
-
-    public SettingsWindow(UiObjectsWrapper uiObjectsWrapper, UserHolder userHolder) {
-        this.uiObjectsWrapper = uiObjectsWrapper;
-        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/settingsWindow.fxml"), langResourceBundle);
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     @FXML
     public void initialize() throws IOException, GeneralSecurityException {
@@ -494,8 +476,8 @@ public class SettingsWindow extends AnchorPane {
             Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, this.txtfLoginRegex.getText());
         }
 
-        MailerWindow mailerWindow = (MailerWindow) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MailerWindow);
-        mailerWindow.configureTextFilters();
+        MailerController mailerController = (MailerController) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MailerWindow);
+        mailerController.configureTextFilters();
 
 
     }

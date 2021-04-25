@@ -59,6 +59,4 @@ public class CommandBox {
         commandItemEntityDAO.deleteEntity(commandItem);
     }
 
-
-
 }

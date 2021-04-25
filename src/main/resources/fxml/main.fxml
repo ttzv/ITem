@@ -33,7 +33,14 @@
 <?import ttzv.uiUtils.SideBar?>
 <?import ttzv.uiUtils.StatusBar?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1024.0" prefHeight="861.0" prefWidth="1200.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1024.0" prefHeight="861.0" prefWidth="1200.0" fx:controller="com.ttzv.item.ui.controller.MainWindowController" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <fx:define>
+      <fx:include fx:id="mailer" source="mailer.fxml"/>
+      <fx:include fx:id="settings" source="settings.fxml"/>
+      <fx:include fx:id="signatures" source="signatures.fxml"/>
+      <fx:include fx:id="sms" source="sms.fxml"/>
+      <fx:include fx:id="commandBox" source="commandBox.fxml"/>
+   </fx:define>
     <children>
       <VBox prefHeight="800.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -464,4 +471,4 @@
          </children>
       </StackPane>
    </children>
-</fx:root>
+</AnchorPane>
