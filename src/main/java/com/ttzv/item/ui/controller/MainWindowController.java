@@ -173,9 +173,9 @@ public class MainWindowController extends AnchorPane {
         labelCity.setText("");
         labelUsername.setText("");
 
-        User userHolderFirst = userHolder.getFirst();
-        if(userHolderFirst != null) {
-            userHolder.setCurrentUser(userHolderFirst);
+        ADUser ADUserHolderFirst = userHolder.getFirst();
+        if(ADUserHolderFirst != null) {
+            userHolder.setCurrentUser(ADUserHolderFirst);
         }
 
         tableViewCreator = new TableViewCreator(primaryUserTableView);
@@ -297,10 +297,10 @@ public class MainWindowController extends AnchorPane {
 
     @FXML
     void performSaveUserProperties() throws IOException, SQLException {
-        User user = userHolder.getCurrentUser();
-        UserDetail userDetail = userComboWrapper.getDetailOf(user);
-        City city = userComboWrapper.getCityOf(user);
-        Phone phone = userComboWrapper.getPhoneOf(user);
+        ADUser ADUser = userHolder.getCurrentUser();
+        UserDetail userDetail = userComboWrapper.getDetailOf(ADUser);
+        City city = userComboWrapper.getCityOf(ADUser);
+        Phone phone = userComboWrapper.getPhoneOf(ADUser);
         //userdetail
         if (userDetail != null) {
             userDetail.setPosition(txtfActPos.getText());
@@ -357,7 +357,7 @@ public class MainWindowController extends AnchorPane {
         Task sync = new Task<Boolean>(){
             @Override
             protected Boolean call() throws Exception {
-                EntityDAO<User> userEntityDAOldap = new UserDaoLdapImpl();
+                EntityDAO<ADUser> userEntityDAOldap = new UserDaoLdapImpl();
                 userHolder.syncAndRefresh(userEntityDAOldap);
                 return Boolean.TRUE;
             }
@@ -392,10 +392,10 @@ public class MainWindowController extends AnchorPane {
     }
 
     public void changeUser() {
-        User user = userHolder.getCurrentUser();
-        City city = userComboWrapper.getCityOf(user);
-        Phone phone = userComboWrapper.getPhoneOf(user);
-        UserDetail userDetail = userComboWrapper.getDetailOf(user);
+        ADUser ADUser = userHolder.getCurrentUser();
+        City city = userComboWrapper.getCityOf(ADUser);
+        Phone phone = userComboWrapper.getPhoneOf(ADUser);
+        UserDetail userDetail = userComboWrapper.getDetailOf(ADUser);
 
         MailerController mw = (MailerController) scenePicker.getScenes().get(0);
 
@@ -403,11 +403,11 @@ public class MainWindowController extends AnchorPane {
 
         SmsController smsController = (SmsController) scenePicker.getScenes().get(2);
 
-        if (user != null) {
+        if (ADUser != null) {
             this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
             this.labelCity.setText(userHolder.getCurrentUser().getCity());
             mw.setUserName(userHolder.getCurrentUser().getDisplayName());
-            sw.setTxtfName(user.getDisplayName());
+            sw.setTxtfName(ADUser.getDisplayName());
             smsController.updateUserLabels(userHolder);
         }
 
@@ -546,18 +546,18 @@ public class MainWindowController extends AnchorPane {
     }
 
     private void setTxtfActValues(){
-        User user = userHolder.getCurrentUser();
-        UserDetail userDetail = userComboWrapper.getDetailOf(user);
-        City city = userComboWrapper.getCityOf(user);
-        Phone phone = userComboWrapper.getPhoneOf(user);
+        ADUser ADUser = userHolder.getCurrentUser();
+        UserDetail userDetail = userComboWrapper.getDetailOf(ADUser);
+        City city = userComboWrapper.getCityOf(ADUser);
+        Phone phone = userComboWrapper.getPhoneOf(ADUser);
         //user and user detail
-        if(user != null){
-            txtfActLogin.setText(user.getSamAccountName());
-            txtfActName.setText(user.getGivenName());
-            txtfActSn.setText(user.getSn());
-            txtfActMail.setText(user.getMail());
-            txtfActCity.setText(user.getCity());
-            txtfActDispN.setText(user.getDisplayName());
+        if(ADUser != null){
+            txtfActLogin.setText(ADUser.getSamAccountName());
+            txtfActName.setText(ADUser.getGivenName());
+            txtfActSn.setText(ADUser.getSn());
+            txtfActMail.setText(ADUser.getMail());
+            txtfActCity.setText(ADUser.getCity());
+            txtfActDispN.setText(ADUser.getDisplayName());
         }
         if(userDetail != null) {
             txtfActPos.setText(userDetail.getPosition());

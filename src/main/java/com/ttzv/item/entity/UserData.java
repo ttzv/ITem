@@ -1,7 +1,5 @@
 package com.ttzv.item.entity;
 
-import java.util.stream.Stream;
-
 /**
  * UserData enum stores all possible user attributes that can be set inside application. This is not necessarily a must-have,
  * but it eases development a bit and allows compatibility with existing logic.
@@ -33,7 +31,7 @@ public enum UserData implements Mappable{
 
     @Override
     public String getDbKey() {
-        return getDbKey(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class));
+        return getDbKey(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, ADUser.class));
     }
 
     @Override
@@ -43,7 +41,7 @@ public enum UserData implements Mappable{
 
     @Override
     public String getLdapKey() {
-        return getDbKey(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class));
+        return getDbKey(new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, ADUser.class));
     }
 
     @Override

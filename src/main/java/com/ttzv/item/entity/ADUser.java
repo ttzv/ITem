@@ -1,13 +1,17 @@
 package com.ttzv.item.entity;
 
 import com.ttzv.item.utility.Utility;
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.Table;
+
 
 import java.util.*;
 
 /**
  * Basic User "bean" class used for various operations in this application. Supports creating User from objects implementing DynamicEntity interface.
  */
-public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCompatible{
+
+public class ADUser implements DynamicEntityCompatible, Comparable<ADUser>, FXMapCompatible{
 
     private DynamicEntity userEntity;
 
@@ -23,7 +27,7 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
     private String city;
     private String whenChanged;
 
-    public User(DynamicEntity userEntity)
+    public ADUser(DynamicEntity userEntity)
     {
         this.userEntity = userEntity;
         this.city = Utility.polonize(Utility.extractCityFromDn(userEntity.getValue(UserData.distinguishedName.toString())));
@@ -124,7 +128,7 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
     }
 
     @Override
-    public int compareTo(User o) {
+    public int compareTo(ADUser o) {
         Date userCreationDate = Utility.parseDate(this.getWhenCreated(), Utility.globalDateFormat());
         Date comparedUserCreationDate = Utility.parseDate(o.getWhenCreated(), Utility.globalDateFormat());
         if(userCreationDate != null && comparedUserCreationDate != null)
@@ -137,8 +141,8 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return userEntity.getValue(UserData.objectGUID.toString()).equals(user.userEntity.getValue(UserData.objectGUID.toString()));
+        ADUser ADUser = (ADUser) o;
+        return userEntity.getValue(UserData.objectGUID.toString()).equals(ADUser.userEntity.getValue(UserData.objectGUID.toString()));
     }
 
     @Override
@@ -151,13 +155,13 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
         return userEntity.getList().toString();
     }
 
-    public Set<String> getUpdatedKeys(User user){
+    public Set<String> getUpdatedKeys(ADUser ADUser){
         Set<String> keys = null;
-        if(this.equals(user)){
+        if(this.equals(ADUser)){
             keys = new HashSet<>();
             for (String key : this.getEntity().getKeys()) {
                 String thisValue = this.getEntity().getValue(key);
-                String comparedValue = user.getEntity().getValue(key);
+                String comparedValue = ADUser.getEntity().getValue(key);
                 if (!thisValue.equals(comparedValue)){
                     keys.add(key);
                 }
@@ -166,11 +170,11 @@ public class User implements DynamicEntityCompatible, Comparable<User>, FXMapCom
         return keys;
     }
 
-    public boolean hasDifferentVals(User user){
+    public boolean hasDifferentVals(ADUser ADUser){
         //checking every value if user is the same, returns true on first different value
-        if(this.equals(user)){
+        if(this.equals(ADUser)){
             List<String> thisList = this.getEntity().getList();
-            List<String> userList = user.getEntity().getList();
+            List<String> userList = ADUser.getEntity().getList();
             if(thisList.equals(userList)){
                 return false;
             } else {

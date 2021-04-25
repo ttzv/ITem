@@ -96,7 +96,7 @@
             <version>1.4.4</version>
         </dependency>
 
-        <!--        Local jars-->
+        <!--Local jars-->
         <dependency>
             <groupId>ttzv.uiUtils</groupId>
             <artifactId>JavaFX_Customs</artifactId>
@@ -117,18 +117,21 @@
             <version>2.4</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>5.3.5</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-agroal</artifactId>
+            <version>5.4.30.Final</version>
+            <type>pom</type>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
         </dependency>
+
 
 
     </dependencies>

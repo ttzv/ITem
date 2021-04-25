@@ -1,6 +1,6 @@
 package com.ttzv.item.parser;
 
-import com.ttzv.item.entity.User;
+import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.utility.Utility;
@@ -25,12 +25,12 @@ public class LDAPParser
     private String ldap_port;
     private String ad_adminUser;
     private char[] ad_adminPass;
-    private List<User> usersDataList;
+    private List<ADUser> usersDataList;
     private int totalResults;
     private List<List<String>> results;
     public static final String LDAP_SEPARATOR = Utility.DEFAULT_ENTITY_SEPARATOR;
 
-    public List<User> getUsersDataList() {
+    public List<ADUser> getUsersDataList() {
         if(!usersDataList.isEmpty()) {
             return usersDataList;
         } else {

@@ -1,8 +1,8 @@
 package com.ttzv.item.uiUtils;
 
+import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.entity.FXMapCompatible;
 import com.ttzv.item.entity.KeyMapper;
-import com.ttzv.item.entity.User;
 import com.ttzv.item.utility.Utility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +30,7 @@ public class TableViewCreator {
 
     public TableViewCreator(TableView<Map> tableView) {
         this.tableView = tableView;
-        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
+        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, ADUser.class);
     }
 
     public void createFromMap(TableViewBuilder builder){

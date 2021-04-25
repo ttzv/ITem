@@ -1,21 +1,20 @@
 package com.ttzv.item.dao;
 
+import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.entity.DynamicEntity;
 import com.ttzv.item.entity.EntityDAO;
 import com.ttzv.item.entity.KeyMapper;
-import com.ttzv.item.entity.User;
 import com.ttzv.item.parser.LDAPParser;
 
 import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoLdapImpl implements EntityDAO<User> {
+public class UserDaoLdapImpl implements EntityDAO<ADUser> {
 
     private LDAPParser ldapParser;
     //todo: allow changing below parameters in runtime, decouple
@@ -32,7 +31,7 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
         this.searchControlsScope = SearchControls.SUBTREE_SCOPE;
         this.ldapParser = LDAPParser.getLdapParser();
         ldapParser.closeContext();//redundancy with method getResults() to check connection when creating dao.
-        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
+        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, ADUser.class);
     }
 
     public List<List<String>> getResults() throws NamingException, IOException, GeneralSecurityException {
@@ -49,36 +48,36 @@ public class UserDaoLdapImpl implements EntityDAO<User> {
     }
 
     @Override
-    public List<User> getAllEntities() throws NamingException, IOException, GeneralSecurityException {
-        List<User> allUsers = new ArrayList<>();
+    public List<ADUser> getAllEntities() throws NamingException, IOException, GeneralSecurityException {
+        List<ADUser> allADUsers = new ArrayList<>();
         for (List<String> list :
                 getResults()) {
-            allUsers.add(new User(DynamicEntity.newDynamicEntity()
+            allADUsers.add(new ADUser(DynamicEntity.newDynamicEntity()
                     .process(list)
                     .replaceKeys(
                             keyMapper, KeyMapper.OBJECTKEY))
             );
         }
-        return allUsers;
+        return allADUsers;
     }
 
     @Override
-    public User getEntity(String id) {
+    public ADUser getEntity(String id) {
         return null;
     }
 
     @Override
-    public boolean updateEntity(User entity) {
+    public boolean updateEntity(ADUser entity) {
         return false;
     }
 
     @Override
-    public boolean deleteEntity(User entity) {
+    public boolean deleteEntity(ADUser entity) {
         return false;
     }
 
     @Override
-    public int[] syncDataSourceWith(EntityDAO<User> entityDAO) throws SQLException, NamingException, IOException {
+    public int[] syncDataSourceWith(EntityDAO<ADUser> entityDAO) throws SQLException, NamingException, IOException {
         return new int[0];
     }
 

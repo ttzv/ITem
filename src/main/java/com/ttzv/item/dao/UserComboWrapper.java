@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class UserComboWrapper {
 
-    private User currentUser;
+    private ADUser currentADUser;
 
     private Map<String, City> cities;
     private Map<String, Phone> phones;
@@ -46,43 +46,43 @@ public class UserComboWrapper {
         this.details = (Map<String, UserDetail>) convertToMap(details);
     }
 
-    public City getCityOf(User user){
+    public City getCityOf(ADUser ADUser){
         if(this.cities.size() <= 0){
             return null;
         }
-        City city = this.cities.get(user.getCity());
+        City city = this.cities.get(ADUser.getCity());
         if(city != null)
             return city;
         else {
-            City cityNew = new City(user.getCity());
+            City cityNew = new City(ADUser.getCity());
             this.cities.put(cityNew.getUniqueIdentifier(), cityNew);
             return cityNew;
         }
     }
 
-    public Phone getPhoneOf(User user){
+    public Phone getPhoneOf(ADUser ADUser){
         if(this.phones.size() <= 0){
             return null;
         }
-        Phone phone = this.phones.get(user.getGUID());
+        Phone phone = this.phones.get(ADUser.getGUID());
         if(phone != null)
             return phone;
         else {
-            Phone phoneNew = new Phone(user.getGUID());
+            Phone phoneNew = new Phone(ADUser.getGUID());
             this.phones.put(phoneNew.getUniqueIdentifier(), phoneNew);
             return phoneNew;
         }
     }
 
-    public UserDetail getDetailOf(User user){
+    public UserDetail getDetailOf(ADUser ADUser){
         if(this.details.size() <= 0){
             return null;
         }
-        UserDetail userDetail = this.details.get(user.getGUID());
+        UserDetail userDetail = this.details.get(ADUser.getGUID());
         if(userDetail != null)
             return userDetail;
         else {
-            UserDetail userDetailNew = new UserDetail(user.getGUID());
+            UserDetail userDetailNew = new UserDetail(ADUser.getGUID());
             this.details.put(userDetailNew.getUniqueIdentifier(), userDetailNew);
             return userDetailNew;
         }

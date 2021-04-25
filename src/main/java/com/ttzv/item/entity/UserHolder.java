@@ -1,7 +1,5 @@
 package com.ttzv.item.entity;
 
-import com.ttzv.item.dao.UserComboWrapper;
-
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -12,41 +10,41 @@ import java.util.List;
 
 public class UserHolder {
 
-    private EntityDAO<User> userEntityDAO;
-    private List<User> userList;
-    private List<User> newUsers;
+    private EntityDAO<ADUser> userEntityDAO;
+    private List<ADUser> ADUserList;
+    private List<ADUser> newADUsers;
 
-    private User currentUser;
+    private ADUser currentADUser;
     private int currentIndex;
 
-    public UserHolder(EntityDAO<User> userEntityDAO) throws SQLException, IOException, NamingException, GeneralSecurityException {
-        List<User> users = new ArrayList<>();
+    public UserHolder(EntityDAO<ADUser> userEntityDAO) throws SQLException, IOException, NamingException, GeneralSecurityException {
+        List<ADUser> ADUsers = new ArrayList<>();
         if(userEntityDAO != null) {
             this.userEntityDAO = userEntityDAO;
-            this.userList = userEntityDAO.getAllEntities();
+            this.ADUserList = userEntityDAO.getAllEntities();
         } else {
-            this.userList = users;
+            this.ADUserList = ADUsers;
         }
     }
 
-    public List<User> getAllUsers() {
-        Collections.sort(userList);
-        return userList;
+    public List<ADUser> getAllUsers() {
+        Collections.sort(ADUserList);
+        return ADUserList;
     }
 
-    public User getUser(String id){
-        User fUser = null;
-        for (User u : userList) {
+    public ADUser getUser(String id){
+        ADUser fADUser = null;
+        for (ADUser u : ADUserList) {
             if(u.getGUID().equals(id)){
-                fUser = u;
+                fADUser = u;
             }
         }
-        return fUser;
+        return fADUser;
     }
 
-    public List<User> getNewest(int numberOfUsers){
-        List<User> newUserList = getAllUsers();
-        if(newUserList.size() <= 0){
+    public List<ADUser> getNewest(int numberOfUsers){
+        List<ADUser> newADUserList = getAllUsers();
+        if(newADUserList.size() <= 0){
             return null;
         }
 
@@ -54,46 +52,46 @@ public class UserHolder {
     }
 
 
-    public  User getCurrentUser() {
-        return this.currentUser;
+    public ADUser getCurrentUser() {
+        return this.currentADUser;
     }
 
-    public  void setCurrentUser(User bcurrentUser) {
-        this.currentUser = bcurrentUser;
+    public  void setCurrentUser(ADUser bcurrentADUser) {
+        this.currentADUser = bcurrentADUser;
     }
 
-    public  void addUser (User u){
-        if(newUsers == null){
-            newUsers = new ArrayList<>();
+    public  void addUser (ADUser u){
+        if(newADUsers == null){
+            newADUsers = new ArrayList<>();
             currentIndex = 0;
         }
-        newUsers.add(u);
+        newADUsers.add(u);
     }
 
     public  void clear(){
-        if(newUsers != null) {
-            newUsers.clear();
+        if(newADUsers != null) {
+            newADUsers.clear();
         }
     }
 
-    public  User next(){
-        if(currentIndex >= newUsers.size() - 1)
+    public ADUser next(){
+        if(currentIndex >= newADUsers.size() - 1)
             currentIndex = 0;
         else currentIndex ++;
 
-        return newUsers.get(currentIndex);
+        return newADUsers.get(currentIndex);
     }
 
-    public  User previous(){
+    public ADUser previous(){
         if(currentIndex <= 0){
-            currentIndex = newUsers.size()-1;
+            currentIndex = newADUsers.size()-1;
         } else currentIndex--;
 
-        return newUsers.get(currentIndex);
+        return newADUsers.get(currentIndex);
     }
 
     public  int getCurrentIndex() {
-        if(currentIndex >= newUsers.size()) {
+        if(currentIndex >= newADUsers.size()) {
             currentIndex = 0;
             return 0;
         } else {
@@ -102,20 +100,20 @@ public class UserHolder {
     }
 
     public  int getMaxCount(){
-        return newUsers.size();
+        return newADUsers.size();
     }
 
-    public User getFirst(){
-        if(this.userList == null || this.userList.size() <= 0){
+    public ADUser getFirst(){
+        if(this.ADUserList == null || this.ADUserList.size() <= 0){
             return null;
         }
-        Collections.sort(userList);
-        return this.userList.get(0);
+        Collections.sort(ADUserList);
+        return this.ADUserList.get(0);
     }
 
-    public UserHolder syncAndRefresh(EntityDAO<User> daoToSyncWith) throws SQLException, IOException, NamingException, GeneralSecurityException {
+    public UserHolder syncAndRefresh(EntityDAO<ADUser> daoToSyncWith) throws SQLException, IOException, NamingException, GeneralSecurityException {
         userEntityDAO.syncDataSourceWith(daoToSyncWith);
-        this.userList = this.userEntityDAO.getAllEntities();
+        this.ADUserList = this.userEntityDAO.getAllEntities();
         return this;
     }
 

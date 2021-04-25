@@ -13,12 +13,17 @@ module com.ttzv.item {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires smsapi.lib;
-    requires spring.context;
-    requires spring.beans;
+    requires org.hibernate.orm.core;
+    requires org.hibernate.commons.annotations;
+    requires java.persistence;
+    requires net.bytebuddy;
+    requires com.sun.xml.bind;
+    requires com.fasterxml.classmate;
+    requires static lombok;
 
-    opens com.ttzv.item to javafx.fxml, spring.core;
+    opens com.ttzv.item to javafx.fxml;
+    opens com.ttzv.item.entity to org.hibernate.orm.core;
     opens com.ttzv.item.ui to javafx.fxml;
-    opens com.ttzv.item.utility to spring.beans;
 
     exports com.ttzv.item;
     exports com.ttzv.item.entity;

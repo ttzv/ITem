@@ -12,9 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<User> {
+public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<ADUser> {
     //User object is constructed from two tables, first represents data retrieved from LDAP, second is for additional data about User updated in application
     protected final static String TABLE_USERS = "users";
     private KeyMapper keyMapper;
@@ -22,7 +21,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
 
     public UserDaoDatabaseImpl() throws SQLException, IOException, GeneralSecurityException {
         super();
-        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, User.class);
+        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, ADUser.class);
         if(!tablesReady(TABLE_USERS)){
             createTables();
         }
@@ -48,31 +47,31 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     @Override
-    public List<User> getAllEntities() throws SQLException {
+    public List<ADUser> getAllEntities() throws SQLException {
         String query = "SELECT * FROM " + TABLE_USERS;
-        List<User> userList = new ArrayList<>();
+        List<ADUser> ADUserList = new ArrayList<>();
         for (List<String> list :
                 executeQuery(query)) {
             //create User objects with replaced keys to provide out-of-the-box compatibility with other objects
             //1.Create user using DynamicEntity
             //2.Replace all Keys in entityMap to familiar User object keys
             //3.Add as new object to list
-            userList.add(new User(DynamicEntity.newDynamicEntity()
+            ADUserList.add(new ADUser(DynamicEntity.newDynamicEntity()
                     .process(list)
                     .replaceKeys(
                             keyMapper, KeyMapper.OBJECTKEY))
             );
         }
-        return userList;
+        return ADUserList;
     }
 
     @Override
-    public User getEntity(String id) throws SQLException {
+    public ADUser getEntity(String id) throws SQLException {
         String query = "SELECT * FROM " + TABLE_USERS + "\n"
                 + " WHERE " + TABLE_USERS + "." + UserData.objectGUID.getDbKey() + "='" + id + "';";
         List<String> result = Utility.unNestList(executeQuery(query));
         assert result != null;
-        return new User(DynamicEntity.newDynamicEntity()
+        return new ADUser(DynamicEntity.newDynamicEntity()
                 .process(result)
                 .replaceKeys(
                 keyMapper, KeyMapper.OBJECTKEY)
@@ -80,7 +79,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     @Override
-    public boolean updateEntity(User entity) throws SQLException {
+    public boolean updateEntity(ADUser entity) throws SQLException {
         DynamicEntity uEntity = entity.getEntity().replaceKeys(keyMapper, KeyMapper.DBKEY);
         if(!update(TABLE_USERS, keyMapper, uEntity, uniqueID)){
             System.out.println("Nothing updated, inserting");
@@ -90,7 +89,7 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     @Override
-    public boolean deleteEntity(User entity) throws SQLException {
+    public boolean deleteEntity(ADUser entity) throws SQLException {
         String sql = "DELETE FROM " + TABLE_USERS +
                 " WHERE " + TABLE_USERS + "." + UserData.objectGUID.getDbKey() + "='" + entity.getGUID() + "'";
         PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
@@ -99,35 +98,35 @@ public class UserDaoDatabaseImpl extends DatabaseHandler implements EntityDAO<Us
     }
 
     @Override
-    public int[] syncDataSourceWith(EntityDAO<User> source) throws SQLException, IOException, NamingException, GeneralSecurityException {
-        List<User> currentList = this.getAllEntities();
-        List<User> newerList = source.getAllEntities();
+    public int[] syncDataSourceWith(EntityDAO<ADUser> source) throws SQLException, IOException, NamingException, GeneralSecurityException {
+        List<ADUser> currentList = this.getAllEntities();
+        List<ADUser> newerList = source.getAllEntities();
         //All unique elements in ldap
-        List<User> uniqueLdap = new ArrayList<>(newerList);
+        List<ADUser> uniqueLdap = new ArrayList<>(newerList);
         uniqueLdap.removeAll(currentList);
         if(uniqueLdap.size() > 0) {
-            for (User u : uniqueLdap) {
+            for (ADUser u : uniqueLdap) {
                 updateEntity(u);
             }
         }
         //All unique elements in db (not in ldap so needs to be deleted)
-        List<User> uniqueDb = new ArrayList<>(newerList);
+        List<ADUser> uniqueDb = new ArrayList<>(newerList);
         uniqueDb.removeAll(newerList);
-        for (User user : uniqueDb) {
-            deleteEntity(user); //todo: optimize sql - batch delete
+        for (ADUser ADUser : uniqueDb) {
+            deleteEntity(ADUser); //todo: optimize sql - batch delete
         }
         //updating changed users
         Collections.sort(currentList);
         Collections.sort(newerList);
-        Iterator<User> iteratorNewerList = newerList.listIterator();
-        Iterator<User> iteratorCurrentList = currentList.listIterator();
+        Iterator<ADUser> iteratorNewerList = newerList.listIterator();
+        Iterator<ADUser> iteratorCurrentList = currentList.listIterator();
         int updateCount = 0;
         while(iteratorNewerList.hasNext() && iteratorCurrentList.hasNext()){
-            User newerUser = iteratorNewerList.next();
-            User currUser = iteratorCurrentList.next();
-            if(newerUser.hasDifferentVals(currUser)){
-                System.out.println(newerUser + "\n" + currUser);
-                updateEntity(newerUser);
+            ADUser newerADUser = iteratorNewerList.next();
+            ADUser currADUser = iteratorCurrentList.next();
+            if(newerADUser.hasDifferentVals(currADUser)){
+                System.out.println(newerADUser + "\n" + currADUser);
+                updateEntity(newerADUser);
                 updateCount++;
             }
         }

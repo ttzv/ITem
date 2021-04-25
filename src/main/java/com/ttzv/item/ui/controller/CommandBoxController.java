@@ -1,5 +1,6 @@
 package com.ttzv.item.ui.controller;
 
+import com.ttzv.item.entity.CommandBox;
 import com.ttzv.item.entity.CommandItem;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -36,46 +37,44 @@ public class CommandBoxController extends AnchorPane {
 
     @FXML
     void addAction(ActionEvent event) {
-        boolean lastAddedNodeTitleIsEmpty = commandNodelist.size() != 0 && commandNodelist.get(commandNodelist.size() - 1).getTitle().isEmpty();
-        if (!lastAddedNodeTitleIsEmpty) {
-            CommandNode commandNode = new CommandNode();
-            String nextUid = String.valueOf(commandBox.getNextUid());
-            if(nextUid == null) nextUid = "-1";
-            commandNode.setUid(nextUid);
-            commandNodelist.add(commandNode);
-            addDeleteBtnAction(commandNode);
-            addUpdateBtnAction(commandNode);
-            refreshList();
-            scrollToBottom();
-        } else {
-            scrollToBottom();
-        }
+//        boolean lastAddedNodeTitleIsEmpty = commandNodelist.size() != 0 && commandNodelist.get(commandNodelist.size() - 1).getTitle().isEmpty();
+//        if (!lastAddedNodeTitleIsEmpty) {
+//            CommandNode commandNode = new CommandNode();
+//            String nextUid = String.valueOf(commandBox.getNextUid());
+//            if(nextUid == null) nextUid = "-1";
+//            commandNode.setUid(nextUid);
+//            commandNodelist.add(commandNode);
+//            addDeleteBtnAction(commandNode);
+//            addUpdateBtnAction(commandNode);
+//            refreshList();
+//            scrollToBottom();
+//        } else {
+//            scrollToBottom();
+//        }
     }
 
     @FXML
     public void initialize(){
-        for (CommandItem c : commandBox.getAll()) {
-            addCommandNode(c);
-        }
-        refreshList();
-        addSearchFieldListener();
+//        for (CommandItem c : commandBox.getAll()) {
+//            addCommandNode(c);
+//        }
+//        refreshList();
+//        addSearchFieldListener();
     }
 
     @FXML
     void refresh(ActionEvent event) {
-        try {
-            commandBox.reload();
-        } catch (SQLException | IOException | NamingException | GeneralSecurityException e) {
-            e.printStackTrace();
-        }
-        commandNodelist.clear();
-        for (CommandItem c : commandBox.getAll()) {
-            addCommandNode(c);
-        }
-        refreshList();
+//        try {
+//            commandBox.reload();
+//        } catch (SQLException | IOException | NamingException | GeneralSecurityException e) {
+//            e.printStackTrace();
+//        }
+//        commandNodelist.clear();
+//        for (CommandItem c : commandBox.getAll()) {
+//            addCommandNode(c);
+//        }
+//        refreshList();
     }
-
-    private com.ttzv.item.entity.CommandBox commandBox;
     private ObservableList<CommandNode> commandNodelist;
 
     private void refreshList(){
@@ -83,18 +82,18 @@ public class CommandBoxController extends AnchorPane {
     }
 
     private void deleteitem(String uid) throws IOException, SQLException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Potwierdzenie usunięcia");
-        alert.setHeaderText("Czy na pewno chcesz usunąć ten element?");
-        alert.setContentText("Element zostanie nieodwracalnie usunięty.");
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.get() == ButtonType.OK) {
-            CommandItem commandItem = new CommandItem(uid);
-            commandBox.remove(commandItem);
-            commandNodelist.removeIf(p -> p.getUid().equals(uid));
-            refreshList();
-        }
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setTitle("Potwierdzenie usunięcia");
+//        alert.setHeaderText("Czy na pewno chcesz usunąć ten element?");
+//        alert.setContentText("Element zostanie nieodwracalnie usunięty.");
+//        Optional<ButtonType> result = alert.showAndWait();
+//
+//        if(result.get() == ButtonType.OK) {
+//            CommandItem commandItem = new CommandItem(uid);
+//            commandBox.remove(commandItem);
+//            commandNodelist.removeIf(p -> p.getUid().equals(uid));
+//            refreshList();
+//        }
     }
 
     private void addSearchFieldListener(){
@@ -115,14 +114,14 @@ public class CommandBoxController extends AnchorPane {
     }
 
     private void addUpdateBtnAction(CommandNode commandNode){
-        commandNode.getBtnUpdate().setOnAction(e -> {
-            CommandItem commandItem = new CommandItem(commandNode.getUid(), commandNode.getTitle().trim(), commandNode.getContent().trim(), commandNode.getTagsFieldText().trim());
-            try {
-                commandBox.update(commandItem);
-            } catch (SQLException | IOException ex) {
-                ex.printStackTrace();
-            }
-        });
+//        commandNode.getBtnUpdate().setOnAction(e -> {
+//            CommandItem commandItem = new CommandItem(commandNode.getUid(), commandNode.getTitle().trim(), commandNode.getContent().trim(), commandNode.getTagsFieldText().trim());
+//            try {
+//                commandBox.update(commandItem);
+//            } catch (SQLException | IOException ex) {
+//                ex.printStackTrace();
+//            }
+//        });
     }
 
     private void addCommandNode(CommandItem commandItem){

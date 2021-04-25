@@ -199,7 +199,7 @@ public class KeyMapper {
 
 
     public static void main(String[] args) throws IOException {
-        KeyMapper userMaps = new KeyMapper(KEY_MAP_JSON_PATH, User.class);
+        KeyMapper userMaps = new KeyMapper(KEY_MAP_JSON_PATH, ADUser.class);
           userMaps.addMapping(UserData.objectGUID.toString(), "objectGUID", "guid", "");
             userMaps.addMapping(UserData.samaccountname.toString(), "sAMAccountName", "sam", "Login");
             userMaps.addMapping(UserData.givenname.toString(), "givenName", "firstname", "Imię");

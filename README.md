@@ -15,7 +15,7 @@ Functionality of this app includes:
 </ol>
 
 <h2> Application functionality </h2>
-<h3>1. Synchronize users from LDAP to database</h3>
+<h3>1. Synchronize ADUsers from LDAP to database</h3>
 
 <img src="https://thumbs.gfycat.com/OrdinaryDependentCornsnake-size_restricted.gif"></img>
 
@@ -25,7 +25,7 @@ To achieve this the application tries to synchronize every User that exists in s
 
 If connection to LDAP could not be estabilished the app will still launch, because all data is stored in database. 
 Application does not use any Object-Relational Mapping framework, so only currently supported DBMS is Postgres, however it is possible to add different DBMS drivers with some changes in code.
-Along with data from LDAP it is possible to store additional information unique or shared between several users, such as City where they
+Along with data from LDAP it is possible to store additional information unique or shared between several ADUsers, such as City where they
 reside (each Users' City is parsed from their parent container in LDAP, so for example, if User DN is 
 "dn=Jane Doe,ou=New City,ou=Employees,dc=ttzv,dc=local" application will assume "Jane Doe" resides in City named "New City")
 
@@ -79,7 +79,7 @@ Dark theme. That's all there is to it! Every app needs to have one.
 
 <h3>7. Automatic updates</h3>
 
-Being able to update application with minimal user interaction is incredibly convenient.
+Being able to update application with minimal ADUser interaction is incredibly convenient.
 By using <a href="https://github.com/update4j/update4j">update4j</a> framework, and it's compatibility with Java 9 and above, we can
 create runtime image using <a href="https://docs.oracle.com/javase/9/tools/jlink.htm#JSWOR-GUID-CECAC52B-CFEE-46CB-8166-F17A8E9280E9">jlink</a> and update our application modules that run on custom java runtime. No more problems with installing and updating Java. Furthermore, we can auto-update Java runtime itself!
 This application integrates with <a href="https://github.com/update4j/update4j">update4j</a> on very superficial level, using only a <a href="https://github.com/update4j/update4j/wiki/Documentation#lifecycle">default Bootstrap</a>, for instance.
