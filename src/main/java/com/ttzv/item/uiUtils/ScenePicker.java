@@ -11,11 +11,10 @@ public class ScenePicker {
 
     private List<Pane> scenes;
     private Integer activeScene;
-
+    private final Cfg AppConfiguration = Cfg.getInstance();
 
     public ScenePicker() {
-
-        activeScene = Integer.parseInt(Cfg.getInstance().retrieveProp(Cfg.ACTIVE_WINDOW));
+        activeScene = Integer.parseInt(AppConfiguration.retrieveProp(Cfg.ACTIVE_WINDOW));
 
         this.scenes = new ArrayList<>();
     }
@@ -43,9 +42,9 @@ public class ScenePicker {
 
     public void setActiveScene(int as){
         this.activeScene = as;
-            Cfg.getInstance().setProperty(Cfg.ACTIVE_WINDOW, String.valueOf(activeScene));
+            AppConfiguration.setProperty(Cfg.ACTIVE_WINDOW, String.valueOf(activeScene));
         try {
-            Cfg.getInstance().saveFile();
+            AppConfiguration.saveFile();
         } catch (IOException e) {
             e.printStackTrace();
         }

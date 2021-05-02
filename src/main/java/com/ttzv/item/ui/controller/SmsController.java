@@ -162,13 +162,13 @@ public class SmsController extends AnchorPane {
 
     @FXML
     public void initialize(){
-        cfg = Cfg.getInstance();
-        this.msgFileChooser = new MsgFileChooser(Cfg.SMS_LIST);
-        refreshAccountInfo();
-        addTextAreaListener();
-        updateSender();
-        buildComboBox();
-        loadTemplateHandler();
+//        cfg = Cfg.getInstance();
+//        this.msgFileChooser = new MsgFileChooser(Cfg.SMS_LIST);
+//        refreshAccountInfo();
+//        addTextAreaListener();
+//        updateSender();
+//        buildComboBox();
+//        loadTemplateHandler();
     }
 
     @FXML

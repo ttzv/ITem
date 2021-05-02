@@ -35,18 +35,15 @@ import java.util.ResourceBundle;
 
 public class MainWindowController extends AnchorPane {
 
-    //scene position offset variables to allow dragging
-    private double xOffset = 0;
-    private double yOffset = 0;
+    private final Cfg AppConfiguration = Cfg.getInstance();
 
-    private ScenePicker scenePicker;
+    private Parent root;
 
-    private FXMLLoader fxmlLoader;
-    private boolean infoBarAssetsVisible;
-    private UiObjectsWrapper uiObjectsWrapper;
-    private UserHolder userHolder;
-    private UserComboWrapper userComboWrapper;
     private Stage primaryStage;
+    private UserComboWrapper userComboWrapper;
+    private UserHolder userHolder;
+
+
     private TableViewCreator tableViewCreator;
 
     @FXML
@@ -54,21 +51,6 @@ public class MainWindowController extends AnchorPane {
 
     @FXML
     private CheckMenuItem mnuItemThemeSelectDarkModena;
-
-    @FXML
-    private Button scene1;
-
-    @FXML
-    private Button scene2;
-
-    @FXML
-    private Button scene3;
-
-    @FXML
-    private Button scene4;
-
-    @FXML
-    private Button scene5;
 
     @FXML
     private Label labelUsername;
@@ -89,7 +71,7 @@ public class MainWindowController extends AnchorPane {
     private AnchorPane contentPane;
 
     @FXML
-    private SideBar sidebartest;
+    private SideBar sideBar;
 
     @FXML
     private ActionableTextField txtfActLogin;
@@ -157,39 +139,59 @@ public class MainWindowController extends AnchorPane {
     @FXML
     private TextField txtfSearchUsers;
 
+    //Sms view + controller
     @FXML
-    private AnchorPane barDraggable;
+    AnchorPane smsView;
+    @FXML
+    SmsController smsViewController;
 
-    public MainWindowController getMainWindow() {
-        return this;
-    }
+    //Signatures view + controller
+    @FXML
+    AnchorPane signaturesView;
+    @FXML
+    SignaturesController signaturesViewController;
 
-    public FXMLLoader getFxmlLoader() {
-        return fxmlLoader;
-    }
+    //Settings view + controller
+    @FXML
+    AnchorPane settingsView;
+    @FXML
+    SettingsController settingsViewController;
+
+    //Mailer view + controller
+    @FXML
+    AnchorPane mailerView;
+    @FXML
+    MailerController mailerViewController;
+
+    //Settings view + controller
+    @FXML
+    AnchorPane commandBoxView;
+    @FXML
+    CommandBoxController commandBoxViewController;
+
 
     @FXML
     public void initialize() {
         labelCity.setText("");
         labelUsername.setText("");
 
-        ADUser ADUserHolderFirst = userHolder.getFirst();
-        if(ADUserHolderFirst != null) {
-            userHolder.setCurrentUser(ADUserHolderFirst);
-        }
-
-        tableViewCreator = new TableViewCreator(primaryUserTableView);
-        tableViewCreator.createFromMap(tableViewCreator.builder()
-                .addColumns(userHolder.getCurrentUser())
-                .addRows(userHolder.getAllUsers())
-        );
+//        ADUser ADUserHolderFirst = userHolder.getFirst();
+//        if(ADUserHolderFirst != null) {
+//            userHolder.setCurrentUser(ADUserHolderFirst);
+//        }
+//
+//        tableViewCreator = new TableViewCreator(primaryUserTableView);
+//        tableViewCreator.createFromMap(tableViewCreator.builder()
+//                .addColumns(userHolder.getCurrentUser())
+//                .addRows(userHolder.getAllUsers())
+//        );
 
         addPrimarytableViewDoubleClickHandler();
 
-        sidebartest.setToggler(sidebartogglebtn);
-        sidebartest.setPrefWidth(0.0);
-        sidebartest.childrenVisible(false);
-        sidebartest.applyAnchors(0.0);
+        sideBar.setToggler(sidebartogglebtn);
+        sideBar.setPrefWidth(0.0);
+        sideBar.childrenVisible(false);
+        sideBar.applyAnchors(0.0);
 
         hideTxtfActControls();
 
@@ -199,69 +201,15 @@ public class MainWindowController extends AnchorPane {
 
         loadTheme();
 
-        //make scene draggable by holding onto menuBar
-        barDraggable.setOnMousePressed(event -> {
-            xOffset = event.getSceneX();
-            yOffset = event.getSceneY();
-        });
-        barDraggable.setOnMouseDragged(event -> {
-            primaryStage.setX(event.getScreenX() - xOffset);
-            primaryStage.setY(event.getScreenY() - yOffset);
-        });
-
+        selectScene(mailerView);
     }
 
-    @FXML
-    public void goScn1(ActionEvent actionEvent) {
-        selectScene(0);
-        //statusBar.setVanishingText("Mailing - wysyłanie szablonów wiadomości z danymi dostępowymi");
-    }
-
-    @FXML
-    public void goScn2(ActionEvent actionEvent) {
-        selectScene(1);
-        //statusBar.setVanishingText("Selected Scene 2");
-    }
-
-    @FXML
-    public void goScn3(ActionEvent actionEvent) {
-        selectScene(2);
-        SmsController smsController = (SmsController) scenePicker.getScenes().get(2);
-        smsController.refreshAccountInfo();
-        smsController.updateSender();
-
-        //statusBar.setVanishingText("Selected Scene 3");
-    }
-
-    @FXML
-    public void goScn4(ActionEvent actionEvent) {
-        selectScene(3);
-        //statusBar.setVanishingText("Selected Scene 4");
-    }
-
-    @FXML
-    public void goScn5(ActionEvent actionEvent) {
-        selectScene(4);
-        //statusBar.setVanishingText("Ustawienia połączeń z serwerem poczty, katalogiem LDAP, bazą danych itp.");
-    }
-
-    private void selectScene(int index) {
-
-        Pane paneToSet = scenePicker.pickScene(index);
+    private void selectScene(Pane paneToSet){
         this.contentPane.getChildren().setAll(paneToSet);
         AnchorPane.setRightAnchor(paneToSet, 0.);
         AnchorPane.setLeftAnchor(paneToSet, 0.);
         AnchorPane.setTopAnchor(paneToSet, 0.);
         AnchorPane.setBottomAnchor(paneToSet, 0.);
-
-        this.scenePicker.setActiveScene(index);
-    }
-
-    public void loadOnStart() {
-        int active = scenePicker.getActiveScene();
-        if (active >= 0) {
-            selectScene(active);
-        }
     }
 
     @FXML
@@ -397,46 +345,39 @@ public class MainWindowController extends AnchorPane {
         Phone phone = userComboWrapper.getPhoneOf(ADUser);
         UserDetail userDetail = userComboWrapper.getDetailOf(ADUser);
 
-        MailerController mw = (MailerController) scenePicker.getScenes().get(0);
-
-        SignaturesController sw = (SignaturesController) scenePicker.getScenes().get(1);
-
-        SmsController smsController = (SmsController) scenePicker.getScenes().get(2);
-
         if (ADUser != null) {
             this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
             this.labelCity.setText(userHolder.getCurrentUser().getCity());
-            mw.setUserName(userHolder.getCurrentUser().getDisplayName());
-            sw.setTxtfName(ADUser.getDisplayName());
-            smsController.updateUserLabels(userHolder);
+            mailerViewController.setUserName(userHolder.getCurrentUser().getDisplayName());
+            signaturesViewController.setTxtfName(ADUser.getDisplayName());
+            smsViewController.updateUserLabels(userHolder);
         }
 
         if(city != null) {
-            sw.setTxtfCity(city.getName());
-            sw.setTxtfCityPhone(city.getLandLineNumber());
-            sw.setTxtfCityFax(city.getFaxNumber());
+            signaturesViewController.setTxtfCity(city.getName());
+            signaturesViewController.setTxtfCityPhone(city.getLandLineNumber());
+            signaturesViewController.setTxtfCityFax(city.getFaxNumber());
             String cType = city.getType();
             if (cType.equals("Filia")) {
-                sw.selectComboxVal(1);
+                signaturesViewController.selectComboxVal(1);
             } else if (cType.equals("Centrala")) {
-                sw.selectComboxVal(0);
+                signaturesViewController.selectComboxVal(0);
             }
         }
 
         if(userDetail != null) {
-            sw.setTxtfPos(userDetail.getPosition());
-            sw.setTxtfPhone(userDetail.getLandLineNumber());
+            signaturesViewController.setTxtfPos(userDetail.getPosition());
+            signaturesViewController.setTxtfPhone(userDetail.getLandLineNumber());
         }
 
         if(phone != null) {
-            sw.setTxtfMPhone(phone.getNumber());
+            signaturesViewController.setTxtfMPhone(phone.getNumber());
         }
 
-        sw.reload();
+        signaturesViewController.reload();
 
 
     }
-
 
     public void setStatusBarText(String text) {
         this.statusBar.setVanishingText(text);
@@ -450,27 +391,21 @@ public class MainWindowController extends AnchorPane {
         this.labelCity.setText(labelCity);
     }
 
-
-    public void addSubScenes(Pane... scenes) {
-        scenePicker = new ScenePicker();
-        scenePicker.addAll(scenes);
-    }
-
     @FXML
     void sidebartoggle(ActionEvent event) {
-        sidebartest.animatePane();
+        sideBar.animatePane();
     }
 
     @FXML
     void mnuItemThemeSelectDarkModenaAction(ActionEvent event) throws IOException {
-        if(this.mnuItemThemeSelectModena.isSelected()){
+        if(this.mnuItemThemeSelectModena.isSelected()) {
             this.mnuItemThemeSelectModena.setSelected(false);
         }
-        Parent root = fxmlLoader.getRoot();
+
         root.getStylesheets().add(getClass().getResource("/style/dark-modena2.css").toExternalForm());
         this.mnuItemThemeSelectDarkModena.setSelected(true);
-        Cfg.getInstance().setProperty(Cfg.THEME, this.mnuItemThemeSelectDarkModena.getText());
-        Cfg.getInstance().saveFile();
+        AppConfiguration.setProperty(Cfg.THEME, this.mnuItemThemeSelectDarkModena.getText());
+        AppConfiguration.saveFile();
     }
 
     @FXML
@@ -478,11 +413,10 @@ public class MainWindowController extends AnchorPane {
         if(this.mnuItemThemeSelectDarkModena.isSelected()){
             this.mnuItemThemeSelectDarkModena.setSelected(false);
         }
-        Parent root = fxmlLoader.getRoot();
         root.getStylesheets().remove(getClass().getResource("/style/dark-modena2.css").toExternalForm());
         this.mnuItemThemeSelectModena.setSelected(true);
-        Cfg.getInstance().setProperty(Cfg.THEME, this.mnuItemThemeSelectModena.getText());
-        Cfg.getInstance().saveFile();
+        AppConfiguration.setProperty(Cfg.THEME, this.mnuItemThemeSelectModena.getText());
+        AppConfiguration.saveFile();
     }
 
 
@@ -581,13 +515,40 @@ public class MainWindowController extends AnchorPane {
     }
 
     private void loadTheme(){ //todo: refactor
-        String theme = Cfg.getInstance().retrieveProp(Cfg.THEME);
+        String theme = AppConfiguration.retrieveProp(Cfg.THEME);
         String modena = "Modena";
         String darkModena = "Dark Modena";
         if(theme.equals(darkModena)){
-            Parent root = fxmlLoader.getRoot();
             root.getStylesheets().add(getClass().getResource("/style/dark-modena2.css").toExternalForm());
             this.mnuItemThemeSelectDarkModena.setSelected(true);
         }
+    }
+
+    private void showMailerView(ActionEvent actionEvent) {
+        selectScene(mailerView);
+    }
+
+    private void showSignatureView(ActionEvent actionEvent) {
+        selectScene(signaturesView);
+    }
+
+    private void showSmsView(ActionEvent actionEvent) {
+        selectScene(smsView);
+    }
+
+    private void showCmdbxView(ActionEvent actionEvent) {
+        selectScene(commandBoxView);
+    }
+
+    private void showSettingsView(ActionEvent actionEvent) {
+        selectScene(settingsView);
+    }
+
+    /**
+     * Used to provide root reference to MainWindow controller
+     * @param root reference to root
+     */
+    public void referenceRoot(Parent root){
+        this.root = root;
     }
 }

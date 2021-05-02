@@ -26,10 +26,10 @@ public abstract class DatabaseHandler {
             e.printStackTrace();
         }
         //
-        jdbcDriverSelector = new JdbcDriverSelector(Cfg.getInstance().retrieveProp(Cfg.DB_DRIVER),
-                Cfg.getInstance().retrieveProp(Cfg.DB_URL),
-                Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN),
-                Crypt.newCrypt("dCr").read());
+//        jdbcDriverSelector = new JdbcDriverSelector(Cfg.getInstance().retrieveProp(Cfg.DB_DRIVER),
+//                Cfg.getInstance().retrieveProp(Cfg.DB_URL),
+//                Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN),
+//                Crypt.newCrypt("dCr").read());
     }
 
     public abstract void createTables() throws SQLException;

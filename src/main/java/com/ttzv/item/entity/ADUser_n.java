@@ -6,7 +6,7 @@ import org.hibernate.annotations.Columns;
 import javax.persistence.*;
 
 @Entity
-@Table(name= "ad_users")
+@Table(name= "users")
 public @Data class ADUser_n {
     @Id @GeneratedValue
     @Column(name="id")

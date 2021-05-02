@@ -16,7 +16,6 @@ public enum UserData implements Mappable{
     whenCreated("whenCreated"),
     distinguishedName("distinguishedName"),
     city("City");
-    //whenChanged("whenChanged");
 
     String name;
             
