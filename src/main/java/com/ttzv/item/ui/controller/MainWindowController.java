@@ -1,9 +1,11 @@
 package com.ttzv.item.ui.controller;
 
+import com.ttzv.item.dao.DbSession;
 import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.dao.UserDaoLdapImpl;
 import com.ttzv.item.entity.*;
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.service.AdUserService;
 import com.ttzv.item.uiUtils.ScenePicker;
 import com.ttzv.item.uiUtils.TableViewCreator;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
@@ -22,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.hibernate.Session;
 import ttzv.uiUtils.ActionableTextField;
 import ttzv.uiUtils.SideBar;
 import ttzv.uiUtils.StatusBar;
@@ -30,6 +33,7 @@ import javax.naming.NamingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -199,7 +203,7 @@ public class MainWindowController extends AnchorPane {
 
         addSearchFieldAction();
 
-        loadTheme();
+        //loadTheme();
 
         selectScene(mailerView);
     }
@@ -302,34 +306,36 @@ public class MainWindowController extends AnchorPane {
 
     @FXML
     void btnRefreshUserList(ActionEvent event) throws SQLException, IOException, NamingException, GeneralSecurityException {
-        Task sync = new Task<Boolean>(){
-            @Override
-            protected Boolean call() throws Exception {
-                EntityDAO<ADUser> userEntityDAOldap = new UserDaoLdapImpl();
-                userHolder.syncAndRefresh(userEntityDAOldap);
-                return Boolean.TRUE;
-            }
-        };
-        sync.setOnRunning(workerStateEvent -> {
-            this.prgList.setVisible(true);
-            this.prgList.setProgress(-1);
-        });
-        sync.setOnSucceeded(workerStateEvent -> {
-            this.prgList.setVisible(false);
-            Platform.runLater(() -> {
-                tableViewCreator = new TableViewCreator(primaryUserTableView);
-                tableViewCreator.createFromMap(tableViewCreator.builder()
-                        .addColumns(userHolder.getNewest(1).get(0))
-                        .addRows(userHolder.getAllUsers()));
-            });
-        });
-        sync.setOnFailed(workerStateEvent -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(sync.getException().toString());
-            alert.showAndWait();
-            this.prgList.setVisible(false);
-        });
-        new Thread(sync).start();
+        AdUserService adUserService = new AdUserService();
+        System.out.println(adUserService.getAll());
+//        Task sync = new Task<Boolean>(){
+//            @Override
+//            protected Boolean call() throws Exception {
+//                EntityDAO<ADUser> userEntityDAOldap = new UserDaoLdapImpl();
+//                userHolder.syncAndRefresh(userEntityDAOldap);
+//                return Boolean.TRUE;
+//            }
+//        };
+//        sync.setOnRunning(workerStateEvent -> {
+//            this.prgList.setVisible(true);
+//            this.prgList.setProgress(-1);
+//        });
+//        sync.setOnSucceeded(workerStateEvent -> {
+//            this.prgList.setVisible(false);
+//            Platform.runLater(() -> {
+//                tableViewCreator = new TableViewCreator(primaryUserTableView);
+//                tableViewCreator.createFromMap(tableViewCreator.builder()
+//                        .addColumns(userHolder.getNewest(1).get(0))
+//                        .addRows(userHolder.getAllUsers()));
+//            });
+//        });
+//        sync.setOnFailed(workerStateEvent -> {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setContentText(sync.getException().toString());
+//            alert.showAndWait();
+//            this.prgList.setVisible(false);
+//        });
+//        new Thread(sync).start();
     }
 
 
@@ -524,22 +530,21 @@ public class MainWindowController extends AnchorPane {
         }
     }
 
-    private void showMailerView(ActionEvent actionEvent) {
-        selectScene(mailerView);
-    }
-
+    @FXML
+    private void showMailerView(ActionEvent actionEvent) { selectScene(mailerView); }
+    @FXML
     private void showSignatureView(ActionEvent actionEvent) {
         selectScene(signaturesView);
     }
-
+    @FXML
     private void showSmsView(ActionEvent actionEvent) {
         selectScene(smsView);
     }
-
+    @FXML
     private void showCmdbxView(ActionEvent actionEvent) {
         selectScene(commandBoxView);
     }
-
+    @FXML
     private void showSettingsView(ActionEvent actionEvent) {
         selectScene(settingsView);
     }

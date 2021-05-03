@@ -1,4 +1,4 @@
-package com.ttzv.item.parser;
+package com.ttzv.item.ldap;
 
 import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.properties.Cfg;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-public class LDAPParser
+public class LdapParser
 {
     private DirContext ldapContext;
     private String ldap_URL;
@@ -107,8 +107,8 @@ public class LDAPParser
      * Get preconfigured LdapParser. Configuration is retrieved from .properties file and can be freely modified (preferably by some UI)
      * @return new LdapParser configured by .properties file and ready to use.
      */
-    public static LDAPParser getLdapParser() throws NamingException, IOException, GeneralSecurityException {
-        LDAPParser ldapParser = new LDAPParser();
+    public static LdapParser getLdapParser() throws NamingException, IOException, GeneralSecurityException {
+        LdapParser ldapParser = new LdapParser();
         ldapParser.loadCfgCredentials();
         ldapParser.initializeLdapContext();
         return ldapParser;
@@ -119,7 +119,7 @@ public class LDAPParser
      * this method requires QueryBuilder object - a convenience set of methods that should ease building a query and searching through LDAP
      * At the end of building Query call validate() method to check if all required parameters were set.
      * @param queryBuilder LDAPParser.QueryBuilder object used to build LDAP query - entry method is LDAPParser.QueryBuilder.builder()
-     * @return Count of results retrieved from LDAP
+     * @return Number of results retrieved from LDAP
      */
     public int queryLdap(QueryBuilder queryBuilder) throws NamingException {
         if(queryBuilder.isValidated()) {

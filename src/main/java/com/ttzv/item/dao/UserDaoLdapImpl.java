@@ -4,7 +4,8 @@ import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.entity.DynamicEntity;
 import com.ttzv.item.entity.EntityDAO;
 import com.ttzv.item.entity.KeyMapper;
-import com.ttzv.item.parser.LDAPParser;
+import com.ttzv.item.ldap.LdapParser;
+import com.ttzv.item.properties.Cfg;
 
 import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
@@ -16,27 +17,25 @@ import java.util.List;
 
 public class UserDaoLdapImpl implements EntityDAO<ADUser> {
 
-    private LDAPParser ldapParser;
-    //todo: allow changing below parameters in runtime, decouple
+    private LdapParser ldapParser;
     private final String searchBase;
     private final String searchFilter;
-    private String[] searchAttributes;
-    private int searchControlsScope;
-    private KeyMapper keyMapper;
+    private final String[] searchAttributes;
+    private final int searchControlsScope;
+    private final Cfg AppConfiguration = Cfg.getInstance();
 
     public UserDaoLdapImpl() throws NamingException, IOException, GeneralSecurityException {
-        this.searchBase = "ou=Pracownicy,dc=atal,dc=local";
+        this.searchBase = AppConfiguration.retrieveProp(Cfg.LDAP_SEARCH_BASE);
         this.searchFilter = "(&(objectClass=user))";
-        this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "sAMAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", /*"whenChanged"*/};
+        this.searchAttributes = new String[]{"objectGUID", "givenName", "sn", "displayName", "sAMAccountName", "userAccountControl", "mail", "whenCreated", "distinguishedName", "objectSid", "lockoutTime"};
         this.searchControlsScope = SearchControls.SUBTREE_SCOPE;
-        this.ldapParser = LDAPParser.getLdapParser();
+        this.ldapParser = LdapParser.getLdapParser();
         ldapParser.closeContext();//redundancy with method getResults() to check connection when creating dao.
-        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, ADUser.class);
     }
 
     public List<List<String>> getResults() throws NamingException, IOException, GeneralSecurityException {
-            this.ldapParser = LDAPParser.getLdapParser();
-            this.ldapParser.queryLdap(LDAPParser.builder()
+            this.ldapParser = LdapParser.getLdapParser();
+            this.ldapParser.queryLdap(LdapParser.builder()
                 .setSearchBase(searchBase)
                 .setSearchFilter(searchFilter)
                 .setSearchAttributes(searchAttributes)
@@ -54,9 +53,7 @@ public class UserDaoLdapImpl implements EntityDAO<ADUser> {
                 getResults()) {
             allADUsers.add(new ADUser(DynamicEntity.newDynamicEntity()
                     .process(list)
-                    .replaceKeys(
-                            keyMapper, KeyMapper.OBJECTKEY))
-            );
+            ));
         }
         return allADUsers;
     }

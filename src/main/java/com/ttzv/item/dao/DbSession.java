@@ -31,5 +31,4 @@ public class DbSession{
         return getSessionFactory().openSession();
     }
 
-
 }

@@ -119,30 +119,6 @@ public class Utility {
         }
     }
 
-    //todo: remove
-    public static String cityNameToId(String city){
-        switch (city){
-            case "Cieszyn":
-                return "c001";
-            case "Katowice":
-                return "c002";
-            case "Krakow":
-                return "c003";
-            case "Warszawa":
-                return "c004";
-            case "Poznan":
-                return "c005";
-            case "Gdansk":
-                return "c006";
-            case "Wroclaw":
-                return "c007";
-            case "Lodz":
-                return "c008";
-            default:
-                return "ERVAL";
-        }
-    }
-
     /**
      * Replaces word given in parameter to Polish equivalent
      * @param word word that should be replaced

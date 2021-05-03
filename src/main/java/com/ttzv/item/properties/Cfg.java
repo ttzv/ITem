@@ -4,48 +4,49 @@ package com.ttzv.item.properties;
  public class Cfg extends Propsicl {
 
     //Property keys below
-     public static String APP_NAME = "appName";
-     //window
-     public static String ACTIVE_WINDOW = "ActiveWindow";
-     public static String MSG_LIST = "MsgTemplateList";
-     public static String SMS_LIST = "SmsTemplateList";
-     //mail
-     public static String SMTP_HOST = "smtpHost";
-     public static String SMTP_PORT = "smtpStartTLS";
-     public static String SMTP_TLS = "smtpPort";
-     public static String SMTP_LOGIN = "smtpLogin";
-     public static String SAVEPASS = "savePass";
-     public static String AUTOFILL_LOGIN = "autoFillLogin";
-     public static String USER_REGEX = "userRegexFilter";
-     public static String LOGIN_REGEX = "loginRegexFilter";
-     //ldap
-     public static String LDAP_URL = "ldapUrl";
-     public static String LDAP_PORT = "ldapPort";
-     public static String LDAP_ACC = "ldapAcc";
+     public static final String APP_NAME = "appName";
+     //window final
+     public static final String ACTIVE_WINDOW = "ActiveWindow";
+     public static final String MSG_LIST = "MsgTemplateList";
+     public static final String SMS_LIST = "SmsTemplateList";
+     //mail final
+     public static final String SMTP_HOST = "smtpHost";
+     public static final String SMTP_PORT = "smtpStartTLS";
+     public static final String SMTP_TLS = "smtpPort";
+     public static final String SMTP_LOGIN = "smtpLogin";
+     public static final String SAVEPASS = "savePass";
+     public static final String AUTOFILL_LOGIN = "autoFillLogin";
+     public static final String USER_REGEX = "userRegexFilter";
+     public static final String LOGIN_REGEX = "loginRegexFilter";
+     //ldap final
+     public static final String LDAP_URL = "ldapUrl";
+     public static final String LDAP_PORT = "ldapPort";
+     public static final String LDAP_ACC = "ldapAcc";
+     public static final String LDAP_SEARCH_BASE = "searchBase";
      //db
-     public static String DB_URL = "dbUrl";
-     public static String DB_LOGIN = "dbLogin";
-     public static String DB_USER_QTY = "dbLoadedUserQuantity";
-    public static final String DB_DRIVER = "dbDriver";
+     public static final String DB_URL = "dbUrl";
+     public static final String DB_LOGIN = "dbLogin";
+     public static final String DB_USER_QTY = "dbLoadedUserQuantity";
+     public static final String DB_DRIVER = "dbDriver";
      //signature
-     public static String SIGN_LOC = "signatureLocation";
-     public static String SIGN_TARGETPATH = "signatureSavingDirectory";
-     public static String DIR_ALWAYSOPEN = "dirAlwaysOpen";
+     public static final String SIGN_LOC = "signatureLocation";
+     public static final String SIGN_TARGETPATH = "signatureSavingDirectory";
+     public static final String DIR_ALWAYSOPEN = "dirAlwaysOpen";
      //password generator
-     public static String PASS_GEN_METHOD = "passGenMethod";
-     public static String PROPERTY_PASS_RANDOM = "random";
-     public static String PROPERTY_PASS_PATTERN = "pattern";
-     public static String PASS_GEN_PATTERN = "passGenPattern";
-     public static String PASS_FILES = "passFiles";
+     public static final String PASS_GEN_METHOD = "passGenMethod";
+     public static final String PROPERTY_PASS_RANDOM = "random";
+     public static final String PROPERTY_PASS_PATTERN = "pattern";
+     public static final String PASS_GEN_PATTERN = "passGenPattern";
+     public static final String PASS_FILES = "passFiles";
      //textfields regex
-     public static String LTF_NAME_ONLY = "ltfNameOnly";
-     public static String LTF_RESTRICT_SYMBOLS = "ltfRestrictSymbols";
+     public static final String LTF_NAME_ONLY = "ltfNameOnly";
+     public static final String LTF_RESTRICT_SYMBOLS = "ltfRestrictSymbols";
      //theme
-     public static String THEME = "theme";
+     public static final String THEME = "theme";
      //SMS
-     public static String SMSAPI_LOGIN = "smsApiLogin";
-     public static String SMSAPI_SENDER = "smsApiSenderName";
-     public static String SMSAPI_KEY = "smsApiKey";
+     public static final String SMSAPI_LOGIN = "smsApiLogin";
+     public static final String SMSAPI_SENDER = "smsApiSenderName";
+     public static final String SMSAPI_KEY = "smsApiKey";
 
 
 

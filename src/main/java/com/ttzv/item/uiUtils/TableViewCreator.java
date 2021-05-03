@@ -30,7 +30,6 @@ public class TableViewCreator {
 
     public TableViewCreator(TableView<Map> tableView) {
         this.tableView = tableView;
-        keyMapper = new KeyMapper(KeyMapper.KEY_MAP_JSON_PATH, ADUser.class);
     }
 
     public void createFromMap(TableViewBuilder builder){

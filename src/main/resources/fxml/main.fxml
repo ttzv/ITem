@@ -13,6 +13,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
@@ -152,7 +153,18 @@
                                                    <content>
                                                       <AnchorPane>
                                                          <children>
-                                                            <TableView fx:id="primaryUserTableView" layoutY="47.0" prefHeight="601.0" prefWidth="293.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0" />
+                                                            <TableView fx:id="primaryUserTableView" layoutY="47.0" prefHeight="601.0" prefWidth="293.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0">
+                                                               <columns>
+                                                                  <TableColumn prefWidth="75.0" text="%table.lockout" />
+                                                                  <TableColumn prefWidth="75.0" text="%table.displayName" />
+                                                                  <TableColumn prefWidth="75.0" text="%table.office" />
+                                                                  <TableColumn prefWidth="75.0" text="%table.mail" />
+                                                                  <TableColumn prefWidth="75.0" text="%table.login" />
+                                                                  <TableColumn prefWidth="75.0" text="%table.position" />
+                                                                  <TableColumn prefWidth="75.0" text="%table.whencreated" />
+                                                                  <TableColumn prefWidth="75.0" text="%table.objectguid" />
+                                                                  <TableColumn prefWidth="75.0" text="%table.objectsid" />
+                                                               </columns></TableView>
                                                             <Button layoutX="14.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnRefreshUserList" text="%btn_userlist_sync" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
                                                             <Button layoutX="119.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnClearUserList" text="%btn_userlist_clear" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
                                                             <ProgressIndicator fx:id="prgList" layoutX="224.0" layoutY="660.0" prefHeight="25.0" prefWidth="33.0" visible="false" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="224.0" />
