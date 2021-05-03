@@ -1,18 +1,19 @@
 package com.ttzv.item.entity;
 
+import com.ttzv.item.dao.DbSession;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 public class Main {
 
     public static void main(String[] args) {
-        SessionFactory sessionFactory = new Configuration()
-                .configure()
-                .addAnnotatedClass(ADUser_n.class)
-                .buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        ADUser_n adUser_n = session.get(ADUser_n.class, 1);
+        Session session = DbSession.openSession();
+        ADUser_n adUser_n = session.get(ADUser_n.class, 52);
         System.out.println(adUser_n);
+        System.out.println(adUser_n.getDetail());
+        System.out.println(adUser_n.getOffice());
+        Office office = session.get(Office.class,1);
+        System.out.println(office.getUsers());
+        session.close();
+
     }
 }
