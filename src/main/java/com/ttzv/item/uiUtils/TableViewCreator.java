@@ -1,46 +1,36 @@
 package com.ttzv.item.uiUtils;
 
 import com.ttzv.item.entity.ADUser;
-import com.ttzv.item.entity.FXMapCompatible;
+
+import com.ttzv.item.entity.ADUser_n;
 import com.ttzv.item.entity.KeyMapper;
 import com.ttzv.item.utility.Utility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class TableViewCreator {
+public class TableViewCreator<T> {
 
-    private TableView<Map> tableView;
-    private Map<String, List<TableColumn>> columnGroups;
-    private KeyMapper keyMapper;
+    private TableView<T> tableView;
+
     private TableViewBuilder builder;
-    private ObservableList<Map> alldata;
+    private ObservableList<T> alldata;
     private boolean restoredUnfiltered;
 
-    public TableViewCreator(TableView<Map> tableView) {
+    public TableViewCreator(TableView<T> tableView) {
         this.tableView = tableView;
-    }
-
-    public void createFromMap(TableViewBuilder builder){
-
-        //populate observablelist with maps
-
-        alldata = FXCollections.observableArrayList(builder.listOfMaps);
-        //set tableview contents
-        tableView.setItems(alldata);
-        tableView.getColumns().setAll(builder.getListOfColumns());
-
     }
 
     /**
@@ -48,13 +38,7 @@ public class TableViewCreator {
      * @param filter searched text
      */
     public void filter(String filter){
-        if(filter.trim().length() >= 3) {
-            restoredUnfiltered = false;
-            tableView.setItems(alldata.filtered(map -> Utility.mapContainsSubString(filter, map)));
-        } else if (!restoredUnfiltered){
-            tableView.setItems(alldata);
-            restoredUnfiltered = true;
-        }
+        tableView.setItems(alldata.filtered(t -> t.toString().contains(filter)));
     }
 
 
@@ -65,102 +49,52 @@ public class TableViewCreator {
         return this.builder;
     }
 
-    public void refresh(){
-        createFromMap(this.builder);
-    }
+   public class TableViewBuilder{
 
-   public static class TableViewBuilder{
-
-        private List<TableColumn<Map, String>> listOfColumns;
-
-        private List<Map> listOfMaps;
+        private final List<TableColumn<T, String>> listOfColumns;
 
         public TableViewBuilder() {
             this.listOfColumns = new ArrayList<>();
-            this.listOfMaps = new ArrayList<>();
         }
 
         public TableViewBuilder addColumn(String name, String key){
-            addNewColumn(name, key);
-            return this;
-        }
-
-        public TableViewBuilder addColumns(Map<String, String> nameKeyPairs){
-            nameKeyPairs.forEach(this::addNewColumn);
-            return this;
-        }
-
-        public TableViewBuilder addColumns(FXMapCompatible fxMapCompatible){
-            if(fxMapCompatible == null){
-                return this;
-            }
-            for (Map.Entry<String,String> entry :
-                    fxMapCompatible.getFXNameToIdPairs().entrySet()) {
-                if(!entry.getValue().isEmpty()) {
-                    addNewColumn(entry.getValue(), entry.getKey());
-                }
-            }
-            return this;
-        }
-
-        public TableViewBuilder groupColumnsUnder(String parentColumnName){
-            TableColumn<Map, String> tableColumn = new TableColumn<>(parentColumnName);
-            List<TableColumn<Map,String>> list = new ArrayList<>(listOfColumns);
-            listOfColumns.clear();
-            tableColumn.getColumns().setAll(list);
+            TableColumn<T, String> tableColumn = new TableColumn<>(name);
+            tableColumn.setCellValueFactory(new PropertyValueFactory<>(key));
             this.listOfColumns.add(tableColumn);
             return this;
         }
 
-
-        private void addNewColumn (String name, String key){
-            TableColumn<Map, String> tableColumn = new TableColumn<>(name);
-            tableColumn.setCellValueFactory(new MapValueFactory<>(key));
-            tableColumn.setCellFactory(cellFactoryForMap());
-            tableColumn.setId(key);
-            this.listOfColumns.add(tableColumn);
-        }
-
-        public TableViewBuilder addRow (String key, String value){
-            Map<String, String> map = new HashMap<>();
-            map.put(key, value);
-            this.listOfMaps.add(map);
+       /**
+        * Use if table already has columns defined, in FXML for example
+        * @param index index of column
+        * @param newKey key that PropertyValueFactory will use to map data to this column
+        * @return
+        */
+        public TableViewBuilder editColumn(int index, String newKey){
+            tableView.getColumns().get(index)
+                    .setCellValueFactory(new PropertyValueFactory<>(newKey));
             return this;
         }
 
-        public TableViewBuilder addRows(List<? extends FXMapCompatible> list){
-            if(list.size() <= 0 ){
-                return this;
+        private String getColumnName(int index){
+            return tableView.getColumns()
+                    .get(index)
+                    .getText();
+        }
+
+        public TableViewBuilder setItems(List items){
+            tableView.getItems().clear();
+            tableView.getItems().addAll(items);
+            alldata = tableView.getItems();
+            return this;
+        }
+
+        public void build(){
+            if (this.listOfColumns.size() > 0){
+                tableView.getColumns().addAll(this.listOfColumns);
             }
-            list.forEach(fxMapCompatible -> this.listOfMaps.add(fxMapCompatible.getFXMap()));
-            return this;
+
         }
-
-       private Callback<TableColumn<Map, String>, TableCell<Map, String>> cellFactoryForMap (){
-           return new Callback<TableColumn<Map, String>, TableCell<Map, String>>() {
-               @Override
-               public TableCell<Map, String> call(TableColumn<Map, String> mapStringTableColumn) {
-                   return new TextFieldTableCell<>(new StringConverter<String>() {
-                       @Override
-                       public String toString(String s) {
-                           return s;
-                       }
-                       @Override
-                       public String fromString(String s) {
-                           return s;
-                       }
-                   });
-               }
-           };
-       }
-
-       public List<TableColumn<Map, String>> getListOfColumns() {
-           return listOfColumns;
-       }
-
-       public List<Map> getListOfMaps() {
-           return listOfMaps;
-       }
 
    }
 

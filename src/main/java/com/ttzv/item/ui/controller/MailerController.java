@@ -1,7 +1,6 @@
 package com.ttzv.item.ui.controller;
 
-import com.ttzv.item.dao.UserComboWrapper;
-import com.ttzv.item.entity.UserDetail;
+import com.ttzv.item.entity.ADUser_n;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.file.MailMsgParser;
 import com.ttzv.item.pass.PasswordGenerator;
@@ -9,14 +8,14 @@ import com.ttzv.item.pass.WordListPasswordGenerator;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
+import com.ttzv.item.service.ADUserService;
+import com.ttzv.item.service.ADUserServiceImpl;
 import com.ttzv.item.ui.WarningDialog;
 import com.ttzv.item.uiUtils.TabBuilder;
 import com.ttzv.item.uiUtils.ViewTab;
-import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import com.ttzv.item.utility.Utility;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -26,14 +25,13 @@ import ttzv.uiUtils.LimitableTextField;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MailerController extends AnchorPane {
 
     private TabBuilder tabBuilder;
     private Sender sender;
-    private UserHolder userHolder;
-    private UserComboWrapper userComboWrapper;
 
     @FXML
     public Label lab1;
@@ -65,14 +63,9 @@ public class MailerController extends AnchorPane {
     @FXML
     private Label labAddress;
 
-
-
-
-
-
     @FXML
     void btnPassGenerate(ActionEvent event) {
-        String generatedString = new String();
+        String generatedString = "";
         String passConfig = Cfg.getInstance().retrieveProp(Cfg.PASS_GEN_METHOD);
         if(passConfig.equals(Cfg.PROPERTY_PASS_RANDOM)) {
             PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
@@ -96,35 +89,34 @@ public class MailerController extends AnchorPane {
     @FXML
     void btnSendAction(ActionEvent event) {
 
-        sender.setSmtpHost(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
-        sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
-        sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
-
-        sender.setSenderPassword(PHolder.mail);
-
-        sender.setSenderAddress(Cfg.getInstance().retrieveProp(Cfg.SMTP_LOGIN));
-
-        sender.validate();
-        sender.initSession();
-
-        sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
-        try {
-            sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        sender.sendMail();
+//        sender.setSmtpHost(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
+//        sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
+//        sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
+//
+//        sender.setSenderPassword(PHolder.mail);
+//
+//        sender.setSenderAddress(Cfg.getInstance().retrieveProp(Cfg.SMTP_LOGIN));
+//
+//        sender.validate();
+//        sender.initSession();
+//
+//        sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
+//        try {
+//            sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        sender.sendMail();
 
         String statusText = "Wysłano do " + this.sender.getReceiverAddress();
 
         String savePass = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
-        if(!this.txtPass.getText().isBlank() && tabBuilder.getSelectedTab().getName().toLowerCase().contains("powitanie") && savePass.equals("true")) {
-            try {
-                savePass();
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
-            }
+        if(!this.txtPass.getText().isBlank() && savePass.equals("true")) {
+            String name = tabBuilder.getSelectedTab()
+                    .getName()
+                    .replace(".html", "");
+            savePass(name);
             statusText = statusText.concat(", zapisano hasło w bazie");
         }
 
@@ -134,10 +126,12 @@ public class MailerController extends AnchorPane {
 
     }
 
-    private void savePass() throws SQLException, IOException {
-        UserDetail userDetail = this.userComboWrapper.getDetailOf(userHolder.getCurrentUser());
-        userDetail.setInitMailPass(this.txtPass.getText());
-        userComboWrapper.updateUserDetail(userDetail);
+    private void savePass(String name) {
+        UserHolder userHolder = UserHolder.getHolder();
+        ADUser_n adUser = userHolder.getCurrentUser();
+        adUser.getDetail().updateStorage(name, txtPass.getText());
+        ADUserService adUserService = new ADUserServiceImpl();
+        adUserService.updateADUser(adUser);
     }
 
     @FXML

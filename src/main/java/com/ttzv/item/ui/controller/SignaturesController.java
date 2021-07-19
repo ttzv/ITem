@@ -162,7 +162,7 @@ public class SignaturesController extends AnchorPane {
         if (userHolder.getCurrentUser() != null && signatureParser != null){
             Saver saver = new Saver(signatureParser.getOutputString());
             saver.setExtension(saver.HTM);
-            saver.setFileName(userHolder.getCurrentUser().getSamAccountName());
+            saver.setFileName(userHolder.getCurrentUser().getSAMAccountName());
 
             String cfgTargetPath = Cfg.getInstance().retrieveProp(Cfg.SIGN_TARGETPATH);
             File targetPath;
@@ -273,7 +273,7 @@ public class SignaturesController extends AnchorPane {
 
     public void setTxtfPhone(String txtfPhone) {
         String phone="";
-        if(!txtfPhone.isEmpty()){
+        if(txtfPhone != null && !txtfPhone.isEmpty()){
             phone = txtfPhone;
             hidePhone(false);
             btnDeletePhone.setSelected(false);
@@ -286,7 +286,7 @@ public class SignaturesController extends AnchorPane {
 
     public void setTxtfMPhone(String txtfMPhone) {
         String mPhone="";
-        if(!txtfMPhone.isEmpty()){
+        if(txtfMPhone != null && !txtfMPhone.isEmpty()){
             mPhone = txtfMPhone;
             hideMPhone(false);
             btnDeleteMPhone.setSelected(false);

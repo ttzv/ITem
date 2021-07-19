@@ -476,8 +476,8 @@ public class SettingsController extends AnchorPane {
             Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, this.txtfLoginRegex.getText());
         }
 
-        MailerController mailerController = (MailerController) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MailerWindow);
-        mailerController.configureTextFilters();
+        //MailerController mailerController = (MailerController) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MailerWindow);
+        //mailerController.configureTextFilters();
 
 
     }

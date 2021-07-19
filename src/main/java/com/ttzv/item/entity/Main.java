@@ -13,6 +13,8 @@ public class Main {
         System.out.println(adUser_n.getOffice());
         Office office = session.get(Office.class,1);
         System.out.println(office.getUsers());
+        CommandBox_n commandBox_n = session.get(CommandBox_n.class, 10);
+        System.out.println(commandBox_n);
         session.close();
 
     }

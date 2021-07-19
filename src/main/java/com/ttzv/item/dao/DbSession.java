@@ -7,6 +7,7 @@ import com.ttzv.item.entity.UserDetail_n;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.spi.ServiceException;
 
 public class DbSession{
 
@@ -14,7 +15,7 @@ public class DbSession{
 
     private DbSession(){}
 
-    private static SessionFactory getSessionFactory(){
+    private static SessionFactory getSessionFactory() {
         if(sessionInstance == null) {
             sessionInstance = new Configuration()
                     .configure()
@@ -27,7 +28,7 @@ public class DbSession{
         return sessionInstance;
     }
 
-    public static Session openSession(){
+    public static Session openSession() throws ServiceException{
         return getSessionFactory().openSession();
     }
 

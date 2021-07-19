@@ -1,41 +1,38 @@
 package com.ttzv.item.ui.controller;
 
-import com.ttzv.item.dao.DbSession;
-import com.ttzv.item.dao.UserComboWrapper;
-import com.ttzv.item.dao.UserDaoLdapImpl;
 import com.ttzv.item.entity.*;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.service.AdUserService;
-import com.ttzv.item.uiUtils.ScenePicker;
+import com.ttzv.item.service.ADUserService;
+import com.ttzv.item.service.ADUserServiceImpl;
+import com.ttzv.item.service.OfficeService;
+import com.ttzv.item.service.OfficeServiceImpl;
+import com.ttzv.item.uiUtils.OfficeFormatCell;
 import com.ttzv.item.uiUtils.TableViewCreator;
-import com.ttzv.item.uiUtils.UiObjectsWrapper;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.hibernate.Session;
 import ttzv.uiUtils.ActionableTextField;
 import ttzv.uiUtils.SideBar;
 import ttzv.uiUtils.StatusBar;
 
-import javax.naming.NamingException;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainWindowController extends AnchorPane {
 
@@ -43,12 +40,12 @@ public class MainWindowController extends AnchorPane {
 
     private Parent root;
 
-    private Stage primaryStage;
-    private UserComboWrapper userComboWrapper;
     private UserHolder userHolder;
+    private ADUserService adUserService;
+    private OfficeService officeService;
 
-
-    private TableViewCreator tableViewCreator;
+    private TableViewCreator<ADUser_n> tableViewCreator;
+    private Map<Label, TextField> storageNodesMap;
 
     @FXML
     private CheckMenuItem mnuItemThemeSelectModena;
@@ -66,16 +63,19 @@ public class MainWindowController extends AnchorPane {
     private Button sidebartogglebtn;
 
     @FXML
-    private TableView<Map> primaryUserTableView;
+    private TableView<ADUser_n> primaryUserTableView;
 
     @FXML
-    private TableView<Map> msgQTableView;
+    private TableView<ADUser_n> msgQTableView;
 
     @FXML
     private AnchorPane contentPane;
 
     @FXML
     private SideBar sideBar;
+
+    @FXML
+    private GridPane sidebarGrid;
 
     @FXML
     private ActionableTextField txtfActLogin;
@@ -89,8 +89,6 @@ public class MainWindowController extends AnchorPane {
     @FXML
     private ActionableTextField txtfActMail;
 
-    @FXML
-    private ActionableTextField txtfActCity;
 
     @FXML
     private ActionableTextField txtfActDispN;
@@ -99,19 +97,25 @@ public class MainWindowController extends AnchorPane {
     private ActionableTextField txtfActCtName;
 
     @FXML
+    public ActionableTextField txtfActCtName_2;
+
+    @FXML
     private ActionableTextField txtfActCtPhone;
 
     @FXML
     private ActionableTextField txtfActPos;
 
     @FXML
-    private ActionableTextField txtfActInitpass;
+    public ActionableTextField txtfActCtLandline;
 
     @FXML
-    private ActionableTextField txtfActUsrLandLine;
+    public ActionableTextField txtfActCtPostalcode;
 
     @FXML
-    private ActionableTextField txtfActCtType;
+    public ActionableTextField txtfActCtLocation;
+
+    @FXML
+    public ActionableTextField txtfActCtLocation_2;
 
     @FXML
     private ActionableTextField txtfActCtFax;
@@ -120,16 +124,7 @@ public class MainWindowController extends AnchorPane {
     private ActionableTextField txtfActPhNumber;
 
     @FXML
-    private ActionableTextField txtfActPhModel;
-
-    @FXML
-    private ActionableTextField txtfActPhImei;
-
-    @FXML
-    private ActionableTextField txtfActPhPin;
-
-    @FXML
-    private ActionableTextField txtfActPhPuk;
+    public ActionableTextField txtfActUsrLandLine;
 
     @FXML
     private Button saveUserProperties;
@@ -170,25 +165,36 @@ public class MainWindowController extends AnchorPane {
     //Settings view + controller
     @FXML
     AnchorPane commandBoxView;
+
     @FXML
     CommandBoxController commandBoxViewController;
+
+    @FXML
+    public ComboBox<Office> cbox_Offices;
 
 
     @FXML
     public void initialize() {
+        storageNodesMap = new HashMap<>();
         labelCity.setText("");
         labelUsername.setText("");
+        adUserService = new ADUserServiceImpl();
+        List<ADUser_n> adUsers = adUserService.getAll();
+        userHolder = UserHolder.getHolder();
+        userHolder.appendADUsers(adUsers);
 
-//        ADUser ADUserHolderFirst = userHolder.getFirst();
-//        if(ADUserHolderFirst != null) {
-//            userHolder.setCurrentUser(ADUserHolderFirst);
-//        }
-//
-//        tableViewCreator = new TableViewCreator(primaryUserTableView);
-//        tableViewCreator.createFromMap(tableViewCreator.builder()
-//                .addColumns(userHolder.getCurrentUser())
-//                .addRows(userHolder.getAllUsers())
-//        );
+        tableViewCreator = new TableViewCreator<ADUser_n>(primaryUserTableView);
+        tableViewCreator.builder()
+                .editColumn(0, "lockoutTime")
+                .editColumn(1, "displayName")
+                .editColumn(2, "officeLocation")
+                .editColumn(3, "email")
+                .editColumn(4, "sAMAccountName")
+                .editColumn(5, "position")
+                .editColumn(6, "whenCreated")
+                .editColumn(7, "objectGUID")
+                .editColumn(8, "objectSid")
+                .setItems(userHolder.getADUsers());
 
         addPrimarytableViewDoubleClickHandler();
 
@@ -206,6 +212,13 @@ public class MainWindowController extends AnchorPane {
         //loadTheme();
 
         selectScene(mailerView);
+
+        officeService = new OfficeServiceImpl();
+        ObservableList<Office> observableListOffices = FXCollections.observableList(officeService.getOffices());
+        cbox_Offices.setItems(observableListOffices);
+        cbox_Offices.setCellFactory(param -> new OfficeFormatCell());
+        cbox_Offices.setButtonCell(cbox_Offices.getCellFactory().call(null));
+
     }
 
     private void selectScene(Pane paneToSet){
@@ -214,24 +227,6 @@ public class MainWindowController extends AnchorPane {
         AnchorPane.setLeftAnchor(paneToSet, 0.);
         AnchorPane.setTopAnchor(paneToSet, 0.);
         AnchorPane.setBottomAnchor(paneToSet, 0.);
-    }
-
-    @FXML
-    void btnRibbonCloseAction(MouseEvent event) {
-        Platform.exit();
-    }
-
-    @FXML
-    void btnRibbonMaximizeAction(MouseEvent event) {
-        if(primaryStage.isMaximized())
-            primaryStage.setMaximized(false);
-        else
-            primaryStage.setMaximized(true);
-    }
-
-    @FXML
-    void btnRibbonMinimizeAction(MouseEvent event) {
-        primaryStage.setIconified(true);
     }
 
     @FXML
@@ -248,41 +243,28 @@ public class MainWindowController extends AnchorPane {
     }
 
     @FXML
-    void performSaveUserProperties() throws IOException, SQLException {
-        ADUser ADUser = userHolder.getCurrentUser();
-        UserDetail userDetail = userComboWrapper.getDetailOf(ADUser);
-        City city = userComboWrapper.getCityOf(ADUser);
-        Phone phone = userComboWrapper.getPhoneOf(ADUser);
-        //userdetail
-        if (userDetail != null) {
-            userDetail.setPosition(txtfActPos.getText());
-            userDetail.setInitMailPass(txtfActInitpass.getText());
+    void performSaveUserProperties() {
+        ADUser_n adUser = userHolder.getCurrentUser();
+        UserDetail_n userDetail = adUser.getDetail();
+        adUser.setSAMAccountName(txtfActLogin.getText());
+        userDetail.setPosition(txtfActPos.getText());
+        adUser.setEmail(txtfActMail.getText());
 
-            userComboWrapper.updateUserDetail(userDetail);
-        }
-        //city
-        if(city != null) {
-            city.setName(txtfActCtName.getText());
-            city.setType(txtfActCtType.getText());
-            city.setLandLineNumber(txtfActCtPhone.getText());
-            city.setFaxNumber(txtfActCtFax.getText());
+        userDetail.setLandlineNumber(txtfActUsrLandLine.getText());
+        userDetail.setOffice(cbox_Offices.getValue());
+        userDetail.setPhoneNumber(txtfActPhNumber.getText());
+        userDetail.setLandlineNumber(txtfActUsrLandLine.getText());
 
-            userComboWrapper.updateCity(city);
-        }
-        //phone
-        if(phone != null) {
-            phone.setNumber(txtfActPhNumber.getText());
-            phone.setModel(txtfActPhModel.getText());
-            phone.setImei(txtfActPhImei.getText());
-            phone.setPin(txtfActPhPin.getText());
-            phone.setPuk(txtfActPhPuk.getText());
+        Map<String, Object> newStorage = new HashMap<>();
+        storageNodesMap.forEach((label, textField) -> {
+            String value = textField.getText();
+            if(!value.isEmpty()) {
+                newStorage.put(label.getText(), textField.getText());
+            }
+        });
+        userDetail.setStorage(newStorage);
 
-            userComboWrapper.updatePhone(phone);
-        }
-
-
-
-
+        adUserService.updateADUser(adUser);
     }
 
     @FXML
@@ -305,37 +287,29 @@ public class MainWindowController extends AnchorPane {
     }
 
     @FXML
-    void btnRefreshUserList(ActionEvent event) throws SQLException, IOException, NamingException, GeneralSecurityException {
-        AdUserService adUserService = new AdUserService();
-        System.out.println(adUserService.getAll());
-//        Task sync = new Task<Boolean>(){
-//            @Override
-//            protected Boolean call() throws Exception {
-//                EntityDAO<ADUser> userEntityDAOldap = new UserDaoLdapImpl();
-//                userHolder.syncAndRefresh(userEntityDAOldap);
-//                return Boolean.TRUE;
-//            }
-//        };
-//        sync.setOnRunning(workerStateEvent -> {
-//            this.prgList.setVisible(true);
-//            this.prgList.setProgress(-1);
-//        });
-//        sync.setOnSucceeded(workerStateEvent -> {
-//            this.prgList.setVisible(false);
-//            Platform.runLater(() -> {
-//                tableViewCreator = new TableViewCreator(primaryUserTableView);
-//                tableViewCreator.createFromMap(tableViewCreator.builder()
-//                        .addColumns(userHolder.getNewest(1).get(0))
-//                        .addRows(userHolder.getAllUsers()));
-//            });
-//        });
-//        sync.setOnFailed(workerStateEvent -> {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setContentText(sync.getException().toString());
-//            alert.showAndWait();
-//            this.prgList.setVisible(false);
-//        });
-//        new Thread(sync).start();
+    void btnRefreshUserList(ActionEvent event) {
+        Task<Boolean> sync = new Task<>(){
+            @Override
+            protected Boolean call() {
+                userHolder.appendADUsers(adUserService.getAll());
+                tableViewCreator.builder().setItems(userHolder.getADUsers());
+                return Boolean.TRUE;
+            }
+        };
+        sync.setOnRunning(workerStateEvent -> {
+            this.prgList.setVisible(true);
+            this.prgList.setProgress(-1);
+        });
+        sync.setOnSucceeded(workerStateEvent -> {
+            this.prgList.setVisible(false);
+        });
+        sync.setOnFailed(workerStateEvent -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(sync.getException().toString());
+            alert.showAndWait();
+            this.prgList.setVisible(false);
+        });
+        new Thread(sync).start();
     }
 
 
@@ -346,24 +320,22 @@ public class MainWindowController extends AnchorPane {
     }
 
     public void changeUser() {
-        ADUser ADUser = userHolder.getCurrentUser();
-        City city = userComboWrapper.getCityOf(ADUser);
-        Phone phone = userComboWrapper.getPhoneOf(ADUser);
-        UserDetail userDetail = userComboWrapper.getDetailOf(ADUser);
+        ADUser_n adUser = userHolder.getCurrentUser();
 
-        if (ADUser != null) {
-            this.labelUsername.setText(userHolder.getCurrentUser().getDisplayName());
-            this.labelCity.setText(userHolder.getCurrentUser().getCity());
-            mailerViewController.setUserName(userHolder.getCurrentUser().getDisplayName());
-            signaturesViewController.setTxtfName(ADUser.getDisplayName());
-            smsViewController.updateUserLabels(userHolder);
-        }
+        this.labelUsername.setText(adUser.getDisplayName());
+        this.labelCity.setText(adUser.getCity());
+        mailerViewController.setUserName(adUser.getDisplayName());
+        signaturesViewController.setTxtfName(adUser.getDisplayName());
+        smsViewController.updateUserLabels(userHolder);
 
-        if(city != null) {
-            signaturesViewController.setTxtfCity(city.getName());
-            signaturesViewController.setTxtfCityPhone(city.getLandLineNumber());
-            signaturesViewController.setTxtfCityFax(city.getFaxNumber());
-            String cType = city.getType();
+        Office office = adUser.getOffice();
+        if(office != null) {
+            Office existingOffice = cbox_Offices.getItems().stream().filter(off -> off.equals(office)).findFirst().orElse(null);
+            cbox_Offices.getSelectionModel().select(existingOffice);
+            signaturesViewController.setTxtfCity(office.getName());
+            signaturesViewController.setTxtfCityPhone(office.getPhonenumber());
+            signaturesViewController.setTxtfCityFax(office.getFax());
+            String cType = office.getName();
             if (cType.equals("Filia")) {
                 signaturesViewController.selectComboxVal(1);
             } else if (cType.equals("Centrala")) {
@@ -371,18 +343,15 @@ public class MainWindowController extends AnchorPane {
             }
         }
 
-        if(userDetail != null) {
-            signaturesViewController.setTxtfPos(userDetail.getPosition());
-            signaturesViewController.setTxtfPhone(userDetail.getLandLineNumber());
-        }
-
-        if(phone != null) {
-            signaturesViewController.setTxtfMPhone(phone.getNumber());
-        }
-
+        signaturesViewController.setTxtfPos(adUser.getPosition());
+        signaturesViewController.setTxtfPhone(adUser.getLandLineNumber());
+        signaturesViewController.setTxtfMPhone(adUser.getPhoneNumber());
         signaturesViewController.reload();
 
-
+        sidebarGrid.getChildren().removeAll(storageNodesMap.keySet());
+        sidebarGrid.getChildren().removeAll(storageNodesMap.values());
+        storageNodesMap.clear();
+        buildPasswordStorageInterface(adUser.getDetail());
     }
 
     public void setStatusBarText(String text) {
@@ -429,11 +398,12 @@ public class MainWindowController extends AnchorPane {
     private void addPrimarytableViewDoubleClickHandler(){
         this.primaryUserTableView.setOnMouseClicked(mouseEvent -> {
             if(mouseEvent.getClickCount() == 2){
-                String id = primaryUserTableView.getSelectionModel()
-                        .getSelectedItem()
-                        .get(UserData.objectGUID.toString()).toString();
-                userHolder.setCurrentUser(userHolder.getUser(id));
-                updateMainWindowAssets();
+                ADUser_n adUser = primaryUserTableView.getSelectionModel()
+                        .getSelectedItem();
+                if(adUser != null) {
+                    userHolder.setCurrentUser(adUser);
+                    updateMainWindowAssets();
+                }
             }
         });
     }
@@ -448,19 +418,17 @@ public class MainWindowController extends AnchorPane {
         txtfActName.hideButtons();
         txtfActSn.hideButtons();
         txtfActMail.hideButtons();
-        txtfActCity.hideButtons();
         txtfActDispN.hideButtons();
         txtfActCtName.hideButtons();
+        txtfActCtName_2.hideButtons();
+        txtfActCtLocation.hideButtons();
+        txtfActCtLocation_2.hideButtons();
+        txtfActCtPostalcode.hideButtons();
+        txtfActCtLandline.hideButtons();
         txtfActCtPhone.hideButtons();
         txtfActPos.hideButtons();
-        txtfActInitpass.hideButtons();
-        txtfActCtType.hideButtons();
         txtfActCtFax.hideButtons();
         txtfActPhNumber.hideButtons();
-        txtfActPhModel.hideButtons();
-        txtfActPhImei.hideButtons();
-        txtfActPhPin.hideButtons();
-        txtfActPhPuk.hideButtons();
         txtfActUsrLandLine.hideButtons();
     }
 
@@ -469,55 +437,42 @@ public class MainWindowController extends AnchorPane {
         txtfActName.addButton1Action(txtfActName.COPY_ACTION());
         txtfActSn.addButton1Action(txtfActSn.COPY_ACTION());
         txtfActMail.addButton1Action(txtfActMail.COPY_ACTION());
-        txtfActCity.addButton1Action(txtfActCity.COPY_ACTION());
         txtfActDispN.addButton1Action(txtfActDispN.COPY_ACTION());
         txtfActCtName.addButton1Action(txtfActCtName.COPY_ACTION());
+        txtfActCtName_2.addButton1Action(txtfActCtName_2.COPY_ACTION());
         txtfActCtPhone.addButton1Action(txtfActCtPhone.COPY_ACTION());
         txtfActPos.addButton1Action(txtfActPos.COPY_ACTION());
-        txtfActInitpass.addButton1Action(txtfActInitpass.COPY_ACTION());
-        txtfActCtType.addButton1Action(txtfActCtType.COPY_ACTION());
+        txtfActCtLocation.addButton1Action(txtfActCtLocation.COPY_ACTION());
+        txtfActCtLocation_2.addButton1Action(txtfActCtLocation_2.COPY_ACTION());
+        txtfActCtPostalcode.addButton1Action(txtfActCtPostalcode.COPY_ACTION());
+        txtfActCtLandline.addButton1Action(txtfActCtLandline.COPY_ACTION());
         txtfActCtFax.addButton1Action(txtfActCtFax.COPY_ACTION());
         txtfActPhNumber.addButton1Action(txtfActPhNumber.COPY_ACTION());
-        txtfActPhModel.addButton1Action(txtfActPhModel.COPY_ACTION());
-        txtfActPhImei.addButton1Action(txtfActPhImei.COPY_ACTION());
-        txtfActPhPin.addButton1Action(txtfActPhPin.COPY_ACTION());
-        txtfActPhPuk.addButton1Action(txtfActPhPuk.COPY_ACTION());
         txtfActUsrLandLine.addButton1Action(txtfActUsrLandLine.COPY_ACTION());
     }
 
     private void setTxtfActValues(){
-        ADUser ADUser = userHolder.getCurrentUser();
-        UserDetail userDetail = userComboWrapper.getDetailOf(ADUser);
-        City city = userComboWrapper.getCityOf(ADUser);
-        Phone phone = userComboWrapper.getPhoneOf(ADUser);
-        //user and user detail
-        if(ADUser != null){
-            txtfActLogin.setText(ADUser.getSamAccountName());
-            txtfActName.setText(ADUser.getGivenName());
-            txtfActSn.setText(ADUser.getSn());
-            txtfActMail.setText(ADUser.getMail());
-            txtfActCity.setText(ADUser.getCity());
-            txtfActDispN.setText(ADUser.getDisplayName());
-        }
-        if(userDetail != null) {
-            txtfActPos.setText(userDetail.getPosition());
-            txtfActInitpass.setText(userDetail.getInitMailPass());
-        }
+        ADUser_n adUser= userHolder.getCurrentUser();
+
+        txtfActLogin.setText(adUser.getSAMAccountName());
+        txtfActName.setText(adUser.getGivenName());
+        txtfActSn.setText(adUser.getSn());
+        txtfActMail.setText(adUser.getEmail());
+        txtfActDispN.setText(adUser.getDisplayName());
+
+        txtfActPos.setText(adUser.getPosition());
+            //txtfActInitpass.setText(userDetail.getInitMailPass());
+
         //city
-        if(city != null) {
-            txtfActCtName.setText(city.getName());
-            txtfActCtPhone.setText(city.getLandLineNumber());
-            txtfActCtType.setText(city.getType());
-            txtfActCtFax.setText(city.getFaxNumber());
+        Office office = adUser.getOffice();
+        if(office != null) {
+            txtfActCtName.setText(office.getLocation());
+            txtfActCtPhone.setText(office.getPhonenumber());
+            txtfActCtFax.setText(office.getFax());
         }
         //phone
-        if(phone != null) {
-            txtfActPhNumber.setText(phone.getNumber());
-            txtfActPhModel.setText(phone.getModel());
-            txtfActPhImei.setText(phone.getImei());
-            txtfActPhPin.setText(phone.getPin());
-            txtfActPhPuk.setText(phone.getPuk());
-        }
+        txtfActPhNumber.setText(adUser.getPhoneNumber());
+
     }
 
     private void loadTheme(){ //todo: refactor
@@ -555,5 +510,36 @@ public class MainWindowController extends AnchorPane {
      */
     public void referenceRoot(Parent root){
         this.root = root;
+    }
+
+    public void cbox_Offices_Event(ActionEvent actionEvent) {
+        System.out.println(cbox_Offices.getValue());
+
+        Office selectedOffice = cbox_Offices.getValue();
+        txtfActCtName.setText(selectedOffice.getName());
+        txtfActCtName_2.setText(selectedOffice.getName2());
+        txtfActCtLocation.setText(selectedOffice.getLocation());
+        txtfActCtLocation_2.setText(selectedOffice.getLocation2());
+        txtfActCtPostalcode.setText(selectedOffice.getPostalcode());
+        txtfActCtLandline.setText(selectedOffice.getLandline());
+        txtfActCtPhone.setText(selectedOffice.getPhonenumber());
+        txtfActCtFax.setText(selectedOffice.getFax());
+    }
+
+    public void buildPasswordStorageInterface(UserDetail_n userDetail) {
+        Map<String, Object> storage = userDetail.getStorage();
+        System.out.println(sidebarGrid.getRowCount());
+
+        if(storage != null){
+            storage.forEach((k, v) -> {
+                TextField textField = new TextField();
+                Label label = new Label(k);
+                storageNodesMap.put(label, textField);
+                textField.setText(v.toString());
+                int lastRow = sidebarGrid.getRowCount();
+                sidebarGrid.add(label, 0, lastRow);
+                sidebarGrid.add(textField, 1, lastRow);
+            });
+        }
     }
 }

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -173,7 +174,7 @@
                                                       </AnchorPane>
                                                    </content>
                                                 </Tab>
-                                                <Tab closable="false" disable="true" text="%tab_queue">
+                                                <Tab closable="false" text="%tab_queue">
                                                    <content>
                                                       <AnchorPane>
                                                          <children>
@@ -200,11 +201,11 @@
                               </SplitPane>
                               <SideBar fx:id="sideBar" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="730.0" targetWidth="300.0">
                                  <children>
-                                    <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="728.0" prefWidth="299.0">
+                                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="300.0">
                                        <children>
-                                          <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="245.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                          <ScrollPane layoutY="-2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="670.0" prefWidth="299.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <content>
-                                                <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="260.0" vgap="3.0">
+                                                <GridPane fx:id="sidebarGrid" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="267.0">
                                                   <columnConstraints>
                                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="45.0" />
                                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="155.0" />
@@ -220,19 +221,20 @@
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
@@ -281,14 +283,6 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActCity" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                                         <button1Image>
-                                                            <Image url="@../img/cp.png" />
-                                                         </button1Image>
-                                                         <button2Image>
-                                                            <Image url="@../img/done.png" />
-                                                         </button2Image>
-                                                      </ActionableTextField>
                                                       <ActionableTextField fx:id="txtfActPos" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
@@ -297,15 +291,7 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActInitpass" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                                                         <button1Image>
-                                                            <Image url="@../img/cp.png" />
-                                                         </button1Image>
-                                                         <button2Image>
-                                                            <Image url="@../img/done.png" />
-                                                         </button2Image>
-                                                      </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActUsrLandLine" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                                      <ActionableTextField fx:id="txtfActUsrLandLine" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="22">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -314,11 +300,11 @@
                                                          </button2Image>
                                                       </ActionableTextField>
                                                       <Label text="%grid_displayname" GridPane.rowIndex="5" />
-                                                      <Label text="%grid_header_city" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+                                                      <Label text="%grid_header_city" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
                                                       <Label text="%grid_header_user" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                                       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-                                                      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="12" />
-                                                      <ActionableTextField fx:id="txtfActCtName" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                                      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="10" />
+                                                      <ActionableTextField fx:id="txtfActCtName" layoutX="4.32444444E8" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="11">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -326,7 +312,7 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActCtType" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                                      <ActionableTextField fx:id="txtfActCtName_2" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="12">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -334,7 +320,7 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActCtPhone" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                                                      <ActionableTextField fx:id="txtfActCtPhone" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="17">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -342,7 +328,7 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActCtFax" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="16">
+                                                      <ActionableTextField fx:id="txtfActCtFax" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="18">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -351,14 +337,13 @@
                                                          </button2Image>
                                                       </ActionableTextField>
                                                       <Label text="%grid_position" GridPane.rowIndex="8" />
-                                                      <Label text="%grid_initmailpass" GridPane.rowIndex="9" />
-                                                      <Label text="%grid_name" GridPane.rowIndex="13" />
-                                                      <Label text="%grid_phonenumber" GridPane.rowIndex="15" />
-                                                      <Label text="%grid_faxnumber" GridPane.rowIndex="16" />
-                                                      <Label text="%grid_type" GridPane.rowIndex="14" />
-                                                      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="18" />
-                                                      <Label text="%grid_header_phone" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="17" />
-                                                      <ActionableTextField fx:id="txtfActPhNumber" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="19">
+                                                      <Label text="%grid_name" GridPane.rowIndex="11" />
+                                                      <Label text="%grid_phonenumber" GridPane.rowIndex="17" />
+                                                      <Label text="%grid_faxnumber" GridPane.rowIndex="18" />
+                                                      <Label text="%grid_name_2" GridPane.rowIndex="12" />
+                                                      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="20" />
+                                                      <Label text="%grid_header_phone" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="19" />
+                                                      <ActionableTextField fx:id="txtfActPhNumber" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="21">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -366,7 +351,15 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActPhModel" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="20">
+                                                      <Label text="%grid_number" GridPane.rowIndex="21" />
+                                                      <Label text="%grid_landline" GridPane.rowIndex="22" />
+                                                      <ComboBox fx:id="cbox_Offices" onAction="#cbox_Offices_Event" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                         <GridPane.margin>
+                                                            <Insets left="3.0" />
+                                                         </GridPane.margin>
+                                                      </ComboBox>
+                                                      <Label text="%grid_location" GridPane.rowIndex="13" />
+                                                      <ActionableTextField fx:id="txtfActCtLocation" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="13">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -374,12 +367,7 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <Label text="%grid_number" GridPane.rowIndex="19" />
-                                                      <Label text="%grid_model" GridPane.rowIndex="20" />
-                                                      <Label text="%grid_imei" GridPane.rowIndex="21" />
-                                                      <Label text="%grid_pin" GridPane.rowIndex="22" />
-                                                      <Label text="%grid_puk" GridPane.rowIndex="23" />
-                                                      <ActionableTextField fx:id="txtfActPhImei" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="21">
+                                                      <ActionableTextField fx:id="txtfActCtLocation_2" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="14">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -387,7 +375,9 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActPhPin" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="22">
+                                                      <Label text="%grid_location_2" GridPane.rowIndex="14" />
+                                                      <Label text="%grid_postalcode" GridPane.rowIndex="15" />
+                                                      <ActionableTextField fx:id="txtfActCtPostalcode" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="15">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -395,7 +385,8 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActPhPuk" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="23">
+                                                      <Label text="%grid_office_landline" GridPane.rowIndex="16" />
+                                                      <ActionableTextField fx:id="txtfActCtLandline" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="16">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -403,7 +394,8 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
-                                                      <Label text="%grid_landline" GridPane.rowIndex="10" />
+                                                      <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="23" />
+                                                      <Label text="%grid_header_pass_storage" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="24" GridPane.valignment="CENTER" />
                                                    </children>
                                                 </GridPane>
                                              </content>

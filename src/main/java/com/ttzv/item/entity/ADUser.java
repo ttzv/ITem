@@ -11,7 +11,7 @@ import java.util.*;
  * Basic User "bean" class used for various operations in this application. Supports creating User from objects implementing DynamicEntity interface.
  */
 
-public class ADUser implements DynamicEntityCompatible, Comparable<ADUser>, FXMapCompatible{
+public class ADUser implements DynamicEntityCompatible, Comparable<ADUser>{
 
     private DynamicEntity userEntity;
 
@@ -170,39 +170,17 @@ public class ADUser implements DynamicEntityCompatible, Comparable<ADUser>, FXMa
         return keys;
     }
 
-    public boolean hasDifferentVals(ADUser ADUser){
+    public boolean hasDifferentVals(ADUser ADUser) {
         //checking every value if user is the same, returns true on first different value
-        if(this.equals(ADUser)){
+        if (this.equals(ADUser)) {
             List<String> thisList = this.getEntity().getList();
             List<String> userList = ADUser.getEntity().getList();
-            if(thisList.equals(userList)){
+            if (thisList.equals(userList)) {
                 return false;
             } else {
                 return true;
             }
         }
         return false;
-    }
-
-    @Override
-    public Map getFXMap() {
-        return userEntity.getMap();
-    }
-
-    @Override
-    public Map<String, String> getFXNameToIdPairs() {
-        Map<String, String> map = new HashMap<>();
-        map.put(UserData.objectGUID.toString(), UserData.objectGUID.toString());
-        map.put(UserData.samaccountname.toString(), "Login");
-        map.put(UserData.givenname.toString(), "Imię");
-        map.put(UserData.sn.toString(), "Nazwisko");
-        map.put(UserData.displayname.toString(), "Nazwa");
-        map.put(UserData.distinguishedName.toString(), "");
-        map.put(UserData.city.toString(), "Miasto");
-        map.put(UserData.whenCreated.toString(), "Data utworzenia");
-        //map.put(UserData.whenChanged.toString(), "");
-        map.put(UserData.mail.toString(), "Email");
-        map.put(UserData.useraccountcontrol.toString(), "Status konta");
-        return map;
     }
 }

@@ -1,15 +1,18 @@
 package com.ttzv.item.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
 public @Getter @Setter class ADUser_n {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
@@ -29,7 +32,7 @@ public @Getter @Setter class ADUser_n {
     private String sAMAccountName;
 
     @Column(name = "whencreated")
-    private String whenCreated;
+    private Date whenCreated;
 
     @Column(name = "mail")
     private String email;
@@ -44,9 +47,9 @@ public @Getter @Setter class ADUser_n {
     private String userAccountControl;
 
     @Column(name = "lockouttime")
-    private String lockoutTime;
+    private Date lockoutTime;
 
-    @OneToOne(mappedBy = "adUser")
+    @OneToOne(mappedBy = "adUser", cascade = CascadeType.ALL)
     private UserDetail_n detail;
 
     public Office getOffice(){
@@ -54,6 +57,60 @@ public @Getter @Setter class ADUser_n {
             return this.detail.getOffice();
         }
         return null;
+    }
+
+    public UserDetail_n getDetail(){
+        if(this.detail != null){
+            try {
+                if(this.detail.getStorage() == null) this.detail.deserializeStorage();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            return this.detail;
+        }
+        return null;
+    }
+
+    public String getOfficeLocation(){
+        Office office = getOffice();
+        if (office != null){
+            return office.getLocation() ;
+        }
+        return "";
+    }
+
+    public String getPhoneNumber(){
+        if (this.detail != null){
+            return this.detail.getPhoneNumber();
+        }
+        return "";
+    }
+
+    public String getLandLineNumber(){
+        if (this.detail != null){
+            return this.detail.getLandlineNumber();
+        }
+        return "";
+    }
+
+    public String getCity(){
+        if(this.detail != null && this.detail.getOffice() != null){
+            return this.detail.getOffice().getName();
+        }
+        return "";
+    }
+
+    public String getPosition(){
+        if (this.detail != null){
+            return this.detail.getPosition();
+        }
+        return "";
+    }
+
+    public void setPosition(String position){
+        if (this.detail != null){
+            this.detail.setPosition(position);
+        }
     }
 
     @Override

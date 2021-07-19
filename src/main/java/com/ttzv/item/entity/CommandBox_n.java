@@ -2,14 +2,16 @@ package com.ttzv.item.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
-public @Getter @Setter class CommandBox_n {
+@Entity(name = "command_box")
+public @Getter @Setter
+class CommandBox_n {
 
     @Id
     @GeneratedValue
@@ -25,4 +27,14 @@ public @Getter @Setter class CommandBox_n {
     @Column
     private String uid;
 
+    @Override
+    public String toString() {
+        return "CommandBox_n{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", tags='" + tags + '\'' +
+                ", uid='" + uid + '\'' +
+                '}';
+    }
 }

@@ -25,7 +25,7 @@ public class Main extends Application {
         MainWindowController mainWindowController = loader.getController();
         mainWindowController.referenceRoot(root);
         primaryStage.setScene(new Scene(root));
-        primaryStage.setTitle("item");
+        primaryStage.setTitle("taikutsu");
         primaryStage.show();
 
 //

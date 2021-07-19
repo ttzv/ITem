@@ -1,13 +1,16 @@
 package com.ttzv.item.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Entity(name = "offices")
+@Entity
+@Table(name = "offices")
 public @Getter @Setter
 class Office {
 
@@ -62,5 +65,18 @@ class Office {
             return this.userDetails.stream().map(UserDetail_n::getAdUser).collect(Collectors.toSet());
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Office office = (Office) o;
+        return id == office.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

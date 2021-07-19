@@ -10,21 +10,26 @@ import java.util.List;
 
 public class UserHolder {
 
+    private static UserHolder userHolder;
+
+    private final List<ADUser_n> storedADUsers;
+
     private EntityDAO<ADUser> userEntityDAO;
     private List<ADUser> ADUserList;
     private List<ADUser> newADUsers;
 
-    private ADUser currentADUser;
+    private ADUser_n currentADUser;
     private int currentIndex;
 
-    public UserHolder(EntityDAO<ADUser> userEntityDAO) throws SQLException, IOException, NamingException, GeneralSecurityException {
-        List<ADUser> ADUsers = new ArrayList<>();
-        if(userEntityDAO != null) {
-            this.userEntityDAO = userEntityDAO;
-            this.ADUserList = userEntityDAO.getAllEntities();
-        } else {
-            this.ADUserList = ADUsers;
+    private UserHolder(){
+        storedADUsers = new ArrayList<>();
+    }
+
+    public static UserHolder getHolder(){
+        if (userHolder == null){
+            userHolder = new UserHolder();
         }
+        return userHolder;
     }
 
     public List<ADUser> getAllUsers() {
@@ -32,14 +37,12 @@ public class UserHolder {
         return ADUserList;
     }
 
-    public ADUser getUser(String id){
-        ADUser fADUser = null;
-        for (ADUser u : ADUserList) {
-            if(u.getGUID().equals(id)){
-                fADUser = u;
-            }
-        }
-        return fADUser;
+    public ADUser_n find(String id){
+        return storedADUsers
+                .stream()
+                .filter(adUser_n -> adUser_n.getObjectGUID() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     public List<ADUser> getNewest(int numberOfUsers){
@@ -52,11 +55,11 @@ public class UserHolder {
     }
 
 
-    public ADUser getCurrentUser() {
+    public ADUser_n getCurrentUser() {
         return this.currentADUser;
     }
 
-    public  void setCurrentUser(ADUser bcurrentADUser) {
+    public void setCurrentUser(ADUser_n bcurrentADUser) {
         this.currentADUser = bcurrentADUser;
     }
 
@@ -115,6 +118,15 @@ public class UserHolder {
         userEntityDAO.syncDataSourceWith(daoToSyncWith);
         this.ADUserList = this.userEntityDAO.getAllEntities();
         return this;
+    }
+
+    public void appendADUsers(List<ADUser_n> adUsers){
+        storedADUsers.clear();
+        storedADUsers.addAll(adUsers);
+    }
+
+    public List<ADUser_n> getADUsers(){
+        return storedADUsers;
     }
 
 

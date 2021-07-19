@@ -1,6 +1,5 @@
 package com.ttzv.item.ui.controller;
 
-import com.ttzv.item.dao.UserComboWrapper;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.file.Loader;
 import com.ttzv.item.properties.Cfg;
@@ -12,7 +11,6 @@ import com.ttzv.item.uiUtils.MsgFileChooser;
 import com.ttzv.item.utility.Utility;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import pl.smsapi.exception.SmsapiException;
@@ -20,7 +18,6 @@ import pl.smsapi.exception.SmsapiException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
-import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 public class SmsController extends AnchorPane {
