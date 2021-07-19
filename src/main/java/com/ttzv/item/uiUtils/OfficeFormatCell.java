@@ -11,6 +11,8 @@ public class OfficeFormatCell extends ListCell<Office> {
     protected void updateItem(Office item, boolean empty) {
         super.updateItem(item, empty);
 
-        setText(item == null ? "" : item.getName() + " " + item.getName2());
+        setText(item == null ? "" : (
+                item.getName() == null ? "New..." : item.getName() + " " + item.getName2())
+        );
     }
 }

@@ -353,11 +353,15 @@
                                                       </ActionableTextField>
                                                       <Label text="%grid_number" GridPane.rowIndex="21" />
                                                       <Label text="%grid_landline" GridPane.rowIndex="22" />
-                                                      <ComboBox fx:id="cbox_Offices" onAction="#cbox_Offices_Event" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                      <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                                          <GridPane.margin>
                                                             <Insets left="3.0" />
                                                          </GridPane.margin>
-                                                      </ComboBox>
+                                                         <children>
+                                                            <ComboBox fx:id="cbox_Offices" onAction="#cbox_Offices_Event" prefHeight="25.0" prefWidth="125.0" />
+                                                            <Button mnemonicParsing="false" onAction="#deleteOffice" prefHeight="25.0" prefWidth="21.0" text="X" />
+                                                         </children>
+                                                      </HBox>
                                                       <Label text="%grid_location" GridPane.rowIndex="13" />
                                                       <ActionableTextField fx:id="txtfActCtLocation" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="13">
                                                          <button1Image>

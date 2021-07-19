@@ -18,4 +18,14 @@ public class OfficeServiceImpl implements OfficeService{
     public List<Office> getOffices() {
         return officeDAO.getOffices();
     }
+
+    @Override
+    public void saveOffice(Office office) {
+        officeDAO.saveOffice(office);
+    }
+
+    @Override
+    public void deleteOffice(Office office) {
+        officeDAO.deleteOffice(office);
+    }
 }

@@ -7,4 +7,6 @@ import java.util.List;
 public interface OfficeDAO {
 
     List<Office> getOffices();
+    void saveOffice(Office office);
+    void deleteOffice(Office office);
 }

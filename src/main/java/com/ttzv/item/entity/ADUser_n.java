@@ -49,7 +49,7 @@ public @Getter @Setter class ADUser_n {
     @Column(name = "lockouttime")
     private Date lockoutTime;
 
-    @OneToOne(mappedBy = "adUser", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "adUser")
     private UserDetail_n detail;
 
     public Office getOffice(){

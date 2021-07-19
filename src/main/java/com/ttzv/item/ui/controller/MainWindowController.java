@@ -218,6 +218,8 @@ public class MainWindowController extends AnchorPane {
         cbox_Offices.setItems(observableListOffices);
         cbox_Offices.setCellFactory(param -> new OfficeFormatCell());
         cbox_Offices.setButtonCell(cbox_Offices.getCellFactory().call(null));
+        Office office = new Office();
+        cbox_Offices.getItems().add(office);
 
     }
 
@@ -264,7 +266,25 @@ public class MainWindowController extends AnchorPane {
         });
         userDetail.setStorage(newStorage);
 
+        if (cbox_Offices.getSelectionModel().getSelectedItem().getName() == null){
+            createOffice();
+        }
+
         adUserService.updateADUser(adUser);
+    }
+
+    private void createOffice(){
+        Office office = new Office();
+        office.setName(txtfActCtName.getText());
+        office.setName2(txtfActCtName_2.getText());
+        office.setLocation(txtfActCtLocation.getText());
+        office.setLocation2(txtfActCtLocation_2.getText());
+        office.setPostalcode(txtfActCtPostalcode.getText());
+        office.setLandline(txtfActCtLandline.getText());
+        office.setPhonenumber(txtfActCtPhone.getText());
+        office.setFax(txtfActCtFax.getText());
+        officeService.saveOffice(office);
+        cbox_Offices.getItems().add(0, office);
     }
 
     @FXML
@@ -540,6 +560,21 @@ public class MainWindowController extends AnchorPane {
                 sidebarGrid.add(label, 0, lastRow);
                 sidebarGrid.add(textField, 1, lastRow);
             });
+        }
+    }
+
+    public void deleteOffice(ActionEvent actionEvent) {
+        Office selectedOffice = cbox_Offices.getSelectionModel().getSelectedItem();
+        if(selectedOffice != null && selectedOffice.getName() != null){
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setContentText("Are you sure you want to delete Office: " + selectedOffice + " ?");
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.YES);
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.NO);
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                officeService.deleteOffice(selectedOffice);
+                cbox_Offices.getItems().remove(selectedOffice);
+            }
         }
     }
 }
