@@ -83,9 +83,13 @@ public class TableViewCreator<T> {
         }
 
         public TableViewBuilder setItems(List items){
-            tableView.getItems().clear();
-            tableView.getItems().addAll(items);
-            alldata = tableView.getItems();
+            if( alldata != null ) {
+                alldata.clear();
+                alldata.addAll(items);
+            } else {
+                tableView.getItems().addAll(items);
+                alldata = tableView.getItems();
+            }
             return this;
         }
 

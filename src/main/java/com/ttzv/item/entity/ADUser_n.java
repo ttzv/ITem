@@ -49,7 +49,7 @@ public @Getter @Setter class ADUser_n {
     @Column(name = "lockouttime")
     private Date lockoutTime;
 
-    @OneToOne(mappedBy = "adUser")
+    @OneToOne(mappedBy = "adUser", cascade = CascadeType.ALL)
     private UserDetail_n detail;
 
     public Office getOffice(){
@@ -95,7 +95,7 @@ public @Getter @Setter class ADUser_n {
 
     public String getCity(){
         if(this.detail != null && this.detail.getOffice() != null){
-            return this.detail.getOffice().getName();
+            return this.detail.getOffice().getName() + " " + this.detail.getOffice().getName2();
         }
         return "";
     }

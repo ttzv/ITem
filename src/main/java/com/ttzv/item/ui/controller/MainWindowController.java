@@ -15,8 +15,6 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,9 +28,7 @@ import ttzv.uiUtils.SideBar;
 import ttzv.uiUtils.StatusBar;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MainWindowController extends AnchorPane {
 
@@ -181,7 +177,7 @@ public class MainWindowController extends AnchorPane {
         adUserService = new ADUserServiceImpl();
         List<ADUser_n> adUsers = adUserService.getAll();
         userHolder = UserHolder.getHolder();
-        userHolder.appendADUsers(adUsers);
+        userHolder.setADUsers(adUsers);
 
         tableViewCreator = new TableViewCreator<ADUser_n>(primaryUserTableView);
         tableViewCreator.builder()
@@ -266,7 +262,7 @@ public class MainWindowController extends AnchorPane {
         });
         userDetail.setStorage(newStorage);
 
-        if (cbox_Offices.getSelectionModel().getSelectedItem().getName() == null){
+        if (cbox_Offices.getSelectionModel().getSelectedItem() != null && cbox_Offices.getSelectionModel().getSelectedItem().getName() == null){
             createOffice();
         }
 
@@ -311,7 +307,7 @@ public class MainWindowController extends AnchorPane {
         Task<Boolean> sync = new Task<>(){
             @Override
             protected Boolean call() {
-                userHolder.appendADUsers(adUserService.getAll());
+                userHolder.setADUsers(adUserService.getAll());
                 tableViewCreator.builder().setItems(userHolder.getADUsers());
                 return Boolean.TRUE;
             }
@@ -326,6 +322,7 @@ public class MainWindowController extends AnchorPane {
         sync.setOnFailed(workerStateEvent -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(sync.getException().toString());
+            System.out.println(sync.getException());
             alert.showAndWait();
             this.prgList.setVisible(false);
         });
@@ -479,19 +476,23 @@ public class MainWindowController extends AnchorPane {
         txtfActSn.setText(adUser.getSn());
         txtfActMail.setText(adUser.getEmail());
         txtfActDispN.setText(adUser.getDisplayName());
-
         txtfActPos.setText(adUser.getPosition());
-            //txtfActInitpass.setText(userDetail.getInitMailPass());
 
         //city
         Office office = adUser.getOffice();
         if(office != null) {
-            txtfActCtName.setText(office.getLocation());
+            txtfActCtName.setText(office.getName());
+            txtfActCtName_2.setText(office.getName2());
+            txtfActCtLocation.setText(office.getLocation());
+            txtfActCtLocation_2.setText(office.getLocation2());
+            txtfActCtPostalcode.setText(office.getPostalcode());
+            txtfActCtLandline.setText(office.getLandline());
             txtfActCtPhone.setText(office.getPhonenumber());
             txtfActCtFax.setText(office.getFax());
         }
         //phone
         txtfActPhNumber.setText(adUser.getPhoneNumber());
+        txtfActUsrLandLine.setText(adUser.getLandLineNumber());
 
     }
 
@@ -548,7 +549,7 @@ public class MainWindowController extends AnchorPane {
 
     public void buildPasswordStorageInterface(UserDetail_n userDetail) {
         Map<String, Object> storage = userDetail.getStorage();
-        System.out.println(sidebarGrid.getRowCount());
+        System.out.println(storage);
 
         if(storage != null){
             storage.forEach((k, v) -> {

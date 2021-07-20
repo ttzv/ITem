@@ -120,7 +120,7 @@ public class UserHolder {
         return this;
     }
 
-    public void appendADUsers(List<ADUser_n> adUsers){
+    public void setADUsers(List<ADUser_n> adUsers){
         storedADUsers.clear();
         storedADUsers.addAll(adUsers);
     }
