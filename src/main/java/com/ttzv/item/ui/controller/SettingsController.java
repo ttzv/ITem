@@ -36,6 +36,12 @@ public class SettingsController extends AnchorPane {
     private UiObjectsWrapper uiObjectsWrapper;
 
     @FXML
+    public Button btnAcceptDbSettings;
+
+    @FXML
+    public CheckBox cbxDbEmbed;
+
+    @FXML
     private TitledBorder containerMailSett;
 
     @FXML
@@ -179,18 +185,10 @@ public class SettingsController extends AnchorPane {
         }
 
         String tlsSetting = AppConfiguration.retrieveProp(Cfg.SMTP_TLS);
-        if(tlsSetting.equals("true")){
-            this.cbxTls.setSelected(true);
-        } else {
-            this.cbxTls.setSelected(false);
-        }
+        this.cbxTls.setSelected(tlsSetting.equals("true"));
 
         String remCbxSetting = AppConfiguration.retrieveProp("SettSaveCbx");
-        if(remCbxSetting.equals("true")){
-            this.cbxRemember.setSelected(true);
-        } else {
-            this.cbxRemember.setSelected(false);
-        }
+        this.cbxRemember.setSelected(remCbxSetting.equals("true"));
 
         //ldap
         this.fieldLdapUrl.setText(AppConfiguration.retrieveProp(Cfg.LDAP_URL));
@@ -203,27 +201,21 @@ public class SettingsController extends AnchorPane {
             this.fieldLdapPass.setText(new String(PHolder.ldap));
         }
         String remCbxLdapSetting = AppConfiguration.retrieveProp("SettSaveLdapCbx");
-        if(remCbxLdapSetting.equals("true")){
-            this.cbxRememberLdap.setSelected(true);
-        } else {
-            this.cbxRememberLdap.setSelected(false);
-        }
+        this.cbxRememberLdap.setSelected(remCbxLdapSetting.equals("true"));
 
         //db
+        String dbUseEmbedded = AppConfiguration.retrieveProp(Cfg.DB_EMBEDDED);
+        this.cbxDbEmbed.setSelected(dbUseEmbedded.equals("true"));
         this.fieldDbUrl.setText(AppConfiguration.retrieveProp(Cfg.DB_URL));
         this.fieldDbLogin.setText(AppConfiguration.retrieveProp(Cfg.DB_LOGIN));
-
+        updateDbControlsState();
         this.cDb = new Crypt("dCr");
         if(this.cDb.exists()){
             PHolder.db = cDb.read();
             this.fieldDbPass.setText(new String(PHolder.db));
         }
         String remCbxDbSetting = AppConfiguration.retrieveProp("SettSaveDbCbx");
-        if(remCbxDbSetting.equals("true")){
-            this.cbxRememberDb.setSelected(true);
-        } else {
-            this.cbxRememberDb.setSelected(false);
-        }
+        this.cbxRememberDb.setSelected(remCbxDbSetting.equals("true"));
 
         resetMailIndicators();
         resetLdapIndicators();
@@ -231,25 +223,13 @@ public class SettingsController extends AnchorPane {
         resetSmsIndicators();
 
         String savePassSetting = AppConfiguration.retrieveProp(Cfg.SAVEPASS);
-        if(savePassSetting.equals("true")){
-            this.cBoxAutoMailSavePass.setSelected(true);
-        } else {
-            this.cBoxAutoMailSavePass.setSelected(false);
-        }
+        this.cBoxAutoMailSavePass.setSelected(savePassSetting.equals("true"));
 
         String autoFillLogin = AppConfiguration.retrieveProp(Cfg.AUTOFILL_LOGIN);
-        if(autoFillLogin.equals("true")){
-            this.cBoxAutoFillLogin.setSelected(true);
-        } else {
-            this.cBoxAutoFillLogin.setSelected(false);
-        }
+        this.cBoxAutoFillLogin.setSelected(autoFillLogin.equals("true"));
 
         String alwaysOpenDir = AppConfiguration.retrieveProp(Cfg.DIR_ALWAYSOPEN);
-        if(alwaysOpenDir.equals("true")){
-            this.cBoxAlwaysOpenDir.setSelected(true);
-        } else {
-            this.cBoxAlwaysOpenDir.setSelected(false);
-        }
+        this.cBoxAlwaysOpenDir.setSelected(alwaysOpenDir.equals("true"));
 
         this.txtfUserRegex.setText(AppConfiguration.retrieveProp(Cfg.USER_REGEX));
         this.txtfLoginRegex.setText(AppConfiguration.retrieveProp(Cfg.LOGIN_REGEX));
@@ -426,28 +406,31 @@ public class SettingsController extends AnchorPane {
 
     private void btnDbPerformAction(boolean noStore) throws IOException {
         Cfg cfg = AppConfiguration;
-
-        cfg.setProperty(Cfg.DB_URL, this.fieldDbUrl.getText());
-        cfg.setProperty(Cfg.DB_LOGIN, this.fieldDbLogin.getText());
-        if(this.cbxRememberDb.isSelected()) {
-            try {
-                cDb.safeStore(this.fieldDbPass.getText());
-            } catch (GeneralSecurityException e) {
-                e.printStackTrace();
-            }
-            cfg.setProperty("SettSaveDbCbx", "true");
+        if(cbxDbEmbed.isSelected()){
+            cfg.setProperty(Cfg.DB_EMBEDDED, "true");
         } else {
-            cfg.setProperty("SettSaveDbCbx", "false");
-            cDb.erase();
+            cfg.setProperty(Cfg.DB_EMBEDDED, "false");
+            cfg.setProperty(Cfg.DB_URL, this.fieldDbUrl.getText());
+            cfg.setProperty(Cfg.DB_LOGIN, this.fieldDbLogin.getText());
+            if(this.cbxRememberDb.isSelected()) {
+                try {
+                    cDb.safeStore(this.fieldDbPass.getText());
+                } catch (GeneralSecurityException e) {
+                    e.printStackTrace();
+                }
+                cfg.setProperty("SettSaveDbCbx", "true");
+            } else {
+                cfg.setProperty("SettSaveDbCbx", "false");
+                cDb.erase();
+            }
+
+            PHolder.db = this.fieldDbPass.getText().toCharArray();
+            testDBCredentials();
         }
-
-        PHolder.db = this.fieldDbPass.getText().toCharArray();
-
         if(!noStore) {
             cfg.saveFile();
         }
 
-        testDBCredentials();
 
     }
 
@@ -669,8 +652,15 @@ public class SettingsController extends AnchorPane {
 
     }
 
+    public void cbxEmbedDbActionEvent(ActionEvent actionEvent) {
+        updateDbControlsState();
+    }
 
-
-
-
+    private void updateDbControlsState(){
+        boolean selected = cbxDbEmbed.isSelected();
+        fieldDbUrl.setDisable(selected);
+        fieldDbLogin.setDisable(selected);
+        fieldDbPass.setDisable(selected);
+        cbxRememberDb.setDisable(selected);
+    }
 }

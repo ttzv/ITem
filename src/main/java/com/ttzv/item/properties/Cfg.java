@@ -24,6 +24,7 @@ package com.ttzv.item.properties;
      public static final String LDAP_ACC = "ldapAcc";
      public static final String LDAP_SEARCH_BASE = "searchBase";
      //db
+     public static final String DB_EMBEDDED = "dbUseEmbedded";
      public static final String DB_URL = "dbUrl";
      public static final String DB_LOGIN = "dbLogin";
      public static final String DB_USER_QTY = "dbLoadedUserQuantity";
@@ -48,10 +49,6 @@ package com.ttzv.item.properties;
      public static final String SMSAPI_SENDER = "smsApiSenderName";
      public static final String SMSAPI_KEY = "smsApiKey";
 
-
-
-
-
      @Override
      public void defaultPropsVals() {
          defPropSet(APP_NAME, "ITem");
@@ -62,6 +59,7 @@ package com.ttzv.item.properties;
          defPropSet(PASS_GEN_PATTERN, "WWNS");
          defPropSet(LTF_NAME_ONLY, "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ-]*|\\s|[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*\\s+[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ-]*");
          defPropSet(LTF_RESTRICT_SYMBOLS, "[A-Za-z]*|\\.|\\d|[A-Za-z]+\\.\\w+|[-]");
+         defPropSet(DB_EMBEDDED, "true");
      }
 
      public static Cfg getInstance(){

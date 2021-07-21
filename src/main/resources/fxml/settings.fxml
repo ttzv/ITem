@@ -24,7 +24,7 @@
 <?import ttzv.uiUtils.LimitableTextField?>
 <?import ttzv.uiUtils.TitledBorder?>
 
-<AnchorPane prefHeight="660.0" prefWidth="900.0" fx:controller="com.ttzv.item.ui.controller.SettingsController" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="660.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ttzv.item.ui.controller.SettingsController">
    <children>
       <TabPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <tabs>
@@ -237,9 +237,9 @@
                                           </GridPane>
                                        </children>
                                     </TitledBorder>
-                                    <TitledBorder fx:id="containerDbSett" prefHeight="199.0" prefWidth="476.0" stylesheets="@../style/style_titledborder.css" title="%sett_dbdetails">
+                                    <TitledBorder fx:id="containerDbSett" prefHeight="230.0" prefWidth="472.0" stylesheets="@../style/style_titledborder.css" title="%sett_dbdetails">
                                        <children>
-                                          <GridPane maxWidth="1.7976931348623157E308">
+                                          <GridPane maxWidth="1.7976931348623157E308" prefHeight="158.0" prefWidth="441.0">
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="0.0" prefWidth="154.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="342.0" minWidth="10.0" prefWidth="188.0" />
@@ -250,20 +250,21 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
-                                                <Label text="%sett_dblogin" GridPane.rowIndex="1" />
-                                                <Label text="%sett_dbpass" GridPane.rowIndex="2" />
-                                                <Label text="URL" />
-                                                <TextField fx:id="fieldDbUrl" GridPane.columnIndex="1" />
-                                                <TextField fx:id="fieldDbLogin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <PasswordField fx:id="fieldDbPass" prefHeight="25.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <HBox spacing="20.0" GridPane.rowIndex="4">
+                                                <Label text="%sett_dblogin" GridPane.rowIndex="2" />
+                                                <Label text="%sett_dbpass" GridPane.rowIndex="3" />
+                                                <Label text="URL" GridPane.rowIndex="1" />
+                                                <TextField fx:id="fieldDbUrl" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="fieldDbLogin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <PasswordField fx:id="fieldDbPass" prefHeight="25.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <HBox spacing="20.0" GridPane.rowIndex="5">
                                                    <children>
-                                                      <Button alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptDbSettingsEvent" text="%sett_testconandsave" />
+                                                      <Button fx:id="btnAcceptDbSettings" alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptDbSettingsEvent" text="%sett_testconandsave" />
                                                    </children>
                                                 </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                    <children>
                                                       <Label text="%sett_rememberpass" />
                                                       <CheckBox fx:id="cbxRememberDb" mnemonicParsing="false" />
@@ -272,9 +273,9 @@
                                                       <Insets top="8.0" />
                                                    </padding>
                                                 </HBox>
-                                                <Label text="Sterownik" visible="false" GridPane.rowIndex="3" />
-                                                <ComboBox fx:id="cBoxDbDriverList" prefWidth="150.0" promptText="PostgreSQL" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <StackPane alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="30.0" GridPane.rowIndex="3">
+                                                <Label text="Sterownik" visible="false" GridPane.rowIndex="4" />
+                                                <ComboBox fx:id="cBoxDbDriverList" prefWidth="150.0" promptText="PostgreSQL" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <StackPane alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="30.0" GridPane.rowIndex="4">
                                                    <children>
                                                       <ImageView fx:id="okImgDb" fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -284,6 +285,7 @@
                                                       <ProgressIndicator fx:id="prgDb" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="30.0" visible="false" />
                                                    </children>
                                                 </StackPane>
+                                                <CheckBox fx:id="cbxDbEmbed" mnemonicParsing="false" onAction="#cbxEmbedDbActionEvent" text="%sett_dbembed" />
                                              </children>
                                              <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
