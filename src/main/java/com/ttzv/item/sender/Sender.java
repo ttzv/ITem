@@ -8,10 +8,13 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.MimeMessage;
 import javafx.scene.control.Alert;
 
+
 import java.util.Date;
 import java.util.Properties;
 
 public class Sender {
+
+    private final Cfg AppConfiguration = Cfg.getInstance();
 
     private Session session;
     private Transport transport;
@@ -37,11 +40,10 @@ public class Sender {
     public Sender() {
 
         //data parsed from properties.
-        smtpHost = Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST);
-        smtpStartTLS = Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS);
-        smtpPort = Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT);
-        senderAddress = Cfg.getInstance().retrieveProp(Cfg.SMTP_LOGIN);
-
+        smtpHost = AppConfiguration.retrieveProp(Cfg.SMTP_HOST);
+        smtpStartTLS = AppConfiguration.retrieveProp(Cfg.SMTP_TLS);
+        smtpPort = AppConfiguration.retrieveProp(Cfg.SMTP_PORT);
+        senderAddress = AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN);
 
         receiverAddress = "";
         msgSubject = "";
@@ -50,8 +52,6 @@ public class Sender {
         addressSuffix = "";
 
         this.validConn = false;
-
-
     }
 
     public void initSession() {

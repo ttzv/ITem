@@ -8,6 +8,7 @@ module com.ttzv.item {
     requires java.desktop;
     requires jdk.charsets;
     requires jakarta.mail;
+    requires jakarta.activation;
     requires org.update4j;
     requires ttzv.uiUtils;
     requires com.fasterxml.jackson.core;

@@ -30,6 +30,8 @@ import java.util.Map;
 
 public class MailerController extends AnchorPane {
 
+    private final Cfg AppConfiguration = Cfg.getInstance();
+
     private TabBuilder tabBuilder;
     private Sender sender;
 
@@ -66,7 +68,7 @@ public class MailerController extends AnchorPane {
     @FXML
     void btnPassGenerate(ActionEvent event) {
         String generatedString = "";
-        String passConfig = Cfg.getInstance().retrieveProp(Cfg.PASS_GEN_METHOD);
+        String passConfig = AppConfiguration.retrieveProp(Cfg.PASS_GEN_METHOD);
         if(passConfig.equals(Cfg.PROPERTY_PASS_RANDOM)) {
             PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
                     .useDigits(true)
@@ -75,7 +77,7 @@ public class MailerController extends AnchorPane {
                     .usePunctuation(true).build();
             generatedString = passwordGenerator.generate(8);
         } else if(passConfig.equals(Cfg.PROPERTY_PASS_PATTERN)) {
-            WordListPasswordGenerator wordListPasswordGenerator = new WordListPasswordGenerator(Cfg.getInstance().retrieveProp(Cfg.PASS_GEN_PATTERN));
+            WordListPasswordGenerator wordListPasswordGenerator = new WordListPasswordGenerator(AppConfiguration.retrieveProp(Cfg.PASS_GEN_PATTERN));
             try {
                 generatedString = wordListPasswordGenerator.getGeneratedString();
             } catch (IOException e) {
@@ -89,29 +91,29 @@ public class MailerController extends AnchorPane {
     @FXML
     void btnSendAction(ActionEvent event) {
 
-//        sender.setSmtpHost(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
-//        sender.setSmtpPort(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
-//        sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
-//
-//        sender.setSenderPassword(PHolder.mail);
-//
-//        sender.setSenderAddress(Cfg.getInstance().retrieveProp(Cfg.SMTP_LOGIN));
-//
-//        sender.validate();
-//        sender.initSession();
-//
-//        sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
-//        try {
-//            sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        sender.sendMail();
+        sender.setSmtpHost(AppConfiguration.retrieveProp(Cfg.SMTP_HOST));
+        sender.setSmtpPort(AppConfiguration.retrieveProp(Cfg.SMTP_PORT));
+        sender.setSmtpStartTLS(AppConfiguration.retrieveProp(Cfg.SMTP_TLS));
+
+        sender.setSenderPassword(PHolder.mail);
+
+        sender.setSenderAddress(AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN));
+
+        sender.validate();
+        sender.initSession();
+
+        sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
+        try {
+            sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        sender.sendMail();
 
         String statusText = "Wysłano do " + this.sender.getReceiverAddress();
 
-        String savePass = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
+        String savePass = AppConfiguration.retrieveProp(Cfg.SAVEPASS);
         if(!this.txtPass.getText().isBlank() && savePass.equals("true")) {
             String name = tabBuilder.getSelectedTab()
                     .getName()
@@ -226,18 +228,18 @@ public class MailerController extends AnchorPane {
     }
 
     public void configureTextFilters() {
-        String userRegex = Cfg.getInstance().retrieveProp(Cfg.USER_REGEX);
+        String userRegex = AppConfiguration.retrieveProp(Cfg.USER_REGEX);
         if (userRegex.isEmpty()) {
-            this.txtUser.setRegexFilter(Cfg.getInstance().retrieveProp(Cfg.LTF_NAME_ONLY));
+            this.txtUser.setRegexFilter(AppConfiguration.retrieveProp(Cfg.LTF_NAME_ONLY));
         } else {
             this.txtUser.setRegexFilter(userRegex);
         }
 
-        String loginRegex = Cfg.getInstance().retrieveProp(Cfg.LOGIN_REGEX);
+        String loginRegex = AppConfiguration.retrieveProp(Cfg.LOGIN_REGEX);
         if(!loginRegex.isEmpty()) {
             this.txtLog.setRegexFilter(loginRegex);
         } else {
-            this.txtLog.setRegexFilter(Cfg.getInstance().retrieveProp(Cfg.LTF_RESTRICT_SYMBOLS));
+            this.txtLog.setRegexFilter(AppConfiguration.retrieveProp(Cfg.LTF_RESTRICT_SYMBOLS));
         }
     }
 
@@ -288,7 +290,7 @@ public class MailerController extends AnchorPane {
     public void userFieldEvent(){
         this.txtUser.textProperty().addListener((observable, oldValue, newValue) -> {
             String fInput = Utility.reformatUserInput(newValue);
-            if(Cfg.getInstance().retrieveProp(Cfg.AUTOFILL_LOGIN).equals("true")) {
+            if(AppConfiguration.retrieveProp(Cfg.AUTOFILL_LOGIN).equals("true")) {
                 this.txtLog.setText(fInput);
             }
             this.sender.setAddressPrefix(fInput);

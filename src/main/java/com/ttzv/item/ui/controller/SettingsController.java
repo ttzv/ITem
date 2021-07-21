@@ -27,6 +27,8 @@ import java.util.ResourceBundle;
 
 public class SettingsController extends AnchorPane {
 
+    private final Cfg AppConfiguration = Cfg.getInstance();
+
     private Crypt cMail;
     private Crypt cLdap;
     private Crypt cDb;
@@ -166,9 +168,9 @@ public class SettingsController extends AnchorPane {
     public void initialize() throws IOException, GeneralSecurityException {
 
         //mail
-        this.fieldHost.setText(Cfg.getInstance().retrieveProp(Cfg.SMTP_HOST));
-        this.fieldPort.setText(Cfg.getInstance().retrieveProp(Cfg.SMTP_PORT));
-        this.fieldLogin.setText(Cfg.getInstance().retrieveProp(Cfg.SMTP_LOGIN));
+        this.fieldHost.setText(AppConfiguration.retrieveProp(Cfg.SMTP_HOST));
+        this.fieldPort.setText(AppConfiguration.retrieveProp(Cfg.SMTP_PORT));
+        this.fieldLogin.setText(AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN));
 
         this.cMail = new Crypt("mCr");
         if(this.cMail.exists()){
@@ -176,14 +178,14 @@ public class SettingsController extends AnchorPane {
             this.fieldPass.setText(new String(PHolder.mail));
         }
 
-        String tlsSetting = Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS);
+        String tlsSetting = AppConfiguration.retrieveProp(Cfg.SMTP_TLS);
         if(tlsSetting.equals("true")){
             this.cbxTls.setSelected(true);
         } else {
             this.cbxTls.setSelected(false);
         }
 
-        String remCbxSetting = Cfg.getInstance().retrieveProp("SettSaveCbx");
+        String remCbxSetting = AppConfiguration.retrieveProp("SettSaveCbx");
         if(remCbxSetting.equals("true")){
             this.cbxRemember.setSelected(true);
         } else {
@@ -191,16 +193,16 @@ public class SettingsController extends AnchorPane {
         }
 
         //ldap
-        this.fieldLdapUrl.setText(Cfg.getInstance().retrieveProp(Cfg.LDAP_URL));
-        this.fieldLdapPort.setText(Cfg.getInstance().retrieveProp(Cfg.LDAP_PORT));
-        this.fieldLdapAcc.setText(Cfg.getInstance().retrieveProp(Cfg.LDAP_ACC));
+        this.fieldLdapUrl.setText(AppConfiguration.retrieveProp(Cfg.LDAP_URL));
+        this.fieldLdapPort.setText(AppConfiguration.retrieveProp(Cfg.LDAP_PORT));
+        this.fieldLdapAcc.setText(AppConfiguration.retrieveProp(Cfg.LDAP_ACC));
 
         this.cLdap = new Crypt("lCr");
         if(this.cLdap.exists()){
             PHolder.ldap = cLdap.read();
             this.fieldLdapPass.setText(new String(PHolder.ldap));
         }
-        String remCbxLdapSetting = Cfg.getInstance().retrieveProp("SettSaveLdapCbx");
+        String remCbxLdapSetting = AppConfiguration.retrieveProp("SettSaveLdapCbx");
         if(remCbxLdapSetting.equals("true")){
             this.cbxRememberLdap.setSelected(true);
         } else {
@@ -208,15 +210,15 @@ public class SettingsController extends AnchorPane {
         }
 
         //db
-        this.fieldDbUrl.setText(Cfg.getInstance().retrieveProp(Cfg.DB_URL));
-        this.fieldDbLogin.setText(Cfg.getInstance().retrieveProp(Cfg.DB_LOGIN));
+        this.fieldDbUrl.setText(AppConfiguration.retrieveProp(Cfg.DB_URL));
+        this.fieldDbLogin.setText(AppConfiguration.retrieveProp(Cfg.DB_LOGIN));
 
         this.cDb = new Crypt("dCr");
         if(this.cDb.exists()){
             PHolder.db = cDb.read();
             this.fieldDbPass.setText(new String(PHolder.db));
         }
-        String remCbxDbSetting = Cfg.getInstance().retrieveProp("SettSaveDbCbx");
+        String remCbxDbSetting = AppConfiguration.retrieveProp("SettSaveDbCbx");
         if(remCbxDbSetting.equals("true")){
             this.cbxRememberDb.setSelected(true);
         } else {
@@ -228,29 +230,29 @@ public class SettingsController extends AnchorPane {
         resetDbIndicators();
         resetSmsIndicators();
 
-        String savePassSetting = Cfg.getInstance().retrieveProp(Cfg.SAVEPASS);
+        String savePassSetting = AppConfiguration.retrieveProp(Cfg.SAVEPASS);
         if(savePassSetting.equals("true")){
             this.cBoxAutoMailSavePass.setSelected(true);
         } else {
             this.cBoxAutoMailSavePass.setSelected(false);
         }
 
-        String autoFillLogin = Cfg.getInstance().retrieveProp(Cfg.AUTOFILL_LOGIN);
+        String autoFillLogin = AppConfiguration.retrieveProp(Cfg.AUTOFILL_LOGIN);
         if(autoFillLogin.equals("true")){
             this.cBoxAutoFillLogin.setSelected(true);
         } else {
             this.cBoxAutoFillLogin.setSelected(false);
         }
 
-        String alwaysOpenDir = Cfg.getInstance().retrieveProp(Cfg.DIR_ALWAYSOPEN);
+        String alwaysOpenDir = AppConfiguration.retrieveProp(Cfg.DIR_ALWAYSOPEN);
         if(alwaysOpenDir.equals("true")){
             this.cBoxAlwaysOpenDir.setSelected(true);
         } else {
             this.cBoxAlwaysOpenDir.setSelected(false);
         }
 
-        this.txtfUserRegex.setText(Cfg.getInstance().retrieveProp(Cfg.USER_REGEX));
-        this.txtfLoginRegex.setText(Cfg.getInstance().retrieveProp(Cfg.LOGIN_REGEX));
+        this.txtfUserRegex.setText(AppConfiguration.retrieveProp(Cfg.USER_REGEX));
+        this.txtfLoginRegex.setText(AppConfiguration.retrieveProp(Cfg.LOGIN_REGEX));
 
         //password generator settings
 
@@ -273,18 +275,18 @@ public class SettingsController extends AnchorPane {
                 this.txtfPassPattern.setDisable(isDisabled);
                 this.btnDefaultPassPattern.setDisable(isDisabled);
                 if(isDisabled){
-                    Cfg.getInstance().setProperty(Cfg.PASS_GEN_METHOD, Cfg.PROPERTY_PASS_RANDOM);
+                    AppConfiguration.setProperty(Cfg.PASS_GEN_METHOD, Cfg.PROPERTY_PASS_RANDOM);
                 } else {
-                    Cfg.getInstance().setProperty(Cfg.PASS_GEN_METHOD, Cfg.PROPERTY_PASS_PATTERN);
+                    AppConfiguration.setProperty(Cfg.PASS_GEN_METHOD, Cfg.PROPERTY_PASS_PATTERN);
                 }
             try {
-                Cfg.getInstance().saveFile();
+                AppConfiguration.saveFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
 
-        String passGenMethod = Cfg.getInstance().retrieveProp(Cfg.PASS_GEN_METHOD);
+        String passGenMethod = AppConfiguration.retrieveProp(Cfg.PASS_GEN_METHOD);
         if(passGenMethod.equals(Cfg.PROPERTY_PASS_PATTERN)){
             rbPassWords.setSelected(true);
         } else {
@@ -294,19 +296,19 @@ public class SettingsController extends AnchorPane {
         this.txtfPassPattern.focusedProperty().addListener((observable, oldValue, newValue) -> {
             String text = this.txtfPassPattern.getText();
             if(!text.isEmpty()){
-                Cfg.getInstance().setProperty(Cfg.PASS_GEN_PATTERN, text);
+                AppConfiguration.setProperty(Cfg.PASS_GEN_PATTERN, text);
             }
         });
 
         //sms
-        this.txtf_smsLogin.setText(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN));
-        this.txtf_smsSenderName.setText(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_SENDER));
+        this.txtf_smsLogin.setText(AppConfiguration.retrieveProp(Cfg.SMSAPI_LOGIN));
+        this.txtf_smsSenderName.setText(AppConfiguration.retrieveProp(Cfg.SMSAPI_SENDER));
 
         this.cSms = new Crypt("sCr");
         if(this.cSms.exists()){
             this.pwdf_smsPassword.setText(new String(cSms.read()));
         }
-        String remSmsSettings = Cfg.getInstance().retrieveProp("SettSaveSmsCbx");
+        String remSmsSettings = AppConfiguration.retrieveProp("SettSaveSmsCbx");
         this.checkBox_rememberSmsPass.setSelected(remSmsSettings.equals("true"));
 
     }
@@ -329,13 +331,13 @@ public class SettingsController extends AnchorPane {
     @FXML
     void btnAcceptMiscSettingsEvent(ActionEvent event) throws IOException {
         btnMiscPerformAction();
-        Cfg.getInstance().saveFile();
+        AppConfiguration.saveFile();
     }
 
     @FXML
     void btnA_saveSmsSett(ActionEvent event) throws IOException {
         btnSmsPerformAction(false);
-        Cfg.getInstance().saveFile();
+        AppConfiguration.saveFile();
     }
 
     @FXML
@@ -346,13 +348,13 @@ public class SettingsController extends AnchorPane {
         btnSmsPerformAction(true);
         btnMiscPerformAction();
 
-        Cfg.getInstance().saveFile();
+        AppConfiguration.saveFile();
     }
 
 
 
     private void btnMailPerformAction(boolean noStore) throws IOException {
-        Cfg cfg = Cfg.getInstance();
+        Cfg cfg = AppConfiguration;
 
         cfg.setProperty(Cfg.SMTP_HOST, this.fieldHost.getText());
         cfg.setProperty(Cfg.SMTP_PORT, this.fieldPort.getText());
@@ -394,7 +396,7 @@ public class SettingsController extends AnchorPane {
     }
 
     private void btnLdapPerformAction(boolean noStore) throws IOException{
-        Cfg cfg = Cfg.getInstance();
+        Cfg cfg = AppConfiguration;
 
         cfg.setProperty(Cfg.LDAP_URL, this.fieldLdapUrl.getText());
         cfg.setProperty(Cfg.LDAP_PORT, this.fieldLdapPort.getText());
@@ -423,7 +425,7 @@ public class SettingsController extends AnchorPane {
     }
 
     private void btnDbPerformAction(boolean noStore) throws IOException {
-        Cfg cfg = Cfg.getInstance();
+        Cfg cfg = AppConfiguration;
 
         cfg.setProperty(Cfg.DB_URL, this.fieldDbUrl.getText());
         cfg.setProperty(Cfg.DB_LOGIN, this.fieldDbLogin.getText());
@@ -451,29 +453,29 @@ public class SettingsController extends AnchorPane {
 
     private void btnMiscPerformAction() {
         if(cBoxAutoMailSavePass.isSelected()){
-            Cfg.getInstance().setProperty(Cfg.SAVEPASS, "true");
+            AppConfiguration.setProperty(Cfg.SAVEPASS, "true");
         } else {
-            Cfg.getInstance().setProperty(Cfg.SAVEPASS, "false");
+            AppConfiguration.setProperty(Cfg.SAVEPASS, "false");
         }
 
         if(cBoxAutoFillLogin.isSelected()){
-            Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "true");
+            AppConfiguration.setProperty(Cfg.AUTOFILL_LOGIN, "true");
         } else {
-            Cfg.getInstance().setProperty(Cfg.AUTOFILL_LOGIN, "false");
+            AppConfiguration.setProperty(Cfg.AUTOFILL_LOGIN, "false");
         }
 
         if(cBoxAlwaysOpenDir.isSelected()){
-            Cfg.getInstance().setProperty(Cfg.DIR_ALWAYSOPEN, "true");
+            AppConfiguration.setProperty(Cfg.DIR_ALWAYSOPEN, "true");
         } else {
-            Cfg.getInstance().setProperty(Cfg.DIR_ALWAYSOPEN, "false");
+            AppConfiguration.setProperty(Cfg.DIR_ALWAYSOPEN, "false");
         }
 
         if (!this.txtfUserRegex.getText().isEmpty()){
-            Cfg.getInstance().setProperty(Cfg.USER_REGEX, this.txtfUserRegex.getText());
+            AppConfiguration.setProperty(Cfg.USER_REGEX, this.txtfUserRegex.getText());
         }
 
         if (!this.txtfLoginRegex.getText().isEmpty()){
-            Cfg.getInstance().setProperty(Cfg.LOGIN_REGEX, this.txtfLoginRegex.getText());
+            AppConfiguration.setProperty(Cfg.LOGIN_REGEX, this.txtfLoginRegex.getText());
         }
 
         //MailerController mailerController = (MailerController) uiObjectsWrapper.retrieveObject(uiObjectsWrapper.MailerWindow);
@@ -483,7 +485,7 @@ public class SettingsController extends AnchorPane {
     }
 
     private void btnSmsPerformAction(boolean noStore) throws IOException {
-        Cfg cfg = Cfg.getInstance();
+        Cfg cfg = AppConfiguration;
 
         cfg.setProperty(Cfg.SMSAPI_LOGIN, this.txtf_smsLogin.getText());
         cfg.setProperty(Cfg.SMSAPI_SENDER, this.txtf_smsSenderName.getText());
@@ -516,7 +518,7 @@ public class SettingsController extends AnchorPane {
             sender.setSenderPassword(PHolder.mail);
             sender.setSmtpHost(fieldHost.getText());
             sender.setSmtpPort(fieldPort.getText());
-            sender.setSmtpStartTLS(Cfg.getInstance().retrieveProp(Cfg.SMTP_TLS));
+            sender.setSmtpStartTLS(AppConfiguration.retrieveProp(Cfg.SMTP_TLS));
             sender.initSession();
             sender.initConnection();
             return Boolean.TRUE;
