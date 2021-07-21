@@ -32,4 +32,13 @@ public class OfficeDaoImpl implements OfficeDAO{
         t.commit();
         session.close();
     }
+
+    @Override
+    public void updateOffice(Office office) {
+        Session session = DbSession.openSession();
+        Transaction t = session.beginTransaction();
+        session.update(office);
+        t.commit();
+        session.close();
+    }
 }

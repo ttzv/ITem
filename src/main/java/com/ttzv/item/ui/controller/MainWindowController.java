@@ -249,7 +249,25 @@ public class MainWindowController extends AnchorPane {
         adUser.setEmail(txtfActMail.getText());
 
         userDetail.setLandlineNumber(txtfActUsrLandLine.getText());
-        userDetail.setOffice(cbox_Offices.getValue());
+        Office selectedOffice;
+        if (cbox_Offices.getSelectionModel().getSelectedItem() != null && cbox_Offices.getSelectionModel().getSelectedItem().getName() == null){
+            selectedOffice = createOffice();
+        } else {
+            selectedOffice = cbox_Offices.getValue();
+        }
+        if (selectedOffice != null) {
+            userDetail.setOffice(selectedOffice);
+            selectedOffice.setName(txtfActCtName.getText());
+            selectedOffice.setName2(txtfActCtName_2.getText());
+            selectedOffice.setLocation(txtfActCtLocation.getText());
+            selectedOffice.setLocation2(txtfActCtLocation_2.getText());
+            selectedOffice.setPostalcode(txtfActCtPostalcode.getText());
+            selectedOffice.setLandline(txtfActCtLandline.getText());
+            selectedOffice.setPhonenumber(txtfActCtPhone.getText());
+            selectedOffice.setFax(txtfActCtFax.getText());
+            officeService.updateOffice(selectedOffice);
+        }
+
         userDetail.setPhoneNumber(txtfActPhNumber.getText());
         userDetail.setLandlineNumber(txtfActUsrLandLine.getText());
 
@@ -262,14 +280,12 @@ public class MainWindowController extends AnchorPane {
         });
         userDetail.setStorage(newStorage);
 
-        if (cbox_Offices.getSelectionModel().getSelectedItem() != null && cbox_Offices.getSelectionModel().getSelectedItem().getName() == null){
-            createOffice();
-        }
+
 
         adUserService.updateADUser(adUser);
     }
 
-    private void createOffice(){
+    private Office createOffice(){
         Office office = new Office();
         office.setName(txtfActCtName.getText());
         office.setName2(txtfActCtName_2.getText());
@@ -279,8 +295,15 @@ public class MainWindowController extends AnchorPane {
         office.setLandline(txtfActCtLandline.getText());
         office.setPhonenumber(txtfActCtPhone.getText());
         office.setFax(txtfActCtFax.getText());
-        officeService.saveOffice(office);
-        cbox_Offices.getItems().add(0, office);
+        if(office.getName() != null){
+            officeService.saveOffice(office);
+            cbox_Offices.getItems().add(0, office);
+            return office;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Cannot create an Office without a name.");
+        }
+        return null;
     }
 
     @FXML
@@ -469,7 +492,7 @@ public class MainWindowController extends AnchorPane {
     }
 
     private void setTxtfActValues(){
-        ADUser_n adUser= userHolder.getCurrentUser();
+        ADUser_n adUser = userHolder.getCurrentUser();
 
         txtfActLogin.setText(adUser.getSAMAccountName());
         txtfActName.setText(adUser.getGivenName());
@@ -537,14 +560,16 @@ public class MainWindowController extends AnchorPane {
         System.out.println(cbox_Offices.getValue());
 
         Office selectedOffice = cbox_Offices.getValue();
-        txtfActCtName.setText(selectedOffice.getName());
-        txtfActCtName_2.setText(selectedOffice.getName2());
-        txtfActCtLocation.setText(selectedOffice.getLocation());
-        txtfActCtLocation_2.setText(selectedOffice.getLocation2());
-        txtfActCtPostalcode.setText(selectedOffice.getPostalcode());
-        txtfActCtLandline.setText(selectedOffice.getLandline());
-        txtfActCtPhone.setText(selectedOffice.getPhonenumber());
-        txtfActCtFax.setText(selectedOffice.getFax());
+        if(selectedOffice != null) {
+            txtfActCtName.setText(selectedOffice.getName());
+            txtfActCtName_2.setText(selectedOffice.getName2());
+            txtfActCtLocation.setText(selectedOffice.getLocation());
+            txtfActCtLocation_2.setText(selectedOffice.getLocation2());
+            txtfActCtPostalcode.setText(selectedOffice.getPostalcode());
+            txtfActCtLandline.setText(selectedOffice.getLandline());
+            txtfActCtPhone.setText(selectedOffice.getPhonenumber());
+            txtfActCtFax.setText(selectedOffice.getFax());
+        }
     }
 
     public void buildPasswordStorageInterface(UserDetail_n userDetail) {
@@ -573,6 +598,10 @@ public class MainWindowController extends AnchorPane {
             dialog.getDialogPane().getButtonTypes().add(ButtonType.NO);
             Optional<ButtonType> result = dialog.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
+                selectedOffice.getUserDetails().forEach(detail -> {
+                    detail.setOffice(null);
+                    adUserService.updateADUser(detail.getAdUser()); //todo ugh
+                });
                 officeService.deleteOffice(selectedOffice);
                 cbox_Offices.getItems().remove(selectedOffice);
             }

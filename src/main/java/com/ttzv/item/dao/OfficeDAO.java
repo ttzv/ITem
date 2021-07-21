@@ -9,4 +9,6 @@ public interface OfficeDAO {
     List<Office> getOffices();
     void saveOffice(Office office);
     void deleteOffice(Office office);
+
+    void updateOffice(Office office);
 }
