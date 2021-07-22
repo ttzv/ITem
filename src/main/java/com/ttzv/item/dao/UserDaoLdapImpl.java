@@ -33,7 +33,7 @@ public class UserDaoLdapImpl implements EntityDAO<ADUser> {
         ldapParser.closeContext();//redundancy with method getResults() to check connection when creating dao.
     }
 
-    public List<List<String>> getResults() throws NamingException, IOException, GeneralSecurityException {
+    public List<String> getResults() throws NamingException, IOException, GeneralSecurityException {
             this.ldapParser = LdapParser.getLdapParser();
             this.ldapParser.queryLdap(LdapParser.builder()
                 .setSearchBase(searchBase)
@@ -42,20 +42,20 @@ public class UserDaoLdapImpl implements EntityDAO<ADUser> {
                 .setSearchControlsScope(searchControlsScope)
                 .validate());
             ldapParser.closeContext();
-        return this.ldapParser.getResults();
+        return null;
 
     }
 
     @Override
     public List<ADUser> getAllEntities() throws NamingException, IOException, GeneralSecurityException {
-        List<ADUser> allADUsers = new ArrayList<>();
-        for (List<String> list :
-                getResults()) {
-            allADUsers.add(new ADUser(DynamicEntity.newDynamicEntity()
-                    .process(list)
-            ));
-        }
-        return allADUsers;
+//        List<ADUser> allADUsers = new ArrayList<>();
+//        for (String list :
+//                getResults()) {
+//            allADUsers.add(new ADUser(DynamicEntity.newDynamicEntity()
+//                    .process(list)
+//            ));
+//        }
+        return null;
     }
 
     @Override

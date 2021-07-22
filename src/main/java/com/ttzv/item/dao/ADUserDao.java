@@ -13,6 +13,10 @@ public interface ADUserDao {
     ADUser_n getLast();
     ADUser_n getNewest();
     void saveADUser(ADUser_n adUser);
+    ADUser_n findByGUID(String guid);
+    void saveMultiple(List<ADUser_n> adUsers);
+    void updateMultiple(List<ADUser_n> adUsers);
+    void deleteMultiple(List<ADUser_n> adUsers);
 
     void updateADUser(ADUser_n adUser);
 }

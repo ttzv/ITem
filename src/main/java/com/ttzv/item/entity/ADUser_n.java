@@ -1,12 +1,18 @@
 package com.ttzv.item.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ttzv.item.utility.Utility;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -32,7 +38,7 @@ public @Getter @Setter class ADUser_n {
     private String sAMAccountName;
 
     @Column(name = "whencreated")
-    private Date whenCreated;
+    private LocalDateTime whenCreated;
 
     @Column(name = "mail")
     private String email;
@@ -47,7 +53,7 @@ public @Getter @Setter class ADUser_n {
     private String userAccountControl;
 
     @Column(name = "lockouttime")
-    private Date lockoutTime;
+    private LocalDateTime lockoutTime;
 
     @OneToOne(mappedBy = "adUser", cascade = CascadeType.ALL)
     private UserDetail_n detail;
@@ -129,5 +135,44 @@ public @Getter @Setter class ADUser_n {
                 ", userAccountControl='" + userAccountControl + '\'' +
                 ", lockoutTime='" + lockoutTime + '\'' +
                 '}';
+    }
+
+    public void merge(ADUser_n other){
+
+        setGivenName(other.getGivenName());
+        setSn(other.getSn());
+        setDisplayName(other.getDisplayName());
+        setSAMAccountName(other.getSAMAccountName());
+        setEmail(other.getEmail());
+        setDistinguishedName(other.getDistinguishedName());
+        setSn(other.getSn());
+        setUserAccountControl(other.getUserAccountControl());
+        setLockoutTime(other.getLockoutTime());
+        setWhenCreated(other.getWhenCreated());
+
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ADUser_n adUser_n = (ADUser_n) o;
+
+
+        return Objects.equals(givenName, adUser_n.givenName)
+                && Objects.equals(sn, adUser_n.sn)
+                && Objects.equals(displayName, adUser_n.displayName)
+                && Objects.equals(sAMAccountName, adUser_n.sAMAccountName)
+                && Objects.equals(email, adUser_n.email)
+                && Objects.equals(distinguishedName, adUser_n.distinguishedName)
+                && Objects.equals(userAccountControl, adUser_n.userAccountControl)
+                && Objects.equals(whenCreated, adUser_n.whenCreated)
+                && Objects.equals(lockoutTime, adUser_n.lockoutTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(objectGUID, givenName, sn, displayName, sAMAccountName, whenCreated, email, distinguishedName, objectSid, userAccountControl, lockoutTime);
     }
 }

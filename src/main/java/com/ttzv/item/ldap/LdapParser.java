@@ -12,10 +12,7 @@ import javax.naming.directory.*;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LdapParser
@@ -27,7 +24,7 @@ public class LdapParser
     private char[] ad_adminPass;
     private List<ADUser> usersDataList;
     private int totalResults;
-    private List<List<String>> results;
+    private List<Map<String, String>> results;
     public static final String LDAP_SEPARATOR = Utility.DEFAULT_ENTITY_SEPARATOR;
 
     public List<ADUser> getUsersDataList() {
@@ -81,7 +78,7 @@ public class LdapParser
         return totalResults;
     }
 
-    public List<List<String>> getResults() {
+    public List<Map<String, String>> getResults() {
         return results;
     }
 
@@ -94,7 +91,7 @@ public class LdapParser
         Properties ldapEnv = new Properties();
         ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory"); //always the same
         ldapEnv.put(Context.PROVIDER_URL,  "ldap://" + ldap_URL + ":" + ldap_port);
-        ldapEnv.put("java.naming.ldap.attributes.binary", "objectGUID");
+        ldapEnv.put("java.naming.ldap.attributes.binary", "objectSid objectGUID");
         ldapEnv.put(Context.SECURITY_PRINCIPAL, ad_adminUser);
         ldapEnv.put(Context.SECURITY_CREDENTIALS, new String(ad_adminPass));
         //ldapEnv.put(Context.SECURITY_PROTOCOL, "ssl");
@@ -123,7 +120,7 @@ public class LdapParser
      */
     public int queryLdap(QueryBuilder queryBuilder) throws NamingException {
         if(queryBuilder.isValidated()) {
-            NamingEnumeration<SearchResult> answer = null;
+            NamingEnumeration<SearchResult> answer;
             results = new ArrayList<>();
             totalResults = 0;
             answer = ldapContext.search(queryBuilder.getSearchBase(), queryBuilder.getSearchFilter(), queryBuilder.getSearchControls());
@@ -131,22 +128,27 @@ public class LdapParser
                 SearchResult sr = answer.next();
                 totalResults++;
                 Attributes returnedAttrs = sr.getAttributes();
-                List<String> returnedAttributeList = Arrays.stream(queryBuilder.getSearchAttributes())
-                        .map(s -> {
-                            //each defined attribute is retrieved and collected in list with corresponding attribute identifier, null attributes are changed to empty strings
-                                    try {
-                                        if (returnedAttrs.get(s) == null) return s + LDAP_SEPARATOR + "";
-                                        else if (s.equals("objectGUID"))
-                                            return s + LDAP_SEPARATOR + Utility.formatObjectGUID(returnedAttrs.get(s).get());
-                                        else return s + LDAP_SEPARATOR + returnedAttrs.get(s).get().toString();
-                                    } catch (NamingException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return s;
+                Map<String, String> map = new HashMap<>();
+                Arrays.stream(queryBuilder.getSearchAttributes()).forEach(s -> {
+                    try {
+                        map.put(s, "");
+                        if (s.equals("objectGUID")) map.put(s, Utility.formatObjectGUID(returnedAttrs.get(s).get()));
+                        else if (s.equals("objectSid")) map.put(s, Utility.formatObjectSid(returnedAttrs.get(s).get()));
+                        else {
+                            Optional<Attribute> optAttrVal = Optional.ofNullable(returnedAttrs.get(s));
+                            optAttrVal.ifPresent(attribute -> {
+                                try {
+                                    map.put(s, attribute.get().toString());
+                                } catch (NamingException e) {
+                                    e.printStackTrace();
                                 }
-                        )
-                        .collect(Collectors.toList());
-                results.add(returnedAttributeList);
+                            });
+                        }
+                    } catch(NamingException e){
+                        e.printStackTrace();
+                    }
+                });
+                results.add(map);
             }
             return totalResults;
         } else {

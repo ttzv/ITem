@@ -3,9 +3,12 @@ package com.ttzv.item.utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,7 +16,7 @@ import java.util.regex.Pattern;
 public class Utility {
 
 
-    public static String DEFAULT_ENTITY_SEPARATOR = "=:";
+    public static String DEFAULT_ENTITY_SEPARATOR = ":";
 
     public static String restrictedSymbols = "%_/\\=-+?*";
 
@@ -57,6 +60,45 @@ public class Utility {
         return "";
     }
 
+    // https://miromannino.com/blog/convert-a-sid-to-string-with-java/
+    public static String convertSidToStringSid(byte[] sid) {
+        int offset, size;
+        // sid[0] is the Revision, we allow only version 1, because it's the
+        // only that exists right now.
+        if (sid[0] != 1)
+            throw new IllegalArgumentException("SID revision must be 1");
+        StringBuilder stringSidBuilder = new StringBuilder("S-1-");
+        // The next byte specifies the numbers of sub authorities (number of
+        // dashes minus two)
+        int subAuthorityCount = sid[1] & 0xFF;
+        // IdentifierAuthority (6 bytes starting from the second) (big endian)
+        long identifierAuthority = 0;
+        offset = 2;
+        size = 6;
+        for (int i = 0; i < size; i++) {
+            identifierAuthority |= (long) (sid[offset + i] & 0xFF) << (8 * (size - 1 - i));
+            // The & 0xFF is necessary because byte is signed in Java
+        }
+        if (identifierAuthority < Math.pow(2, 32)) {
+            stringSidBuilder.append(Long.toString(identifierAuthority));
+        } else {
+            stringSidBuilder.append("0x").append(
+                    Long.toHexString(identifierAuthority).toUpperCase());
+        }
+        // Iterate all the SubAuthority (little-endian)
+        offset = 8;
+        size = 4; // 32-bits (4 bytes) for each SubAuthority
+        for (int i = 0; i < subAuthorityCount; i++, offset += size) {
+            long subAuthority = 0;
+            for (int j = 0; j < size; j++) {
+                subAuthority |= (long) (sid[offset + j] & 0xFF) << (8 * j);
+                // The & 0xFF is necessary because byte is signed in Java
+            }
+            stringSidBuilder.append("-").append(subAuthority);
+        }
+        return stringSidBuilder.toString();
+    }
+
     public static String formatObjectGUID(Object guid){
         return convertToDashedString( (byte[]) guid);
     }
@@ -97,26 +139,46 @@ public class Utility {
         }
     }
 
-    public static SimpleDateFormat ldapDateFormat() {
-        return new SimpleDateFormat("yyyyMMddHHmmss");
+    public static LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
 
-    public static SimpleDateFormat globalDateFormat() {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static DateTimeFormatter ldapDateFormat() {
+        return DateTimeFormatter.ofPattern("uuuuMMddHHmmss[,S][.S]X");
+    }
+
+    public static DateTimeFormatter globalDateFormat() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     public static String formatLdapDate(String date) {
-        Date d = parseDate(date, ldapDateFormat());
+        LocalDateTime d = parseDate(date, ldapDateFormat());
         return globalDateFormat().format(d);
     }
 
-    public static Date parseDate (String date, SimpleDateFormat simpleDateFormat) {
-        try {
-            return simpleDateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+    public static LocalDateTime parseDate (String date, DateTimeFormatter dateTimeFormatter) {
+        if(!date.equals("0") && !date.isEmpty()){
+            return LocalDateTime.parse(date, dateTimeFormatter);
         }
+        return null;
+    }
+
+    public static LocalDateTime parseLockoutTimestamp(Long timestamp){
+        if (timestamp > 0) {
+            Instant zero = Instant.parse("1601-01-01T00:00:00Z");
+            Duration duration = Duration.of(timestamp / 10, ChronoUnit.MICROS).plus(timestamp % 10 * 100, ChronoUnit.NANOS);
+            return LocalDateTime.ofInstant(zero.plus(duration), ZoneId.systemDefault());
+        }
+        return null;
+    }
+
+    public static LocalDateTime parseLockoutTimestamp(String timestamp){
+        if(!timestamp.isBlank()){
+            return parseLockoutTimestamp(Long.parseLong(timestamp));
+        }
+        return null;
     }
 
     /**
@@ -161,6 +223,10 @@ public class Utility {
                         .toLowerCase()
                         .contains(text.trim()
                                 .toLowerCase()));
+    }
+
+    public static String formatObjectSid(Object sid) {
+        return convertSidToStringSid( (byte[]) sid );
     }
 
    /* public static String ldapStringToDate(String date) throws ParseException {

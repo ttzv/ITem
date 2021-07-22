@@ -129,11 +129,11 @@ public class ADUser implements DynamicEntityCompatible, Comparable<ADUser>{
 
     @Override
     public int compareTo(ADUser o) {
-        Date userCreationDate = Utility.parseDate(this.getWhenCreated(), Utility.globalDateFormat());
-        Date comparedUserCreationDate = Utility.parseDate(o.getWhenCreated(), Utility.globalDateFormat());
-        if(userCreationDate != null && comparedUserCreationDate != null)
-            return userCreationDate.compareTo(comparedUserCreationDate) * -1;
-        else
+//        Date userCreationDate = Utility.parseDate(this.getWhenCreated(), Utility.globalDateFormat());
+//        Date comparedUserCreationDate = Utility.parseDate(o.getWhenCreated(), Utility.globalDateFormat());
+//        if(userCreationDate != null && comparedUserCreationDate != null)
+//            return userCreationDate.compareTo(comparedUserCreationDate) * -1;
+//        else
             return -1;
     }
 

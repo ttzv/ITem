@@ -94,6 +94,57 @@ public class ADUserDaoImpl implements ADUserDao{
     }
 
     @Override
+    public ADUser_n findByGUID(String guid) {
+        Session session = DbSession.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<ADUser_n> criteriaQuery = criteriaBuilder.createQuery(ADUser_n.class);
+        Root<ADUser_n> root = criteriaQuery.from(ADUser_n.class);
+        criteriaQuery
+                .select(root)
+                .where(criteriaBuilder.equal(root.get("objectGUID"), guid));
+        ADUser_n user = session.createQuery(criteriaQuery)
+                .getResultList().stream().findFirst().orElse(null);
+        session.close();
+        return user;
+    }
+
+    @Override
+    public void saveMultiple(List<ADUser_n> adUsers) {
+        Session session = DbSession.openSession();
+        Transaction t = session.beginTransaction();
+        for (ADUser_n adUser :
+                adUsers) {
+            session.save(adUser);
+        }
+        t.commit();
+        session.close();
+    }
+
+    @Override
+    public void updateMultiple(List<ADUser_n> adUsers) {
+        Session session = DbSession.openSession();
+        Transaction t = session.beginTransaction();
+        for (ADUser_n adUser :
+                adUsers) {
+            session.update(adUser);
+        }
+        t.commit();
+        session.close();
+    }
+
+    @Override
+    public void deleteMultiple(List<ADUser_n> adUsers) {
+        Session session = DbSession.openSession();
+        Transaction t = session.beginTransaction();
+        for (ADUser_n adUser :
+                adUsers) {
+            session.delete(adUser);
+        }
+        t.commit();
+        session.close();
+    }
+
+    @Override
     public void updateADUser(ADUser_n adUser) {
         Session session = DbSession.openSession();
         Transaction t = session.beginTransaction();
