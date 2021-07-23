@@ -1,11 +1,11 @@
 package com.ttzv.item.ui.controller;
 
-import com.ttzv.item.entity.*;
+import com.ttzv.item.entity.ADUser_n;
+import com.ttzv.item.entity.Office;
+import com.ttzv.item.entity.UserDetail_n;
+import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.service.ADUserService;
-import com.ttzv.item.service.ADUserServiceImpl;
-import com.ttzv.item.service.OfficeService;
-import com.ttzv.item.service.OfficeServiceImpl;
+import com.ttzv.item.service.*;
 import com.ttzv.item.uiUtils.OfficeFormatCell;
 import com.ttzv.item.uiUtils.TableViewCreator;
 import javafx.application.Platform;
@@ -20,14 +20,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ttzv.uiUtils.ActionableTextField;
 import ttzv.uiUtils.SideBar;
 import ttzv.uiUtils.StatusBar;
 
+import javax.naming.NamingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.*;
 
 public class MainWindowController extends AnchorPane {
@@ -216,7 +220,10 @@ public class MainWindowController extends AnchorPane {
         cbox_Offices.setButtonCell(cbox_Offices.getCellFactory().call(null));
         Office office = new Office();
         cbox_Offices.getItems().add(office);
+        syncTask();
 
+        userHolder.setCurrentUser(userHolder.getADUsers().stream().findFirst().orElse(null));
+        if(userHolder.getCurrentUser() != null) updateMainWindowAssets();
     }
 
     private void selectScene(Pane paneToSet){
@@ -327,9 +334,21 @@ public class MainWindowController extends AnchorPane {
 
     @FXML
     void btnRefreshUserList(ActionEvent event) {
+        syncTask();
+    }
+
+    private void syncTask(){
         Task<Boolean> sync = new Task<>(){
             @Override
             protected Boolean call() {
+                List<ADUser_n> ldapUsers = null;
+                try {
+                    LdapService ldapService = new LdapServiceImpl();
+                    ldapUsers = ldapService.getAll();
+                } catch (GeneralSecurityException | NamingException | IOException e) {
+                    e.printStackTrace();
+                }
+                adUserService.updateTableFrom(ldapUsers);
                 userHolder.setADUsers(adUserService.getAll());
                 tableViewCreator.builder().setItems(userHolder.getADUsers());
                 return Boolean.TRUE;

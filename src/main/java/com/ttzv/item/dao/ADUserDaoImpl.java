@@ -145,6 +145,21 @@ public class ADUserDaoImpl implements ADUserDao{
     }
 
     @Override
+    public List<ADUser_n> findMatchesInDN(String text) {
+        Session session = DbSession.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<ADUser_n> criteriaQuery = criteriaBuilder.createQuery(ADUser_n.class);
+        Root<ADUser_n> root = criteriaQuery.from(ADUser_n.class);
+        criteriaQuery
+                .select(root)
+                .where(criteriaBuilder.like(criteriaBuilder.lower(root.get("distinguishedName")), String.format("%%%s%%", text)));
+        List<ADUser_n> users = session.createQuery(criteriaQuery)
+                .getResultList();
+        session.close();
+        return users;
+    }
+
+    @Override
     public void updateADUser(ADUser_n adUser) {
         Session session = DbSession.openSession();
         Transaction t = session.beginTransaction();

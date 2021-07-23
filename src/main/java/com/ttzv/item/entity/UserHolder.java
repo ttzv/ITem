@@ -1,9 +1,6 @@
 package com.ttzv.item.entity;
 
-import javax.naming.NamingException;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +68,7 @@ public class UserHolder {
         newADUsers.add(u);
     }
 
-    public  void clear(){
+    public void clear(){
         if(newADUsers != null) {
             newADUsers.clear();
         }
@@ -114,14 +111,15 @@ public class UserHolder {
         return this.ADUserList.get(0);
     }
 
-    public UserHolder syncAndRefresh(EntityDAO<ADUser> daoToSyncWith) throws SQLException, IOException, NamingException, GeneralSecurityException {
-        userEntityDAO.syncDataSourceWith(daoToSyncWith);
-        this.ADUserList = this.userEntityDAO.getAllEntities();
-        return this;
-    }
-
     public void setADUsers(List<ADUser_n> adUsers){
         storedADUsers.clear();
+        adUsers.sort((o1, o2) -> {
+            LocalDateTime o1Time = o1.getWhenCreated();
+            LocalDateTime o2Time = o2.getWhenCreated();
+            if(o1Time.isBefore(o2Time)) return 1;
+            else if(o1Time.isEqual(o2Time)) return 0;
+            else return -1;
+        });
         storedADUsers.addAll(adUsers);
     }
 

@@ -17,6 +17,7 @@ public interface ADUserDao {
     void saveMultiple(List<ADUser_n> adUsers);
     void updateMultiple(List<ADUser_n> adUsers);
     void deleteMultiple(List<ADUser_n> adUsers);
+    List<ADUser_n> findMatchesInDN(String text);
 
     void updateADUser(ADUser_n adUser);
 }

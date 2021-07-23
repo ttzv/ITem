@@ -1,18 +1,12 @@
 package com.ttzv.item.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ttzv.item.utility.Utility;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -66,15 +60,16 @@ public @Getter @Setter class ADUser_n {
     }
 
     public UserDetail_n getDetail(){
-        if(this.detail != null){
-            try {
-                if(this.detail.getStorage() == null) this.detail.deserializeStorage();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            return this.detail;
+        if(detail == null) {
+            detail = new UserDetail_n();
+            detail.setAdUser(this);
         }
-        return null;
+        try {
+            if(this.detail.getStorage() == null) this.detail.deserializeStorage();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return this.detail;
     }
 
     public String getOfficeLocation(){
@@ -159,8 +154,8 @@ public @Getter @Setter class ADUser_n {
         if (o == null || getClass() != o.getClass()) return false;
         ADUser_n adUser_n = (ADUser_n) o;
 
-
         return Objects.equals(givenName, adUser_n.givenName)
+                && Objects.equals(objectGUID, adUser_n.objectGUID)
                 && Objects.equals(sn, adUser_n.sn)
                 && Objects.equals(displayName, adUser_n.displayName)
                 && Objects.equals(sAMAccountName, adUser_n.sAMAccountName)
@@ -173,6 +168,6 @@ public @Getter @Setter class ADUser_n {
 
     @Override
     public int hashCode() {
-        return Objects.hash(objectGUID, givenName, sn, displayName, sAMAccountName, whenCreated, email, distinguishedName, objectSid, userAccountControl, lockoutTime);
+        return Objects.hash(objectGUID);
     }
 }

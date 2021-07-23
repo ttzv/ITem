@@ -1,8 +1,5 @@
 package com.ttzv.item.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.entity.ADUser_n;
 import com.ttzv.item.ldap.LdapParser;
 import com.ttzv.item.properties.Cfg;
@@ -13,7 +10,6 @@ import javax.naming.directory.SearchControls;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +54,6 @@ public class LdapServiceImpl implements LdapService{
         List<ADUser_n> allUsers = new ArrayList<>();
         for (Map<String, String> userMap:
             users){
-            System.out.println(userMap);
             ADUser_n adUser = new ADUser_n();
             adUser.setObjectGUID(userMap.get("objectGUID"));
             adUser.setGivenName(userMap.get("givenName"));

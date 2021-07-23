@@ -65,7 +65,7 @@ public class SignatureParser implements FileParser {
             }else{
                 this.splitSign.set(line, text);
             }
-            if(text.isEmpty()){
+            if(text == null || text.isEmpty()){
                 this.splitSign.set(line, defaults.get(line));
             }
         }

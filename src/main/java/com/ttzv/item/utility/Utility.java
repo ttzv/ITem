@@ -1,8 +1,6 @@
 package com.ttzv.item.utility;
 
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -169,7 +167,8 @@ public class Utility {
         if (timestamp > 0) {
             Instant zero = Instant.parse("1601-01-01T00:00:00Z");
             Duration duration = Duration.of(timestamp / 10, ChronoUnit.MICROS).plus(timestamp % 10 * 100, ChronoUnit.NANOS);
-            return LocalDateTime.ofInstant(zero.plus(duration), ZoneId.systemDefault());
+            LocalDateTime localDateTime = LocalDateTime.ofInstant(zero.plus(duration), ZoneId.systemDefault());
+            return localDateTime.truncatedTo(ChronoUnit.SECONDS);
         }
         return null;
     }
