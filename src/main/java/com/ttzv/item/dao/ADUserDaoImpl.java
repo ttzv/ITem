@@ -152,7 +152,7 @@ public class ADUserDaoImpl implements ADUserDao{
         Root<ADUser_n> root = criteriaQuery.from(ADUser_n.class);
         criteriaQuery
                 .select(root)
-                .where(criteriaBuilder.like(criteriaBuilder.lower(root.get("distinguishedName")), String.format("%%%s%%", text)));
+                .where(criteriaBuilder.like(criteriaBuilder.lower(root.get("distinguishedName")), String.format("%%ou=%s%%", text)));
         List<ADUser_n> users = session.createQuery(criteriaQuery)
                 .getResultList();
         session.close();

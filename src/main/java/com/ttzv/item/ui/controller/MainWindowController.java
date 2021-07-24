@@ -7,6 +7,7 @@ import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.service.*;
 import com.ttzv.item.uiUtils.OfficeFormatCell;
+import com.ttzv.item.uiUtils.SceneUtils;
 import com.ttzv.item.uiUtils.TableViewCreator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -14,9 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -24,7 +23,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 import ttzv.uiUtils.ActionableTextField;
 import ttzv.uiUtils.SideBar;
 import ttzv.uiUtils.StatusBar;
@@ -32,7 +30,10 @@ import ttzv.uiUtils.StatusBar;
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class MainWindowController extends AnchorPane {
 
@@ -183,7 +184,7 @@ public class MainWindowController extends AnchorPane {
         userHolder = UserHolder.getHolder();
         userHolder.setADUsers(adUsers);
 
-        tableViewCreator = new TableViewCreator<ADUser_n>(primaryUserTableView);
+        tableViewCreator = new TableViewCreator<>(primaryUserTableView);
         tableViewCreator.builder()
                 .editColumn(0, "lockoutTime")
                 .editColumn(1, "displayName")
@@ -236,15 +237,7 @@ public class MainWindowController extends AnchorPane {
 
     @FXML
     public void showMailSett(ActionEvent actionEvent) throws IOException {
-        //TODO: create utility method for quick initialization of new windows from fxml files, something like *showWindow(String file)*
-        ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/infoWindow.fxml"),langResourceBundle);
-        Parent root = loader.load();
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Pomoc");
-        stage.setScene(new Scene(root));
-        stage.show();
+        SceneUtils.showWindow("infoWindow", Modality.APPLICATION_MODAL, "Pomoc");
     }
 
     @FXML
@@ -286,8 +279,6 @@ public class MainWindowController extends AnchorPane {
             }
         });
         userDetail.setStorage(newStorage);
-
-
 
         adUserService.updateADUser(adUser);
     }
@@ -349,6 +340,7 @@ public class MainWindowController extends AnchorPane {
                     e.printStackTrace();
                 }
                 adUserService.updateTableFrom(ldapUsers);
+                adUserService.autoBindOffices(officeService.getOffices());
                 userHolder.setADUsers(adUserService.getAll());
                 tableViewCreator.builder().setItems(userHolder.getADUsers());
                 return Boolean.TRUE;
@@ -364,7 +356,6 @@ public class MainWindowController extends AnchorPane {
         sync.setOnFailed(workerStateEvent -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(sync.getException().toString());
-            System.out.println(sync.getException());
             alert.showAndWait();
             this.prgList.setVisible(false);
         });

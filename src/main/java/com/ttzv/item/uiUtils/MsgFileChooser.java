@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MsgFileChooser {
@@ -52,7 +53,11 @@ public class MsgFileChooser {
     }
 
     public List<File> getFilesList(){
-        return filesPathList.stream().map(Path::toFile).collect(Collectors.toList());
+        return filesPathList.stream().map(path -> {
+            if(Files.exists(path)) return path.toFile();
+            return null;
+        }).filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     public void removePath(Path p) throws IOException {

@@ -114,8 +114,10 @@ public class UserHolder {
     public void setADUsers(List<ADUser_n> adUsers){
         storedADUsers.clear();
         adUsers.sort((o1, o2) -> {
+
             LocalDateTime o1Time = o1.getWhenCreated();
             LocalDateTime o2Time = o2.getWhenCreated();
+            if(o1Time == null || o2Time == null) return 0;
             if(o1Time.isBefore(o2Time)) return 1;
             else if(o1Time.isEqual(o2Time)) return 0;
             else return -1;

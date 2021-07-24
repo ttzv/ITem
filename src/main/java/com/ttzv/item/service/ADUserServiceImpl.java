@@ -52,6 +52,7 @@ public class ADUserServiceImpl implements ADUserService {
 
     @Override
     public Map<String, List<ADUser_n>> updateTableFrom(List<ADUser_n> otherUserList) {
+        if(otherUserList == null) return null;
         // update with new records from other data storage
         List<ADUser_n> toSave = new ArrayList<>();
         List<ADUser_n> toUpdate = new ArrayList<>();
@@ -71,7 +72,6 @@ public class ADUserServiceImpl implements ADUserService {
         adUserDao.updateMultiple(toUpdate);
         // handle deletion of records that no longer exists in other data storage
         otherUserList.removeAll(adUserDao.getADUsers());
-        otherUserList.removeAll(toSave);
         List<ADUser_n> toDelete = otherUserList.stream().map(otherUser -> adUserDao.findByGUID(otherUser.getObjectGUID())).collect(Collectors.toList());
         adUserDao.deleteMultiple(toDelete);
 

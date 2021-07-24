@@ -10,23 +10,30 @@ import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
 import com.ttzv.item.service.ADUserService;
 import com.ttzv.item.service.ADUserServiceImpl;
+import com.ttzv.item.service.LdapService;
+import com.ttzv.item.service.LdapServiceImpl;
 import com.ttzv.item.ui.WarningDialog;
+import com.ttzv.item.uiUtils.SceneUtils;
 import com.ttzv.item.uiUtils.TabBuilder;
 import com.ttzv.item.uiUtils.ViewTab;
 import com.ttzv.item.utility.Utility;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import ttzv.uiUtils.LimitableTextField;
 
+import javax.naming.NamingException;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class MailerController extends AnchorPane {
 
@@ -89,42 +96,58 @@ public class MailerController extends AnchorPane {
 
 
     @FXML
-    void btnSendAction(ActionEvent event) {
+    void btnSendAction(ActionEvent event) throws IOException {
+        Stage infoWindowStage = SceneUtils.getWaitWindow();
 
-        sender.setSmtpHost(AppConfiguration.retrieveProp(Cfg.SMTP_HOST));
-        sender.setSmtpPort(AppConfiguration.retrieveProp(Cfg.SMTP_PORT));
-        sender.setSmtpStartTLS(AppConfiguration.retrieveProp(Cfg.SMTP_TLS));
+        Task<Boolean> wait = new Task<>() {
+            @Override
+            protected Boolean call(){
+                sender.setSmtpHost(AppConfiguration.retrieveProp(Cfg.SMTP_HOST));
+                sender.setSmtpPort(AppConfiguration.retrieveProp(Cfg.SMTP_PORT));
+                sender.setSmtpStartTLS(AppConfiguration.retrieveProp(Cfg.SMTP_TLS));
 
-        sender.setSenderPassword(PHolder.mail);
+                sender.setSenderPassword(PHolder.mail);
 
-        sender.setSenderAddress(AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN));
+                sender.setSenderAddress(AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN));
 
-        sender.validate();
-        sender.initSession();
+                sender.validate();
+                sender.initSession();
 
-        sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
-        try {
-            sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
+                try {
+                    sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        sender.sendMail();
+                sender.sendMail();
 
-        String statusText = "Wysłano do " + this.sender.getReceiverAddress();
+                String statusText = "Wysłano do " + sender.getReceiverAddress();
 
-        String savePass = AppConfiguration.retrieveProp(Cfg.SAVEPASS);
-        if(!this.txtPass.getText().isBlank() && savePass.equals("true")) {
-            String name = tabBuilder.getSelectedTab()
-                    .getName()
-                    .replace(".html", "");
-            savePass(name);
-            statusText = statusText.concat(", zapisano hasło w bazie");
-        }
-
-
-
-        //mainWindow.setStatusBarText(statusText);
+                String savePass = AppConfiguration.retrieveProp(Cfg.SAVEPASS);
+                if(txtPass.getText().isBlank() && savePass.equals("true")) {
+                    String name = tabBuilder.getSelectedTab()
+                            .getName()
+                            .replace(".html", "");
+                    savePass(name);
+                    statusText = statusText.concat(", zapisano hasło w bazie");
+                }
+                return Boolean.TRUE;
+            }
+        };
+        wait.setOnRunning(workerStateEvent -> {
+            infoWindowStage.show();
+        });
+        wait.setOnSucceeded(workerStateEvent -> {
+            infoWindowStage.close();
+        });
+        wait.setOnFailed(workerStateEvent -> {
+            infoWindowStage.close();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(wait.getException().toString());
+            alert.showAndWait();
+        });
+        new Thread(wait).start();
 
     }
 

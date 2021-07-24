@@ -174,17 +174,6 @@
                                                       </AnchorPane>
                                                    </content>
                                                 </Tab>
-                                                <Tab closable="false" text="%tab_queue">
-                                                   <content>
-                                                      <AnchorPane>
-                                                         <children>
-                                                            <Button layoutX="107.0" layoutY="534.0" mnemonicParsing="false" text="%tab_queue_clear" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="119.0" />
-                                                            <Button layoutX="36.0" layoutY="534.0" mnemonicParsing="false" text="%tab_queue_send" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
-                                                            <TableView fx:id="msgQTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                         </children>
-                                                      </AnchorPane>
-                                                   </content>
-                                                </Tab>
                                              </tabs>
                                           </TabPane>
                                        </children>

@@ -8,11 +8,16 @@ import com.ttzv.item.sms.SmsApiClient;
 import com.ttzv.item.ui.WarningDialog;
 import com.ttzv.item.uiUtils.FileNodeWrapper;
 import com.ttzv.item.uiUtils.MsgFileChooser;
+import com.ttzv.item.uiUtils.SceneUtils;
 import com.ttzv.item.utility.Utility;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import pl.smsapi.exception.SmsapiException;
 
 import java.io.IOException;
@@ -169,20 +174,43 @@ public class SmsController extends AnchorPane {
     }
 
     @FXML
-    void btnA_Send(ActionEvent event) {
-        SmsMessage smsMessage = new SmsMessage();
-        smsMessage.setText(this.textarea_smscontent.getText());
-        smsMessage.setRecipientAddress(this.textfield_smsRecipientNumber.getText());
-        smsMessage.setSender(this.textfield_smsSender.getText());
+    void btnA_Send(ActionEvent event) throws IOException {
+        Stage infoWindowStage = SceneUtils.getWaitWindow();
 
-        try {
-            SmsApiClient smsApiClient = new SmsApiClient();
-            smsApiClient.sendSMS(smsMessage);
-            refreshAccountInfo();
-        } catch (IOException | GeneralSecurityException | SmsapiException e) {
-            e.printStackTrace();
-            WarningDialog.showAlert(Alert.AlertType.ERROR, e.toString());
-        }
+        Task<Boolean> wait = new Task<>() {
+            @Override
+            protected Boolean call(){
+                SmsMessage smsMessage = new SmsMessage();
+                smsMessage.setText(textarea_smscontent.getText());
+                smsMessage.setRecipientAddress(textfield_smsRecipientNumber.getText());
+                smsMessage.setSender(textfield_smsSender.getText());
+
+                try {
+                    SmsApiClient smsApiClient = new SmsApiClient();
+                    smsApiClient.sendSMS(smsMessage);
+                    refreshAccountInfo();
+                } catch (IOException | GeneralSecurityException | SmsapiException e) {
+                    e.printStackTrace();
+                    WarningDialog.showAlert(Alert.AlertType.ERROR, e.toString());
+                }
+                return Boolean.TRUE;
+            }
+        };
+        wait.setOnRunning(workerStateEvent -> {
+            infoWindowStage.show();
+        });
+        wait.setOnSucceeded(workerStateEvent -> {
+            infoWindowStage.close();
+        });
+        wait.setOnFailed(workerStateEvent -> {
+            infoWindowStage.close();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(wait.getException().toString());
+            alert.showAndWait();
+        });
+        new Thread(wait).start();
+
+
     }
 
     @FXML

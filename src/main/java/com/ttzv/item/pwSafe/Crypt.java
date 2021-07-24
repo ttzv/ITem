@@ -86,24 +86,18 @@ public class Crypt {
     }
 
     public char[] read() throws IOException, GeneralSecurityException {
-        //pass
-        //if(exists()) {
-                String pass = "";
-                char[] decrypted = new char[0];
-                Path r = pwPath.resolve(name + hExt);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(r.toFile())));
-                pass = reader.readLine();
-                reader.close();
-                //key
-                byte[] key = {};
-                r = pwPath.resolve(name + hExtK);
-                key = Files.readAllBytes(r);
-                decrypted = decrypt(pass, new SecretKeySpec(key, "AES")).toCharArray();
-                return decrypted;
-       /* } else {
-            System.err.println("Password not found or cannot access password file.");
-        }
-        return null;*/
+        String pass = "";
+        char[] decrypted = new char[0];
+        Path r = pwPath.resolve(name + hExt);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(r.toFile())));
+        pass = reader.readLine();
+        reader.close();
+        //key
+        byte[] key = {};
+        r = pwPath.resolve(name + hExtK);
+        key = Files.readAllBytes(r);
+        decrypted = decrypt(pass, new SecretKeySpec(key, "AES")).toCharArray();
+        return decrypted;
     }
 
 
