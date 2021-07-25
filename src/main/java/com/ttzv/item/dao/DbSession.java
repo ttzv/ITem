@@ -5,14 +5,21 @@ import com.ttzv.item.entity.CommandBox_n;
 import com.ttzv.item.entity.Office;
 import com.ttzv.item.entity.UserDetail_n;
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.pwSafe.Crypt;
+import com.ttzv.item.pwSafe.PHolder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.spi.ServiceException;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Arrays;
+
 public class DbSession{
 
     private static SessionFactory sessionInstance;
+    private static final Cfg AppConfiguration = Cfg.getInstance();
 
     private DbSession(){}
 
@@ -20,6 +27,11 @@ public class DbSession{
         if(sessionInstance == null) {
             Configuration configuration = new Configuration()
                     .configure();
+            try{
+                userDbCustomCredentials(configuration);
+            } catch (IOException | GeneralSecurityException e){
+                System.err.println("Cannot read credentials.");
+            }
             if (useEmbeddedDb()) { h2ConfigurationModify(configuration); }
             sessionInstance = configuration.addAnnotatedClass(ADUser_n.class)
                     .addAnnotatedClass(Office.class)
@@ -30,8 +42,22 @@ public class DbSession{
         return sessionInstance;
     }
 
+    public static void testDbCredentials() throws GeneralSecurityException, IOException, ServiceException {
+        Configuration configuration = new Configuration()
+                .configure();
+        userDbCustomCredentials(configuration);
+        configuration.buildSessionFactory().openSession().close();
+    }
+
     public static Session openSession() throws ServiceException{
         return getSessionFactory().openSession();
+    }
+
+    private static void userDbCustomCredentials(Configuration configuration) throws GeneralSecurityException, IOException {
+        String pass = new String(Crypt.newCrypt("dCr").read());
+        configuration.setProperty("hibernate.connection.url", "jdbc:postgresql://" + AppConfiguration.retrieveProp(Cfg.DB_URL))
+                .setProperty("hibernate.connection.username", AppConfiguration.retrieveProp(Cfg.DB_LOGIN))
+                .setProperty("hibernate.connection.password", pass);
     }
 
     private static void h2ConfigurationModify(Configuration configuration){
@@ -43,7 +69,7 @@ public class DbSession{
     }
 
     private static boolean useEmbeddedDb(){
-        return Cfg.getInstance().retrieveProp(Cfg.DB_EMBEDDED).equals("true");
+        return AppConfiguration.retrieveProp(Cfg.DB_EMBEDDED).equals("true");
     }
 
 }

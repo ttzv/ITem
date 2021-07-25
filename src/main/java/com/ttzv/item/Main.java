@@ -1,13 +1,18 @@
 package com.ttzv.item;
 
 
+import com.ttzv.item.dao.DbSession;
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.ui.WarningDialog;
 import com.ttzv.item.ui.controller.MainWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import org.hibernate.Session;
+import org.hibernate.service.spi.ServiceException;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -19,6 +24,14 @@ public class Main extends Application {
         initCfg();
 
         ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
+        //check if connection with database can be established, otherwise fall back to embedded db
+        Session dbSession = null;
+        try{
+            dbSession = DbSession.openSession();
+        } catch (ServiceException se){
+            WarningDialog.showAlert(Alert.AlertType.ERROR, "No connection to database, application will use embedded database instead.");
+            Cfg.getInstance().setProperty(Cfg.DB_EMBEDDED, "true");
+        }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"), langResourceBundle);
         Parent root = loader.load();

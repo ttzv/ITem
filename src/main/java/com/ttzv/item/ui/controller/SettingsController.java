@@ -1,5 +1,6 @@
 package com.ttzv.item.ui.controller;
 
+import com.ttzv.item.dao.DbSession;
 import com.ttzv.item.dao.JdbcDriverSelector;
 import com.ttzv.item.dao.UserDaoLdapImpl;
 import com.ttzv.item.entity.UserHolder;
@@ -8,7 +9,9 @@ import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
 import com.ttzv.item.sms.SmsApiClient;
+import com.ttzv.item.ui.WarningDialog;
 import com.ttzv.item.uiUtils.UiObjectsWrapper;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -18,11 +21,14 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import org.hibernate.Session;
+import org.hibernate.service.spi.ServiceException;
 import ttzv.uiUtils.LimitableTextField;
 import ttzv.uiUtils.TitledBorder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SettingsController extends AnchorPane {
@@ -33,7 +39,6 @@ public class SettingsController extends AnchorPane {
     private Crypt cLdap;
     private Crypt cDb;
     private Crypt cSms;
-    private UiObjectsWrapper uiObjectsWrapper;
 
     @FXML
     public Button btnAcceptDbSettings;
@@ -408,6 +413,7 @@ public class SettingsController extends AnchorPane {
         Cfg cfg = AppConfiguration;
         if(cbxDbEmbed.isSelected()){
             cfg.setProperty(Cfg.DB_EMBEDDED, "true");
+            confirmCloseDialog();
         } else {
             cfg.setProperty(Cfg.DB_EMBEDDED, "false");
             cfg.setProperty(Cfg.DB_URL, this.fieldDbUrl.getText());
@@ -430,8 +436,6 @@ public class SettingsController extends AnchorPane {
         if(!noStore) {
             cfg.saveFile();
         }
-
-
     }
 
     private void btnMiscPerformAction() {
@@ -557,17 +561,19 @@ public class SettingsController extends AnchorPane {
     }
 
     private void testDBCredentials(){
-        Task isValid = new Task() {
+        Task<Boolean> isValid = new Task<>() {
             @Override
-            protected Object call() throws Exception {
-                JdbcDriverSelector jdbcDriverSelector = new JdbcDriverSelector(
-                        "POSTGRES",
-                        fieldDbUrl.getText(),
-                        fieldDbLogin.getText(),
-                        fieldDbPass.getText().toCharArray()
-                );
-                jdbcDriverSelector.createConnection().close();
-                return null;
+            protected Boolean call() {
+                try {
+                    AppConfiguration.setProperty(Cfg.DB_URL, fieldDbUrl.getText());
+                    AppConfiguration.setProperty(Cfg.DB_LOGIN, fieldDbLogin.getText());
+                    //cDb.safeStore(fieldDbPass.getText());
+                    DbSession.testDbCredentials();
+                } catch (GeneralSecurityException | IOException e) {
+                    e.printStackTrace();
+                }
+
+                return Boolean.TRUE;
             }
         };
 
@@ -578,6 +584,7 @@ public class SettingsController extends AnchorPane {
         isValid.setOnSucceeded(event -> {
             this.prgDb.setVisible(false);
             showTemporaryImg(this.okImgDb);
+            confirmCloseDialog();
         });
         isValid.setOnFailed(event -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -606,6 +613,7 @@ public class SettingsController extends AnchorPane {
         isValid.setOnSucceeded(event -> {
             this.prgSms.setVisible(false);
             showTemporaryImg(this.okImgSms);
+            confirmCloseDialog();
         });
         isValid.setOnFailed(event -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -662,5 +670,15 @@ public class SettingsController extends AnchorPane {
         fieldDbLogin.setDisable(selected);
         fieldDbPass.setDisable(selected);
         cbxRememberDb.setDisable(selected);
+    }
+
+    private void confirmCloseDialog(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Connected to database.");
+        alert.setContentText("The application requires restart to use new database connection\nDo you wish to exit the application now?");
+        Optional<ButtonType> choice = alert.showAndWait();
+        choice.ifPresent(buttonType -> {
+            if(buttonType == ButtonType.OK) Platform.exit();
+        } );
     }
 }
