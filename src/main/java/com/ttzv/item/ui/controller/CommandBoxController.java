@@ -1,13 +1,12 @@
 package com.ttzv.item.ui.controller;
 
 import com.ttzv.item.entity.CommandBox;
-import com.ttzv.item.entity.CommandItem;
+import com.ttzv.item.service.CommandBoxService;
+import com.ttzv.item.service.CommandBoxServiceImpl;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
@@ -16,15 +15,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import ttzv.uiUtils.CommandNode;
 
-import javax.naming.NamingException;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class CommandBoxController extends AnchorPane {
+
+    private CommandBoxService commandBoxService;
 
     @FXML
     private TextField searchField;
@@ -35,65 +32,64 @@ public class CommandBoxController extends AnchorPane {
     @FXML
     private VBox commandList;
 
-    @FXML
-    void addAction(ActionEvent event) {
-//        boolean lastAddedNodeTitleIsEmpty = commandNodelist.size() != 0 && commandNodelist.get(commandNodelist.size() - 1).getTitle().isEmpty();
-//        if (!lastAddedNodeTitleIsEmpty) {
-//            CommandNode commandNode = new CommandNode();
-//            String nextUid = String.valueOf(commandBox.getNextUid());
-//            if(nextUid == null) nextUid = "-1";
-//            commandNode.setUid(nextUid);
-//            commandNodelist.add(commandNode);
-//            addDeleteBtnAction(commandNode);
-//            addUpdateBtnAction(commandNode);
-//            refreshList();
-//            scrollToBottom();
-//        } else {
-//            scrollToBottom();
-//        }
-    }
+    private ObservableList<CommandNode> commandNodelist;
 
     @FXML
     public void initialize(){
-//        for (CommandItem c : commandBox.getAll()) {
-//            addCommandNode(c);
-//        }
-//        refreshList();
-//        addSearchFieldListener();
+        commandBoxService = new CommandBoxServiceImpl();
+        for (CommandBox c : commandBoxService.getAllCommands()) {
+            addCommandNode(c);
+        }
+        refreshList();
+        addSearchFieldListener();
+    }
+
+    @FXML
+    void addAction(ActionEvent event) {
+        boolean lastAddedNodeTitleIsEmpty = commandNodelist.size() != 0 && commandNodelist.get(commandNodelist.size() - 1).getTitle().isEmpty();
+        if (!lastAddedNodeTitleIsEmpty) {
+            CommandNode commandNode = new CommandNode();
+
+            String nextUid = String.valueOf(commandBox.getNextUid());
+            if(nextUid == null) nextUid = "-1";
+            commandNode.setUid(nextUid);
+            commandNodelist.add(commandNode);
+            addDeleteBtnAction(commandNode);
+            addUpdateBtnAction(commandNode);
+            refreshList();
+            scrollToBottom();
+        } else {
+            scrollToBottom();
+        }
     }
 
     @FXML
     void refresh(ActionEvent event) {
-//        try {
-//            commandBox.reload();
-//        } catch (SQLException | IOException | NamingException | GeneralSecurityException e) {
-//            e.printStackTrace();
-//        }
-//        commandNodelist.clear();
-//        for (CommandItem c : commandBox.getAll()) {
-//            addCommandNode(c);
-//        }
-//        refreshList();
+        commandNodelist.clear();
+        for (CommandBox c : commandBoxService.getAllCommands()) {
+            addCommandNode(c);
+        }
+        refreshList();
     }
-    private ObservableList<CommandNode> commandNodelist;
 
     private void refreshList(){
         commandList.getChildren().setAll(commandNodelist);
     }
 
-    private void deleteitem(String uid) throws IOException, SQLException {
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("Potwierdzenie usunięcia");
-//        alert.setHeaderText("Czy na pewno chcesz usunąć ten element?");
-//        alert.setContentText("Element zostanie nieodwracalnie usunięty.");
-//        Optional<ButtonType> result = alert.showAndWait();
-//
-//        if(result.get() == ButtonType.OK) {
-//            CommandItem commandItem = new CommandItem(uid);
-//            commandBox.remove(commandItem);
-//            commandNodelist.removeIf(p -> p.getUid().equals(uid));
-//            refreshList();
-//        }
+    private void deleteItem(String uid) throws IOException, SQLException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm delete");
+        alert.setHeaderText("Do you wish to delete this element?");
+        alert.setContentText("This element will be permanently deleted");
+        Optional<ButtonType> result = alert.showAndWait();
+        result.ifPresent(buttonType -> {
+            if(result.get() == ButtonType.OK) {
+                commandBoxService.deleteCommand(uid);
+                commandNodelist.removeIf(p -> p.getUid().equals(uid));
+                refreshList();
+            }
+        });
+
     }
 
     private void addSearchFieldListener(){
@@ -106,7 +102,7 @@ public class CommandBoxController extends AnchorPane {
         commandNode.getBtnDelete().setOnAction(e -> {
             String uid = commandNode.getUid();
             try {
-                deleteitem(uid);
+                deleteItem(uid);
             } catch (IOException | SQLException ex) {
                 ex.printStackTrace();
             }
@@ -114,22 +110,22 @@ public class CommandBoxController extends AnchorPane {
     }
 
     private void addUpdateBtnAction(CommandNode commandNode){
-//        commandNode.getBtnUpdate().setOnAction(e -> {
-//            CommandItem commandItem = new CommandItem(commandNode.getUid(), commandNode.getTitle().trim(), commandNode.getContent().trim(), commandNode.getTagsFieldText().trim());
-//            try {
-//                commandBox.update(commandItem);
-//            } catch (SQLException | IOException ex) {
-//                ex.printStackTrace();
-//            }
-//        });
+        commandNode.getBtnUpdate().setOnAction(e -> {
+            CommandBox commandBox = new CommandBox();
+            commandBox.setUid(commandNode.getUid());
+            commandBox.setTitle(commandNode.getTitle().trim());
+            commandBox.setContent(commandBox.getContent().trim());
+            commandBox.setTags(commandNode.getTagsFieldText().trim());
+            commandBoxService.saveCommand(commandBox);
+        });
     }
 
-    private void addCommandNode(CommandItem commandItem){
+    private void addCommandNode(CommandBox commandBox){
         CommandNode commandNode = new CommandNode();
-        commandNode.setTitleField(commandItem.getCommandTitle());
-        commandNode.setContent(commandItem.getCommandContents());
-        commandNode.setTagsField(commandItem.getTags());
-        commandNode.setUid(commandItem.getUid());
+        commandNode.setTitleField(commandBox.getTitle());
+        commandNode.setContent(commandBox.getContent());
+        commandNode.setTagsField(commandBox.getTags());
+        commandNode.setUid(commandBox.getUid());
         addDeleteBtnAction(commandNode);
         addUpdateBtnAction(commandNode);
         this.commandNodelist.add(commandNode);

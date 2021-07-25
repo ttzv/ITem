@@ -1,12 +1,11 @@
 package com.ttzv.item.dao;
 
 import com.ttzv.item.entity.ADUser_n;
-import com.ttzv.item.entity.CommandBox_n;
+import com.ttzv.item.entity.CommandBox;
 import com.ttzv.item.entity.Office;
 import com.ttzv.item.entity.UserDetail_n;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
-import com.ttzv.item.pwSafe.PHolder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -14,7 +13,6 @@ import org.hibernate.service.spi.ServiceException;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 
 public class DbSession{
 
@@ -35,7 +33,7 @@ public class DbSession{
             if (useEmbeddedDb()) { h2ConfigurationModify(configuration); }
             sessionInstance = configuration.addAnnotatedClass(ADUser_n.class)
                     .addAnnotatedClass(Office.class)
-                    .addAnnotatedClass(CommandBox_n.class)
+                    .addAnnotatedClass(CommandBox.class)
                     .addAnnotatedClass(UserDetail_n.class)
                     .buildSessionFactory();
         }

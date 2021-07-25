@@ -1,23 +1,9 @@
 package com.ttzv.item.uiUtils;
 
-import com.ttzv.item.entity.ADUser;
-
-import com.ttzv.item.entity.ADUser_n;
-import com.ttzv.item.entity.KeyMapper;
-import com.ttzv.item.utility.Utility;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 
 import java.util.*;
 

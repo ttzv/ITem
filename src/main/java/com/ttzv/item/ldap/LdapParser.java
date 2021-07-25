@@ -1,6 +1,5 @@
 package com.ttzv.item.ldap;
 
-import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.utility.Utility;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LdapParser
 {

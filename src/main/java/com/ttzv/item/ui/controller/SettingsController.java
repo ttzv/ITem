@@ -1,35 +1,27 @@
 package com.ttzv.item.ui.controller;
 
 import com.ttzv.item.dao.DbSession;
-import com.ttzv.item.dao.JdbcDriverSelector;
-import com.ttzv.item.dao.UserDaoLdapImpl;
-import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
+import com.ttzv.item.service.LdapService;
+import com.ttzv.item.service.LdapServiceImpl;
 import com.ttzv.item.sms.SmsApiClient;
-import com.ttzv.item.ui.WarningDialog;
-import com.ttzv.item.uiUtils.UiObjectsWrapper;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import org.hibernate.Session;
-import org.hibernate.service.spi.ServiceException;
 import ttzv.uiUtils.LimitableTextField;
 import ttzv.uiUtils.TitledBorder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class SettingsController extends AnchorPane {
 
@@ -536,7 +528,7 @@ public class SettingsController extends AnchorPane {
         Task isValid = new Task() {
             @Override
             protected Object call() throws Exception {
-            UserDaoLdapImpl userDaoLdap = new UserDaoLdapImpl();
+                LdapService ldapService = new LdapServiceImpl();
             return null;
             }
         };

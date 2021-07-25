@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class OfficeDaoImpl implements OfficeDAO{
+public class OfficeDaoImpl implements OfficeDao {
     @Override
     public List<Office> getOffices() {
         Session session = DbSession.openSession();
