@@ -6,6 +6,7 @@ import com.ttzv.item.entity.UserDetail_n;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.service.*;
+import com.ttzv.item.ui.WarningDialog;
 import com.ttzv.item.uiUtils.OfficeFormatCell;
 import com.ttzv.item.uiUtils.SceneUtils;
 import com.ttzv.item.uiUtils.TableViewCreator;
@@ -23,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ttzv.uiUtils.ActionableTextField;
 import ttzv.uiUtils.SideBar;
 import ttzv.uiUtils.StatusBar;
@@ -175,7 +177,7 @@ public class MainWindowController extends AnchorPane {
 
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         storageNodesMap = new HashMap<>();
         labelCity.setText("");
         labelUsername.setText("");
@@ -197,7 +199,8 @@ public class MainWindowController extends AnchorPane {
                 .editColumn(8, "objectSid")
                 .setItems(userHolder.getADUsers());
 
-        addPrimarytableViewDoubleClickHandler();
+        addPrimaryTableViewDoubleClickHandler();
+        addPrimaryTableViewRightClickHandler();
 
         sideBar.setToggler(sidebartogglebtn);
         sideBar.setPrefWidth(0.0);
@@ -225,6 +228,42 @@ public class MainWindowController extends AnchorPane {
 
         userHolder.setCurrentUser(userHolder.getADUsers().stream().findFirst().orElse(null));
         if(userHolder.getCurrentUser() != null) updateMainWindowAssets();
+    }
+
+    private void addPrimaryTableViewRightClickHandler() throws IOException {
+        Stage progressWindow = SceneUtils.getWaitWindow();
+        ContextMenu cm = new ContextMenu();
+        MenuItem unlock = new MenuItem("Unlock");
+        cm.getItems().add(unlock);
+        cm.setOnAction(event -> {
+            ADUser_n selectedUser = primaryUserTableView.getSelectionModel().getSelectedItem();
+            if(selectedUser.getLockoutTime() != null){
+                Task<Boolean> unlockTask = new Task<Boolean>() {
+                    @Override
+                    protected Boolean call() throws Exception {
+                        LdapService ldapService = new LdapServiceImpl();
+                        ldapService.unlockADUser(selectedUser);
+                        return Boolean.TRUE;
+                    }
+                };
+                unlockTask.setOnRunning(action -> {
+                    progressWindow.show();
+                });
+                unlockTask.setOnSucceeded(action -> {
+                    progressWindow.close();
+                    syncTask();
+                });
+                unlockTask.setOnFailed(action -> {
+                    WarningDialog.showAlert(Alert.AlertType.ERROR, unlockTask.getException().toString());
+                });
+                new Thread(unlockTask).start();
+            } else {
+                cm.hide();
+            }
+        });
+        primaryUserTableView.setContextMenu(cm);
+
+
     }
 
     private void selectScene(Pane paneToSet){
@@ -382,7 +421,7 @@ public class MainWindowController extends AnchorPane {
         if(office != null) {
             Office existingOffice = cbox_Offices.getItems().stream().filter(off -> off.equals(office)).findFirst().orElse(null);
             cbox_Offices.getSelectionModel().select(existingOffice);
-            signaturesViewController.setTxtfCity(office.getName());
+            signaturesViewController.setTxtfCity(office.getName2());
             signaturesViewController.setTxtfCityPhone(office.getPhonenumber());
             signaturesViewController.setTxtfCityFax(office.getFax());
             String cType = office.getName();
@@ -445,7 +484,7 @@ public class MainWindowController extends AnchorPane {
     }
 
 
-    private void addPrimarytableViewDoubleClickHandler(){
+    private void addPrimaryTableViewDoubleClickHandler(){
         this.primaryUserTableView.setOnMouseClicked(mouseEvent -> {
             if(mouseEvent.getClickCount() == 2){
                 ADUser_n adUser = primaryUserTableView.getSelectionModel()
