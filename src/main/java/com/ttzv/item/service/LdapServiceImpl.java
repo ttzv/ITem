@@ -6,7 +6,7 @@ import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.utility.Utility;
 
 import javax.naming.NamingException;
-import javax.naming.directory.SearchControls;
+import javax.naming.directory.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -69,5 +69,27 @@ public class LdapServiceImpl implements LdapService{
             allUsers.add(adUser);
         }
         return allUsers;
+    }
+
+    @Override
+    public void unlockADUser(ADUser_n adUser) {
+        ModificationItem[] mods = new ModificationItem[1];
+        DirContext ctx = null;
+        try {
+            ctx = ldapParser.getLdapContext();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Attribute A0 = new BasicAttribute("lockoutTime", "0");
+        mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, A0);
+        try {
+            ctx.modifyAttributes(adUser.getDistinguishedName(), mods);
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
     }
 }

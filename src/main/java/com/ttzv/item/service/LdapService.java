@@ -7,5 +7,6 @@ import java.util.List;
 public interface LdapService{
 
     List<ADUser_n> getAll();
+    void unlockADUser(ADUser_n adUser);
 
 }

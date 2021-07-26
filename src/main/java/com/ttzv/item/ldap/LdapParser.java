@@ -146,6 +146,10 @@ public class LdapParser
         }
     }
 
+    public DirContext getLdapContext() throws GeneralSecurityException, NamingException, IOException {
+        return LdapParser.getLdapParser().ldapContext;
+    }
+
     public void closeContext() throws NamingException {
         this.ldapContext.close();
     }
