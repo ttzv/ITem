@@ -11,6 +11,6 @@
 }
 
 .bordered-titled-content {
-	-fx-background-color: transparent;
+	-fx-background-color: black;
   -fx-padding: 26 10 10 10;
 }

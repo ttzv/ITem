@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -17,36 +18,35 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import ttzv.uiUtils.LimitableTextField?>
-<?import ttzv.uiUtils.TitledBorder?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" fx:controller="com.ttzv.item.ui.controller.MailerController" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ttzv.item.ui.controller.MailerController">
    <children>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TitledBorder maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="580.0" stylesheets="@../style/style_titledborder.css" title="%mail_content" HBox.hgrow="ALWAYS">
-               <children>
+            <TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="610.0" text="%mail_content" textAlignment="CENTER">
+               <content>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0">
                      <children>
                         <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="529.0">
                            <children>
-                              <TitledBorder stylesheets="@../style/style_titledborder.css" title="%mail_topic">
-                                 <children>
+                              <TitledPane alignment="CENTER" animated="false" collapsible="false" text="%mail_topic">
+                                 <content>
                                     <Label fx:id="labTopic">
                                        <padding>
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
                                     </Label>
-                                 </children>
-                              </TitledBorder>
-                              <TitledBorder stylesheets="@../style/style_titledborder.css" title="%mail_recipient">
-                                 <children>
+                                 </content>
+                              </TitledPane>
+                              <TitledPane alignment="CENTER" animated="false" collapsible="false" text="%mail_recipient">
+                                 <content>
                                     <Label fx:id="labAddress">
                                        <padding>
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
                                     </Label>
-                                 </children>
-                              </TitledBorder>
+                                 </content>
+                              </TitledPane>
                               <HBox alignment="BOTTOM_RIGHT" spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="   " />
@@ -64,7 +64,7 @@
                         </HBox>
                         <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                            <children>
-                              <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="507.0" prefWidth="570.0" tabClosingPolicy="UNAVAILABLE" />
+                              <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="507.0" prefWidth="570.0" styleClass="bordered-titled-content" tabClosingPolicy="UNAVAILABLE" />
                               <Label fx:id="labTabLoadLabel" onMouseClicked="#labTabLoadEvent" style="-fx-border-color: silver; -fx-border-width: 1;" text="%mail_clicktoload" textAlignment="CENTER" underline="true" wrapText="true" StackPane.alignment="CENTER">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
@@ -80,10 +80,10 @@
                         </StackPane>
                      </children>
                   </VBox>
-               </children>
-            </TitledBorder>
-            <TitledBorder prefHeight="322.0" prefWidth="323.0" stylesheets="@../style/style_titledborder.css" title="%mail_details">
-               <children>
+               </content>
+            </TitledPane>
+            <TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%mail_details">
+               <content>
                   <AnchorPane>
                      <children>
                         <GridPane hgap="10.0" layoutY="8.0" vgap="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="8.0">
@@ -143,8 +143,8 @@
                         <Insets left="5.0" top="15.0" />
                      </padding>
                   </AnchorPane>
-               </children>
-            </TitledBorder>
+               </content>
+            </TitledPane>
          </children>
       </HBox>
    </children>

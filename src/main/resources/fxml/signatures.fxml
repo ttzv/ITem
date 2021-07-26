@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,26 +16,26 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
-<?import ttzv.uiUtils.TitledBorder?>
 
-<AnchorPane prefHeight="660.0" prefWidth="900.0" fx:controller="com.ttzv.item.ui.controller.SignaturesController" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="660.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ttzv.item.ui.controller.SignaturesController">
    <children>
       <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="660.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TitledBorder stylesheets="@../style/style_higherpadding.css" title="%sign_signaturecontent" HBox.hgrow="ALWAYS">
-               <children>
-                  <WebView fx:id="webViewSignature" prefHeight="377.0" prefWidth="27.0">
-                     <effect>
-                        <InnerShadow height="5.0" radius="2.0" width="5.0" />
-                     </effect>
-                  </WebView>
-               </children>
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </padding>
-            </TitledBorder>
-            <TitledBorder prefHeight="660.0" prefWidth="313.0" stylesheets="@../style/style_higherpadding.css" title="%sign_signaturedetails" HBox.hgrow="NEVER">
-               <children>
+            <TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%sign_signaturecontent" HBox.hgrow="ALWAYS">
+               <content>
+                  <AnchorPane>
+                     <children>
+                        <WebView fx:id="webViewSignature" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                           <effect>
+                              <InnerShadow height="5.0" radius="2.0" width="5.0" />
+                           </effect>
+                        </WebView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="sign_signaturedetails" HBox.hgrow="NEVER">
+               <content>
                   <VBox fillWidth="false" spacing="10.0">
                      <children>
                         <GridPane>
@@ -110,11 +111,8 @@
                         </VBox>
                      </children>
                   </VBox>
-               </children>
-               <padding>
-                  <Insets bottom="15.0" left="5.0" top="15.0" />
-               </padding>
-            </TitledBorder>
+               </content>
+            </TitledPane>
          </children>
       </HBox>
    </children>

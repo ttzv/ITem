@@ -605,7 +605,6 @@ public class SettingsController extends AnchorPane {
         isValid.setOnSucceeded(event -> {
             this.prgSms.setVisible(false);
             showTemporaryImg(this.okImgSms);
-            confirmCloseDialog();
         });
         isValid.setOnFailed(event -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);

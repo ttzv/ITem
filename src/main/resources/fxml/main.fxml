@@ -272,15 +272,16 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
+                                                      <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                         <GridPane.margin>
+                                                            <Insets left="3.0" />
+                                                         </GridPane.margin>
+                                                         <children>
+                                                            <ComboBox fx:id="cbox_Offices" onAction="#cbox_Offices_Event" prefHeight="25.0" prefWidth="125.0" />
+                                                            <Button mnemonicParsing="false" onAction="#deleteOffice" prefHeight="25.0" prefWidth="21.0" text="X" />
+                                                         </children>
+                                                      </HBox>
                                                       <ActionableTextField fx:id="txtfActPos" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                                                         <button1Image>
-                                                            <Image url="@../img/cp.png" />
-                                                         </button1Image>
-                                                         <button2Image>
-                                                            <Image url="@../img/done.png" />
-                                                         </button2Image>
-                                                      </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActUsrLandLine" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="22">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -302,6 +303,38 @@
                                                          </button2Image>
                                                       </ActionableTextField>
                                                       <ActionableTextField fx:id="txtfActCtName_2" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="txtfActCtLocation" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="txtfActCtLocation_2" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="txtfActCtPostalcode" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
+                                                      <ActionableTextField fx:id="txtfActCtLandline" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="16">
                                                          <button1Image>
                                                             <Image url="@../img/cp.png" />
                                                          </button1Image>
@@ -340,53 +373,20 @@
                                                             <Image url="@../img/done.png" />
                                                          </button2Image>
                                                       </ActionableTextField>
+                                                      <ActionableTextField fx:id="txtfActUsrLandLine" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="22">
+                                                         <button1Image>
+                                                            <Image url="@../img/cp.png" />
+                                                         </button1Image>
+                                                         <button2Image>
+                                                            <Image url="@../img/done.png" />
+                                                         </button2Image>
+                                                      </ActionableTextField>
                                                       <Label text="%grid_number" GridPane.rowIndex="21" />
                                                       <Label text="%grid_landline" GridPane.rowIndex="22" />
-                                                      <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                                         <GridPane.margin>
-                                                            <Insets left="3.0" />
-                                                         </GridPane.margin>
-                                                         <children>
-                                                            <ComboBox fx:id="cbox_Offices" onAction="#cbox_Offices_Event" prefHeight="25.0" prefWidth="125.0" />
-                                                            <Button mnemonicParsing="false" onAction="#deleteOffice" prefHeight="25.0" prefWidth="21.0" text="X" />
-                                                         </children>
-                                                      </HBox>
                                                       <Label text="%grid_location" GridPane.rowIndex="13" />
-                                                      <ActionableTextField fx:id="txtfActCtLocation" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="13">
-                                                         <button1Image>
-                                                            <Image url="@../img/cp.png" />
-                                                         </button1Image>
-                                                         <button2Image>
-                                                            <Image url="@../img/done.png" />
-                                                         </button2Image>
-                                                      </ActionableTextField>
-                                                      <ActionableTextField fx:id="txtfActCtLocation_2" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="14">
-                                                         <button1Image>
-                                                            <Image url="@../img/cp.png" />
-                                                         </button1Image>
-                                                         <button2Image>
-                                                            <Image url="@../img/done.png" />
-                                                         </button2Image>
-                                                      </ActionableTextField>
                                                       <Label text="%grid_location_2" GridPane.rowIndex="14" />
                                                       <Label text="%grid_postalcode" GridPane.rowIndex="15" />
-                                                      <ActionableTextField fx:id="txtfActCtPostalcode" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="15">
-                                                         <button1Image>
-                                                            <Image url="@../img/cp.png" />
-                                                         </button1Image>
-                                                         <button2Image>
-                                                            <Image url="@../img/done.png" />
-                                                         </button2Image>
-                                                      </ActionableTextField>
                                                       <Label text="%grid_office_landline" GridPane.rowIndex="16" />
-                                                      <ActionableTextField fx:id="txtfActCtLandline" showButton2="false" GridPane.columnIndex="1" GridPane.rowIndex="16">
-                                                         <button1Image>
-                                                            <Image url="@../img/cp.png" />
-                                                         </button1Image>
-                                                         <button2Image>
-                                                            <Image url="@../img/done.png" />
-                                                         </button2Image>
-                                                      </ActionableTextField>
                                                       <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="23" />
                                                       <Label text="%grid_header_pass_storage" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="24" GridPane.valignment="CENTER" />
                                                    </children>

@@ -10,14 +10,13 @@ import com.ttzv.item.uiUtils.FileNodeWrapper;
 import com.ttzv.item.uiUtils.MsgFileChooser;
 import com.ttzv.item.uiUtils.SceneUtils;
 import com.ttzv.item.utility.Utility;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import pl.smsapi.exception.SmsapiException;
 
 import java.io.IOException;
@@ -27,14 +26,13 @@ import java.util.regex.Pattern;
 
 public class SmsController extends AnchorPane {
 
+    private final Cfg AppConfiguration = Cfg.getInstance();
     private final int ACCENTED_CHAR_PENALTY = 90;
     private final int MESSAGE_CHAR_LIMIT = 160;
     private final int MESSAGE_ACCENTED_LIMIT = MESSAGE_CHAR_LIMIT - ACCENTED_CHAR_PENALTY;
     private final int MAX_SMS_NO = 3;
     private final String ACCENTED_CHARS = "^.*[ą|ć|ę|ł|ń|ó|ś|ź|ż|Ą|Ć|Ę|Ł|Ń|Ó|Ś|Ź|Ż].*$";
 
-    private UserHolder userHolder;
-    private Cfg cfg;
     private Pattern pattern;
     private Integer currentChars = 0;
     private Integer remChars = MESSAGE_CHAR_LIMIT;
@@ -55,7 +53,7 @@ public class SmsController extends AnchorPane {
     }
 
     void updateSender(){
-        setTextfield_smsSender(cfg.retrieveProp(Cfg.SMSAPI_SENDER));
+        setTextfield_smsSender(AppConfiguration.retrieveProp(Cfg.SMSAPI_SENDER));
     }
 
     void updateUserLabels(UserHolder userHolder){
@@ -164,13 +162,13 @@ public class SmsController extends AnchorPane {
 
     @FXML
     public void initialize(){
-//        cfg = Cfg.getInstance();
-//        this.msgFileChooser = new MsgFileChooser(Cfg.SMS_LIST);
-//        refreshAccountInfo();
-//        addTextAreaListener();
-//        updateSender();
-//        buildComboBox();
-//        loadTemplateHandler();
+        pattern = Pattern.compile(ACCENTED_CHARS);
+        this.msgFileChooser = new MsgFileChooser(Cfg.SMS_LIST);
+        refreshAccountInfo();
+        addTextAreaListener();
+        updateSender();
+        buildComboBox();
+        loadTemplateHandler();
     }
 
     @FXML
@@ -188,7 +186,7 @@ public class SmsController extends AnchorPane {
                 try {
                     SmsApiClient smsApiClient = new SmsApiClient();
                     smsApiClient.sendSMS(smsMessage);
-                    refreshAccountInfo();
+                    Platform.runLater(() -> refreshAccountInfo());
                 } catch (IOException | GeneralSecurityException | SmsapiException e) {
                     e.printStackTrace();
                     WarningDialog.showAlert(Alert.AlertType.ERROR, e.toString());
