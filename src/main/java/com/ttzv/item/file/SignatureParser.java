@@ -24,10 +24,10 @@ public class SignatureParser implements FileParser {
     public static final int CITYPHONE = 17;
     public static final int CITYFAX = 19;
 
-    private String phoneConstantValue = "tel. (+48) ";
-    private String mphoneConstantValue = "kom. (+48) ";
-    private String cityPhoneConstantValue = "Tel. (+48) ";
-    private String cityFaxConstantValue = "Fax. (+48) ";
+    private String phoneConstantValue = "";
+    private String mphoneConstantValue = "";
+    private String cityPhoneConstantValue = "";
+    private String cityFaxConstantValue = "";
     private ArrayList<Integer> availableLines;
 
     private HashSet<Integer> hiddenRows;
