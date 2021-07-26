@@ -162,6 +162,7 @@ public class SmsController extends AnchorPane {
 
     @FXML
     public void initialize(){
+        loader = new Loader();
         pattern = Pattern.compile(ACCENTED_CHARS);
         this.msgFileChooser = new MsgFileChooser(Cfg.SMS_LIST);
         refreshAccountInfo();
