@@ -88,7 +88,7 @@ public class ADUserServiceImpl implements ADUserService {
         if(offices.size() > 0){
             for (Office office :
                     offices) {
-                List<ADUser_n> usersInOffice = usersFromOffice(Utility.replaceAccents(office.getLocation()).toLowerCase());
+                List<ADUser_n> usersInOffice = usersFromOffice(Utility.replaceAccents(office.getLocation().toLowerCase()).toLowerCase());
                 usersInOffice.forEach(adUser_n -> adUser_n.getDetail().setOffice(office));
                 adUserDao.updateMultiple(usersInOffice);
             }

@@ -16,7 +16,7 @@ public class CommandBoxServiceImpl implements CommandBoxService{
 
     @Override
     public List<CommandBox> getAllCommands() {
-        return null;
+        return commandBoxDao.getAllCommands();
     }
 
     @Override
@@ -39,5 +39,13 @@ public class CommandBoxServiceImpl implements CommandBoxService{
     @Override
     public void deleteCommand(String uid) {
         commandBoxDao.deleteCommand(uid);
+    }
+
+    @Override
+    public Integer getNextUid() {
+        Integer nextUid = commandBoxDao.getLastUid();
+        if(nextUid == null) nextUid = 0;
+        else nextUid += 1;
+        return nextUid;
     }
 }

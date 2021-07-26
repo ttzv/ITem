@@ -4,6 +4,7 @@ import com.ttzv.item.entity.CommandBox;
 import com.ttzv.item.service.CommandBoxService;
 import com.ttzv.item.service.CommandBoxServiceImpl;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import ttzv.uiUtils.CommandNode;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class CommandBoxController extends AnchorPane {
@@ -34,10 +36,13 @@ public class CommandBoxController extends AnchorPane {
 
     private ObservableList<CommandNode> commandNodelist;
 
+
     @FXML
     public void initialize(){
+        commandNodelist = FXCollections.observableArrayList();
         commandBoxService = new CommandBoxServiceImpl();
-        for (CommandBox c : commandBoxService.getAllCommands()) {
+        List<CommandBox> commandBoxList = commandBoxService.getAllCommands();
+        for (CommandBox c : commandBoxList) {
             addCommandNode(c);
         }
         refreshList();
@@ -49,13 +54,14 @@ public class CommandBoxController extends AnchorPane {
         boolean lastAddedNodeTitleIsEmpty = commandNodelist.size() != 0 && commandNodelist.get(commandNodelist.size() - 1).getTitle().isEmpty();
         if (!lastAddedNodeTitleIsEmpty) {
             CommandNode commandNode = new CommandNode();
-
-            String nextUid = String.valueOf(commandBox.getNextUid());
-            if(nextUid == null) nextUid = "-1";
+            String nextUid = String.valueOf(commandBoxService.getNextUid());
             commandNode.setUid(nextUid);
+            CommandBox commandBox = new CommandBox();
+            commandBox.setUid(nextUid);
+            commandBoxService.saveCommand(commandBox);
             commandNodelist.add(commandNode);
-            addDeleteBtnAction(commandNode);
-            addUpdateBtnAction(commandNode);
+            addDeleteBtnAction(commandNode, commandBox);
+            addUpdateBtnAction(commandNode, commandBox);
             refreshList();
             scrollToBottom();
         } else {
@@ -98,7 +104,7 @@ public class CommandBoxController extends AnchorPane {
         });
     }
 
-    private void addDeleteBtnAction(CommandNode commandNode){
+    private void addDeleteBtnAction(CommandNode commandNode, CommandBox commandBox){
         commandNode.getBtnDelete().setOnAction(e -> {
             String uid = commandNode.getUid();
             try {
@@ -109,14 +115,13 @@ public class CommandBoxController extends AnchorPane {
         });
     }
 
-    private void addUpdateBtnAction(CommandNode commandNode){
+    private void addUpdateBtnAction(CommandNode commandNode, CommandBox commandBox){
         commandNode.getBtnUpdate().setOnAction(e -> {
-            CommandBox commandBox = new CommandBox();
             commandBox.setUid(commandNode.getUid());
             commandBox.setTitle(commandNode.getTitle().trim());
-            commandBox.setContent(commandBox.getContent().trim());
+            commandBox.setContent(commandNode.getContent().trim());
             commandBox.setTags(commandNode.getTagsFieldText().trim());
-            commandBoxService.saveCommand(commandBox);
+            commandBoxService.updateCommand(commandBox);
         });
     }
 
@@ -126,14 +131,13 @@ public class CommandBoxController extends AnchorPane {
         commandNode.setContent(commandBox.getContent());
         commandNode.setTagsField(commandBox.getTags());
         commandNode.setUid(commandBox.getUid());
-        addDeleteBtnAction(commandNode);
-        addUpdateBtnAction(commandNode);
+        addDeleteBtnAction(commandNode, commandBox);
+        addUpdateBtnAction(commandNode, commandBox);
         this.commandNodelist.add(commandNode);
     }
 
     private void scrollToBottom(){
         Platform.runLater(() -> this.scrollPane.setVvalue(1.0));
-
     }
 
 }

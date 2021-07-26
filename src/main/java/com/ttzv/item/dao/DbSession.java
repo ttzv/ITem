@@ -35,6 +35,7 @@ public class DbSession{
                     .addAnnotatedClass(Office.class)
                     .addAnnotatedClass(CommandBox.class)
                     .addAnnotatedClass(UserDetail_n.class)
+                    .addAnnotatedClass(CommandBox.class)
                     .buildSessionFactory();
         }
         return sessionInstance;

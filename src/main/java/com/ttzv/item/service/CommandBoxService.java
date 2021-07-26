@@ -12,4 +12,5 @@ public interface CommandBoxService {
     void updateCommand(CommandBox commandBox);
     void deleteCommand(CommandBox commandBox);
     void deleteCommand(String uid);
+    Integer getNextUid();
 }

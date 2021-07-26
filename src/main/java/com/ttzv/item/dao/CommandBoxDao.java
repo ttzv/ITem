@@ -11,5 +11,6 @@ public interface CommandBoxDao {
     void updateCommand(CommandBox commandBox);
     void deleteCommand(String uid);
     void deleteCommand(CommandBox commandBox);
+    Integer getLastUid();
 
 }

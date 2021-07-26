@@ -144,6 +144,7 @@ public @Getter @Setter class ADUser_n {
         setUserAccountControl(other.getUserAccountControl());
         setLockoutTime(other.getLockoutTime());
         setWhenCreated(other.getWhenCreated());
+        setObjectSid(other.getObjectSid());
 
 
     }
@@ -156,6 +157,7 @@ public @Getter @Setter class ADUser_n {
 
         return Objects.equals(givenName, adUser_n.givenName)
                 && Objects.equals(objectGUID, adUser_n.objectGUID)
+                && Objects.equals(objectSid, adUser_n.objectSid)
                 && Objects.equals(sn, adUser_n.sn)
                 && Objects.equals(displayName, adUser_n.displayName)
                 && Objects.equals(sAMAccountName, adUser_n.sAMAccountName)
@@ -168,6 +170,6 @@ public @Getter @Setter class ADUser_n {
 
     @Override
     public int hashCode() {
-        return Objects.hash(objectGUID);
+        return Objects.hash(objectGUID, objectSid);
     }
 }

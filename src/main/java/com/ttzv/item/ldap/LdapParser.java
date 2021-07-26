@@ -20,18 +20,9 @@ public class LdapParser
     private String ldap_port;
     private String ad_adminUser;
     private char[] ad_adminPass;
-    private List<ADUser> usersDataList;
     private int totalResults;
     private List<Map<String, String>> results;
     public static final String LDAP_SEPARATOR = Utility.DEFAULT_ENTITY_SEPARATOR;
-
-    public List<ADUser> getUsersDataList() {
-        if(!usersDataList.isEmpty()) {
-            return usersDataList;
-        } else {
-            return null;
-        }
-    }
 
     private void loadCfgCredentials() throws IOException, GeneralSecurityException {
         this.setLdap_URL(Cfg.getInstance().retrieveProp(Cfg.LDAP_URL));
