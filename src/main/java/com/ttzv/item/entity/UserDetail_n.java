@@ -2,8 +2,6 @@ package com.ttzv.item.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -12,7 +10,7 @@ import java.util.Map;
 
 @Entity
 @Table(name = "user_details")
-public @Getter @Setter class UserDetail_n {
+public class UserDetail_n {
 
     @Id @GeneratedValue
     @Column
@@ -82,4 +80,67 @@ public @Getter @Setter class UserDetail_n {
         storage.remove(key);
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Office getOffice() {
+        return office;
+    }
+
+    public void setOffice(Office office) {
+        this.office = office;
+    }
+
+    public ADUser_n getAdUser() {
+        return adUser;
+    }
+
+    public void setAdUser(ADUser_n adUser) {
+        this.adUser = adUser;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getStorageJSON() {
+        return storageJSON;
+    }
+
+    public void setStorageJSON(String storageJSON) {
+        this.storageJSON = storageJSON;
+    }
+
+    public Map<String, Object> getStorage() {
+        return storage;
+    }
+
+    public void setStorage(Map<String, Object> storage) {
+        this.storage = storage;
+    }
+
+    public String getLandlineNumber() {
+        return landlineNumber;
+    }
+
+    public void setLandlineNumber(String landlineNumber) {
+        this.landlineNumber = landlineNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

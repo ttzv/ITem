@@ -1,8 +1,6 @@
 package com.ttzv.item.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public @Getter @Setter class ADUser_n {
+public class ADUser_n {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -172,4 +170,106 @@ public @Getter @Setter class ADUser_n {
     public int hashCode() {
         return Objects.hash(objectGUID, objectSid);
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getObjectGUID() {
+        return objectGUID;
+    }
+
+    public void setObjectGUID(String objectGUID) {
+        this.objectGUID = objectGUID;
+    }
+
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
+    }
+
+    public String getSn() {
+        return sn;
+    }
+
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getSAMAccountName() {
+        return sAMAccountName;
+    }
+
+    public void setSAMAccountName(String sAMAccountName) {
+        this.sAMAccountName = sAMAccountName;
+    }
+
+    public LocalDateTime getWhenCreated() {
+        return whenCreated;
+    }
+
+    public void setWhenCreated(LocalDateTime whenCreated) {
+        this.whenCreated = whenCreated;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDistinguishedName() {
+        return distinguishedName;
+    }
+
+    public void setDistinguishedName(String distinguishedName) {
+        this.distinguishedName = distinguishedName;
+    }
+
+    public String getObjectSid() {
+        return objectSid;
+    }
+
+    public void setObjectSid(String objectSid) {
+        this.objectSid = objectSid;
+    }
+
+    public String getUserAccountControl() {
+        return userAccountControl;
+    }
+
+    public void setUserAccountControl(String userAccountControl) {
+        this.userAccountControl = userAccountControl;
+    }
+
+    public LocalDateTime getLockoutTime() {
+        return lockoutTime;
+    }
+
+    public void setLockoutTime(LocalDateTime lockoutTime) {
+        this.lockoutTime = lockoutTime;
+    }
+
+    public void setDetail(UserDetail_n detail) {
+        this.detail = detail;
+    }
 }
+
+

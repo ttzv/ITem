@@ -20,7 +20,6 @@ module com.ttzv.item {
     requires net.bytebuddy;
     requires com.sun.xml.bind;
     requires com.fasterxml.classmate;
-    requires static lombok;
 
     opens com.ttzv.item to javafx.fxml;
     opens com.ttzv.item.entity to org.hibernate.orm.core;

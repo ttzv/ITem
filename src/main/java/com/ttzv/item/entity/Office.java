@@ -1,9 +1,5 @@
 package com.ttzv.item.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -11,8 +7,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "offices")
-public @Getter @Setter
-class Office {
+public class Office {
 
     @Id @GeneratedValue
     @Column
@@ -78,5 +73,85 @@ class Office {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName2() {
+        return name2;
+    }
+
+    public void setName2(String name2) {
+        this.name2 = name2;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getLocation2() {
+        return location2;
+    }
+
+    public void setLocation2(String location2) {
+        this.location2 = location2;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getLandline() {
+        return landline;
+    }
+
+    public void setLandline(String landline) {
+        this.landline = landline;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getPostalcode() {
+        return postalcode;
+    }
+
+    public void setPostalcode(String postalcode) {
+        this.postalcode = postalcode;
+    }
+
+    public Set<UserDetail_n> getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(Set<UserDetail_n> userDetails) {
+        this.userDetails = userDetails;
     }
 }

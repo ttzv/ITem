@@ -1,15 +1,10 @@
 package com.ttzv.item.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "command_box")
-public @Getter @Setter
-class CommandBox {
+public class CommandBox {
 
     @Id
     @GeneratedValue
@@ -33,5 +28,45 @@ class CommandBox {
                 ", tags='" + tags + '\'' +
                 ", uid='" + uid + '\'' +
                 '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }
