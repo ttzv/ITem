@@ -237,7 +237,7 @@ public class MainWindowController extends AnchorPane {
         cm.getItems().add(unlock);
         cm.setOnAction(event -> {
             ADUser_n selectedUser = primaryUserTableView.getSelectionModel().getSelectedItem();
-            if(selectedUser.getLockoutTime() != null){
+            if(selectedUser != null && selectedUser.getLockoutTime() != null){
                 Task<Boolean> unlockTask = new Task<Boolean>() {
                     @Override
                     protected Boolean call() throws Exception {
