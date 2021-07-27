@@ -5,10 +5,9 @@ import com.ttzv.item.file.Loader;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.sender.SmsMessage;
 import com.ttzv.item.sms.SmsApiClient;
-import com.ttzv.item.ui.WarningDialog;
+import com.ttzv.item.uiUtils.DialogFactory;
 import com.ttzv.item.uiUtils.FileNodeWrapper;
 import com.ttzv.item.uiUtils.MsgFileChooser;
-import com.ttzv.item.uiUtils.SceneUtils;
 import com.ttzv.item.utility.Utility;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -47,7 +46,7 @@ public class SmsController extends AnchorPane {
             setLabel_points(smsApiClient.getPoints().toString());
         } catch (IOException | GeneralSecurityException | SmsapiException e) {
             e.printStackTrace();
-            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+            DialogFactory.showAlert(Alert.AlertType.WARNING, e.toString());
             setLabel_points("-");
         }
     }
@@ -174,38 +173,36 @@ public class SmsController extends AnchorPane {
 
     @FXML
     void btnA_Send(ActionEvent event) throws IOException {
-        Stage infoWindowStage = SceneUtils.getWaitWindow();
+        Stage waitWindow = DialogFactory.getWaitWindow();
 
         Task<Boolean> wait = new Task<>() {
             @Override
             protected Boolean call(){
-                SmsMessage smsMessage = new SmsMessage();
-                smsMessage.setText(textarea_smscontent.getText());
-                smsMessage.setRecipientAddress(textfield_smsRecipientNumber.getText());
-                smsMessage.setSender(textfield_smsSender.getText());
+            SmsMessage smsMessage = new SmsMessage();
+            smsMessage.setText(textarea_smscontent.getText());
+            smsMessage.setRecipientAddress(textfield_smsRecipientNumber.getText());
+            smsMessage.setSender(textfield_smsSender.getText());
 
-                try {
-                    SmsApiClient smsApiClient = new SmsApiClient();
-                    smsApiClient.sendSMS(smsMessage);
-                    Platform.runLater(() -> refreshAccountInfo());
-                } catch (IOException | GeneralSecurityException | SmsapiException e) {
-                    e.printStackTrace();
-                    WarningDialog.showAlert(Alert.AlertType.ERROR, e.toString());
-                }
-                return Boolean.TRUE;
+            try {
+                SmsApiClient smsApiClient = new SmsApiClient();
+                smsApiClient.sendSMS(smsMessage);
+                Platform.runLater(() -> refreshAccountInfo());
+            } catch (IOException | GeneralSecurityException | SmsapiException e) {
+                e.printStackTrace();
+                DialogFactory.showAlert(Alert.AlertType.ERROR, e.toString());
+            }
+            return Boolean.TRUE;
             }
         };
         wait.setOnRunning(workerStateEvent -> {
-            infoWindowStage.show();
+            waitWindow.show();
         });
         wait.setOnSucceeded(workerStateEvent -> {
-            infoWindowStage.close();
+            waitWindow.close();
         });
         wait.setOnFailed(workerStateEvent -> {
-            infoWindowStage.close();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(wait.getException().toString());
-            alert.showAndWait();
+            waitWindow.close();
+            DialogFactory.showAlert(Alert.AlertType.ERROR, wait.getException().toString());
         });
         new Thread(wait).start();
 
@@ -233,7 +230,7 @@ public class SmsController extends AnchorPane {
             msgFileChooser.show();
         } catch (IOException e) {
             e.printStackTrace();
-            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+            DialogFactory.showAlert(Alert.AlertType.WARNING, e.toString());
         }
 
         buildComboBox();

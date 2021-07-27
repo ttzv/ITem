@@ -10,10 +10,7 @@ import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
 import com.ttzv.item.service.ADUserService;
 import com.ttzv.item.service.ADUserServiceImpl;
-import com.ttzv.item.service.LdapService;
-import com.ttzv.item.service.LdapServiceImpl;
-import com.ttzv.item.ui.WarningDialog;
-import com.ttzv.item.uiUtils.SceneUtils;
+import com.ttzv.item.uiUtils.DialogFactory;
 import com.ttzv.item.uiUtils.TabBuilder;
 import com.ttzv.item.uiUtils.ViewTab;
 import com.ttzv.item.utility.Utility;
@@ -24,16 +21,11 @@ import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import ttzv.uiUtils.LimitableTextField;
 
-import javax.naming.NamingException;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Arrays;
-import java.util.List;
 
 public class MailerController extends AnchorPane {
 
@@ -97,7 +89,7 @@ public class MailerController extends AnchorPane {
 
     @FXML
     void btnSendAction(ActionEvent event) throws IOException {
-        Stage infoWindowStage = SceneUtils.getWaitWindow();
+        Stage infoWindowStage = DialogFactory.getWaitWindow();
 
         Task<Boolean> wait = new Task<>() {
             @Override
@@ -122,15 +114,12 @@ public class MailerController extends AnchorPane {
 
                 sender.sendMail();
 
-                String statusText = "Wysłano do " + sender.getReceiverAddress();
-
                 String savePass = AppConfiguration.retrieveProp(Cfg.SAVEPASS);
                 if(!txtPass.getText().isBlank() && savePass.equals("true")) {
                     String name = tabBuilder.getSelectedTab()
                             .getName()
                             .replace(".html", "");
                     savePass(name);
-                    statusText = statusText.concat(", zapisano hasło w bazie");
                 }
                 return Boolean.TRUE;
             }
@@ -143,9 +132,7 @@ public class MailerController extends AnchorPane {
         });
         wait.setOnFailed(workerStateEvent -> {
             infoWindowStage.close();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(wait.getException().toString());
-            alert.showAndWait();
+            DialogFactory.showAlert(Alert.AlertType.ERROR, wait.getException().toString());
         });
         new Thread(wait).start();
 
@@ -181,7 +168,7 @@ public class MailerController extends AnchorPane {
             tabBuilder.promptForChooser();
         } catch (IOException e) {
             e.printStackTrace();
-            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+            DialogFactory.showAlert(Alert.AlertType.WARNING, e.toString());
         }
         tabBuilder.build();
         this.tabPane.getTabs().addAll(tabBuilder.getViewTabList());
@@ -198,7 +185,7 @@ public class MailerController extends AnchorPane {
             tabBuilder.promptForChooser();
         } catch (IOException e) {
             e.printStackTrace();
-            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+            DialogFactory.showAlert(Alert.AlertType.WARNING, e.toString());
         }
         //tabBuilder.build();
         this.tabPane.getTabs().clear();
@@ -214,7 +201,7 @@ public class MailerController extends AnchorPane {
             this.tabBuilder.getMsgFileChooser().removePath(viewTab.getPath());
         } catch (IOException e) {
             e.printStackTrace();
-            WarningDialog.showAlert(Alert.AlertType.WARNING, e.toString());
+            DialogFactory.showAlert(Alert.AlertType.WARNING, e.toString());
         }
 
         this.tabBuilder.getViewTabList().remove(viewTab);
@@ -334,6 +321,11 @@ public class MailerController extends AnchorPane {
 
     public void setUserName(String userName){
         this.txtUser.setText(userName);
+    }
+
+    @FXML
+    public void addDomainBtnAction(ActionEvent actionEvent) {
+
     }
 
 }

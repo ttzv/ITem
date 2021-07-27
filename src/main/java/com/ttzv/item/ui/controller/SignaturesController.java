@@ -353,4 +353,5 @@ public class SignaturesController extends AnchorPane {
             }
         }
     }
+
 }

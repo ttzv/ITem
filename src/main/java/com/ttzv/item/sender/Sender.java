@@ -1,13 +1,13 @@
 package com.ttzv.item.sender;
 
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.utility.Utility;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.MimeMessage;
 import javafx.scene.control.Alert;
-
 
 import java.util.Date;
 import java.util.Properties;
@@ -32,7 +32,7 @@ public class Sender {
     private String msgSubject;
 
 
-    private String[] domainSuffix = {"atal.pl", "gmail.com"};
+    private String[] domainSuffix;
     private String addressPrefix;
     private String addressSuffix;
 
@@ -44,6 +44,7 @@ public class Sender {
         smtpStartTLS = AppConfiguration.retrieveProp(Cfg.SMTP_TLS);
         smtpPort = AppConfiguration.retrieveProp(Cfg.SMTP_PORT);
         senderAddress = AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN);
+        domainSuffix = Utility.stringToArray(AppConfiguration.retrieveProp(Cfg.MAIL_DOMAINS)).toArray(String[]::new);
 
         receiverAddress = "";
         msgSubject = "";

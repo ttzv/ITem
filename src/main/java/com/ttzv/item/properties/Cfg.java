@@ -18,6 +18,7 @@ package com.ttzv.item.properties;
      public static final String AUTOFILL_LOGIN = "autoFillLogin";
      public static final String USER_REGEX = "userRegexFilter";
      public static final String LOGIN_REGEX = "loginRegexFilter";
+     public static final String MAIL_DOMAINS = "mailDomains";
      //ldap final
      public static final String LDAP_URL = "ldapUrl";
      public static final String LDAP_PORT = "ldapPort";
@@ -60,6 +61,7 @@ package com.ttzv.item.properties;
          defPropSet(LTF_NAME_ONLY, "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ-]*|\\s|[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*\\s+[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ-]*");
          defPropSet(LTF_RESTRICT_SYMBOLS, "[A-Za-z]*|\\.|\\d|[A-Za-z]+\\.\\w+|[-]");
          defPropSet(DB_EMBEDDED, "true");
+         defPropSet(MAIL_DOMAINS, "[gmail.com]");
      }
 
      public static Cfg getInstance(){

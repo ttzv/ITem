@@ -6,9 +6,8 @@ import com.ttzv.item.entity.UserDetail_n;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.service.*;
-import com.ttzv.item.ui.WarningDialog;
+import com.ttzv.item.uiUtils.DialogFactory;
 import com.ttzv.item.uiUtils.OfficeFormatCell;
-import com.ttzv.item.uiUtils.SceneUtils;
 import com.ttzv.item.uiUtils.TableViewCreator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -144,12 +143,14 @@ public class MainWindowController extends AnchorPane {
     //Sms view + controller
     @FXML
     AnchorPane smsView;
+
     @FXML
     SmsController smsViewController;
 
     //Signatures view + controller
     @FXML
     AnchorPane signaturesView;
+
     @FXML
     SignaturesController signaturesViewController;
 
@@ -162,6 +163,7 @@ public class MainWindowController extends AnchorPane {
     //Mailer view + controller
     @FXML
     AnchorPane mailerView;
+
     @FXML
     MailerController mailerViewController;
 
@@ -231,7 +233,7 @@ public class MainWindowController extends AnchorPane {
     }
 
     private void addPrimaryTableViewRightClickHandler() throws IOException {
-        Stage progressWindow = SceneUtils.getWaitWindow();
+        Stage progressWindow = DialogFactory.getWaitWindow();
         ContextMenu cm = new ContextMenu();
         MenuItem unlock = new MenuItem("Unlock");
         cm.getItems().add(unlock);
@@ -241,9 +243,9 @@ public class MainWindowController extends AnchorPane {
                 Task<Boolean> unlockTask = new Task<Boolean>() {
                     @Override
                     protected Boolean call() throws Exception {
-                        LdapService ldapService = new LdapServiceImpl();
-                        ldapService.unlockADUser(selectedUser);
-                        return Boolean.TRUE;
+                    LdapService ldapService = new LdapServiceImpl();
+                    ldapService.unlockADUser(selectedUser);
+                    return Boolean.TRUE;
                     }
                 };
                 unlockTask.setOnRunning(action -> {
@@ -254,7 +256,7 @@ public class MainWindowController extends AnchorPane {
                     syncTask();
                 });
                 unlockTask.setOnFailed(action -> {
-                    WarningDialog.showAlert(Alert.AlertType.ERROR, unlockTask.getException().toString());
+                    DialogFactory.showAlert(Alert.AlertType.ERROR, unlockTask.getException().toString());
                 });
                 new Thread(unlockTask).start();
             } else {
@@ -262,8 +264,6 @@ public class MainWindowController extends AnchorPane {
             }
         });
         primaryUserTableView.setContextMenu(cm);
-
-
     }
 
     private void selectScene(Pane paneToSet){
@@ -276,7 +276,7 @@ public class MainWindowController extends AnchorPane {
 
     @FXML
     public void showMailSett(ActionEvent actionEvent) throws IOException {
-        SceneUtils.showWindow("infoWindow", Modality.APPLICATION_MODAL, "Pomoc");
+        DialogFactory.showWindow("infoWindow", Modality.APPLICATION_MODAL, "Help");
     }
 
     @FXML
@@ -638,7 +638,7 @@ public class MainWindowController extends AnchorPane {
     public void deleteOffice(ActionEvent actionEvent) {
         Office selectedOffice = cbox_Offices.getSelectionModel().getSelectedItem();
         if(selectedOffice != null && selectedOffice.getName() != null){
-            Dialog<ButtonType> dialog = new Dialog<>();
+            Dialog<ButtonType> dialog = DialogFactory.<ButtonType>buildDialog();
             dialog.setContentText("Are you sure you want to delete Office: " + selectedOffice + " ?");
             dialog.getDialogPane().getButtonTypes().add(ButtonType.YES);
             dialog.getDialogPane().getButtonTypes().add(ButtonType.NO);
@@ -653,4 +653,5 @@ public class MainWindowController extends AnchorPane {
             }
         }
     }
+
 }

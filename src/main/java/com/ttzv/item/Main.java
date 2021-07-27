@@ -3,8 +3,8 @@ package com.ttzv.item;
 
 import com.ttzv.item.dao.DbSession;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.ui.WarningDialog;
 import com.ttzv.item.ui.controller.MainWindowController;
+import com.ttzv.item.uiUtils.DialogFactory;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,7 +29,7 @@ public class Main extends Application {
         try{
             dbSession = DbSession.openSession();
         } catch (ServiceException se){
-            WarningDialog.showAlert(Alert.AlertType.ERROR, "No connection to database, application will use embedded database instead.");
+            DialogFactory.showAlert(Alert.AlertType.ERROR, "No connection to database, application will use embedded database instead.");
             Cfg.getInstance().setProperty(Cfg.DB_EMBEDDED, "true");
         }
 
@@ -37,10 +37,13 @@ public class Main extends Application {
         Parent root = loader.load();
         MainWindowController mainWindowController = loader.getController();
         mainWindowController.referenceRoot(root);
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+
+        DialogFactory.initFactory(scene.getWindow());
+
+        primaryStage.setScene(scene);
         primaryStage.setTitle("taikutsu");
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {

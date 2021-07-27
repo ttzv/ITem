@@ -3,6 +3,7 @@ package com.ttzv.item.ui.controller;
 import com.ttzv.item.entity.CommandBox;
 import com.ttzv.item.service.CommandBoxService;
 import com.ttzv.item.service.CommandBoxServiceImpl;
+import com.ttzv.item.uiUtils.DialogFactory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,7 +36,6 @@ public class CommandBoxController extends AnchorPane {
     private VBox commandList;
 
     private ObservableList<CommandNode> commandNodelist;
-
 
     @FXML
     public void initialize(){
@@ -83,7 +83,7 @@ public class CommandBoxController extends AnchorPane {
     }
 
     private void deleteItem(String uid) throws IOException, SQLException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = DialogFactory.buildAlert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm delete");
         alert.setHeaderText("Do you wish to delete this element?");
         alert.setContentText("This element will be permanently deleted");
