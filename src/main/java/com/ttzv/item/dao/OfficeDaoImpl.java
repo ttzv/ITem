@@ -4,6 +4,9 @@ import com.ttzv.item.entity.Office;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class OfficeDaoImpl implements OfficeDao {
@@ -40,5 +43,17 @@ public class OfficeDaoImpl implements OfficeDao {
         session.update(office);
         t.commit();
         session.close();
+    }
+
+    @Override
+    public List<String> officeNames() {
+        Session session = DbSession.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<String> criteriaQuery = criteriaBuilder.createQuery(String.class);
+        Root<Office> root = criteriaQuery.from(Office.class);
+        criteriaQuery.select(root.get("name")).distinct(true);
+        List<String> uniqOfficeNames = session.createQuery(criteriaQuery).getResultList();
+        session.close();
+        return uniqOfficeNames;
     }
 }

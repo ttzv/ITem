@@ -213,7 +213,7 @@ public class MainWindowController extends AnchorPane {
 
         addSearchFieldAction();
 
-        //loadTheme();
+        loadTheme();
 
         selectScene(mailerView);
 
@@ -424,11 +424,9 @@ public class MainWindowController extends AnchorPane {
             signaturesViewController.setTxtfCity(office.getName2());
             signaturesViewController.setTxtfCityPhone(office.getPhonenumber());
             signaturesViewController.setTxtfCityFax(office.getFax());
-            String cType = office.getName();
-            if (cType.equals("Filia")) {
-                signaturesViewController.selectComboxVal(1);
-            } else if (cType.equals("Centrala")) {
-                signaturesViewController.selectComboxVal(0);
+            String cName = office.getName();
+            if (cName != null) {
+                signaturesViewController.selectComboxVal(cName);
             }
         }
 
@@ -568,9 +566,8 @@ public class MainWindowController extends AnchorPane {
 
     }
 
-    private void loadTheme(){ //todo: refactor
+    private void loadTheme(){
         String theme = AppConfiguration.retrieveProp(Cfg.THEME);
-        String modena = "Modena";
         String darkModena = "Dark Modena";
         if(theme.equals(darkModena)){
             root.getStylesheets().add(getClass().getResource("/style/dark-modena2.css").toExternalForm());

@@ -33,4 +33,9 @@ public class OfficeServiceImpl implements OfficeService{
     public void updateOffice(Office office) {
         officeDAO.updateOffice(office);
     }
+
+    @Override
+    public List<String> getUniqueOfficeNames() {
+        return officeDAO.officeNames();
+    }
 }

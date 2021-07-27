@@ -5,6 +5,8 @@ import com.ttzv.item.file.Loader;
 import com.ttzv.item.file.Saver;
 import com.ttzv.item.file.SignatureParser;
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.service.OfficeService;
+import com.ttzv.item.service.OfficeServiceImpl;
 import com.ttzv.item.uiUtils.TextFieldFormatters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +36,9 @@ public class SignaturesController extends AnchorPane {
     @FXML
     public void initialize(){
         userHolder = UserHolder.getHolder();
-        this.comBoxCityType.getItems().addAll("Centrala","Filia");
+        OfficeService officeService = new OfficeServiceImpl();
+
+        this.comBoxCityType.getItems().addAll(officeService.getUniqueOfficeNames());
         this.comBoxCityType.getSelectionModel().select(1);
 
         TextFieldFormatters textFieldFormatters = new TextFieldFormatters();
@@ -302,7 +306,7 @@ public class SignaturesController extends AnchorPane {
 
     public void setTxtfCityFax(String txtfCityFax) {
         String cityFax = "";
-        if(!txtfCityFax.isEmpty()) {
+        if(txtfCityFax != null && !txtfCityFax.isEmpty()) {
             cityFax = txtfCityFax;
             hideFax(false);
             btnDeleteFax.setSelected(false);
@@ -318,7 +322,7 @@ public class SignaturesController extends AnchorPane {
         this.txtfCity.setText(txtfCity);
     }
 
-    public void selectComboxVal(int val){
+    public void selectComboxVal(String val){
         this.comBoxCityType.getSelectionModel().select(val);
     }
 
