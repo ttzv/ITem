@@ -8,7 +8,6 @@ import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.uiUtils.TextFieldFormatters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -20,13 +19,12 @@ import javafx.scene.web.WebView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ResourceBundle;
 
 public class SignaturesController extends AnchorPane {
 
@@ -35,6 +33,7 @@ public class SignaturesController extends AnchorPane {
 
     @FXML
     public void initialize(){
+        userHolder = UserHolder.getHolder();
         this.comBoxCityType.getItems().addAll("Centrala","Filia");
         this.comBoxCityType.getSelectionModel().select(1);
 

@@ -100,7 +100,13 @@ public class CommandBoxController extends AnchorPane {
 
     private void addSearchFieldListener(){
         searchField.textProperty().addListener((observableValue, s, t1) -> {
-            commandList.getChildren().setAll(commandNodelist.filtered(c -> c.getTitle().contains(t1.toLowerCase().trim()) || c.getTagsFieldText().contains(t1.toLowerCase().trim())));
+            commandList.getChildren().setAll(commandNodelist.filtered(c -> {
+                String title = c.getTitle();
+                String tags = c.getTagsFieldText();
+                boolean titleContains = title.contains(t1.toLowerCase().trim());
+                if(tags != null) return titleContains || tags.contains(t1.toLowerCase().trim());
+                return titleContains;
+            }));
         });
     }
 

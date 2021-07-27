@@ -125,7 +125,7 @@ public class MailerController extends AnchorPane {
                 String statusText = "Wysłano do " + sender.getReceiverAddress();
 
                 String savePass = AppConfiguration.retrieveProp(Cfg.SAVEPASS);
-                if(txtPass.getText().isBlank() && savePass.equals("true")) {
+                if(!txtPass.getText().isBlank() && savePass.equals("true")) {
                     String name = tabBuilder.getSelectedTab()
                             .getName()
                             .replace(".html", "");
