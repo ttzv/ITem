@@ -39,7 +39,7 @@ public class Main extends Application {
         mainWindowController.referenceRoot(root);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("taikutsu");
+        primaryStage.setTitle("ITem");
 
         DialogFactory.initFactory(scene.getWindow());
         mainWindowController.addPrimaryTableViewRightClickHandler();

@@ -82,15 +82,15 @@
                                                          </rowConstraints>
                                                          <children>
                                                             <TextField fx:id="fieldLogin" GridPane.columnIndex="1" />
+                                                            <PasswordField fx:id="fieldPass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                             <Label text="%sett_acclogin" />
+                                                            <Label text="%sett_accpass" GridPane.rowIndex="1" />
                                                             <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                                                                <children>
                                                                   <Label text="%sett_rememberpass" />
                                                                   <CheckBox fx:id="cbxRemember" mnemonicParsing="false" />
                                                                </children>
                                                             </HBox>
-                                                            <Label text="%sett_accpass" GridPane.rowIndex="1" />
-                                                            <PasswordField fx:id="fieldPass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                          </children>
                                                          <padding>
                                                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -196,6 +196,7 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
                                                 <Label text="%sett_ldapadminlogin" GridPane.rowIndex="1" />
@@ -206,7 +207,8 @@
                                                 <TextField fx:id="fieldLdapPort" prefHeight="25.0" prefWidth="20.0" GridPane.columnIndex="3" />
                                                 <TextField fx:id="fieldLdapAcc" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <PasswordField fx:id="fieldLdapPass" prefHeight="25.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <HBox spacing="20.0" GridPane.rowIndex="4">
+                                                <TextField fx:id="fieldLdapSearchBase" promptText="eg. DC=domain,DC=local" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <HBox spacing="20.0" GridPane.rowIndex="5">
                                                    <children>
                                                       <Button alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptLdapSettingsEvent" text="%sett_testconandsave" />
                                                       <StackPane prefHeight="25.0" prefWidth="30.0">
@@ -216,7 +218,7 @@
                                                       </StackPane>
                                                    </children>
                                                 </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                    <children>
                                                       <Label text="%sett_rememberpass" />
                                                       <CheckBox fx:id="cbxRememberLdap" mnemonicParsing="false" />
@@ -225,11 +227,12 @@
                                                       <Insets top="8.0" />
                                                    </padding>
                                                 </HBox>
-                                                <ImageView fx:id="okImgLdap" fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+                                                <ImageView fx:id="okImgLdap" fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
                                                    <image>
                                                       <Image url="@../img/done.png" />
                                                    </image>
                                                 </ImageView>
+                                                <Label text="%sett_ldapsearchbase" GridPane.rowIndex="3" />
                                              </children>
                                              <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -256,6 +259,7 @@
                                                 <Label text="%sett_dblogin" GridPane.rowIndex="2" />
                                                 <Label text="%sett_dbpass" GridPane.rowIndex="3" />
                                                 <Label text="URL" GridPane.rowIndex="1" />
+                                                <CheckBox fx:id="cbxDbEmbed" mnemonicParsing="false" onAction="#cbxEmbedDbActionEvent" text="%sett_dbembed" />
                                                 <TextField fx:id="fieldDbUrl" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <TextField fx:id="fieldDbLogin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <PasswordField fx:id="fieldDbPass" prefHeight="25.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -285,7 +289,6 @@
                                                       <ProgressIndicator fx:id="prgDb" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="30.0" visible="false" />
                                                    </children>
                                                 </StackPane>
-                                                <CheckBox fx:id="cbxDbEmbed" mnemonicParsing="false" onAction="#cbxEmbedDbActionEvent" text="%sett_dbembed" />
                                              </children>
                                              <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -328,9 +331,9 @@
                               <CheckBox fx:id="cBoxAutoMailSavePass" mnemonicParsing="false" GridPane.columnIndex="2" />
                               <Label text="%sett_others_autofillusername" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                               <CheckBox fx:id="cBoxAutoFillLogin" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="cBoxAlwaysOpenDir" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                               <Button alignment="CENTER" mnemonicParsing="false" onAction="#btnAcceptMiscSettingsEvent" prefHeight="25.0" prefWidth="51.0" text="Zapisz" GridPane.rowIndex="4" />
                               <Label text="%sett_others_alwaysopendiraftersave" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                              <CheckBox fx:id="cBoxAlwaysOpenDir" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                               <Label text="%sett_others_emailuserregexfilter" GridPane.columnIndex="4" />
                               <Label text="%sett_others_emailuserloginfilter" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                               <TextField fx:id="txtfUserRegex" GridPane.columnIndex="5" />
@@ -347,7 +350,6 @@
                                           <Tooltip text="Generuje hasło korzystając z podanych przez użytkownika list wyrazów" />
                                        </tooltip>
                                     </RadioButton>
-                                    <Button fx:id="btnPassWordFiles" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="%sett_others_passgenfiles" />
                                  </children>
                               </HBox>
                               <Label text="%sett_others_passgen" GridPane.columnIndex="4" GridPane.rowIndex="2" />

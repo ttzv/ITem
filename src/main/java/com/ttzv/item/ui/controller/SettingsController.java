@@ -28,6 +28,7 @@ public class SettingsController extends AnchorPane {
 
     private final Cfg AppConfiguration = Cfg.getInstance();
 
+
     private Crypt cMail;
     private Crypt cLdap;
     private Crypt cDb;
@@ -104,6 +105,9 @@ public class SettingsController extends AnchorPane {
 
     @FXML
     private PasswordField fieldLdapPass;
+
+    @FXML
+    private TextField fieldLdapSearchBase;
 
     @FXML
     private ProgressIndicator prgLdap;
@@ -192,6 +196,7 @@ public class SettingsController extends AnchorPane {
         this.fieldLdapUrl.setText(AppConfiguration.retrieveProp(Cfg.LDAP_URL));
         this.fieldLdapPort.setText(AppConfiguration.retrieveProp(Cfg.LDAP_PORT));
         this.fieldLdapAcc.setText(AppConfiguration.retrieveProp(Cfg.LDAP_ACC));
+        this.fieldLdapSearchBase.setText(AppConfiguration.retrieveProp(Cfg.LDAP_SEARCH_BASE));
 
         this.cLdap = new Crypt("lCr");
         if(this.cLdap.exists()){
@@ -374,27 +379,27 @@ public class SettingsController extends AnchorPane {
     }
 
     private void btnLdapPerformAction(boolean noStore) throws IOException{
-        Cfg cfg = AppConfiguration;
 
-        cfg.setProperty(Cfg.LDAP_URL, this.fieldLdapUrl.getText());
-        cfg.setProperty(Cfg.LDAP_PORT, this.fieldLdapPort.getText());
-        cfg.setProperty(Cfg.LDAP_ACC, this.fieldLdapAcc.getText());
+        AppConfiguration.setProperty(Cfg.LDAP_URL, this.fieldLdapUrl.getText());
+        AppConfiguration.setProperty(Cfg.LDAP_PORT, this.fieldLdapPort.getText());
+        AppConfiguration.setProperty(Cfg.LDAP_ACC, this.fieldLdapAcc.getText());
+        AppConfiguration.setProperty(Cfg.LDAP_SEARCH_BASE, this.fieldLdapSearchBase.getText());
         if(this.cbxRememberLdap.isSelected()) {
             try {
                 cLdap.safeStore(this.fieldLdapPass.getText());
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
-            cfg.setProperty("SettSaveLdapCbx", "true");
+            AppConfiguration.setProperty("SettSaveLdapCbx", "true");
         } else {
-            cfg.setProperty("SettSaveLdapCbx", "false");
+            AppConfiguration.setProperty("SettSaveLdapCbx", "false");
             cLdap.erase();
         }
 
         PHolder.ldap = this.fieldLdapPass.getText().toCharArray();
 
         if(!noStore) {
-            cfg.saveFile();
+            AppConfiguration.saveFile();
         }
 
         testLDAPCredentials();

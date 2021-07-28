@@ -84,6 +84,7 @@ public class DialogFactory {
         TextInputDialog textInputDialog = new TextInputDialog();
         textInputDialog.initOwner(dialogFactory.ownerWindow);
         textInputDialog.setTitle(title);
+        textInputDialog.setHeaderText(null);
         textInputDialog.setContentText(label);
         TextField textField = new TextField();
         textInputDialog.getDialogPane().getChildren().add(textField);
