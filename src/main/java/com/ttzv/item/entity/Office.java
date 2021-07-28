@@ -37,7 +37,7 @@ public class Office {
     @Column
     private String postalcode;
 
-    @OneToMany(mappedBy = "office", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "office")
     private Set<UserDetail_n> userDetails;
 
     @Override

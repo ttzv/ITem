@@ -179,7 +179,7 @@ public class MainWindowController extends AnchorPane {
 
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() {
         storageNodesMap = new HashMap<>();
         labelCity.setText("");
         labelUsername.setText("");
@@ -232,7 +232,7 @@ public class MainWindowController extends AnchorPane {
     public void addPrimaryTableViewRightClickHandler() throws IOException {
         Stage progressWindow = DialogFactory.getWaitWindow();
         ContextMenu cm = new ContextMenu();
-        MenuItem unlock = new MenuItem("Unlock");
+        MenuItem unlock = new MenuItem("Odblokuj");
         cm.getItems().add(unlock);
         cm.setOnAction(event -> {
             ADUser_n selectedUser = primaryUserTableView.getSelectionModel().getSelectedItem();
@@ -375,8 +375,10 @@ public class MainWindowController extends AnchorPane {
                 } catch (GeneralSecurityException | NamingException | IOException e) {
                     e.printStackTrace();
                 }
-                adUserService.updateTableFrom(ldapUsers);
-                adUserService.autoBindOffices(officeService.getOffices());
+                Map<String, List<ADUser_n>> logSync = adUserService.updateTableFrom(ldapUsers);
+                Map<String, List<ADUser_n>> logBind = adUserService.autoBindOffices(officeService.getOffices());
+                System.out.println("LDAP Sync task:\nCreated: " + logSync.get("Created").size() + " Updated: " + logSync.get("Updated").size() + " Deleted: " + logSync.get("Deleted").size() + "\n"
+                 + "Office bind task:\nUpdated: " + logBind.get("Updated").size());
                 userHolder.setADUsers(adUserService.getAll());
                 tableViewCreator.builder().setItems(userHolder.getADUsers());
                 return Boolean.TRUE;

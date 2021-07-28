@@ -50,6 +50,11 @@ public class ADUserServiceImpl implements ADUserService {
         adUserDao.updateADUser(adUser);
     }
 
+    /**
+     *
+     * @param otherUserList
+     * @return Map that contains created, updated and deleted ADUsers. Keys are: Created, Updated, Deleted
+     */
     @Override
     public Map<String, List<ADUser_n>> updateTableFrom(List<ADUser_n> otherUserList) {
         if(otherUserList == null) return null;
@@ -82,6 +87,11 @@ public class ADUserServiceImpl implements ADUserService {
         return log;
     }
 
+    /**
+     *
+     * @param offices
+     * @return Map that contains updated ADUsers, Key: Updated
+     */
     @Override
     public Map<String, List<ADUser_n>> autoBindOffices(List<Office> offices) {
         List<ADUser_n> updated = new ArrayList<>();
@@ -89,8 +99,15 @@ public class ADUserServiceImpl implements ADUserService {
             for (Office office :
                     offices) {
                 List<ADUser_n> usersInOffice = usersFromOffice(Utility.replaceAccents(office.getLocation().toLowerCase()).toLowerCase());
-                usersInOffice.forEach(adUser_n -> adUser_n.getDetail().setOffice(office));
-                adUserDao.updateMultiple(usersInOffice);
+                List<ADUser_n> toUpdate = usersInOffice.stream().filter(adUser_n -> {
+                    Office currentOffice = adUser_n.getDetail().getOffice();
+                    if(currentOffice == null || !currentOffice.equals(office)){
+                        adUser_n.getDetail().setOffice(office);
+                        return true;
+                    } else return false;
+                }).collect(Collectors.toList());
+                adUserDao.updateMultiple(toUpdate);
+                updated.addAll(toUpdate);
             }
         }
         Map<String, List<ADUser_n>> log = new HashMap<>();
