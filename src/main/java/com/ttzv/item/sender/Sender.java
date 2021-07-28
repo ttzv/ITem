@@ -9,6 +9,7 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.MimeMessage;
 import javafx.scene.control.Alert;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -32,7 +33,7 @@ public class Sender {
     private String msgSubject;
 
 
-    private String[] domainSuffix;
+    private ArrayList<String> domainSuffix;
     private String addressPrefix;
     private String addressSuffix;
 
@@ -44,7 +45,7 @@ public class Sender {
         smtpStartTLS = AppConfiguration.retrieveProp(Cfg.SMTP_TLS);
         smtpPort = AppConfiguration.retrieveProp(Cfg.SMTP_PORT);
         senderAddress = AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN);
-        domainSuffix = Utility.stringToArray(AppConfiguration.retrieveProp(Cfg.MAIL_DOMAINS)).toArray(String[]::new);
+        domainSuffix = Utility.stringToArray(AppConfiguration.retrieveProp(Cfg.MAIL_DOMAINS));
 
         receiverAddress = "";
         msgSubject = "";
@@ -194,7 +195,7 @@ public class Sender {
     }
 
 
-    public String[] getDomainSuffix() {
+    public ArrayList<String> getDomainSuffix() {
         return domainSuffix;
     }
 

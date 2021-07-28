@@ -202,7 +202,6 @@ public class MainWindowController extends AnchorPane {
                 .setItems(userHolder.getADUsers());
 
         addPrimaryTableViewDoubleClickHandler();
-        addPrimaryTableViewRightClickHandler();
 
         sideBar.setToggler(sidebartogglebtn);
         sideBar.setPrefWidth(0.0);
@@ -214,8 +213,6 @@ public class MainWindowController extends AnchorPane {
         addTxtfActListeners();
 
         addSearchFieldAction();
-
-        loadTheme();
 
         selectScene(mailerView);
 
@@ -232,7 +229,7 @@ public class MainWindowController extends AnchorPane {
         if(userHolder.getCurrentUser() != null) updateMainWindowAssets();
     }
 
-    private void addPrimaryTableViewRightClickHandler() throws IOException {
+    public void addPrimaryTableViewRightClickHandler() throws IOException {
         Stage progressWindow = DialogFactory.getWaitWindow();
         ContextMenu cm = new ContextMenu();
         MenuItem unlock = new MenuItem("Unlock");
@@ -566,7 +563,7 @@ public class MainWindowController extends AnchorPane {
 
     }
 
-    private void loadTheme(){
+    public void loadTheme(){
         String theme = AppConfiguration.retrieveProp(Cfg.THEME);
         String darkModena = "Dark Modena";
         if(theme.equals(darkModena)){

@@ -8,65 +8,58 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import ttzv.uiUtils.TitledBorder?>
 
-<AnchorPane prefHeight="660.0" prefWidth="900.0" fx:controller="com.ttzv.item.ui.controller.SmsController" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="660.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ttzv.item.ui.controller.SmsController">
    <children>
       <BorderPane layoutX="327.0" layoutY="191.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <right>
-            <AnchorPane BorderPane.alignment="CENTER">
-               <children>
-                  <TitledBorder stylesheets="@../style/style_higherpadding.css" title="%sms_details" AnchorPane.leftAnchor="0.0">
+            <TitledPane alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%sms_details" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="300.0" spacing="5.0">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="200.0" spacing="5.0">
+                        <Label text="%sms_sendername" />
+                        <TextField fx:id="textfield_smsSender" />
+                        <Label text="%sms_receivername" />
+                        <TextField fx:id="textfield_smsRecipient" editable="false" />
+                        <Label text="%sms_number" />
+                        <TextField fx:id="textfield_smsRecipientNumber" />
+                        <Label text="%sms_variable" />
+                        <TextField fx:id="textfield_smsVariable" />
+                        <ComboBox fx:id="cbox_template" promptText="%sms_choosetemplate" />
+                        <HBox spacing="10.0">
                            <children>
-                              <Label text="%sms_sendername" />
-                              <TextField fx:id="textfield_smsSender" />
-                              <Label text="%sms_receivername" />
-                              <TextField fx:id="textfield_smsRecipient" editable="false" />
-                              <Label text="%sms_number" />
-                              <TextField fx:id="textfield_smsRecipientNumber" />
-                              <Label text="%sms_variable" />
-                              <TextField fx:id="textfield_smsVariable" />
-                              <ComboBox fx:id="cbox_template" promptText="%sms_choosetemplate" />
-                              <HBox spacing="10.0">
-                                 <children>
-                                    <Button mnemonicParsing="false" onAction="#btnA_addTemplates" text="%sms_addtemplate" />
-                                    <Button mnemonicParsing="false" onAction="#btnA_clearTemplates" text="%sms_cleartemplates" />
-                                 </children>
-                              </HBox>
-                              <Separator prefWidth="200.0" />
-                              <Button mnemonicParsing="false" onAction="#btn_removeAccents" text="%sms_removeaccents" />
-                              <Button disable="true" mnemonicParsing="false" onAction="#btnA_addToQue" text="%sms_addtoque" />
-                              <Button mnemonicParsing="false" onAction="#btnA_Send" text="%sms_send" />
-                              <Separator prefWidth="200.0" />
-                              <Label text="%sms_points" />
-                              <Label fx:id="label_points" text="-" />
-                              <Label text="%sms_currchars" />
-                              <Label fx:id="label_cchars" text="0" />
-                              <Label text="%sms_remchars" />
-                              <Label fx:id="label_remchars" text="0" />
-                              <Label text="%sms_messageno" />
-                              <Label fx:id="label_msgno" text="0" />
-                              <Button mnemonicParsing="false" onAction="#refreshAccountInfo" prefHeight="30.0" prefWidth="30.0" stylesheets="@../style/btn_main.css">
-                                 <styleClass>
-                                    <String fx:value="rect_button" />
-                                    <String fx:value="btn_commscn_refresh" />
-                                 </styleClass>
-                              </Button>
+                              <Button mnemonicParsing="false" onAction="#btnA_addTemplates" text="%sms_addtemplate" />
+                              <Button mnemonicParsing="false" onAction="#btnA_clearTemplates" text="%sms_cleartemplates" />
                            </children>
-                        </VBox>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                        <Button mnemonicParsing="false" onAction="#btn_removeAccents" text="%sms_removeaccents" />
+                        <Button disable="true" mnemonicParsing="false" onAction="#btnA_addToQue" text="%sms_addtoque" />
+                        <Button mnemonicParsing="false" onAction="#btnA_Send" text="%sms_send" />
+                        <Separator prefWidth="200.0" />
+                        <Label text="%sms_points" />
+                        <Label fx:id="label_points" text="-" />
+                        <Label text="%sms_currchars" />
+                        <Label fx:id="label_cchars" text="0" />
+                        <Label text="%sms_remchars" />
+                        <Label fx:id="label_remchars" text="0" />
+                        <Label text="%sms_messageno" />
+                        <Label fx:id="label_msgno" text="0" />
+                        <Button mnemonicParsing="false" onAction="#refreshAccountInfo" prefHeight="30.0" prefWidth="30.0" stylesheets="@../style/btn_main.css">
+                           <styleClass>
+                              <String fx:value="rect_button" />
+                              <String fx:value="btn_commscn_refresh" />
+                           </styleClass>
+                        </Button>
                      </children>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="15.0" />
-                     </padding>
-                  </TitledBorder>
-               </children>
-            </AnchorPane>
+                  </VBox>
+               </content>
+            </TitledPane>
          </right>
          <center>
             <AnchorPane BorderPane.alignment="CENTER">
@@ -74,14 +67,18 @@
                   <Insets />
                </BorderPane.margin>
                <children>
-                  <TitledBorder stylesheets="@../style/style_higherpadding.css" title="%sms_content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <TextArea fx:id="textarea_smscontent" maxWidth="1.7976931348623157E308" />
-                     </children>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="15.0" />
-                     </padding>
-                  </TitledBorder>
+                  <TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" prefHeight="660.0" prefWidth="598.0" text="%sms_content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                        <TextArea fx:id="textarea_smscontent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="533.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </TextArea>
+                     </content>
+                  </TitledPane>
                </children>
             </AnchorPane>
          </center>

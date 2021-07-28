@@ -8,6 +8,7 @@ import com.ttzv.item.sender.Sender;
 import com.ttzv.item.service.LdapService;
 import com.ttzv.item.service.LdapServiceImpl;
 import com.ttzv.item.sms.SmsApiClient;
+import com.ttzv.item.uiUtils.DialogFactory;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -664,7 +665,7 @@ public class SettingsController extends AnchorPane {
     }
 
     private void confirmCloseDialog(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = DialogFactory.buildAlert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Connected to database.");
         alert.setContentText("The application requires restart to use new database connection\nDo you wish to exit the application now?");
         Optional<ButtonType> choice = alert.showAndWait();

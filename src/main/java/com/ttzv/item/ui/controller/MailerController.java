@@ -14,6 +14,7 @@ import com.ttzv.item.uiUtils.DialogFactory;
 import com.ttzv.item.uiUtils.TabBuilder;
 import com.ttzv.item.uiUtils.ViewTab;
 import com.ttzv.item.utility.Utility;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +26,6 @@ import javafx.stage.Stage;
 import ttzv.uiUtils.LimitableTextField;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class MailerController extends AnchorPane {
 
@@ -230,7 +230,7 @@ public class MailerController extends AnchorPane {
 
         this.sender = new Sender();
 
-        this.cbxDomain.getItems().addAll(Arrays.asList(sender.getDomainSuffix()));
+        this.cbxDomain.getItems().addAll(sender.getDomainSuffix());
         this.cbxDomain.getSelectionModel().selectFirst();
 
         sender.setAddressSuffix(this.cbxDomain.getSelectionModel().getSelectedItem());
@@ -324,8 +324,15 @@ public class MailerController extends AnchorPane {
     }
 
     @FXML
-    public void addDomainBtnAction(ActionEvent actionEvent) {
-
+    public void addDomainBtnAction(ActionEvent actionEvent) throws IOException {
+        String newDomain = DialogFactory.textInputDialog("Add domain", "Enter domain");
+        ObservableList<String> domains = cbxDomain.getItems();
+        if(newDomain != null && !domains.contains(newDomain)){
+            domains.add(newDomain);
+            sender.getDomainSuffix().add(0, newDomain);
+            AppConfiguration.setProperty(Cfg.MAIL_DOMAINS, sender.getDomainSuffix().toString());
+            AppConfiguration.saveFile();
+        }
     }
 
 }

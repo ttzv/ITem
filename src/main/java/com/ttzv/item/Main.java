@@ -38,11 +38,13 @@ public class Main extends Application {
         MainWindowController mainWindowController = loader.getController();
         mainWindowController.referenceRoot(root);
         Scene scene = new Scene(root);
-
-        DialogFactory.initFactory(scene.getWindow());
-
         primaryStage.setScene(scene);
         primaryStage.setTitle("taikutsu");
+
+        DialogFactory.initFactory(scene.getWindow());
+        mainWindowController.addPrimaryTableViewRightClickHandler();
+        mainWindowController.loadTheme();
+
         primaryStage.show();
     }
 
