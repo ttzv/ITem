@@ -98,7 +98,7 @@ public class MailerController extends AnchorPane {
                 sender.setSmtpPort(AppConfiguration.retrieveProp(Cfg.SMTP_PORT));
                 sender.setSmtpStartTLS(AppConfiguration.retrieveProp(Cfg.SMTP_TLS));
 
-                sender.setSenderPassword(PHolder.mail);
+                sender.setSenderPassword(PHolder.Mail);
 
                 sender.setSenderAddress(AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN));
 

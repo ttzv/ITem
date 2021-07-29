@@ -6,6 +6,7 @@ import com.ttzv.item.entity.Office;
 import com.ttzv.item.entity.UserDetail_n;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
+import com.ttzv.item.pwSafe.PHolder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -53,10 +54,9 @@ public class DbSession{
     }
 
     private static void userDbCustomCredentials(Configuration configuration) throws GeneralSecurityException, IOException {
-        String pass = new String(Crypt.newCrypt("dCr").read());
         configuration.setProperty("hibernate.connection.url", "jdbc:postgresql://" + AppConfiguration.retrieveProp(Cfg.DB_URL))
                 .setProperty("hibernate.connection.username", AppConfiguration.retrieveProp(Cfg.DB_LOGIN))
-                .setProperty("hibernate.connection.password", pass);
+                .setProperty("hibernate.connection.password", new String(PHolder.Db()));
     }
 
     private static void h2ConfigurationModify(Configuration configuration){

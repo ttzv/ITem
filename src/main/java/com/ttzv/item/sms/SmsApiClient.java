@@ -2,6 +2,7 @@ package com.ttzv.item.sms;
 
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
+import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.SmsMessage;
 import pl.smsapi.BasicAuthClient;
 import pl.smsapi.Client;
@@ -34,7 +35,7 @@ public class SmsApiClient {
 
     //todo: limit creation of new client objects by checking if login or password has changed, if not use old valid client.
     public SmsApiClient() throws IOException, GeneralSecurityException, SmsapiException {
-        this(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN),new String(new Crypt("sCr").read()));
+        this(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN),new String(PHolder.Sms()));
     }
 
     public Client getClient(String login, String passwordhash) throws ClientException {

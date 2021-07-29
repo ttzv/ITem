@@ -2,7 +2,6 @@ package com.ttzv.item.ui.controller;
 
 import com.ttzv.item.dao.DbSession;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.Sender;
 import com.ttzv.item.service.LdapService;
@@ -18,7 +17,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import ttzv.uiUtils.LimitableTextField;
-import ttzv.uiUtils.TitledBorder;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -27,12 +25,6 @@ import java.util.Optional;
 public class SettingsController extends AnchorPane {
 
     private final Cfg AppConfiguration = Cfg.getInstance();
-
-
-    private Crypt cMail;
-    private Crypt cLdap;
-    private Crypt cDb;
-    private Crypt cSms;
 
     @FXML
     public Button btnAcceptDbSettings;
@@ -161,11 +153,7 @@ public class SettingsController extends AnchorPane {
         this.fieldPort.setText(AppConfiguration.retrieveProp(Cfg.SMTP_PORT));
         this.fieldLogin.setText(AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN));
 
-        this.cMail = new Crypt("mCr");
-        if(this.cMail.exists()){
-            PHolder.mail = cMail.read();
-            this.fieldPass.setText(new String(PHolder.mail));
-        }
+        this.fieldPass.setText(new String(PHolder.Mail()));
 
         String tlsSetting = AppConfiguration.retrieveProp(Cfg.SMTP_TLS);
         this.cbxTls.setSelected(tlsSetting.equals("true"));
@@ -179,11 +167,8 @@ public class SettingsController extends AnchorPane {
         this.fieldLdapAcc.setText(AppConfiguration.retrieveProp(Cfg.LDAP_ACC));
         this.fieldLdapSearchBase.setText(AppConfiguration.retrieveProp(Cfg.LDAP_SEARCH_BASE));
 
-        this.cLdap = new Crypt("lCr");
-        if(this.cLdap.exists()){
-            PHolder.ldap = cLdap.read();
-            this.fieldLdapPass.setText(new String(PHolder.ldap));
-        }
+        this.fieldLdapPass.setText(new String(PHolder.Ldap()));
+
         String remCbxLdapSetting = AppConfiguration.retrieveProp("SettSaveLdapCbx");
         this.cbxRememberLdap.setSelected(remCbxLdapSetting.equals("true"));
 
@@ -193,11 +178,9 @@ public class SettingsController extends AnchorPane {
         this.fieldDbUrl.setText(AppConfiguration.retrieveProp(Cfg.DB_URL));
         this.fieldDbLogin.setText(AppConfiguration.retrieveProp(Cfg.DB_LOGIN));
         updateDbControlsState();
-        this.cDb = new Crypt("dCr");
-        if(this.cDb.exists()){
-            PHolder.db = cDb.read();
-            this.fieldDbPass.setText(new String(PHolder.db));
-        }
+
+        this.fieldDbPass.setText(new String(PHolder.Db()));
+
         String remCbxDbSetting = AppConfiguration.retrieveProp("SettSaveDbCbx");
         this.cbxRememberDb.setSelected(remCbxDbSetting.equals("true"));
 
@@ -267,10 +250,8 @@ public class SettingsController extends AnchorPane {
         this.txtf_smsLogin.setText(AppConfiguration.retrieveProp(Cfg.SMSAPI_LOGIN));
         this.txtf_smsSenderName.setText(AppConfiguration.retrieveProp(Cfg.SMSAPI_SENDER));
 
-        this.cSms = new Crypt("sCr");
-        if(this.cSms.exists()){
-            this.pwdf_smsPassword.setText(new String(cSms.read()));
-        }
+        this.pwdf_smsPassword.setText(new String(PHolder.Sms()));
+
         String remSmsSettings = AppConfiguration.retrieveProp("SettSaveSmsCbx");
         this.checkBox_rememberSmsPass.setSelected(remSmsSettings.equals("true"));
 
@@ -331,17 +312,17 @@ public class SettingsController extends AnchorPane {
 
         if(this.cbxRemember.isSelected()) {
             try {
-                cMail.safeStore(this.fieldPass.getText());
+                PHolder.getCrypt(PHolder.MAIL_FILEID).safeStore(this.fieldPass.getText());
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
             cfg.setProperty("SettSaveCbx", "true");
         } else {
-            cMail.erase();
+            PHolder.getCrypt(PHolder.MAIL_FILEID).erase();
             cfg.setProperty("SettSaveCbx", "false");
         }
 
-        PHolder.mail = this.fieldPass.getText().toCharArray();
+        PHolder.Mail = this.fieldPass.getText().toCharArray();
 
         if(this.cbxTls.isSelected()) {
             cfg.setProperty(Cfg.SMTP_TLS, "true");
@@ -366,17 +347,17 @@ public class SettingsController extends AnchorPane {
         AppConfiguration.setProperty(Cfg.LDAP_SEARCH_BASE, this.fieldLdapSearchBase.getText());
         if(this.cbxRememberLdap.isSelected()) {
             try {
-                cLdap.safeStore(this.fieldLdapPass.getText());
+                PHolder.getCrypt(PHolder.LDAP_FILEID).safeStore(this.fieldLdapPass.getText());
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
             AppConfiguration.setProperty("SettSaveLdapCbx", "true");
         } else {
             AppConfiguration.setProperty("SettSaveLdapCbx", "false");
-            cLdap.erase();
+            PHolder.getCrypt(PHolder.LDAP_FILEID).erase();
         }
 
-        PHolder.ldap = this.fieldLdapPass.getText().toCharArray();
+        PHolder.Ldap = this.fieldLdapPass.getText().toCharArray();
 
         if(!noStore) {
             AppConfiguration.saveFile();
@@ -398,17 +379,17 @@ public class SettingsController extends AnchorPane {
             cfg.setProperty(Cfg.DB_LOGIN, this.fieldDbLogin.getText());
             if(this.cbxRememberDb.isSelected()) {
                 try {
-                    cDb.safeStore(this.fieldDbPass.getText());
+                    PHolder.getCrypt(PHolder.DB_FILEID).safeStore(this.fieldDbPass.getText());
                 } catch (GeneralSecurityException e) {
                     e.printStackTrace();
                 }
                 cfg.setProperty("SettSaveDbCbx", "true");
             } else {
                 cfg.setProperty("SettSaveDbCbx", "false");
-                cDb.erase();
+                PHolder.getCrypt(PHolder.DB_FILEID).erase();
             }
 
-            PHolder.db = this.fieldDbPass.getText().toCharArray();
+            PHolder.Db = this.fieldDbPass.getText().toCharArray();
             testDBCredentials();
         }
         if(!noStore) {
@@ -456,17 +437,17 @@ public class SettingsController extends AnchorPane {
         cfg.setProperty(Cfg.SMSAPI_SENDER, this.txtf_smsSenderName.getText());
         if(this.checkBox_rememberSmsPass.isSelected()) {
             try {
-                cSms.safeStore(this.pwdf_smsPassword.getText());
+                PHolder.getCrypt(PHolder.SMS_FILEID).safeStore(this.pwdf_smsPassword.getText());
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
             cfg.setProperty("SettSaveSmsCbx", "true");
         } else {
             cfg.setProperty("SettSaveSmsCbx", "false");
-            cSms.erase();
+            PHolder.getCrypt(PHolder.SMS_FILEID).erase();
         }
 
-        PHolder.sms = this.pwdf_smsPassword.getText().toCharArray();
+        PHolder.Sms = this.pwdf_smsPassword.getText().toCharArray();
 
         if(!noStore) {
             cfg.saveFile();
@@ -482,7 +463,7 @@ public class SettingsController extends AnchorPane {
         protected Boolean call() throws Exception {
             Sender sender = new Sender();
             sender.setSenderAddress(fieldLogin.getText());
-            sender.setSenderPassword(PHolder.mail);
+            sender.setSenderPassword(PHolder.Mail);
             sender.setSmtpHost(fieldHost.getText());
             sender.setSmtpPort(fieldPort.getText());
             sender.setSmtpStartTLS(AppConfiguration.retrieveProp(Cfg.SMTP_TLS));
