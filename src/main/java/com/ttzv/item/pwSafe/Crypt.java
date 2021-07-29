@@ -89,15 +89,18 @@ public class Crypt {
         String pass = "";
         char[] decrypted = new char[0];
         Path r = pwPath.resolve(name + hExt);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(r.toFile())));
-        pass = reader.readLine();
-        reader.close();
-        //key
-        byte[] key = {};
-        r = pwPath.resolve(name + hExtK);
-        key = Files.readAllBytes(r);
-        decrypted = decrypt(pass, new SecretKeySpec(key, "AES")).toCharArray();
-        return decrypted;
+        if(Files.exists(r)) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(r.toFile())));
+            pass = reader.readLine();
+            reader.close();
+            //key
+            byte[] key = {};
+            r = pwPath.resolve(name + hExtK);
+            key = Files.readAllBytes(r);
+            decrypted = decrypt(pass, new SecretKeySpec(key, "AES")).toCharArray();
+            return decrypted;
+        }
+        return new char[0];
     }
 
 

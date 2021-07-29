@@ -3,6 +3,8 @@ package com.ttzv.item;
 
 import com.ttzv.item.dao.DbSession;
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.pwSafe.Crypt;
+import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.ui.controller.MainWindowController;
 import com.ttzv.item.uiUtils.DialogFactory;
 import javafx.application.Application;
@@ -25,9 +27,8 @@ public class Main extends Application {
 
         ResourceBundle langResourceBundle = ResourceBundle.getBundle("lang");
         //check if connection with database can be established, otherwise fall back to embedded db
-        Session dbSession = null;
         try{
-            dbSession = DbSession.openSession();
+            DbSession.openSession();
         } catch (ServiceException se){
             DialogFactory.showAlert(Alert.AlertType.ERROR, "No connection to database, application will use embedded database instead.");
             Cfg.getInstance().setProperty(Cfg.DB_EMBEDDED, "true");
@@ -44,6 +45,7 @@ public class Main extends Application {
         DialogFactory.initFactory(scene.getWindow());
         mainWindowController.addPrimaryTableViewRightClickHandler();
         mainWindowController.loadTheme();
+        mainWindowController.postInitSmsController();
 
         primaryStage.show();
     }
@@ -58,8 +60,8 @@ public class Main extends Application {
             Cfg.getInstance().init(null);
         } catch (IOException e) {
             e.printStackTrace();
-
         }
+
     }
 
 

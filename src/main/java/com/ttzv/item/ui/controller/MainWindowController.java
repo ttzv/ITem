@@ -147,6 +147,10 @@ public class MainWindowController extends AnchorPane {
     @FXML
     SmsController smsViewController;
 
+    public void postInitSmsController(){
+        smsViewController.refreshAccountInfo();
+    }
+
     //Signatures view + controller
     @FXML
     AnchorPane signaturesView;
@@ -367,14 +371,9 @@ public class MainWindowController extends AnchorPane {
     private void syncTask(){
         Task<Boolean> sync = new Task<>(){
             @Override
-            protected Boolean call() {
-                List<ADUser_n> ldapUsers = null;
-                try {
-                    LdapService ldapService = new LdapServiceImpl();
-                    ldapUsers = ldapService.getAll();
-                } catch (GeneralSecurityException | NamingException | IOException e) {
-                    e.printStackTrace();
-                }
+            protected Boolean call() throws GeneralSecurityException, NamingException, IOException {
+                LdapService ldapService = new LdapServiceImpl();
+                List<ADUser_n> ldapUsers = ldapService.getAll();
                 Map<String, List<ADUser_n>> logSync = adUserService.updateTableFrom(ldapUsers);
                 Map<String, List<ADUser_n>> logBind = adUserService.autoBindOffices(officeService.getOffices());
                 System.out.println("LDAP Sync task:\nCreated: " + logSync.get("Created").size() + " Updated: " + logSync.get("Updated").size() + " Deleted: " + logSync.get("Deleted").size() + "\n"

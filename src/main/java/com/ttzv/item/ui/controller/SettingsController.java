@@ -41,9 +41,6 @@ public class SettingsController extends AnchorPane {
     public CheckBox cbxDbEmbed;
 
     @FXML
-    private TitledBorder containerMailSett;
-
-    @FXML
     private TextField fieldHost;
 
     @FXML
@@ -67,8 +64,6 @@ public class SettingsController extends AnchorPane {
     @FXML
     private ImageView okImgMail;
 
-    @FXML
-    private TitledBorder containerDbSett1;
 
     @FXML
     private TextField txtf_smsLogin;
@@ -88,11 +83,6 @@ public class SettingsController extends AnchorPane {
     @FXML
     private CheckBox checkBox_rememberSmsPass;
 
-    @FXML
-    private ComboBox<?> cBoxDbDriverList1;
-
-    @FXML
-    private TitledBorder containerLdapSett;
 
     @FXML
     private TextField fieldLdapUrl;
@@ -119,9 +109,6 @@ public class SettingsController extends AnchorPane {
     private CheckBox cbxRememberLdap;
 
     @FXML
-    private TitledBorder containerDbSett;
-
-    @FXML
     private TextField fieldDbUrl;
 
     @FXML
@@ -138,9 +125,6 @@ public class SettingsController extends AnchorPane {
 
     @FXML
     private CheckBox cbxRememberDb;
-
-    @FXML
-    private ComboBox<?> cBoxDbDriverList;
 
     @FXML
     private CheckBox cBoxAutoMailSavePass;
@@ -162,9 +146,6 @@ public class SettingsController extends AnchorPane {
 
     @FXML
     private RadioButton rbPassWords;
-
-    @FXML
-    private Button btnPassWordFiles;
 
     @FXML
     private LimitableTextField txtfPassPattern;
@@ -254,7 +235,6 @@ public class SettingsController extends AnchorPane {
 
         toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             boolean isDisabled = toggleGroup.getSelectedToggle().getUserData()=="Random";
-                this.btnPassWordFiles.setDisable(isDisabled);
                 this.txtfPassPattern.setDisable(isDisabled);
                 this.btnDefaultPassPattern.setDisable(isDisabled);
                 if(isDisabled){
@@ -486,6 +466,8 @@ public class SettingsController extends AnchorPane {
             cSms.erase();
         }
 
+        PHolder.sms = this.pwdf_smsPassword.getText().toCharArray();
+
         if(!noStore) {
             cfg.saveFile();
         }
@@ -565,7 +547,6 @@ public class SettingsController extends AnchorPane {
                 try {
                     AppConfiguration.setProperty(Cfg.DB_URL, fieldDbUrl.getText());
                     AppConfiguration.setProperty(Cfg.DB_LOGIN, fieldDbLogin.getText());
-                    //cDb.safeStore(fieldDbPass.getText());
                     DbSession.testDbCredentials();
                 } catch (GeneralSecurityException | IOException e) {
                     e.printStackTrace();
@@ -598,9 +579,9 @@ public class SettingsController extends AnchorPane {
         Task isValid = new Task() {
             @Override
             protected Boolean call() throws Exception {
-                SmsApiClient smsApiClient = new SmsApiClient(txtf_smsLogin.getText(), pwdf_smsPassword.getText());
-                smsApiClient.getPoints();
-                return Boolean.TRUE;
+            SmsApiClient smsApiClient = new SmsApiClient(txtf_smsLogin.getText(), pwdf_smsPassword.getText());
+            smsApiClient.getPoints();
+            return Boolean.TRUE;
             }
         };
 

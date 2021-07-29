@@ -22,19 +22,18 @@ public class SmsApiClient {
 
     private Client client;
 
-    public SmsApiClient(String login, String passwordhash) throws ClientException {
-        BasicAuthClient client = new BasicAuthClient(login, passwordhash);
-        this.client = client;
-        try {
+    public SmsApiClient(String login, String passwordhash) throws SmsapiException {
+        if(!passwordhash.isBlank()) {
+            BasicAuthClient client = new BasicAuthClient(login, passwordhash);
+            this.client = client;
             getPoints(client);
-        } catch (SmsapiException e) {
-            e.printStackTrace();
-            this.client = null;
+        } else {
+            throw new ClientException("Password is blank.");
         }
     }
 
     //todo: limit creation of new client objects by checking if login or password has changed, if not use old valid client.
-    public SmsApiClient() throws IOException, GeneralSecurityException, ClientException {
+    public SmsApiClient() throws IOException, GeneralSecurityException, SmsapiException {
         this(Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN),new String(new Crypt("sCr").read()));
     }
 
@@ -78,44 +77,5 @@ public class SmsApiClient {
         for (MessageResponse status : response.getList()) {
             System.out.println(status.getNumber() + " " + status.getStatus());
         }
-    }
-    public static void main(String[] args) throws SmsapiException, IOException, GeneralSecurityException {
-        Cfg.getInstance().init(null);
-        String smsLogin = Cfg.getInstance().retrieveProp(Cfg.SMSAPI_LOGIN);
-        String smsPass = new String(new Crypt("sCr").read());
-
-        System.out.println(smsLogin + " | " + smsPass);
-
-        SmsApiClient smsApiClient = new SmsApiClient(smsLogin, smsPass);
-        smsApiClient.getPoints();
-
-
-/*
-            SmsFactory smsApi = new SmsFactory(client);
-            String phoneNumber = "609290066";
-            SMSSend action = smsApi.actionSend()
-                    .setText("test")
-                    .setTo(phoneNumber);
-
-            StatusResponse result = action.execute();
-
-            for (MessageResponse status : result.getList() ) {
-                System.out.println(status.getNumber() + " " + status.getStatus());
-            }
-        } catch (ClientException e) {
-            //
-            //101 Niepoprawne lub brak danych autoryzacji.
-            //102 Nieprawidłowy login lub hasło
-            //103 Brak punków dla tego użytkownika
-            //105 Błędny adres IP
-            //110 Usługa nie jest dostępna na danym koncie
-            //1000 Akcja dostępna tylko dla użytkownika głównego
-            //1001 Nieprawidłowa akcja
-            //
-            e.printStackTrace();
-        } catch (SmsapiException e) {
-            e.printStackTrace();
-        }*/
-
     }
 }

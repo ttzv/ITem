@@ -39,7 +39,7 @@ public class SmsController extends AnchorPane {
     private MsgFileChooser msgFileChooser;
     private Loader loader;
 
-    void refreshAccountInfo(){
+    public void refreshAccountInfo(){
         SmsApiClient smsApiClient;
         try {
             smsApiClient = new SmsApiClient();
@@ -57,7 +57,6 @@ public class SmsController extends AnchorPane {
 
     void updateUserLabels(UserHolder userHolder){
         setTextfield_smsRecipient(userHolder.getCurrentUser().getDisplayName());
-        //setTextfield_smsRecipientNumber(userCombowrapper.getPhoneOf(userHolder.getCurrentUser()).getNumber());
     }
 
     private void updateMsgLabels(){
@@ -164,7 +163,6 @@ public class SmsController extends AnchorPane {
         loader = new Loader();
         pattern = Pattern.compile(ACCENTED_CHARS);
         this.msgFileChooser = new MsgFileChooser(Cfg.SMS_LIST);
-        refreshAccountInfo();
         addTextAreaListener();
         updateSender();
         buildComboBox();
@@ -182,7 +180,6 @@ public class SmsController extends AnchorPane {
             smsMessage.setText(textarea_smscontent.getText());
             smsMessage.setRecipientAddress(textfield_smsRecipientNumber.getText());
             smsMessage.setSender(textfield_smsSender.getText());
-
             try {
                 SmsApiClient smsApiClient = new SmsApiClient();
                 smsApiClient.sendSMS(smsMessage);

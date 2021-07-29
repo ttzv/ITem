@@ -44,29 +44,27 @@ public class LdapServiceImpl implements LdapService{
     }
 
     @Override
-    public List<ADUser_n> getAll() {
-        List<Map<String, String>> users = null;
-        try {
-            users = getResults();
-        } catch (NamingException | IOException | GeneralSecurityException e) {
-            e.printStackTrace();
-        }
-        List<ADUser_n> allUsers = new ArrayList<>();
-        for (Map<String, String> userMap:
-            users){
-            ADUser_n adUser = new ADUser_n();
-            adUser.setObjectGUID(userMap.get("objectGUID"));
-            adUser.setGivenName(userMap.get("givenName"));
-            adUser.setSn(userMap.get("sn"));
-            adUser.setDisplayName(userMap.get("displayName"));
-            adUser.setSAMAccountName(userMap.get("sAMAccountName"));
-            adUser.setWhenCreated(Utility.parseDate(userMap.get("whenCreated"), Utility.ldapDateFormat()));
-            adUser.setEmail(userMap.get("mail"));
-            adUser.setDistinguishedName(userMap.get("distinguishedName"));
-            adUser.setObjectSid(userMap.get("objectSid"));
-            adUser.setUserAccountControl(userMap.get("userAccountControl"));
-            adUser.setLockoutTime(Utility.parseLockoutTimestamp(userMap.get("lockoutTime")));
-            allUsers.add(adUser);
+    public List<ADUser_n> getAll() throws GeneralSecurityException, NamingException, IOException {
+        List<Map<String, String>> users = getResults();
+        List<ADUser_n> allUsers = null;
+        if(users != null) {
+            allUsers = new ArrayList<>();
+            for (Map<String, String> userMap :
+                    users) {
+                ADUser_n adUser = new ADUser_n();
+                adUser.setObjectGUID(userMap.get("objectGUID"));
+                adUser.setGivenName(userMap.get("givenName"));
+                adUser.setSn(userMap.get("sn"));
+                adUser.setDisplayName(userMap.get("displayName"));
+                adUser.setSAMAccountName(userMap.get("sAMAccountName"));
+                adUser.setWhenCreated(Utility.parseDate(userMap.get("whenCreated"), Utility.ldapDateFormat()));
+                adUser.setEmail(userMap.get("mail"));
+                adUser.setDistinguishedName(userMap.get("distinguishedName"));
+                adUser.setObjectSid(userMap.get("objectSid"));
+                adUser.setUserAccountControl(userMap.get("userAccountControl"));
+                adUser.setLockoutTime(Utility.parseLockoutTimestamp(userMap.get("lockoutTime")));
+                allUsers.add(adUser);
+            }
         }
         return allUsers;
     }
@@ -77,11 +75,7 @@ public class LdapServiceImpl implements LdapService{
         DirContext ctx = null;
         try {
             ctx = ldapParser.getLdapContext();
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (GeneralSecurityException | NamingException | IOException e) {
             e.printStackTrace();
         }
         Attribute A0 = new BasicAttribute("lockoutTime", "0");
