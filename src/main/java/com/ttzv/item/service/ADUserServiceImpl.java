@@ -76,8 +76,8 @@ public class ADUserServiceImpl implements ADUserService {
         adUserDao.saveMultiple(toSave);
         adUserDao.updateMultiple(toUpdate);
         // handle deletion of records that no longer exists in other data storage
-        otherUserList.removeAll(adUserDao.getADUsers());
-        List<ADUser_n> toDelete = otherUserList.stream().map(otherUser -> adUserDao.findByGUID(otherUser.getObjectGUID())).collect(Collectors.toList());
+        List<ADUser_n> toDelete = adUserDao.getADUsers();
+        toDelete.removeAll(otherUserList);
         adUserDao.deleteMultiple(toDelete);
 
         Map<String, List<ADUser_n>> log = new HashMap<>();
