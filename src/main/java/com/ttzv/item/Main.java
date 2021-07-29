@@ -3,8 +3,6 @@ package com.ttzv.item;
 
 import com.ttzv.item.dao.DbSession;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.pwSafe.Crypt;
-import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.ui.controller.MainWindowController;
 import com.ttzv.item.uiUtils.DialogFactory;
 import javafx.application.Application;
@@ -13,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import org.hibernate.Session;
 import org.hibernate.service.spi.ServiceException;
 
 import java.io.IOException;

@@ -1,6 +1,5 @@
 package com.ttzv.item.dao;
 
-import com.ttzv.item.entity.ADUser_n;
 import com.ttzv.item.entity.CommandBox;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

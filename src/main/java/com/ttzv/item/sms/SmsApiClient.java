@@ -1,7 +1,6 @@
 package com.ttzv.item.sms;
 
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.sender.SmsMessage;
 import pl.smsapi.BasicAuthClient;

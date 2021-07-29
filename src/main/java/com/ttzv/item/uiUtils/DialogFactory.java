@@ -13,7 +13,6 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 public class DialogFactory {
 

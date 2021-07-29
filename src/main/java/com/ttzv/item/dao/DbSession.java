@@ -5,7 +5,6 @@ import com.ttzv.item.entity.CommandBox;
 import com.ttzv.item.entity.Office;
 import com.ttzv.item.entity.UserDetail_n;
 import com.ttzv.item.properties.Cfg;
-import com.ttzv.item.pwSafe.Crypt;
 import com.ttzv.item.pwSafe.PHolder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
