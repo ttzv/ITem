@@ -14,6 +14,7 @@ import com.ttzv.item.uiUtils.DialogFactory;
 import com.ttzv.item.uiUtils.TabBuilder;
 import com.ttzv.item.uiUtils.ViewTab;
 import com.ttzv.item.utility.Utility;
+import jakarta.mail.MessagingException;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -26,6 +27,7 @@ import javafx.stage.Stage;
 import ttzv.uiUtils.LimitableTextField;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 public class MailerController extends AnchorPane {
 
@@ -93,12 +95,12 @@ public class MailerController extends AnchorPane {
 
         Task<Boolean> wait = new Task<>() {
             @Override
-            protected Boolean call(){
+            protected Boolean call() throws GeneralSecurityException, IOException, MessagingException {
                 sender.setSmtpHost(AppConfiguration.retrieveProp(Cfg.SMTP_HOST));
                 sender.setSmtpPort(AppConfiguration.retrieveProp(Cfg.SMTP_PORT));
                 sender.setSmtpStartTLS(AppConfiguration.retrieveProp(Cfg.SMTP_TLS));
 
-                sender.setSenderPassword(PHolder.Mail);
+                sender.setSenderPassword(PHolder.Mail());
 
                 sender.setSenderAddress(AppConfiguration.retrieveProp(Cfg.SMTP_LOGIN));
 
@@ -106,11 +108,7 @@ public class MailerController extends AnchorPane {
                 sender.initSession();
 
                 sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
-                try {
-                    sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
 
                 sender.sendMail();
 
