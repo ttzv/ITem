@@ -511,9 +511,7 @@ public class SettingsController extends AnchorPane {
             showTemporaryImg(this.okImgLdap);
         });
         isValid.setOnFailed(event -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(isValid.getException().toString());
-            alert.showAndWait();
+            DialogFactory.showAlert(Alert.AlertType.ERROR, isValid.getException().toString());
             resetLdapIndicators();
         });
 
