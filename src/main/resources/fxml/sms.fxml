@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
 <AnchorPane prefHeight="660.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ttzv.item.ui.controller.SmsController">
    <children>
       <BorderPane layoutX="327.0" layoutY="191.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -18,8 +28,6 @@
                         <TextField fx:id="textfield_smsRecipient" editable="false" />
                         <Label text="%sms_number" />
                         <TextField fx:id="textfield_smsRecipientNumber" />
-                        <Label text="%sms_variable" />
-                        <TextField fx:id="textfield_smsVariable" />
                         <ComboBox fx:id="cbox_template" promptText="%sms_choosetemplate" />
                         <HBox spacing="10.0">
                            <children>
@@ -29,7 +37,6 @@
                         </HBox>
                         <Separator prefWidth="200.0" />
                         <Button mnemonicParsing="false" onAction="#btn_removeAccents" text="%sms_removeaccents" />
-                        <Button disable="true" mnemonicParsing="false" onAction="#btnA_addToQue" text="%sms_addtoque" />
                         <Button mnemonicParsing="false" onAction="#btnA_Send" text="%sms_send" />
                         <Separator prefWidth="200.0" />
                         <Label text="%sms_points" />
@@ -40,7 +47,7 @@
                         <Label fx:id="label_remchars" text="0" />
                         <Label text="%sms_messageno" />
                         <Label fx:id="label_msgno" text="0" />
-                        <Button mnemonicParsing="false" onAction="#refreshAccountInfo" prefHeight="30.0" prefWidth="30.0" stylesheets="@../style/btn_main.css">
+                        <Button mnemonicParsing="false" onAction="#refreshAccountInfoEvent" prefHeight="30.0" prefWidth="30.0" stylesheets="@../style/btn_main.css">
                            <styleClass>
                               <String fx:value="rect_button" />
                               <String fx:value="btn_commscn_refresh" />

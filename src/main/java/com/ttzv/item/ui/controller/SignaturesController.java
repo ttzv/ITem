@@ -71,6 +71,16 @@ public class SignaturesController extends AnchorPane {
         }
     }
 
+    public void setOfficeMobileFormatter(){
+        TextFieldFormatters textFieldFormatters = new TextFieldFormatters();
+        txtfCityPhone.setTextFormatter(textFieldFormatters.selectTextFormatter(textFieldFormatters.FORMAT_MOBILE_NUMBER));
+    }
+
+    public void setOfficeDefaultFormatter(){
+        TextFieldFormatters textFieldFormatters = new TextFieldFormatters();
+        txtfCityPhone.setTextFormatter(textFieldFormatters.selectTextFormatter(textFieldFormatters.FORMAT_PHONE_NUMBER));
+    }
+
     @FXML
     private WebView webViewSignature;
 

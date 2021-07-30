@@ -3,6 +3,7 @@ package com.ttzv.item;
 
 import com.ttzv.item.dao.DbSession;
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.ui.controller.MainWindowController;
 import com.ttzv.item.uiUtils.DialogFactory;
 import javafx.application.Application;
@@ -14,11 +15,12 @@ import javafx.stage.Stage;
 import org.hibernate.service.spi.ServiceException;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ResourceBundle;
 
 public class Main extends Application {
 
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, GeneralSecurityException {
 
         initCfg();
 
@@ -42,7 +44,9 @@ public class Main extends Application {
         DialogFactory.initFactory(scene.getWindow());
         mainWindowController.addPrimaryTableViewRightClickHandler();
         mainWindowController.loadTheme();
-        mainWindowController.postInitSmsController();
+        if(PHolder.Sms().length > 0){
+            mainWindowController.postInitSmsController();
+        }
 
         primaryStage.show();
     }

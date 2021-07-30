@@ -4,14 +4,13 @@ Maybe it can also be of some use to someone else.
 Functionality of this app includes:
 <ol>
 <li>Parsing LDAP </li>
-<li>Integration with PostgreSQL database</li>
+<li>Integration with PostgreSQL database or embedded database</li>
 <li>Synchronization of data between LDAP and database</li>
 <li>Sending email templates</li>
 <li>Generating random passwords</li>
 <li>Generating mail signatures</li>
 <li>CommandBox - a way to store useful strings, e.g. console commands </li>
 <li>Sending SMS - using <a href="https://www.smsapi.com/">smsapi.com</a></li>
-<li>Automatic updates from FTP server using <a href="https://github.com/update4j/update4j">update4j</a> framework</li>
 </ol>
 
 <h2> Application functionality </h2>
@@ -19,15 +18,11 @@ Functionality of this app includes:
 
 <img src="https://thumbs.gfycat.com/OrdinaryDependentCornsnake-size_restricted.gif"></img>
 
-Main idea behind this app is to allow quick access to data of all Users. 
+This application allows to retrieve users from LDAP and quickly generate and/or send personalized templates (mails, sms, signatures).
 
-To achieve this the application tries to synchronize every User that exists in selected Organizational Unit (configurable in Settings).
-
-If connection to LDAP could not be estabilished the app will still launch, because all data is stored in database. 
-Application does not use any Object-Relational Mapping framework, so only currently supported DBMS is Postgres, however it is possible to add different DBMS drivers with some changes in code.
 Along with data from LDAP it is possible to store additional information unique or shared between several ADUsers, such as City where they
 reside (each Users' City is parsed from their parent container in LDAP, so for example, if User DN is 
-"dn=Jane Doe,ou=New City,ou=Employees,dc=ttzv,dc=local" application will assume "Jane Doe" resides in City named "New City")
+"dn=Jane Doe,ou=New City,ou=Employees,dc=ttzv,dc=local" application will assume "Jane Doe" resides in City which location was "New City").
 
 This brings us to the next point:
 
@@ -37,17 +32,18 @@ This brings us to the next point:
 
 Each User can have additional data associated with them. Database updates are performed by clicking "Save changes" button.
 Every String can also be quickly copied to Clipboard using little copy icons on each TextField.
+I created a custom control specifically for this purpose.
 
 <h3>3. Send Mail templates with variable strings</h3>
 
 <img src="https://thumbs.gfycat.com/SilentVacantBarracuda-size_restricted.gif"></img>
 
 This functionality allows to send message templates with variable text fragments. 
-For example, sending a welcome message to new Employee greeting them by name - in big organization scenario this can get tedious very fast, so why not just load a template, set a flag that tells the program where this variable text should be, and pull that info from database in one click.
+For example, sending a welcome message to new Employee greeting them by name - in big organization scenario this can get tedious very fast, so why not just load a template, set a flag that tells the program where this variable text should be, and retrieve that info from database in one click.
 
 Preparing message templates is very straightforward.
 
-We have to use flags to tell the parser which areas interests us:
+We have to use flags to tell the parser which fields should be replaced with attributes:
 
 <img src="https://i.imgur.com/CHnJ1eO.png"></img>
 
@@ -61,8 +57,7 @@ E-Mail account credentials and server details can be changed in Settings.
 
 <img src="https://thumbs.gfycat.com/ReliableAlienatedAntbear-size_restricted.gif"></img>
 
-This is quite self-explanatory. This module allows sending SMS using existing <a href="https://www.smsapi.com/">smsapi.com</a> account.
-If recipient has an assigned phone number it will be automatically pulled from database. 
+This is quite self-explanatory. This module allows sending SMS using existing <a href="https://www.smsapi.com/">smsapi.com</a> account. 
 Message templates are also supported.
 
 <h3>5. Save commonly used strings</h3>
@@ -77,14 +72,23 @@ If we already use database to store all our Users' info that we need everyday, t
 
 Dark theme. That's all there is to it! Every app needs to have one.
 
-<h3>7. Automatic updates</h3>
+<h3>7. Java Platform Module System and creating custom runtime image</h3>
+This application uses JPMS which combined with JavaFX, multitude of libraries and Maven proved to be a challenge.  
+The main advantage of using JPMS is an ability to use jlink - a tool that can create custom runtime image which means Java no longer has to be installed on client computer.  
+Unfortunately not every library out there is modular yet, so I had to resort to other methods.  
 
-Being able to update application with minimal ADUser interaction is incredibly convenient.
-By using <a href="https://github.com/update4j/update4j">update4j</a> framework, and it's compatibility with Java 9 and above, we can
-create runtime image using <a href="https://docs.oracle.com/javase/9/tools/jlink.htm#JSWOR-GUID-CECAC52B-CFEE-46CB-8166-F17A8E9280E9">jlink</a> and update our application modules that run on custom java runtime. No more problems with installing and updating Java. Furthermore, we can auto-update Java runtime itself!
-This application integrates with <a href="https://github.com/update4j/update4j">update4j</a> on very superficial level, using only a <a href="https://github.com/update4j/update4j/wiki/Documentation#lifecycle">default Bootstrap</a>, for instance.
+To create image for this app follow there steps:
+<ol>
+    <li>Run `mvn clean package`</li>
+    <li>Separate jars that are not modular (those without module-info) - I plan to write a tool that does it automatically.</li>
+    <li>Put those jars in separate directory, in my case it's "auto"</li>
+    <li>Run jlink:  
+    ```jlink --add-modules java.base,javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.web,java.logging,java.naming,java.sql,java.desktop,jdk.charsets,com.fasterxml.classmate,com.fasterxml.jackson.core,com.fasterxml.jackson.databind,ttzv.uiUtils,java.management,jdk.crypto.ec,java.compiler --module-path files/ --output image/ --compress 2```</li>
+    <li>Go to the root directory and run the app using custom runtime image that you just created: ```"image/bin/java.exe" -p "auto;files" -m com.ttzv.item/com.ttzv.item.Main
+    ```</li>
+    <li>In short - we package all jars that are modular in our jlink image. Unmodular jars are loaded in old-fashioned way using classpath.</li>
+</ol>
 
-<h3>Disclaimer</h3>
 
-This application was built mainly for learning purposes as an effort to bring functionality of several systems to one place. 
-There <i>will</i> be bugs, there <i>will</i> be crashes, and it probably <i>will</i> use more memory than it should.
+
+

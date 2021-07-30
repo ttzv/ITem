@@ -57,6 +57,7 @@ public class SmsController extends AnchorPane {
 
     void updateUserLabels(UserHolder userHolder){
         setTextfield_smsRecipient(userHolder.getCurrentUser().getDisplayName());
+        setTextfield_smsRecipientNumber(userHolder.getCurrentUser().getPhoneNumber());
     }
 
     private void updateMsgLabels(){
@@ -75,10 +76,6 @@ public class SmsController extends AnchorPane {
 
     public void setTextfield_smsRecipientNumber(String textfield_smsRecipientNumber) {
         this.textfield_smsRecipientNumber.setText(textfield_smsRecipientNumber);
-    }
-
-    public void setTextfield_smsVariable(String textfield_smsVariable) {
-        this.textfield_smsVariable.setText(textfield_smsVariable);
     }
 
     public void setLabel_points(String label_points) {
@@ -136,9 +133,6 @@ public class SmsController extends AnchorPane {
 
     @FXML
     private TextField textfield_smsRecipientNumber;
-
-    @FXML
-    private TextField textfield_smsVariable;
 
     @FXML
     private ComboBox<FileNodeWrapper> cbox_template;
@@ -212,7 +206,7 @@ public class SmsController extends AnchorPane {
     }
 
     @FXML
-    void refreshAccountInfo(ActionEvent event) {
+    void refreshAccountInfoEvent(ActionEvent event) {
         refreshAccountInfo();
     }
 
