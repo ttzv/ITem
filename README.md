@@ -25,7 +25,7 @@ reside (each Users' City is parsed from their parent container in LDAP, so for e
 
 This brings us to the next point:
 
-<h3> 2. Change or add Users' information
+## 2. Change or add Users' information
 
 <img src="https://thumbs.gfycat.com/AdolescentSelfishDingo-size_restricted.gif"></img>
 
@@ -73,7 +73,7 @@ Dark theme. That's all there is to it! Every app needs to have one.
 
 ### 7. Java Platform Module System and creating custom runtime image
 This application uses JPMS which combined with JavaFX, multitude of libraries and Maven proved to be a challenge.  
-The main advantage of using JPMS is an ability to use jlink - a tool that can create custom runtime image which means Java no longer has to be installed on client computer.  
+In our case, the main advantage of using JPMS is an ability to use jlink - a tool that can create custom runtime image which means Java no longer has to be installed on client computer.  
 Unfortunately not every library out there is modular yet, so I had to resort to other methods.  
 To create image for this app follow these steps:
 1. Run 
