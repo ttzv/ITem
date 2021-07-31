@@ -1,6 +1,6 @@
 # ITem
-This application was made mainly for learning purposes and, to some extent, make some tasks of IT technician less tedious and faster.
-Maybe it can also be of some use to someone else.
+Generate personalized email templates, SMS and signatures. 
+
 Functionality of this app includes:
 1. Parsing LDAP
 2. Integration with PostgreSQL database or embedded database
