@@ -52,9 +52,6 @@ public class MailerController extends AnchorPane {
     private TextField txtPass;
 
     @FXML
-    private Button btnTestAdd;
-
-    @FXML
     private TabPane tabPane;
 
     @FXML
@@ -91,8 +88,9 @@ public class MailerController extends AnchorPane {
 
     @FXML
     void btnSendAction(ActionEvent event) throws IOException {
-        Stage infoWindowStage = DialogFactory.getWaitWindow();
+        ViewTab selectedTab = tabBuilder.getSelectedTab();
 
+        Stage infoWindowStage = DialogFactory.getWaitWindow();
         Task<Boolean> wait = new Task<>() {
             @Override
             protected Boolean call() throws GeneralSecurityException, IOException, MessagingException {
@@ -107,14 +105,14 @@ public class MailerController extends AnchorPane {
                 sender.validate();
                 sender.initSession();
 
-                sender.setMsgSubject(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
-                sender.setMsg(tabBuilder.getSelectedTab().getParser().getOutputString());
+                sender.setMsgSubject(selectedTab.getParser().getFlaggedTopic());
+                sender.setMsg(selectedTab.getParser().getOutputString());
 
                 sender.sendMail();
 
                 String savePass = AppConfiguration.retrieveProp(Cfg.SAVEPASS);
                 if(!txtPass.getText().isBlank() && savePass.equals("true")) {
-                    String name = tabBuilder.getSelectedTab()
+                    String name = selectedTab
                             .getName()
                             .replace(".html", "");
                     savePass(name);
@@ -132,7 +130,11 @@ public class MailerController extends AnchorPane {
             infoWindowStage.close();
             DialogFactory.showAlert(Alert.AlertType.ERROR, wait.getException().toString());
         });
-        new Thread(wait).start();
+        if(selectedTab != null) {
+            new Thread(wait).start();
+        } else {
+            DialogFactory.showAlert(Alert.AlertType.WARNING, "No templates loaded.");
+        }
 
     }
 
@@ -174,7 +176,7 @@ public class MailerController extends AnchorPane {
         promptLabelEnabler();
         tabChangedEvent();
         //Improve topic loading, line below is not cool
-        this.labTopic.setText(this.tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
+        this.labTopic.setText(tabBuilder.getSelectedTab().getParser().getFlaggedTopic());
     }
 
     @FXML

@@ -5,6 +5,7 @@ import com.ttzv.item.entity.Office;
 import com.ttzv.item.entity.UserDetail_n;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.properties.Cfg;
+import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.service.*;
 import com.ttzv.item.uiUtils.DialogFactory;
 import com.ttzv.item.uiUtils.OfficeFormatCell;
@@ -31,10 +32,7 @@ import ttzv.uiUtils.StatusBar;
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class MainWindowController extends AnchorPane {
 
@@ -183,7 +181,7 @@ public class MainWindowController extends AnchorPane {
 
 
     @FXML
-    public void initialize() {
+    public void initialize() throws GeneralSecurityException, IOException {
         storageNodesMap = new HashMap<>();
         labelCity.setText("");
         labelUsername.setText("");
@@ -227,7 +225,9 @@ public class MainWindowController extends AnchorPane {
         cbox_Offices.setButtonCell(cbox_Offices.getCellFactory().call(null));
         Office office = new Office();
         cbox_Offices.getItems().add(office);
-        syncTask();
+        if(PHolder.Ldap().length > 0){
+            syncTask();
+        }
 
         userHolder.setCurrentUser(userHolder.getADUsers().stream().findFirst().orElse(null));
         if(userHolder.getCurrentUser() != null) updateMainWindowAssets();
@@ -236,7 +236,7 @@ public class MainWindowController extends AnchorPane {
     public void addPrimaryTableViewRightClickHandler() throws IOException {
         Stage progressWindow = DialogFactory.getWaitWindow();
         ContextMenu cm = new ContextMenu();
-        MenuItem unlock = new MenuItem("Odblokuj");
+        MenuItem unlock = new MenuItem(ResourceBundle.getBundle("lang").getString("tableaction.unlock"));
         cm.getItems().add(unlock);
         cm.setOnAction(event -> {
             ADUser_n selectedUser = primaryUserTableView.getSelectionModel().getSelectedItem();
@@ -391,9 +391,7 @@ public class MainWindowController extends AnchorPane {
             this.prgList.setVisible(false);
         });
         sync.setOnFailed(workerStateEvent -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(sync.getException().toString());
-            alert.showAndWait();
+            DialogFactory.showAlert(Alert.AlertType.ERROR,sync.getException().toString());
             this.prgList.setVisible(false);
         });
         new Thread(sync).start();
@@ -420,7 +418,14 @@ public class MainWindowController extends AnchorPane {
             Office existingOffice = cbox_Offices.getItems().stream().filter(off -> off.equals(office)).findFirst().orElse(null);
             cbox_Offices.getSelectionModel().select(existingOffice);
             signaturesViewController.setTxtfCity(office.getName2());
-            signaturesViewController.setTxtfCityPhone(office.getPhonenumber());
+            String phoneNumber = office.getLandline();
+            if (phoneNumber == null || phoneNumber.isBlank()) {
+                phoneNumber = office.getPhonenumber();
+                signaturesViewController.setOfficeMobileFormatter();
+            } else {
+                signaturesViewController.setOfficeDefaultFormatter();
+            }
+            signaturesViewController.setTxtfCityPhone(phoneNumber);
             signaturesViewController.setTxtfCityFax(office.getFax());
             String cName = office.getName();
             if (cName != null) {

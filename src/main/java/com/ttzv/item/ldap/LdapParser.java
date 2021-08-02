@@ -2,6 +2,7 @@ package com.ttzv.item.ldap;
 
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.Crypt;
+import com.ttzv.item.pwSafe.PHolder;
 import com.ttzv.item.utility.Utility;
 
 import javax.naming.Context;
@@ -28,7 +29,7 @@ public class LdapParser
         this.setLdap_URL(Cfg.getInstance().retrieveProp(Cfg.LDAP_URL));
         this.setLdap_port(Cfg.getInstance().retrieveProp(Cfg.LDAP_PORT));
         this.setAd_adminUser(Cfg.getInstance().retrieveProp(Cfg.LDAP_ACC));
-        this.setAd_adminPass(Crypt.newCrypt("lCr").read());
+        this.setAd_adminPass(PHolder.Ldap());
     }
 
     public String getLdap_URL() {
