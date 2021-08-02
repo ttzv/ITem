@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class CommandBox {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
     @Column

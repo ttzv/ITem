@@ -63,10 +63,8 @@ public class CommandBoxController extends AnchorPane {
             addDeleteBtnAction(commandNode, commandBox);
             addUpdateBtnAction(commandNode, commandBox);
             refreshList();
-            scrollToBottom();
-        } else {
-            scrollToBottom();
         }
+        scrollToBottom();
     }
 
     @FXML
