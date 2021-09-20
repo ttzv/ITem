@@ -1,8 +1,8 @@
 package com.ttzv.item.ui.controller;
 
-import com.ttzv.item.entity.ADUser_n;
+import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.entity.Office;
-import com.ttzv.item.entity.UserDetail_n;
+import com.ttzv.item.entity.UserDetail;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.PHolder;
@@ -44,7 +44,7 @@ public class MainWindowController extends AnchorPane {
     private ADUserService adUserService;
     private OfficeService officeService;
 
-    private TableViewCreator<ADUser_n> tableViewCreator;
+    private TableViewCreator<ADUser> tableViewCreator;
     private Map<Label, TextField> storageNodesMap;
 
     @FXML
@@ -63,10 +63,10 @@ public class MainWindowController extends AnchorPane {
     private Button sidebartogglebtn;
 
     @FXML
-    private TableView<ADUser_n> primaryUserTableView;
+    private TableView<ADUser> primaryUserTableView;
 
     @FXML
-    private TableView<ADUser_n> msgQTableView;
+    private TableView<ADUser> msgQTableView;
 
     @FXML
     private AnchorPane contentPane;
@@ -186,7 +186,7 @@ public class MainWindowController extends AnchorPane {
         labelCity.setText("");
         labelUsername.setText("");
         adUserService = new ADUserServiceImpl();
-        List<ADUser_n> adUsers = adUserService.getAll();
+        List<ADUser> adUsers = adUserService.getAll();
         userHolder = UserHolder.getHolder();
         userHolder.setADUsers(adUsers);
 
@@ -239,7 +239,7 @@ public class MainWindowController extends AnchorPane {
         MenuItem unlock = new MenuItem(ResourceBundle.getBundle("lang").getString("tableaction.unlock"));
         cm.getItems().add(unlock);
         cm.setOnAction(event -> {
-            ADUser_n selectedUser = primaryUserTableView.getSelectionModel().getSelectedItem();
+            ADUser selectedUser = primaryUserTableView.getSelectionModel().getSelectedItem();
             if(selectedUser != null && selectedUser.getLockoutTime() != null){
                 Task<Boolean> unlockTask = new Task<Boolean>() {
                     @Override
@@ -282,8 +282,8 @@ public class MainWindowController extends AnchorPane {
 
     @FXML
     void performSaveUserProperties() {
-        ADUser_n adUser = userHolder.getCurrentUser();
-        UserDetail_n userDetail = adUser.getDetail();
+        ADUser adUser = userHolder.getCurrentUser();
+        UserDetail userDetail = adUser.getDetail();
         adUser.setSAMAccountName(txtfActLogin.getText());
         userDetail.setPosition(txtfActPos.getText());
         adUser.setEmail(txtfActMail.getText());
@@ -373,9 +373,9 @@ public class MainWindowController extends AnchorPane {
             @Override
             protected Boolean call() throws GeneralSecurityException, NamingException, IOException {
                 LdapService ldapService = new LdapServiceImpl();
-                List<ADUser_n> ldapUsers = ldapService.getAll();
-                Map<String, List<ADUser_n>> logSync = adUserService.updateTableFrom(ldapUsers);
-                Map<String, List<ADUser_n>> logBind = adUserService.autoBindOffices(officeService.getOffices());
+                List<ADUser> ldapUsers = ldapService.getAll();
+                Map<String, List<ADUser>> logSync = adUserService.updateTableFrom(ldapUsers);
+                Map<String, List<ADUser>> logBind = adUserService.autoBindOffices(officeService.getOffices());
                 System.out.println("LDAP Sync task:\nCreated: " + logSync.get("Created").size() + " Updated: " + logSync.get("Updated").size() + " Deleted: " + logSync.get("Deleted").size() + "\n"
                  + "Office bind task:\nUpdated: " + logBind.get("Updated").size());
                 userHolder.setADUsers(adUserService.getAll());
@@ -405,7 +405,7 @@ public class MainWindowController extends AnchorPane {
     }
 
     public void changeUser() {
-        ADUser_n adUser = userHolder.getCurrentUser();
+        ADUser adUser = userHolder.getCurrentUser();
 
         this.labelUsername.setText(adUser.getDisplayName());
         this.labelCity.setText(adUser.getCity());
@@ -488,7 +488,7 @@ public class MainWindowController extends AnchorPane {
     private void addPrimaryTableViewDoubleClickHandler(){
         this.primaryUserTableView.setOnMouseClicked(mouseEvent -> {
             if(mouseEvent.getClickCount() == 2){
-                ADUser_n adUser = primaryUserTableView.getSelectionModel()
+                ADUser adUser = primaryUserTableView.getSelectionModel()
                         .getSelectedItem();
                 if(adUser != null) {
                     userHolder.setCurrentUser(adUser);
@@ -542,7 +542,7 @@ public class MainWindowController extends AnchorPane {
     }
 
     private void setTxtfActValues(){
-        ADUser_n adUser = userHolder.getCurrentUser();
+        ADUser adUser = userHolder.getCurrentUser();
 
         txtfActLogin.setText(adUser.getSAMAccountName());
         txtfActName.setText(adUser.getGivenName());
@@ -621,7 +621,7 @@ public class MainWindowController extends AnchorPane {
         }
     }
 
-    public void buildPasswordStorageInterface(UserDetail_n userDetail) {
+    public void buildPasswordStorageInterface(UserDetail userDetail) {
         Map<String, Object> storage = userDetail.getStorage();
         System.out.println(storage);
 

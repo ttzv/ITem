@@ -1,6 +1,6 @@
 package com.ttzv.item.service;
 
-import com.ttzv.item.entity.ADUser_n;
+import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.ldap.LdapParser;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.utility.Utility;
@@ -44,14 +44,14 @@ public class LdapServiceImpl implements LdapService{
     }
 
     @Override
-    public List<ADUser_n> getAll() throws GeneralSecurityException, NamingException, IOException {
+    public List<ADUser> getAll() throws GeneralSecurityException, NamingException, IOException {
         List<Map<String, String>> users = getResults();
-        List<ADUser_n> allUsers = null;
+        List<ADUser> allUsers = null;
         if(users != null) {
             allUsers = new ArrayList<>();
             for (Map<String, String> userMap :
                     users) {
-                ADUser_n adUser = new ADUser_n();
+                ADUser adUser = new ADUser();
                 adUser.setObjectGUID(userMap.get("objectGUID"));
                 adUser.setGivenName(userMap.get("givenName"));
                 adUser.setSn(userMap.get("sn"));
@@ -70,7 +70,7 @@ public class LdapServiceImpl implements LdapService{
     }
 
     @Override
-    public void unlockADUser(ADUser_n adUser) {
+    public void unlockADUser(ADUser adUser) {
         ModificationItem[] mods = new ModificationItem[1];
         DirContext ctx = null;
         try {

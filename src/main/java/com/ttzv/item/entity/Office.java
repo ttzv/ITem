@@ -38,7 +38,7 @@ public class Office {
     private String postalcode;
 
     @OneToMany(mappedBy = "office")
-    private Set<UserDetail_n> userDetails;
+    private Set<UserDetail> userDetails;
 
     @Override
     public String toString() {
@@ -55,9 +55,9 @@ public class Office {
                 '}';
     }
 
-    public Set<ADUser_n> getUsers(){
+    public Set<ADUser> getUsers(){
         if (!this.userDetails.isEmpty()){
-            return this.userDetails.stream().map(UserDetail_n::getAdUser).collect(Collectors.toSet());
+            return this.userDetails.stream().map(UserDetail::getAdUser).collect(Collectors.toSet());
         }
         return null;
     }
@@ -147,11 +147,11 @@ public class Office {
         this.postalcode = postalcode;
     }
 
-    public Set<UserDetail_n> getUserDetails() {
+    public Set<UserDetail> getUserDetails() {
         return userDetails;
     }
 
-    public void setUserDetails(Set<UserDetail_n> userDetails) {
+    public void setUserDetails(Set<UserDetail> userDetails) {
         this.userDetails = userDetails;
     }
 }

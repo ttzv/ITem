@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class ADUser_n {
+public class ADUser {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -48,7 +48,7 @@ public class ADUser_n {
     private LocalDateTime lockoutTime;
 
     @OneToOne(mappedBy = "adUser", cascade = CascadeType.ALL)
-    private UserDetail_n detail;
+    private UserDetail detail;
 
     public Office getOffice(){
         if(this.detail != null){
@@ -57,9 +57,9 @@ public class ADUser_n {
         return null;
     }
 
-    public UserDetail_n getDetail(){
+    public UserDetail getDetail(){
         if(detail == null) {
-            detail = new UserDetail_n();
+            detail = new UserDetail();
             detail.setAdUser(this);
         }
         try {
@@ -114,7 +114,7 @@ public class ADUser_n {
 
     @Override
     public String toString() {
-        return "ADUser_n{" +
+        return "ADUser{" +
                 "id=" + id +
                 ", objectGUID='" + objectGUID + '\'' +
                 ", givenName='" + givenName + '\'' +
@@ -130,7 +130,7 @@ public class ADUser_n {
                 '}';
     }
 
-    public void merge(ADUser_n other){
+    public void merge(ADUser other){
 
         setGivenName(other.getGivenName());
         setSn(other.getSn());
@@ -151,19 +151,19 @@ public class ADUser_n {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ADUser_n adUser_n = (ADUser_n) o;
+        ADUser adUser = (ADUser) o;
 
-        return Objects.equals(givenName, adUser_n.givenName)
-                && Objects.equals(objectGUID, adUser_n.objectGUID)
-                && Objects.equals(objectSid, adUser_n.objectSid)
-                && Objects.equals(sn, adUser_n.sn)
-                && Objects.equals(displayName, adUser_n.displayName)
-                && Objects.equals(sAMAccountName, adUser_n.sAMAccountName)
-                && Objects.equals(email, adUser_n.email)
-                && Objects.equals(distinguishedName, adUser_n.distinguishedName)
-                && Objects.equals(userAccountControl, adUser_n.userAccountControl)
-                && Objects.equals(whenCreated, adUser_n.whenCreated)
-                && Objects.equals(lockoutTime, adUser_n.lockoutTime);
+        return Objects.equals(givenName, adUser.givenName)
+                && Objects.equals(objectGUID, adUser.objectGUID)
+                && Objects.equals(objectSid, adUser.objectSid)
+                && Objects.equals(sn, adUser.sn)
+                && Objects.equals(displayName, adUser.displayName)
+                && Objects.equals(sAMAccountName, adUser.sAMAccountName)
+                && Objects.equals(email, adUser.email)
+                && Objects.equals(distinguishedName, adUser.distinguishedName)
+                && Objects.equals(userAccountControl, adUser.userAccountControl)
+                && Objects.equals(whenCreated, adUser.whenCreated)
+                && Objects.equals(lockoutTime, adUser.lockoutTime);
     }
 
     @Override
@@ -267,7 +267,7 @@ public class ADUser_n {
         this.lockoutTime = lockoutTime;
     }
 
-    public void setDetail(UserDetail_n detail) {
+    public void setDetail(UserDetail detail) {
         this.detail = detail;
     }
 }

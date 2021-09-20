@@ -7,8 +7,8 @@ import java.util.List;
 public class UserHolder {
 
     private static UserHolder userHolder;
-    private final List<ADUser_n> storedADUsers;
-    private ADUser_n currentADUser;
+    private final List<ADUser> storedADUsers;
+    private ADUser currentADUser;
 
     private UserHolder(){
         storedADUsers = new ArrayList<>();
@@ -21,24 +21,24 @@ public class UserHolder {
         return userHolder;
     }
 
-    public ADUser_n find(String id){
+    public ADUser find(String id){
         return storedADUsers
                 .stream()
-                .filter(adUser_n -> adUser_n.getObjectGUID() == id)
+                .filter(adUser -> adUser.getObjectGUID() == id)
                 .findFirst()
                 .orElse(null);
     }
 
-    public ADUser_n getCurrentUser() {
+    public ADUser getCurrentUser() {
         return this.currentADUser;
     }
 
-    public void setCurrentUser(ADUser_n bcurrentADUser) {
+    public void setCurrentUser(ADUser bcurrentADUser) {
         this.currentADUser = bcurrentADUser;
     }
 
 
-    public void setADUsers(List<ADUser_n> adUsers){
+    public void setADUsers(List<ADUser> adUsers){
         storedADUsers.clear();
         adUsers.sort((o1, o2) -> {
 
@@ -52,7 +52,7 @@ public class UserHolder {
         storedADUsers.addAll(adUsers);
     }
 
-    public List<ADUser_n> getADUsers(){
+    public List<ADUser> getADUsers(){
         return storedADUsers;
     }
 

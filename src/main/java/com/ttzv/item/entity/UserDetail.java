@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Entity
 @Table(name = "user_details")
-public class UserDetail_n {
+public class UserDetail {
 
     @Id @GeneratedValue
     @Column
@@ -22,7 +22,7 @@ public class UserDetail_n {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private ADUser_n adUser;
+    private ADUser adUser;
 
     @Column
     private String position;
@@ -96,11 +96,11 @@ public class UserDetail_n {
         this.office = office;
     }
 
-    public ADUser_n getAdUser() {
+    public ADUser getAdUser() {
         return adUser;
     }
 
-    public void setAdUser(ADUser_n adUser) {
+    public void setAdUser(ADUser adUser) {
         this.adUser = adUser;
     }
 

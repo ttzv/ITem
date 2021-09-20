@@ -1,6 +1,6 @@
 package com.ttzv.item.ui.controller;
 
-import com.ttzv.item.entity.ADUser_n;
+import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.entity.UserHolder;
 import com.ttzv.item.file.MailMsgParser;
 import com.ttzv.item.pass.PasswordGenerator;
@@ -140,7 +140,7 @@ public class MailerController extends AnchorPane {
 
     private void savePass(String name) {
         UserHolder userHolder = UserHolder.getHolder();
-        ADUser_n adUser = userHolder.getCurrentUser();
+        ADUser adUser = userHolder.getCurrentUser();
         adUser.getDetail().updateStorage(name, txtPass.getText());
         ADUserService adUserService = new ADUserServiceImpl();
         adUserService.updateADUser(adUser);

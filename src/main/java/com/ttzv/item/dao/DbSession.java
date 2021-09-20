@@ -1,9 +1,9 @@
 package com.ttzv.item.dao;
 
-import com.ttzv.item.entity.ADUser_n;
+import com.ttzv.item.entity.ADUser;
 import com.ttzv.item.entity.CommandBox;
 import com.ttzv.item.entity.Office;
-import com.ttzv.item.entity.UserDetail_n;
+import com.ttzv.item.entity.UserDetail;
 import com.ttzv.item.properties.Cfg;
 import com.ttzv.item.pwSafe.PHolder;
 import org.hibernate.Session;
@@ -31,10 +31,10 @@ public class DbSession{
                 System.err.println("Cannot read credentials.");
             }
             if (useEmbeddedDb()) { h2ConfigurationModify(configuration); }
-            sessionInstance = configuration.addAnnotatedClass(ADUser_n.class)
+            sessionInstance = configuration.addAnnotatedClass(ADUser.class)
                     .addAnnotatedClass(Office.class)
                     .addAnnotatedClass(CommandBox.class)
-                    .addAnnotatedClass(UserDetail_n.class)
+                    .addAnnotatedClass(UserDetail.class)
                     .addAnnotatedClass(CommandBox.class)
                     .buildSessionFactory();
         }
